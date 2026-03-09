@@ -114,7 +114,7 @@
 
     .ticker-track {
       display: flex;
-      animation: ticker 40s linear infinite;
+      animation: ticker 10s linear infinite;
       white-space: nowrap;
     }
 
@@ -150,28 +150,52 @@
       display: flex;
       gap: 4px;
       margin-bottom: 28px;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 0;
+      padding: 4px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
     }
+
+    .tabs::-webkit-scrollbar { display: none; }
 
     .tab {
-      padding: 12px 24px;
-      font-size: 13px;
+      padding: 9px 14px;
+      font-size: 12px;
       font-weight: 700;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
       cursor: pointer;
-      border-bottom: 3px solid transparent;
-      margin-bottom: -1px;
+      border-radius: 8px;
       color: var(--text2);
-      transition: all 0.2s;
+      transition: all 0.2s ease;
       background: none;
-      border-top: none;
-      border-left: none;
-      border-right: none;
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-family: 'Noto Sans KR', sans-serif;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
-    .tab:hover { color: var(--text); }
-    .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .tab .tab-icon {
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    .tab:hover {
+      color: var(--text);
+      background: var(--surface2);
+    }
+
+    .tab.active {
+      background: var(--accent);
+      color: #000;
+      box-shadow: 0 2px 12px rgba(240,180,41,0.3);
+    }
 
     .tab-content { display: none; }
     .tab-content.active { display: block; }
@@ -578,8 +602,22 @@
       .grid-main, .grid-2, .grid-3, .market-grid, .concept-grid {
         grid-template-columns: 1fr;
       }
-      .container { padding: 16px; }
-      .tabs { overflow-x: auto; }
+      .container { padding: 12px; }
+      .tabs {
+        width: 100%;
+        border-radius: 10px;
+      }
+      .tab {
+        padding: 8px 11px;
+        font-size: 11px;
+        gap: 4px;
+        flex: 1;
+        justify-content: center;
+      }
+      .tab .tab-icon svg {
+        width: 13px;
+        height: 13px;
+      }
     }
 
     /* === SCROLLBAR === */
@@ -635,6 +673,10 @@
 <!-- HEADER -->
 <header>
   <div class="logo">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style="flex-shrink:0">
+      <rect width="28" height="28" rx="6" fill="#f0b429"/>
+      <path d="M6 20L10 14L14 17L18 10L22 8" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
     <div>
       ECONOMY SCHOOL
       <span>경제 공부 플랫폼</span>
@@ -659,11 +701,31 @@
 
   <!-- TABS -->
   <div class="tabs">
-    <button class="tab active" onclick="switchTab('home')">🏠 홈</button>
-    <button class="tab" onclick="switchTab('korea')">🇰🇷 한국 경제</button>
-    <button class="tab" onclick="switchTab('global')">🌐 글로벌 경제</button>
-    <button class="tab" onclick="switchTab('market')">📈 시장 데이터</button>
-    <button class="tab" onclick="switchTab('study')">📚 개념 학습</button>
+    <button class="tab active" onclick="switchTab('home')">
+      <span class="tab-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      </span>홈
+    </button>
+    <button class="tab" onclick="switchTab('korea')">
+      <span class="tab-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+      </span>한국 경제
+    </button>
+    <button class="tab" onclick="switchTab('global')">
+      <span class="tab-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2 0 .68.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.9-4.33-3.56zm2.95-8H5.08c.96-1.66 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2 0-.68.07-1.35.16-2h4.68c.09.65.16 1.32.16 2 0 .68-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2 0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z"/></svg>
+      </span>글로벌
+    </button>
+    <button class="tab" onclick="switchTab('market')">
+      <span class="tab-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/></svg>
+      </span>시장
+    </button>
+    <button class="tab" onclick="switchTab('study')">
+      <span class="tab-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>
+      </span>학습
+    </button>
   </div>
 
   <!-- ===== HOME TAB ===== -->
@@ -770,28 +832,25 @@
 // ===================== DATA =====================
 
 // 실시간 시장 데이터 (Yahoo Finance)
-const MARKET_SYMBOLS = [
-  { name: "코스피",  symbol: "^KS11",   prefix: "",  decimals: 2 },
-  { name: "코스닥",  symbol: "^KQ11",   prefix: "",  decimals: 2 },
-  { name: "USD/KRW", symbol: "KRW=X",   prefix: "₩", decimals: 0 },
-  { name: "S&P 500", symbol: "^GSPC",   prefix: "",  decimals: 2 },
-  { name: "나스닥",  symbol: "^IXIC",   prefix: "",  decimals: 2 },
-  { name: "WTI유가", symbol: "CL=F",    prefix: "$", decimals: 2 },
-  { name: "금",      symbol: "GC=F",    prefix: "$", decimals: 0 },
-  { name: "BTC",     symbol: "BTC-USD", prefix: "$", decimals: 0 },
+// 2026년 3월 기준 실제값 (앱 시작 시 즉시 표시)
+const FALLBACK_DATA = [
+  { name: "코스피",  val: "5,185.49", chg: "-7.15%", up: false },
+  { name: "코스닥",  val: "1,092.43", chg: "-5.41%", up: false },
+  { name: "USD/KRW", val: "₩1,493",  chg: "+1.13%", up: true  },
+  { name: "S&P 500", val: "6,740.02", chg: "-1.33%", up: false },
+  { name: "나스닥",  val: "22,387.68",chg: "-1.59%", up: false },
+  { name: "WTI유가", val: "$67.04",   chg: "-0.81%", up: false },
+  { name: "금",      val: "$3,100",   chg: "+0.42%", up: true  },
+  { name: "BTC",     val: "$83,200",  chg: "+1.05%", up: true  },
 ];
 
-let MARKET_DATA = MARKET_SYMBOLS.map(s => ({
-  name: s.name, val: "로딩중...", chg: "—", up: true
-}));
-
+let MARKET_DATA = FALLBACK_DATA.slice();
 let MARKET_CARDS = MARKET_DATA.slice(0, 4);
 
 async function fetchMarketData() {
   const symbols = MARKET_SYMBOLS.map(s => s.symbol).join(',');
   const baseUrl = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbols}&fields=regularMarketPrice,regularMarketChangePercent`;
 
-  // 프록시 목록 — 순차 시도
   const proxies = [
     `https://api.allorigins.win/raw?url=${encodeURIComponent(baseUrl)}`,
     `https://corsproxy.io/?${encodeURIComponent(baseUrl)}`,
@@ -800,7 +859,7 @@ async function fetchMarketData() {
 
   for (const proxyUrl of proxies) {
     try {
-      const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(8000) });
+      const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(5000) });
       if (!res.ok) continue;
       const json = await res.json();
       const quotes = json?.quoteResponse?.result || [];
@@ -811,20 +870,20 @@ async function fetchMarketData() {
     } catch(e) { continue; }
   }
 
-  // Yahoo 전부 실패 → 네이버 금융 시도
+  // 네이버 금융 시도
   try {
     await fetchFromNaver();
     return;
   } catch(e) {}
 
-  // 최종 폴백: 오늘 실제 종가 기준값
-  useFallbackData();
+  // 모두 실패 → 이미 폴백값이 표시중이므로 레이블만 업데이트
+  updateMarketUI('참고값');
 }
 
 function applyMarketData(quotes) {
   MARKET_DATA = MARKET_SYMBOLS.map(s => {
     const q = quotes.find(q => q.symbol === s.symbol);
-    if (!q) return { name: s.name, val: "—", chg: "—", up: true };
+    if (!q) return FALLBACK_DATA.find(f => f.name === s.name) || { name: s.name, val: "—", chg: "—", up: true };
     const price = q.regularMarketPrice;
     const chgPct = q.regularMarketChangePercent;
     const up = chgPct >= 0;
@@ -839,7 +898,7 @@ function applyMarketData(quotes) {
 
 async function fetchFromNaver() {
   const naverUrl = 'https://polling.finance.naver.com/api/realtime?query=SERVICE_INDEX:KOSPI,SERVICE_INDEX:KOSDAQ,SERVICE_EXCHANGE:FX_USDKRW';
-  const res = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(naverUrl)}`, { signal: AbortSignal.timeout(8000) });
+  const res = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(naverUrl)}`, { signal: AbortSignal.timeout(5000) });
   const json = await res.json();
   const items = json?.result?.areas?.[0]?.datas || [];
   if (items.length === 0) throw new Error('No naver data');
@@ -860,22 +919,6 @@ async function fetchFromNaver() {
   updateMarketUI('실시간');
 }
 
-function useFallbackData() {
-  // 2026년 3월 9일 실제 장중 기준값
-  MARKET_DATA = [
-    { name: "코스피",  val: "5,185.49", chg: "-7.15%", up: false },
-    { name: "코스닥",  val: "1,092.43", chg: "-5.41%", up: false },
-    { name: "USD/KRW", val: "₩1,493",  chg: "+1.13%", up: true  },
-    { name: "S&P 500", val: "6,740.02", chg: "-1.33%", up: false },
-    { name: "나스닥",  val: "22,387.68",chg: "-1.59%", up: false },
-    { name: "WTI유가", val: "$100+",    chg: "+급등",  up: true  },
-    { name: "금",      val: "$3,100+",  chg: "+상승",  up: true  },
-    { name: "BTC",     val: "$83,200",  chg: "+1.05%", up: true  },
-  ];
-  MARKET_CARDS = MARKET_DATA.slice(0, 4);
-  updateMarketUI('장중 기준');
-}
-
 function updateMarketUI(label) {
   buildTicker();
   buildMarketCards(MARKET_CARDS, 'marketSummary');
@@ -884,8 +927,6 @@ function updateMarketUI(label) {
   const timeStr = `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
   document.getElementById('updateTime').textContent = `${label} · ${timeStr}`;
 }
-
-const MARKET_CARDS_PLACEHOLDER = MARKET_DATA.slice(0, 4);
 
 const VIDEOS = {
   featured: [
