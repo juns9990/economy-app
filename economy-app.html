@@ -736,8 +736,9 @@
   <div id="tab-study" class="tab-content">
     <div class="section-header">
       <div class="section-title">경제 개념 학습</div>
-      <div class="section-sub">초보자도 이해하는 핵심 경제 용어</div>
+      <div class="section-sub">카테고리별 핵심 경제 용어</div>
     </div>
+    <div id="conceptCategoryBtns" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;"></div>
     <div class="concept-grid" id="conceptGrid"></div>
     <div class="concept-detail" id="conceptDetail"></div>
 
@@ -961,96 +962,142 @@ const NEWS = {
   ],
 };
 
+// 카테고리별 분류
+const CONCEPT_CATEGORIES = [
+  { id: "all", label: "전체" },
+  { id: "macro", label: "🏛️ 거시경제" },
+  { id: "stock", label: "📈 주식·투자" },
+  { id: "realestate", label: "🏠 부동산" },
+  { id: "trade", label: "🌐 무역·환율" },
+  { id: "institution", label: "🏦 세계기관" },
+  { id: "korea", label: "🇰🇷 한국경제" },
+];
+
 const CONCEPTS = [
+  // ===== 거시경제 =====
   {
-    icon: "📉",
-    title: "인플레이션 (Inflation)",
-    desc: "물가가 지속적으로 오르는 현상. 돈의 가치가 떨어지는 것",
-    color: "yellow",
-    level: "입문",
-    levelClass: "tag-beginner",
-    detail: {
-      title: "인플레이션이란?",
-      body: `<p>인플레이션은 쉽게 말해 <strong style="color:var(--accent)">물가가 계속 오르는 현상</strong>입니다. 작년에 1,000원이던 라면이 올해 1,200원이 됐다면, 이게 인플레이션입니다.</p>
-      <p>인플레이션이 생기면 같은 돈으로 살 수 있는 물건이 줄어들기 때문에, 실질적으로 돈의 가치가 떨어집니다.</p>
-      <p><strong>왜 생기나요?</strong> 돈이 너무 많이 풀리거나, 물건이 부족하거나, 국제 원자재 가격이 오를 때 발생합니다.</p>
-      <div class="example">💡 예시: 코로나 이후 미국이 돈을 엄청나게 풀자(양적완화), 2021~2022년 미국 물가가 40년 만에 최고치(9%)까지 올랐습니다. 이것이 대표적인 인플레이션 사례입니다.</div>`
-    }
+    icon: "📊", title: "GDP (국내총생산)", category: "macro",
+    desc: "한 나라에서 1년간 생산된 모든 재화·서비스의 총합",
+    color: "green", level: "입문", levelClass: "tag-beginner",
+    detail: { title: "GDP란?", body: `<p>GDP는 <strong style="color:var(--accent)">한 나라의 경제 규모</strong>를 나타내는 가장 중요한 지표입니다.</p><p>GDP가 2분기 연속 감소하면 <strong>경기침체(Recession)</strong>라고 부릅니다.</p><div class="example">💡 2024년 한국 GDP ≈ 1조 8천억 달러 (세계 13위). 미국 28조 달러 1위, 중국 18조 달러 2위.</div>` }
   },
   {
-    icon: "🏦",
-    title: "기준금리 (Base Rate)",
+    icon: "📉", title: "인플레이션 (Inflation)", category: "macro",
+    desc: "물가가 지속적으로 오르는 현상. 돈의 가치 하락",
+    color: "yellow", level: "입문", levelClass: "tag-beginner",
+    detail: { title: "인플레이션이란?", body: `<p>작년 1,000원 라면이 올해 1,200원 → 이게 인플레이션입니다. 돈의 실질 가치가 떨어지죠.</p><p><strong>왜 생기나요?</strong> 돈이 너무 많이 풀리거나, 공급 부족, 원자재 가격 상승 때 발생합니다.</p><div class="example">💡 코로나 이후 양적완화로 2022년 미국 물가 9% 폭등 — 40년 만에 최고치.</div>` }
+  },
+  {
+    icon: "🏦", title: "기준금리 (Base Rate)", category: "macro",
     desc: "중앙은행이 정하는 돈의 가격. 모든 금리의 기준점",
-    color: "blue",
-    level: "입문",
-    levelClass: "tag-beginner",
-    detail: {
-      title: "기준금리란?",
-      body: `<p>기준금리는 <strong style="color:var(--accent)">한국은행(중앙은행)이 정하는 '돈의 가격'</strong>입니다. 은행들이 서로 돈을 빌릴 때 적용하는 이자율이죠.</p>
-      <p>기준금리가 오르면 → 대출이자 상승 → 사람들이 돈을 덜 빌림 → 소비 감소 → 물가 하락</p>
-      <p>기준금리가 내리면 → 대출이자 하락 → 사람들이 돈을 많이 빌림 → 소비 증가 → 물가 상승</p>
-      <div class="example">💡 예시: 2022년 미국 인플레이션이 심해지자, 연준(Fed)은 금리를 0%에서 5.5%까지 급격히 올렸습니다. 그 결과 물가가 서서히 안정됐습니다.</div>`
-    }
+    color: "blue", level: "입문", levelClass: "tag-beginner",
+    detail: { title: "기준금리란?", body: `<p>금리↑ → 대출이자↑ → 소비↓ → 물가↓<br>금리↓ → 대출이자↓ → 소비↑ → 물가↑</p><div class="example">💡 미국 연준이 2022년 금리를 0% → 5.5%로 급등시켜 인플레이션을 잡은 사례가 대표적입니다.</div>` }
   },
   {
-    icon: "📊",
-    title: "GDP (국내총생산)",
-    desc: "한 나라에서 1년 동안 만들어낸 모든 재화·서비스의 총합",
-    color: "green",
-    level: "입문",
-    levelClass: "tag-beginner",
-    detail: {
-      title: "GDP란?",
-      body: `<p>GDP는 <strong style="color:var(--accent)">한 나라의 경제 규모</strong>를 나타내는 가장 중요한 지표입니다. 1년 동안 그 나라에서 생산된 모든 것의 가치를 돈으로 환산한 것이죠.</p>
-      <p>GDP가 늘어나면 경제가 성장하는 것이고, 줄어들면 경기가 나빠지는 것입니다. 2분기 연속 GDP가 감소하면 '경기침체(Recession)'라고 부릅니다.</p>
-      <div class="example">💡 2024년 한국 GDP는 약 1조 8천억 달러로 세계 13위 수준입니다. 미국(28조 달러)이 1위, 중국(18조 달러)이 2위입니다.</div>`
-    }
+    icon: "🌊", title: "양적완화 (QE)", category: "macro",
+    desc: "중앙은행이 채권을 사들여 시중에 돈을 직접 푸는 정책",
+    color: "blue", level: "중급", levelClass: "tag-global",
+    detail: { title: "양적완화(QE)란?", body: `<p>금리를 0%까지 낮춰도 경기가 안 살아날 때 쓰는 <strong style="color:var(--accent)">비상 수단</strong>입니다. 중앙은행이 채권을 직접 매입해 돈을 공급합니다.</p><div class="example">💡 코로나19 때 미국 연준은 단 몇 달 만에 약 4조 달러(5,200조 원) 규모의 QE를 단행했습니다.</div>` }
   },
   {
-    icon: "💱",
-    title: "환율 (Exchange Rate)",
-    desc: "두 나라 화폐의 교환 비율. 달러 대비 원화 가치",
-    color: "red",
-    level: "입문",
-    levelClass: "tag-beginner",
-    detail: {
-      title: "환율이란?",
-      body: `<p>환율은 <strong style="color:var(--accent)">우리 돈(원화)과 다른 나라 돈(달러 등)을 바꾸는 비율</strong>입니다.</p>
-      <p>원달러 환율이 1,300원이라면 → 1달러 사는 데 1,300원이 필요하다는 뜻입니다.</p>
-      <p>환율 상승(원화 약세): 수출 기업에 유리, 수입 물가 상승<br>환율 하락(원화 강세): 수입 물가 하락, 해외여행 유리</p>
-      <div class="example">💡 예시: 환율이 1,200원 → 1,350원으로 오르면, 삼성전자가 미국에 100달러짜리 TV를 팔았을 때 받는 원화가 12,000원 → 13,500원으로 늘어납니다. 수출기업에 유리!</div>`
-    }
+    icon: "📋", title: "CPI (소비자물가지수)", category: "macro",
+    desc: "일반 가정이 구입하는 상품·서비스 가격 변동을 나타낸 지수",
+    color: "yellow", level: "초급", levelClass: "tag-beginner",
+    detail: { title: "CPI란?", body: `<p>CPI는 <strong style="color:var(--accent)">물가 상승률을 측정하는 대표 지표</strong>입니다. 식품·주거비·교통비 등 460여 개 품목 가격을 조사합니다.</p><p>중앙은행의 목표 물가 상승률은 보통 <strong>2%</strong>입니다. 이보다 높으면 금리 인상, 낮으면 금리 인하 신호입니다.</p><div class="example">💡 한국 통계청은 매달 CPI를 발표합니다. CPI가 3% 이상이면 물가 불안, 0% 이하면 디플레이션 우려입니다.</div>` }
   },
+
+  // ===== 주식·투자 =====
   {
-    icon: "📈",
-    title: "주가지수 (Stock Index)",
+    icon: "📈", title: "주가지수 (Stock Index)", category: "stock",
     desc: "여러 주식의 가격을 하나의 숫자로 나타낸 지표",
-    color: "yellow",
-    level: "초급",
-    levelClass: "tag-market",
-    detail: {
-      title: "주가지수란?",
-      body: `<p>주가지수는 <strong style="color:var(--accent)">많은 회사의 주가를 하나의 숫자로 묶어서 나타낸 것</strong>입니다.</p>
-      <p>한국: <strong>코스피(KOSPI)</strong> — 유가증권시장 상장 기업 전체<br>
-      미국: <strong>S&P 500</strong> — 미국 대형주 500개, <strong>나스닥</strong> — 기술주 중심</p>
-      <p>지수가 오르면 전반적으로 주식 시장이 좋아지는 것, 내리면 나빠지는 것으로 볼 수 있습니다.</p>
-      <div class="example">💡 코스피 2,500이라는 숫자는 1980년 기준(100)과 비교해 25배 성장했다는 의미입니다.</div>`
-    }
+    color: "yellow", level: "초급", levelClass: "tag-market",
+    detail: { title: "주가지수란?", body: `<p>한국: <strong>코스피(KOSPI)</strong> — 유가증권시장 전체<br>미국: <strong>S&P 500</strong> — 대형주 500개 / <strong>나스닥</strong> — 기술주 중심</p><div class="example">💡 코스피 2,500 = 1980년 기준(100) 대비 25배 성장했다는 의미입니다.</div>` }
   },
   {
-    icon: "🌊",
-    title: "양적완화 (QE)",
-    desc: "중앙은행이 직접 채권을 사들여 시중에 돈을 푸는 정책",
-    color: "blue",
-    level: "중급",
-    levelClass: "tag-global",
-    detail: {
-      title: "양적완화(QE)란?",
-      body: `<p>양적완화(Quantitative Easing)는 <strong style="color:var(--accent)">중앙은행이 시장에서 채권을 직접 사들여 돈을 공급하는 비상 수단</strong>입니다.</p>
-      <p>금리를 0%까지 낮춰도 경기가 안 살아나면 사용합니다. 돈이 많이 풀리면 → 투자 증가 → 경기 회복 효과를 노립니다.</p>
-      <p>단점은 너무 많이 쓰면 인플레이션을 유발할 수 있다는 것입니다.</p>
-      <div class="example">💡 코로나19 팬데믹 때 미국 연준은 수개월 만에 약 4조 달러(5,200조 원)의 양적완화를 단행했습니다. 이후 인플레이션이 폭등하는 부작용이 나타났죠.</div>`
-    }
+    icon: "💰", title: "PER (주가수익비율)", category: "stock",
+    desc: "주가가 1주당 순이익의 몇 배인지 나타내는 밸류에이션 지표",
+    color: "yellow", level: "초급", levelClass: "tag-market",
+    detail: { title: "PER이란?", body: `<p>PER = 주가 ÷ 주당순이익(EPS). <strong style="color:var(--accent)">주식이 얼마나 비싸거나 싼지</strong>를 보는 지표입니다.</p><p>PER 10 = 지금 이익으로 투자금 회수에 10년 걸린다는 뜻. 낮을수록 저평가, 높을수록 고평가입니다.</p><div class="example">💡 삼성전자 PER이 10이고 애플 PER이 30이라면, 삼성이 상대적으로 저평가됐다고 볼 수 있습니다.</div>` }
+  },
+  {
+    icon: "🐂", title: "불마켓 vs 베어마켓", category: "stock",
+    desc: "불마켓(상승장) vs 베어마켓(하락장). 시장 방향을 나타내는 용어",
+    color: "green", level: "초급", levelClass: "tag-market",
+    detail: { title: "불마켓 vs 베어마켓", body: `<p>🐂 <strong>불마켓(Bull Market)</strong>: 주가가 20% 이상 상승하는 상승장. 경기 호황, 투자 심리 낙관적.<br>🐻 <strong>베어마켓(Bear Market)</strong>: 주가가 20% 이상 하락하는 하락장. 경기 침체 우려, 투자 심리 비관적.</p><div class="example">💡 2020년 코로나 충격 → 베어마켓 → 이후 2021년 유동성 장세로 역대급 불마켓 전환.</div>` }
+  },
+
+  // ===== 부동산 =====
+  {
+    icon: "🏠", title: "DSR (총부채원리금상환비율)", category: "realestate",
+    desc: "연 소득 대비 모든 대출의 원리금 상환액 비율",
+    color: "red", level: "초급", levelClass: "tag-korea",
+    detail: { title: "DSR이란?", body: `<p>DSR = (모든 대출 연간 원리금) ÷ 연 소득 × 100. <strong style="color:var(--accent)">대출 한도를 제한하는 핵심 규제</strong>입니다.</p><p>현재 한국은 DSR 40% 규제 적용 중 → 연 소득 5천만 원이면 연간 원리금 2천만 원까지만 대출 가능.</p><div class="example">💡 DSR 규제가 강화될수록 대출 한도가 줄어 부동산 매수 여력이 감소합니다.</div>` }
+  },
+  {
+    icon: "🏢", title: "전세 vs 월세", category: "realestate",
+    desc: "한국 특유의 주거 임대차 방식. 전세는 목돈 맡기고 이자 없이 거주",
+    color: "red", level: "입문", levelClass: "tag-korea",
+    detail: { title: "전세 vs 월세란?", body: `<p><strong>전세</strong>: 집값의 60~80%를 보증금으로 맡기고 월세 없이 거주. 세계적으로 <strong style="color:var(--accent)">한국에만 있는 독특한 제도</strong>입니다.<br><strong>월세</strong>: 매달 임대료를 내는 일반적 임대 방식.</p><div class="example">💡 금리가 오르면 전세 대신 월세 선호가 늘어납니다. 집주인 입장에서 전세 보증금 굴리기가 어려워지기 때문입니다.</div>` }
+  },
+
+  // ===== 무역·환율 =====
+  {
+    icon: "💱", title: "환율 (Exchange Rate)", category: "trade",
+    desc: "두 나라 화폐의 교환 비율. 원달러 환율이 대표적",
+    color: "red", level: "입문", levelClass: "tag-beginner",
+    detail: { title: "환율이란?", body: `<p>환율↑(원화 약세): 수출기업 유리, 수입물가 상승<br>환율↓(원화 강세): 수입물가 하락, 해외여행 유리</p><div class="example">💡 환율 1,200원 → 1,350원: 삼성전자가 100달러짜리 TV 팔면 원화 수익이 12,000원 → 13,500원으로 증가.</div>` }
+  },
+  {
+    icon: "⚖️", title: "무역수지 (Trade Balance)", category: "trade",
+    desc: "수출액에서 수입액을 뺀 값. 흑자면 경제 건강, 적자면 위험 신호",
+    color: "blue", level: "초급", levelClass: "tag-beginner",
+    detail: { title: "무역수지란?", body: `<p>무역수지 = 수출 - 수입<br><strong>흑자</strong>: 수출 > 수입 → 외화 유입, 원화 강세 요인<br><strong>적자</strong>: 수출 < 수입 → 외화 유출, 원화 약세 요인</p><div class="example">💡 한국은 반도체 수출 덕분에 대부분 무역흑자국입니다. 2022년 에너지 가격 폭등으로 일시적 무역적자를 기록했습니다.</div>` }
+  },
+  {
+    icon: "🛡️", title: "관세 (Tariff)", category: "trade",
+    desc: "수입 물품에 부과하는 세금. 자국 산업 보호 수단",
+    color: "blue", level: "초급", levelClass: "tag-global",
+    detail: { title: "관세란?", body: `<p>관세는 <strong style="color:var(--accent)">외국 상품이 국내로 들어올 때 부과하는 세금</strong>입니다. 수입품 가격을 올려 자국 산업을 보호합니다.</p><p>관세가 높아지면 → 수입품 가격 상승 → 소비자 부담 증가 → 무역 갈등 유발 가능.</p><div class="example">💡 미국 트럼프 행정부의 중국산 제품 25% 관세 부과가 대표적 사례. 한국 수출에도 간접 영향을 줍니다.</div>` }
+  },
+
+  // ===== 세계 경제 기관 =====
+  {
+    icon: "🌍", title: "IMF (국제통화기금)", category: "institution",
+    desc: "외환위기 때 돈을 빌려주는 국제 금융 기관. 190개국 회원",
+    color: "blue", level: "초급", levelClass: "tag-global",
+    detail: { title: "IMF란?", body: `<p>IMF는 <strong style="color:var(--accent)">외환위기 국가에 긴급 자금을 지원하는 국제기관</strong>입니다. 단, 돈을 빌려줄 때 긴축재정·구조조정 등 조건을 답니다.</p><div class="example">💡 1997년 한국 외환위기 때 IMF에 195억 달러를 긴급 차입 → 이것이 "IMF 사태"입니다. 2001년 조기 상환으로 위기 극복.</div>` }
+  },
+  {
+    icon: "🏛️", title: "연준 (Fed)", category: "institution",
+    desc: "미국의 중앙은행. 달러와 세계 경제에 가장 큰 영향력을 가진 기관",
+    color: "blue", level: "초급", levelClass: "tag-global",
+    detail: { title: "연준(Fed)이란?", body: `<p>연준(Federal Reserve)은 <strong style="color:var(--accent)">미국의 중앙은행</strong>으로, 달러를 발행하고 금리를 결정합니다. 세계 기축통화인 달러를 관리하기 때문에 전 세계 경제에 막대한 영향을 미칩니다.</p><p>연준이 금리를 올리면 → 전 세계 돈이 미국으로 몰림 → 신흥국 환율 급등 위험.</p><div class="example">💡 연준의 FOMC 회의는 6주마다 열리며, 금리 결정 발표 때마다 전 세계 주식·채권·환율이 크게 움직입니다.</div>` }
+  },
+  {
+    icon: "📦", title: "WTO (세계무역기구)", category: "institution",
+    desc: "국가 간 무역 규칙을 정하고 분쟁을 조정하는 국제기구",
+    color: "blue", level: "초급", levelClass: "tag-global",
+    detail: { title: "WTO란?", body: `<p>WTO는 <strong style="color:var(--accent)">자유무역을 촉진하고 무역 분쟁을 해결하는 국제기구</strong>입니다. 164개국 회원국이 참여합니다.</p><div class="example">💡 미국이 한국산 철강에 관세를 부과하면, 한국은 WTO에 제소해 분쟁 해결을 요청할 수 있습니다.</div>` }
+  },
+
+  // ===== 한국 경제 특화 =====
+  {
+    icon: "🇰🇷", title: "재벌 (Chaebol)", category: "korea",
+    desc: "삼성·현대·LG 등 오너 일가가 지배하는 한국 대기업 집단",
+    color: "red", level: "입문", levelClass: "tag-korea",
+    detail: { title: "재벌이란?", body: `<p>재벌은 <strong style="color:var(--accent)">한 가문이 여러 계열사를 지배하는 한국 특유의 대기업 구조</strong>입니다. 영어로도 'Chaebol'로 통용됩니다.</p><p>삼성·현대차·SK·LG·롯데 등 상위 5대 재벌이 한국 GDP의 약 60%를 차지합니다.</p><div class="example">💡 재벌은 한국 경제 고속 성장의 원동력이었지만, 경제력 집중·불공정 거래 문제로 지속적인 개혁 요구를 받고 있습니다.</div>` }
+  },
+  {
+    icon: "📉", title: "가계부채 (Household Debt)", category: "korea",
+    desc: "가계가 빌린 모든 빚의 총합. 한국은 GDP 대비 세계 최고 수준",
+    color: "red", level: "초급", levelClass: "tag-korea",
+    detail: { title: "가계부채란?", body: `<p>한국의 가계부채는 <strong style="color:var(--accent)">GDP 대비 약 100%로 OECD 최고 수준</strong>입니다. 주택담보대출과 전세자금 대출이 대부분을 차지합니다.</p><p>가계부채가 많으면 → 금리 인상 시 이자 부담 폭증 → 소비 급감 → 경기 침체 가능성.</p><div class="example">💡 한국 가계부채 총액은 약 1,900조 원(2024년). 1인당 약 3,700만 원 수준입니다.</div>` }
+  },
+  {
+    icon: "🏭", title: "수출주도형 경제", category: "korea",
+    desc: "내수보다 수출에 의존하는 한국 경제 구조의 특징",
+    color: "red", level: "초급", levelClass: "tag-korea",
+    detail: { title: "수출주도형 경제란?", body: `<p>한국은 <strong style="color:var(--accent)">GDP의 약 40%가 수출</strong>로 이루어진 수출 의존도가 매우 높은 나라입니다. 반도체·자동차·조선·석유화학이 4대 수출 주력 산업입니다.</p><p>장점: 글로벌 수요 증가 시 빠른 성장. 단점: 세계 경기 침체 시 직격탄.</p><div class="example">💡 삼성전자 반도체 1개 품목이 한국 전체 수출의 약 20%를 차지합니다. 반도체 업황이 곧 한국 경제입니다.</div>` }
   },
 ];
 
@@ -1144,15 +1191,47 @@ function buildFullMarket() {
   document.getElementById('fullMarket').innerHTML = html;
 }
 
-function buildConcepts() {
-  document.getElementById('conceptGrid').innerHTML = CONCEPTS.map((c, i) => `
-    <div class="concept-card ${c.color}" onclick="openConcept(${i})">
-      <div class="concept-icon">${c.icon}</div>
-      <div class="concept-title">${c.title}</div>
-      <div class="concept-desc">${c.desc}</div>
-      <span class="tag ${c.levelClass} concept-level">${c.level}</span>
-    </div>
+let currentCategory = 'all';
+
+function buildCategoryBtns() {
+  document.getElementById('conceptCategoryBtns').innerHTML = CONCEPT_CATEGORIES.map(cat => `
+    <button onclick="filterConcepts('${cat.id}')" id="catBtn-${cat.id}" style="
+      padding:8px 16px;font-size:12px;font-weight:700;border-radius:2px;cursor:pointer;
+      border:1px solid ${cat.id === 'all' ? 'var(--accent)' : 'var(--border)'};
+      background:${cat.id === 'all' ? 'var(--accent)' : 'var(--surface)'};
+      color:${cat.id === 'all' ? '#000' : 'var(--text2)'};
+      transition:all 0.2s;font-family:inherit;
+    ">${cat.label}</button>
   `).join('');
+}
+
+function filterConcepts(catId) {
+  currentCategory = catId;
+  document.querySelectorAll('[id^="catBtn-"]').forEach(btn => {
+    const isActive = btn.id === `catBtn-${catId}`;
+    btn.style.background = isActive ? 'var(--accent)' : 'var(--surface)';
+    btn.style.color = isActive ? '#000' : 'var(--text2)';
+    btn.style.borderColor = isActive ? 'var(--accent)' : 'var(--border)';
+  });
+  buildConcepts();
+  document.getElementById('conceptDetail').classList.remove('open');
+  currentConcept = -1;
+}
+
+function buildConcepts() {
+  const filtered = currentCategory === 'all'
+    ? CONCEPTS
+    : CONCEPTS.filter(c => c.category === currentCategory);
+  document.getElementById('conceptGrid').innerHTML = filtered.map((c, i) => {
+    const realIndex = CONCEPTS.indexOf(c);
+    return `
+      <div class="concept-card ${c.color}" onclick="openConcept(${realIndex})">
+        <div class="concept-icon">${c.icon}</div>
+        <div class="concept-title">${c.title}</div>
+        <div class="concept-desc">${c.desc}</div>
+        <span class="tag ${c.levelClass} concept-level">${c.level}</span>
+      </div>`;
+  }).join('');
 }
 
 let currentConcept = -1;
@@ -1210,6 +1289,7 @@ function init() {
   buildNews(NEWS.global, 'globalNews');
   buildFullMarket();
   buildVideos(VIDEOS.market, 'marketVideos');
+  buildCategoryBtns();
   buildConcepts();
   buildVideos(VIDEOS.study, 'studyVideos');
 }
