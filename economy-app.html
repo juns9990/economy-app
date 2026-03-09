@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>이코노미 스쿨 — 경제 학습 앱</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0c10;
+      --surface: #111418;
+      --surface2: #181d24;
+      --border: #1e2530;
+      --accent: #f0b429;
+      --accent2: #e05252;
+      --korea: #c0392b;
+      --global: #2980b9;
+      --text: #e8eaf0;
+      --text2: #8a93a8;
+      --green: #27ae60;
+      --red: #e74c3c;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* === HEADER === */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10,12,16,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 3px;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo span {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--text2);
+      letter-spacing: 2px;
+      display: block;
+      margin-top: -4px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .live-badge {
+      background: var(--red);
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 2px;
+      letter-spacing: 1px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    /* === TICKER === */
+    .ticker-wrap {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+      height: 36px;
+      display: flex;
+      align-items: center;
+    }
+
+    .ticker-label {
+      background: var(--accent);
+      color: #000;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 0 14px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      letter-spacing: 1px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .ticker-track {
+      display: flex;
+      animation: ticker 40s linear infinite;
+      white-space: nowrap;
+    }
+
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    .ticker-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 28px;
+      font-size: 12px;
+      font-weight: 500;
+      border-right: 1px solid var(--border);
+    }
+
+    .ticker-item .name { color: var(--text2); }
+    .ticker-item .val { color: var(--text); font-weight: 700; }
+    .ticker-item .chg.up { color: var(--green); }
+    .ticker-item .chg.dn { color: var(--red); }
+
+    /* === LAYOUT === */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    /* === TABS === */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0;
+    }
+
+    .tab {
+      padding: 12px 24px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -1px;
+      color: var(--text2);
+      transition: all 0.2s;
+      background: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+    }
+
+    .tab:hover { color: var(--text); }
+    .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* === SECTION TITLE === */
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--text);
+    }
+
+    .section-sub {
+      font-size: 12px;
+      color: var(--text2);
+      font-weight: 300;
+    }
+
+    /* === GRID LAYOUTS === */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .grid-main {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    /* === VIDEO CARD === */
+    .video-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.25s;
+      position: relative;
+    }
+
+    .video-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(240,180,41,0.1);
+    }
+
+    .video-thumb {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%;
+      background: #000;
+      overflow: hidden;
+    }
+
+    .video-thumb iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: none;
+    }
+
+    .video-thumb-img {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+
+    .play-overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.3);
+      transition: background 0.2s;
+    }
+
+    .play-btn {
+      width: 52px;
+      height: 52px;
+      background: rgba(240,180,41,0.9);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #000;
+      transition: transform 0.2s;
+    }
+
+    .video-card:hover .play-btn { transform: scale(1.1); }
+
+    .video-info {
+      padding: 14px 16px;
+    }
+
+    .video-channel {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .video-title {
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.5;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .video-meta {
+      font-size: 11px;
+      color: var(--text2);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 2px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .tag-korea { background: rgba(192,57,43,0.2); color: #e74c3c; }
+    .tag-global { background: rgba(41,128,185,0.2); color: #5dade2; }
+    .tag-market { background: rgba(240,180,41,0.15); color: var(--accent); }
+    .tag-beginner { background: rgba(39,174,96,0.2); color: #2ecc71; }
+
+    /* === NEWS CARD === */
+    .news-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .news-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .news-item:hover {
+      background: var(--surface2);
+      border-color: var(--accent);
+    }
+
+    .news-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      color: var(--border);
+      line-height: 1;
+      flex-shrink: 0;
+      min-width: 32px;
+    }
+
+    .news-body { flex: 1; }
+
+    .news-source {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .news-title {
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.5;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .news-summary {
+      font-size: 12px;
+      color: var(--text2);
+      line-height: 1.6;
+    }
+
+    .news-time {
+      font-size: 10px;
+      color: var(--text2);
+      margin-top: 6px;
+    }
+
+    /* === MARKET WIDGET === */
+    .market-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .market-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 16px;
+      border-radius: 4px;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .market-card:hover { border-color: var(--border); background: var(--surface2); }
+
+    .market-name {
+      font-size: 11px;
+      color: var(--text2);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+
+    .market-val {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px;
+      letter-spacing: 1px;
+      color: var(--text);
+    }
+
+    .market-chg {
+      font-size: 12px;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    .market-chg.up { color: var(--green); }
+    .market-chg.dn { color: var(--red); }
+
+    /* === MODAL (video player) === */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.88);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      width: 90%;
+      max-width: 860px;
+      border-radius: 4px;
+      overflow: hidden;
+      animation: modalIn 0.25s ease;
+    }
+
+    @keyframes modalIn {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      flex: 1;
+      padding-right: 12px;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text2);
+      font-size: 22px;
+      cursor: pointer;
+      line-height: 1;
+      padding: 4px;
+      transition: color 0.2s;
+    }
+
+    .modal-close:hover { color: var(--red); }
+
+    .modal-player {
+      width: 100%;
+      padding-top: 56.25%;
+      position: relative;
+      background: #000;
+    }
+
+    .modal-player iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: none;
+    }
+
+    /* === STUDY CARDS (개념) === */
+    .concept-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .concept-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 24px;
+      cursor: pointer;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .concept-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0;
+      width: 3px;
+      height: 100%;
+    }
+
+    .concept-card.yellow::before { background: var(--accent); }
+    .concept-card.red::before { background: var(--korea); }
+    .concept-card.blue::before { background: var(--global); }
+    .concept-card.green::before { background: var(--green); }
+
+    .concept-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .concept-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+
+    .concept-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .concept-desc {
+      font-size: 12px;
+      color: var(--text2);
+      line-height: 1.7;
+    }
+
+    .concept-level {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 3px 10px;
+      border-radius: 2px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    /* === DIVIDER === */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 28px 0;
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 768px) {
+      .grid-main, .grid-2, .grid-3, .market-grid, .concept-grid {
+        grid-template-columns: 1fr;
+      }
+      .container { padding: 16px; }
+      .tabs { overflow-x: auto; }
+    }
+
+    /* === SCROLLBAR === */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text2); }
+
+    /* === CONCEPT DETAIL === */
+    .concept-detail {
+      display: none;
+      background: var(--surface2);
+      border: 1px solid var(--accent);
+      border-radius: 4px;
+      padding: 28px;
+      margin-top: 16px;
+    }
+
+    .concept-detail.open { display: block; animation: fadeIn 0.3s ease; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .concept-detail h3 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 18px;
+      margin-bottom: 12px;
+      color: var(--accent);
+    }
+
+    .concept-detail p {
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.8;
+      margin-bottom: 10px;
+    }
+
+    .concept-detail .example {
+      background: var(--surface);
+      border-left: 3px solid var(--accent);
+      padding: 12px 16px;
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.7;
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <div>
+      ECONOMY SCHOOL
+      <span>경제 공부 플랫폼</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="live-badge">● LIVE</div>
+  </div>
+</header>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-label">시장 현황</div>
+  <div style="overflow:hidden;flex:1;">
+    <div class="ticker-track" id="tickerTrack"></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="container">
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('home')">🏠 홈</button>
+    <button class="tab" onclick="switchTab('korea')">🇰🇷 한국 경제</button>
+    <button class="tab" onclick="switchTab('global')">🌐 글로벌 경제</button>
+    <button class="tab" onclick="switchTab('market')">📈 시장 데이터</button>
+    <button class="tab" onclick="switchTab('study')">📚 개념 학습</button>
+  </div>
+
+  <!-- ===== HOME TAB ===== -->
+  <div id="tab-home" class="tab-content active">
+
+    <!-- 시장 요약 -->
+    <div class="market-grid" id="marketSummary"></div>
+
+    <div class="grid-main">
+      <!-- 추천 영상 -->
+      <div>
+        <div class="section-header">
+          <div class="section-title">오늘의 추천 영상</div>
+          <div class="section-sub">경제 핵심 뉴스 & 분석</div>
+        </div>
+        <div class="grid-2" id="featuredVideos"></div>
+      </div>
+
+      <!-- 주요 뉴스 -->
+      <div>
+        <div class="section-header">
+          <div class="section-title">주요 뉴스</div>
+          <div class="section-sub">최신 경제 헤드라인</div>
+        </div>
+        <div class="news-list" id="homeNews"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== KOREA TAB ===== -->
+  <div id="tab-korea" class="tab-content">
+    <div class="section-header">
+      <div class="section-title">한국 경제 뉴스</div>
+      <div class="section-sub">국내 경제 최신 동향</div>
+    </div>
+    <div class="grid-main">
+      <div class="grid-2" id="koreaVideos"></div>
+      <div class="news-list" id="koreaNews"></div>
+    </div>
+  </div>
+
+  <!-- ===== GLOBAL TAB ===== -->
+  <div id="tab-global" class="tab-content">
+    <div class="section-header">
+      <div class="section-title">글로벌 경제 뉴스</div>
+      <div class="section-sub">세계 경제 흐름 파악</div>
+    </div>
+    <div class="grid-main">
+      <div class="grid-2" id="globalVideos"></div>
+      <div class="news-list" id="globalNews"></div>
+    </div>
+  </div>
+
+  <!-- ===== MARKET TAB ===== -->
+  <div id="tab-market" class="tab-content">
+    <div class="section-header">
+      <div class="section-title">시장 데이터</div>
+      <div class="section-sub">주요 지수 · 환율 · 원자재</div>
+    </div>
+    <div id="fullMarket"></div>
+
+    <div class="divider"></div>
+
+    <div class="section-header">
+      <div class="section-title">시장 분석 영상</div>
+    </div>
+    <div class="grid-3" id="marketVideos"></div>
+  </div>
+
+  <!-- ===== STUDY TAB ===== -->
+  <div id="tab-study" class="tab-content">
+    <div class="section-header">
+      <div class="section-title">경제 개념 학습</div>
+      <div class="section-sub">초보자도 이해하는 핵심 경제 용어</div>
+    </div>
+    <div class="concept-grid" id="conceptGrid"></div>
+    <div class="concept-detail" id="conceptDetail"></div>
+
+    <div class="divider"></div>
+
+    <div class="section-header">
+      <div class="section-title">학습 영상</div>
+    </div>
+    <div class="grid-3" id="studyVideos"></div>
+  </div>
+
+</div>
+
+<!-- VIDEO MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle"></div>
+      <button class="modal-close" onclick="closeModalBtn()">✕</button>
+    </div>
+    <div class="modal-player">
+      <iframe id="modalIframe" allowfullscreen allow="autoplay"></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===================== DATA =====================
+
+const MARKET_DATA = [
+  { name: "코스피", val: "2,512.26", chg: "+0.84%", up: true },
+  { name: "코스닥", val: "728.41", chg: "+1.12%", up: true },
+  { name: "USD/KRW", val: "1,334.50", chg: "-0.23%", up: false },
+  { name: "S&P 500", val: "5,770.20", chg: "+0.52%", up: true },
+  { name: "나스닥", val: "18,210.05", chg: "+0.41%", up: true },
+  { name: "WTI유가", val: "$72.14", chg: "-1.05%", up: false },
+  { name: "금", val: "$2,183", chg: "+0.38%", up: true },
+  { name: "BTC", val: "$68,450", chg: "+2.14%", up: true },
+];
+
+const MARKET_CARDS = MARKET_DATA.slice(0, 4);
+
+const VIDEOS = {
+  featured: [
+    {
+      id: "dMmcl5IaTeU",
+      channel: "삼프로TV",
+      title: "2025년 한국 경제 전망 — 성장이냐 침체냐?",
+      tags: ["tag-korea"],
+      tagLabels: ["한국경제"],
+      time: "48분 전"
+    },
+    {
+      id: "RUojdtHr00Y",
+      channel: "한국은행",
+      title: "기준금리 결정 — 한국은행의 선택은?",
+      tags: ["tag-korea", "tag-market"],
+      tagLabels: ["한국경제", "금리"],
+      time: "2시간 전"
+    },
+    {
+      id: "BWMG3VvDkUc",
+      channel: "EBS 경제",
+      title: "세계 경제 지도가 바뀐다 — 미국 vs 중국 패권 전쟁",
+      tags: ["tag-global"],
+      tagLabels: ["글로벌"],
+      time: "5시간 전"
+    },
+    {
+      id: "k_ywK7ZhD4U",
+      channel: "체인지그라운드",
+      title: "인플레이션이란 무엇인가? 초보자도 이해하는 경제 강의",
+      tags: ["tag-beginner"],
+      tagLabels: ["입문"],
+      time: "어제"
+    },
+  ],
+  korea: [
+    {
+      id: "dMmcl5IaTeU",
+      channel: "삼프로TV",
+      title: "한국 수출 경기 둔화 우려 — 반도체·자동차 업종 분석",
+      tags: ["tag-korea"],
+      tagLabels: ["한국경제"],
+      time: "1시간 전"
+    },
+    {
+      id: "RUojdtHr00Y",
+      channel: "한국은행 공식",
+      title: "기준금리 3.5% 동결 — 향후 인하 시점 전망",
+      tags: ["tag-korea", "tag-market"],
+      tagLabels: ["금리", "한국경제"],
+      time: "3시간 전"
+    },
+    {
+      id: "iKGNiuaF1H8",
+      channel: "JTBC 경제",
+      title: "한국 부동산 시장 2025 — 서울 집값 어디로 가나",
+      tags: ["tag-korea"],
+      tagLabels: ["부동산"],
+      time: "6시간 전"
+    },
+    {
+      id: "BWMG3VvDkUc",
+      channel: "KBS 경제",
+      title: "가계부채 1,900조 돌파 — 한국 경제 뇌관될까?",
+      tags: ["tag-korea"],
+      tagLabels: ["한국경제"],
+      time: "어제"
+    },
+  ],
+  global: [
+    {
+      id: "BWMG3VvDkUc",
+      channel: "EBS 경제",
+      title: "미국 FOMC 금리 결정 — 연준의 다음 행보는?",
+      tags: ["tag-global", "tag-market"],
+      tagLabels: ["미국", "금리"],
+      time: "2시간 전"
+    },
+    {
+      id: "k_ywK7ZhD4U",
+      channel: "글로벌 경제TV",
+      title: "중국 경기 부양책 발표 — 세계 경제에 미치는 영향",
+      tags: ["tag-global"],
+      tagLabels: ["중국", "글로벌"],
+      time: "4시간 전"
+    },
+    {
+      id: "dMmcl5IaTeU",
+      channel: "한겨레 경제",
+      title: "유럽 경제 침체 우려 — 독일 제조업 위기의 진실",
+      tags: ["tag-global"],
+      tagLabels: ["유럽"],
+      time: "8시간 전"
+    },
+    {
+      id: "RUojdtHr00Y",
+      channel: "매일경제TV",
+      title: "AI 산업이 바꾸는 세계 경제 판도 — 수혜 국가는?",
+      tags: ["tag-global", "tag-market"],
+      tagLabels: ["AI", "글로벌"],
+      time: "어제"
+    },
+  ],
+  market: [
+    {
+      id: "k_ywK7ZhD4U",
+      channel: "주식 스쿨",
+      title: "코스피 상승 모멘텀 분석 — 외국인 수급 읽는 법",
+      tags: ["tag-market"],
+      tagLabels: ["주식"],
+      time: "1시간 전"
+    },
+    {
+      id: "BWMG3VvDkUc",
+      channel: "환율 연구소",
+      title: "원달러 환율 1,330원 돌파 — 수출기업 영향 분석",
+      tags: ["tag-market"],
+      tagLabels: ["환율"],
+      time: "3시간 전"
+    },
+    {
+      id: "dMmcl5IaTeU",
+      channel: "원자재TV",
+      title: "유가 하락 지속 — OPEC+ 감산 연장 결정의 배경",
+      tags: ["tag-market"],
+      tagLabels: ["원자재"],
+      time: "5시간 전"
+    },
+  ],
+  study: [
+    {
+      id: "k_ywK7ZhD4U",
+      channel: "체인지그라운드",
+      title: "GDP가 뭔가요? 경제 지표 완전 정복 — 10분 강의",
+      tags: ["tag-beginner"],
+      tagLabels: ["입문"],
+      time: "3일 전"
+    },
+    {
+      id: "BWMG3VvDkUc",
+      channel: "EBS 경제",
+      title: "금리와 채권 — 역방향 관계 쉽게 이해하기",
+      tags: ["tag-beginner"],
+      tagLabels: ["입문", "금리"],
+      time: "1주 전"
+    },
+    {
+      id: "iKGNiuaF1H8",
+      channel: "경제 공부방",
+      title: "환율이 오르면 내 생활은 어떻게 바뀔까?",
+      tags: ["tag-beginner"],
+      tagLabels: ["입문", "환율"],
+      time: "1주 전"
+    },
+  ],
+};
+
+const NEWS = {
+  home: [
+    { num: "01", source: "한국경제", title: "한은, 기준금리 3.25%로 인하 — 경기 부양 신호탄", summary: "가계부채 우려 속 경기침체 방어 위해 0.25%p 인하 단행", time: "30분 전", tags: ["tag-korea"] },
+    { num: "02", source: "블룸버그", title: "美 연준 '신중한 완화' 기조 유지 — 올해 1~2회 인하 전망", summary: "PCE 물가 지수 둔화에도 노동시장 견조로 속도 조절 예상", time: "1시간 전", tags: ["tag-global"] },
+    { num: "03", source: "매일경제", title: "삼성전자, HBM4 양산 돌입 — 엔비디아 공급 계약 유력", summary: "차세대 AI 반도체 수요 급증... 코스피 반도체 섹터 강세", time: "2시간 전", tags: ["tag-korea", "tag-market"] },
+    { num: "04", source: "파이낸셜타임스", title: "중국 부동산 위기 2라운드 — 헝다 청산 후 파장 지속", summary: "로컬 정부 부채와 맞물려 중국발 경기 리스크 재부각", time: "4시간 전", tags: ["tag-global"] },
+    { num: "05", source: "조선비즈", title: "원달러 환율 1,335원 — 수출기업엔 호재, 수입물가 상승", summary: "달러 강세 지속에 한국 환율 변동성 확대 예상", time: "5시간 전", tags: ["tag-korea", "tag-market"] },
+  ],
+  korea: [
+    { num: "01", source: "한국은행", title: "2025년 GDP 성장률 전망 2.1% — 수출 회복이 관건", summary: "반도체 수출 호조에도 내수 소비 부진이 성장 발목", time: "1시간 전" },
+    { num: "02", source: "기획재정부", title: "정부, 추경 35조 편성 검토 — 경기 부양 총력전", summary: "저소득층 지원·SOC 투자 중심으로 상반기 집행 예정", time: "2시간 전" },
+    { num: "03", source: "한국경제", title: "청년 실업률 9.3% — 4년 만에 최고치", summary: "제조업 고용 감소와 서비스업 부진이 복합 작용", time: "3시간 전" },
+    { num: "04", source: "조선일보", title: "국민연금 고갈 시점 2055년으로 앞당겨져", summary: "저출산·고령화 속도 예상치 초과... 개혁 논의 불가피", time: "5시간 전" },
+    { num: "05", source: "서울경제", title: "한국 가계부채 GDP 대비 100% 돌파 — OECD 최고 수준", summary: "DSR 규제 강화에도 전세 대출 증가로 부채 고공행진", time: "6시간 전" },
+  ],
+  global: [
+    { num: "01", source: "블룸버그", title: "AI 투자 붐 지속 — 글로벌 빅테크 설비투자 전년比 42% 증가", summary: "데이터센터·전력 인프라 수혜주 전 세계적으로 주목", time: "30분 전" },
+    { num: "02", source: "파이낸셜타임스", title: "IMF, 세계 경제성장률 3.1% 전망 유지 — 미국이 성장 견인", summary: "신흥국 부채 리스크와 지정학적 불안이 하방 리스크", time: "2시간 전" },
+    { num: "03", source: "로이터", title: "일본은행, 금리 0.5% 인상 — 엔화 급등세", summary: "17년 만의 금리 정상화... 엔캐리 트레이드 청산 우려", time: "3시간 전" },
+    { num: "04", source: "CNBC", title: "유럽 에너지 위기 완화 — 천연가스 가격 1년 저점", summary: "노르드스트림 대안 물량 확보로 공급 안정 국면 진입", time: "4시간 전" },
+    { num: "05", source: "워싱턴포스트", title: "미국 대선 이후 무역 정책 변화 — 관세 인상 현실화 우려", summary: "수입품 10% 기본관세 도입 시 글로벌 인플레 재점화 가능성", time: "6시간 전" },
+  ],
+};
+
+const CONCEPTS = [
+  {
+    icon: "📉",
+    title: "인플레이션 (Inflation)",
+    desc: "물가가 지속적으로 오르는 현상. 돈의 가치가 떨어지는 것",
+    color: "yellow",
+    level: "입문",
+    levelClass: "tag-beginner",
+    detail: {
+      title: "인플레이션이란?",
+      body: `<p>인플레이션은 쉽게 말해 <strong style="color:var(--accent)">물가가 계속 오르는 현상</strong>입니다. 작년에 1,000원이던 라면이 올해 1,200원이 됐다면, 이게 인플레이션입니다.</p>
+      <p>인플레이션이 생기면 같은 돈으로 살 수 있는 물건이 줄어들기 때문에, 실질적으로 돈의 가치가 떨어집니다.</p>
+      <p><strong>왜 생기나요?</strong> 돈이 너무 많이 풀리거나, 물건이 부족하거나, 국제 원자재 가격이 오를 때 발생합니다.</p>
+      <div class="example">💡 예시: 코로나 이후 미국이 돈을 엄청나게 풀자(양적완화), 2021~2022년 미국 물가가 40년 만에 최고치(9%)까지 올랐습니다. 이것이 대표적인 인플레이션 사례입니다.</div>`
+    }
+  },
+  {
+    icon: "🏦",
+    title: "기준금리 (Base Rate)",
+    desc: "중앙은행이 정하는 돈의 가격. 모든 금리의 기준점",
+    color: "blue",
+    level: "입문",
+    levelClass: "tag-beginner",
+    detail: {
+      title: "기준금리란?",
+      body: `<p>기준금리는 <strong style="color:var(--accent)">한국은행(중앙은행)이 정하는 '돈의 가격'</strong>입니다. 은행들이 서로 돈을 빌릴 때 적용하는 이자율이죠.</p>
+      <p>기준금리가 오르면 → 대출이자 상승 → 사람들이 돈을 덜 빌림 → 소비 감소 → 물가 하락</p>
+      <p>기준금리가 내리면 → 대출이자 하락 → 사람들이 돈을 많이 빌림 → 소비 증가 → 물가 상승</p>
+      <div class="example">💡 예시: 2022년 미국 인플레이션이 심해지자, 연준(Fed)은 금리를 0%에서 5.5%까지 급격히 올렸습니다. 그 결과 물가가 서서히 안정됐습니다.</div>`
+    }
+  },
+  {
+    icon: "📊",
+    title: "GDP (국내총생산)",
+    desc: "한 나라에서 1년 동안 만들어낸 모든 재화·서비스의 총합",
+    color: "green",
+    level: "입문",
+    levelClass: "tag-beginner",
+    detail: {
+      title: "GDP란?",
+      body: `<p>GDP는 <strong style="color:var(--accent)">한 나라의 경제 규모</strong>를 나타내는 가장 중요한 지표입니다. 1년 동안 그 나라에서 생산된 모든 것의 가치를 돈으로 환산한 것이죠.</p>
+      <p>GDP가 늘어나면 경제가 성장하는 것이고, 줄어들면 경기가 나빠지는 것입니다. 2분기 연속 GDP가 감소하면 '경기침체(Recession)'라고 부릅니다.</p>
+      <div class="example">💡 2024년 한국 GDP는 약 1조 8천억 달러로 세계 13위 수준입니다. 미국(28조 달러)이 1위, 중국(18조 달러)이 2위입니다.</div>`
+    }
+  },
+  {
+    icon: "💱",
+    title: "환율 (Exchange Rate)",
+    desc: "두 나라 화폐의 교환 비율. 달러 대비 원화 가치",
+    color: "red",
+    level: "입문",
+    levelClass: "tag-beginner",
+    detail: {
+      title: "환율이란?",
+      body: `<p>환율은 <strong style="color:var(--accent)">우리 돈(원화)과 다른 나라 돈(달러 등)을 바꾸는 비율</strong>입니다.</p>
+      <p>원달러 환율이 1,300원이라면 → 1달러 사는 데 1,300원이 필요하다는 뜻입니다.</p>
+      <p>환율 상승(원화 약세): 수출 기업에 유리, 수입 물가 상승<br>환율 하락(원화 강세): 수입 물가 하락, 해외여행 유리</p>
+      <div class="example">💡 예시: 환율이 1,200원 → 1,350원으로 오르면, 삼성전자가 미국에 100달러짜리 TV를 팔았을 때 받는 원화가 12,000원 → 13,500원으로 늘어납니다. 수출기업에 유리!</div>`
+    }
+  },
+  {
+    icon: "📈",
+    title: "주가지수 (Stock Index)",
+    desc: "여러 주식의 가격을 하나의 숫자로 나타낸 지표",
+    color: "yellow",
+    level: "초급",
+    levelClass: "tag-market",
+    detail: {
+      title: "주가지수란?",
+      body: `<p>주가지수는 <strong style="color:var(--accent)">많은 회사의 주가를 하나의 숫자로 묶어서 나타낸 것</strong>입니다.</p>
+      <p>한국: <strong>코스피(KOSPI)</strong> — 유가증권시장 상장 기업 전체<br>
+      미국: <strong>S&P 500</strong> — 미국 대형주 500개, <strong>나스닥</strong> — 기술주 중심</p>
+      <p>지수가 오르면 전반적으로 주식 시장이 좋아지는 것, 내리면 나빠지는 것으로 볼 수 있습니다.</p>
+      <div class="example">💡 코스피 2,500이라는 숫자는 1980년 기준(100)과 비교해 25배 성장했다는 의미입니다.</div>`
+    }
+  },
+  {
+    icon: "🌊",
+    title: "양적완화 (QE)",
+    desc: "중앙은행이 직접 채권을 사들여 시중에 돈을 푸는 정책",
+    color: "blue",
+    level: "중급",
+    levelClass: "tag-global",
+    detail: {
+      title: "양적완화(QE)란?",
+      body: `<p>양적완화(Quantitative Easing)는 <strong style="color:var(--accent)">중앙은행이 시장에서 채권을 직접 사들여 돈을 공급하는 비상 수단</strong>입니다.</p>
+      <p>금리를 0%까지 낮춰도 경기가 안 살아나면 사용합니다. 돈이 많이 풀리면 → 투자 증가 → 경기 회복 효과를 노립니다.</p>
+      <p>단점은 너무 많이 쓰면 인플레이션을 유발할 수 있다는 것입니다.</p>
+      <div class="example">💡 코로나19 팬데믹 때 미국 연준은 수개월 만에 약 4조 달러(5,200조 원)의 양적완화를 단행했습니다. 이후 인플레이션이 폭등하는 부작용이 나타났죠.</div>`
+    }
+  },
+];
+
+// ===================== RENDER =====================
+
+function buildTicker() {
+  const items = [...MARKET_DATA, ...MARKET_DATA].map(m => `
+    <div class="ticker-item">
+      <span class="name">${m.name}</span>
+      <span class="val">${m.val}</span>
+      <span class="chg ${m.up ? 'up' : 'dn'}">${m.chg}</span>
+    </div>
+  `).join('');
+  document.getElementById('tickerTrack').innerHTML = items;
+}
+
+function buildMarketCards(data, containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = data.map(m => `
+    <div class="market-card">
+      <div class="market-name">${m.name}</div>
+      <div class="market-val">${m.val}</div>
+      <div class="market-chg ${m.up ? 'up' : 'dn'}">${m.up ? '▲' : '▼'} ${m.chg}</div>
+    </div>
+  `).join('');
+}
+
+function videoCardHTML(v) {
+  const tags = (v.tags || []).map((t, i) => `<span class="tag ${t}">${v.tagLabels[i]}</span>`).join(' ');
+  return `
+    <div class="video-card" onclick="openVideo('${v.id}', '${v.title.replace(/'/g, "\\'")}')">
+      <div class="video-thumb">
+        <img class="video-thumb-img" src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg" alt="${v.title}" loading="lazy">
+        <div class="play-overlay">
+          <div class="play-btn">▶</div>
+        </div>
+      </div>
+      <div class="video-info">
+        <div class="video-channel">${v.channel}</div>
+        <div class="video-title">${v.title}</div>
+        <div class="video-meta">
+          ${tags}
+          <span>${v.time}</span>
+        </div>
+      </div>
+    </div>`;
+}
+
+function newsItemHTML(n) {
+  return `
+    <div class="news-item">
+      <div class="news-num">${n.num}</div>
+      <div class="news-body">
+        <div class="news-source">${n.source}</div>
+        <div class="news-title">${n.title}</div>
+        <div class="news-summary">${n.summary}</div>
+        <div class="news-time">🕐 ${n.time}</div>
+      </div>
+    </div>`;
+}
+
+function buildVideos(list, containerId) {
+  const el = document.getElementById(containerId);
+  if (el) el.innerHTML = list.map(videoCardHTML).join('');
+}
+
+function buildNews(list, containerId) {
+  const el = document.getElementById(containerId);
+  if (el) el.innerHTML = list.map(newsItemHTML).join('');
+}
+
+function buildFullMarket() {
+  const sections = [
+    { title: "주요 지수", items: MARKET_DATA.slice(0, 4) },
+    { title: "환율 & 원자재", items: MARKET_DATA.slice(4) },
+  ];
+  let html = '';
+  sections.forEach(s => {
+    html += `<div class="section-header" style="margin-bottom:12px"><div class="section-title" style="font-size:16px">${s.title}</div></div>`;
+    html += `<div class="market-grid" style="margin-bottom:24px">`;
+    html += s.items.map(m => `
+      <div class="market-card">
+        <div class="market-name">${m.name}</div>
+        <div class="market-val">${m.val}</div>
+        <div class="market-chg ${m.up ? 'up' : 'dn'}">${m.up ? '▲' : '▼'} ${m.chg}</div>
+      </div>`).join('');
+    html += `</div>`;
+  });
+  document.getElementById('fullMarket').innerHTML = html;
+}
+
+function buildConcepts() {
+  document.getElementById('conceptGrid').innerHTML = CONCEPTS.map((c, i) => `
+    <div class="concept-card ${c.color}" onclick="openConcept(${i})">
+      <div class="concept-icon">${c.icon}</div>
+      <div class="concept-title">${c.title}</div>
+      <div class="concept-desc">${c.desc}</div>
+      <span class="tag ${c.levelClass} concept-level">${c.level}</span>
+    </div>
+  `).join('');
+}
+
+let currentConcept = -1;
+
+function openConcept(i) {
+  const detail = document.getElementById('conceptDetail');
+  if (currentConcept === i) {
+    detail.classList.remove('open');
+    currentConcept = -1;
+    return;
+  }
+  const c = CONCEPTS[i];
+  detail.innerHTML = `<h3>${c.icon} ${c.detail.title}</h3>${c.detail.body}`;
+  detail.classList.add('open');
+  currentConcept = i;
+  detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ===================== TABS =====================
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach((t, i) => {
+    t.classList.toggle('active', ['home','korea','global','market','study'][i] === name);
+  });
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById(`tab-${name}`).classList.add('active');
+}
+
+// ===================== VIDEO MODAL =====================
+function openVideo(id, title) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalIframe').src = `https://www.youtube.com/embed/${id}?autoplay=1`;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModalBtn() {
+  document.getElementById('modalIframe').src = '';
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModalBtn();
+}
+
+// ===================== INIT =====================
+function init() {
+  buildTicker();
+  buildMarketCards(MARKET_CARDS, 'marketSummary');
+  buildVideos(VIDEOS.featured, 'featuredVideos');
+  buildNews(NEWS.home, 'homeNews');
+  buildVideos(VIDEOS.korea, 'koreaVideos');
+  buildNews(NEWS.korea, 'koreaNews');
+  buildVideos(VIDEOS.global, 'globalVideos');
+  buildNews(NEWS.global, 'globalNews');
+  buildFullMarket();
+  buildVideos(VIDEOS.market, 'marketVideos');
+  buildConcepts();
+  buildVideos(VIDEOS.study, 'studyVideos');
+}
+
+init();
+</script>
+</body>
+</html>
