@@ -1101,14 +1101,15 @@ function videoCardHTML(v) {
 }
 
 function newsItemHTML(n) {
+  const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(n.title + ' ' + n.source)}&tbm=nws`;
   return `
-    <div class="news-item">
+    <div class="news-item" onclick="window.open('${searchUrl}', '_blank')" style="cursor:pointer;">
       <div class="news-num">${n.num}</div>
       <div class="news-body">
         <div class="news-source">${n.source}</div>
-        <div class="news-title">${n.title}</div>
+        <div class="news-title">${n.title} <span style="font-size:10px;color:var(--accent);">🔗</span></div>
         <div class="news-summary">${n.summary}</div>
-        <div class="news-time">🕐 ${n.time}</div>
+        <div class="news-time">🕐 ${n.time} &nbsp;·&nbsp; <span style="color:var(--accent);font-size:10px;">관련기사 보기 →</span></div>
       </div>
     </div>`;
 }
