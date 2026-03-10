@@ -1459,23 +1459,26 @@ function closeModal(e) {
 
 // ===================== INIT =====================
 function init() {
+  // 시장 데이터 즉시 전부 표시 (폴백값)
+  MARKET_CARDS = MARKET_DATA.slice(0, 8);
   buildTicker();
-  buildMarketCards(MARKET_DATA.slice(0,4), 'marketSummary');
+  buildMarketCards(MARKET_CARDS, 'marketSummary');
+  buildFullMarket();
+
+  // 나머지 콘텐츠
   buildVideos(VIDEOS.featured, 'featuredVideos');
   buildNews(NEWS.home, 'homeNews');
   buildVideos(VIDEOS.korea, 'koreaVideos');
   buildNews(NEWS.korea, 'koreaNews');
   buildVideos(VIDEOS.global, 'globalVideos');
   buildNews(NEWS.global, 'globalNews');
-  buildFullMarket();
   buildVideos(VIDEOS.market, 'marketVideos');
   buildCategoryBtns();
   buildConcepts();
   buildVideos(VIDEOS.study, 'studyVideos');
 
-  // 실시간 시장 데이터 로드
+  // 백그라운드에서 실시간 데이터 로드 (성공 시 자동 업데이트)
   fetchMarketData();
-  // 5분마다 자동 갱신
   setInterval(fetchMarketData, 5 * 60 * 1000);
 }
 
