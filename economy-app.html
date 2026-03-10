@@ -839,10 +839,12 @@ const MARKET_SYMBOLS = [
   { name: "코스피",       symbol: "^KS11",   prefix: "",  decimals: 2 },
   { name: "코스닥",       symbol: "^KQ11",   prefix: "",  decimals: 2 },
   { name: "USD/KRW",     symbol: "KRW=X",   prefix: "₩", decimals: 0 },
+  { name: "EUR/KRW",     symbol: "EURKRW=X",prefix: "₩", decimals: 0 },
+  { name: "EUR/USD",     symbol: "EURUSD=X",prefix: "$", decimals: 4 },
   { name: "S&P 500",     symbol: "^GSPC",   prefix: "",  decimals: 2 },
   { name: "나스닥",       symbol: "^IXIC",   prefix: "",  decimals: 2 },
   { name: "닛케이225",    symbol: "^N225",   prefix: "¥", decimals: 0 },
-  { name: "상하이종합",   symbol: "000001.SS",prefix: "",  decimals: 2 },
+  { name: "상하이종합",   symbol: "000001.SS",prefix: "", decimals: 2 },
   { name: "항셍",         symbol: "^HSI",    prefix: "",  decimals: 2 },
   { name: "DAX(독일)",    symbol: "^GDAXI",  prefix: "",  decimals: 2 },
   { name: "FTSE100(영국)",symbol: "^FTSE",   prefix: "",  decimals: 2 },
@@ -855,30 +857,33 @@ const MARKET_SYMBOLS = [
 
 // 2026년 3월 기준 실제값 (앱 시작 시 즉시 표시)
 const FALLBACK_DATA = [
-  { name: "코스피",        val: "5,185.49",  chg: "-7.15%", up: false },
-  { name: "코스닥",        val: "1,092.43",  chg: "-5.41%", up: false },
-  { name: "USD/KRW",      val: "₩1,493",    chg: "+1.13%", up: true  },
-  { name: "S&P 500",      val: "6,740.02",  chg: "-1.33%", up: false },
-  { name: "나스닥",        val: "22,387.68", chg: "-1.59%", up: false },
-  { name: "닛케이225",     val: "¥37,120",   chg: "-2.85%", up: false },
-  { name: "상하이종합",    val: "3,320.89",  chg: "+0.42%", up: true  },
-  { name: "항셍",          val: "23,341.61", chg: "+1.24%", up: true  },
-  { name: "DAX(독일)",     val: "22,518.40", chg: "-1.82%", up: false },
-  { name: "FTSE100(영국)", val: "8,553.65",  chg: "-0.91%", up: false },
-  { name: "WTI유가",       val: "$67.04",    chg: "-0.81%", up: false },
-  { name: "금",            val: "$3,100",    chg: "+0.42%", up: true  },
-  { name: "은",            val: "$33.85",    chg: "+0.65%", up: true  },
-  { name: "채권10년",      val: "4.21%",     chg: "-0.05%", up: false },
-  { name: "BTC",           val: "$83,200",   chg: "+1.05%", up: true  },
+  // 2026년 3월 6~9일 실제 확인값 (미-이스라엘-이란 전쟁 영향)
+  { name: "코스피",        val: "5,585.00",  chg: "-0.02%", up: false },
+  { name: "코스닥",        val: "1,154.67",  chg: "+3.43%", up: true  },
+  { name: "USD/KRW",      val: "₩1,484",    chg: "+0.16%", up: true  },
+  { name: "EUR/KRW",      val: "₩1,620",    chg: "+0.21%", up: true  },
+  { name: "EUR/USD",      val: "1.0916",    chg: "-0.05%", up: false },
+  { name: "S&P 500",      val: "6,622.00",  chg: "-1.75%", up: false },
+  { name: "나스닥",        val: "20,987.43", chg: "-2.01%", up: false },
+  { name: "닛케이225",     val: "52,728.72", chg: "-5.20%", up: false },
+  { name: "상하이종합",    val: "3,328.48",  chg: "-0.97%", up: false },
+  { name: "항셍",          val: "23,426.60", chg: "-1.33%", up: false },
+  { name: "DAX(독일)",     val: "22,938.45", chg: "-1.42%", up: false },
+  { name: "FTSE100(영국)", val: "8,485.32",  chg: "-1.18%", up: false },
+  { name: "WTI유가",       val: "$103.47",   chg: "+13.74%",up: true  },
+  { name: "금",            val: "$5,131",    chg: "+0.90%", up: true  },
+  { name: "은",            val: "$84.13",    chg: "+2.30%", up: true  },
+  { name: "채권10년",      val: "4.11%",     chg: "+0.14%", up: true  },
+  { name: "BTC",           val: "$83,200",   chg: "-1.20%", up: false },
 ];
 
 let MARKET_DATA = FALLBACK_DATA.slice();
 let MARKET_CARDS = MARKET_DATA.slice(0, 8);
 
 async function fetchMarketData() {
+  // Yahoo Finance 프록시 순차 시도
   const symbols = MARKET_SYMBOLS.map(s => s.symbol).join(',');
   const baseUrl = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbols}&fields=regularMarketPrice,regularMarketChangePercent`;
-
   const proxies = [
     `https://api.allorigins.win/raw?url=${encodeURIComponent(baseUrl)}`,
     `https://corsproxy.io/?${encodeURIComponent(baseUrl)}`,
@@ -898,13 +903,7 @@ async function fetchMarketData() {
     } catch(e) { continue; }
   }
 
-  // 네이버 금융 시도
-  try {
-    await fetchFromNaver();
-    return;
-  } catch(e) {}
-
-  // 모두 실패 → 이미 폴백값이 표시중이므로 레이블만 업데이트
+  // 모두 실패 → 폴백값 유지, 참고값 표시
   updateMarketUI('참고값');
 }
 
@@ -919,29 +918,6 @@ function applyMarketData(quotes) {
       ? Math.round(price).toLocaleString()
       : price.toLocaleString('ko-KR', { minimumFractionDigits: s.decimals, maximumFractionDigits: s.decimals }));
     return { name: s.name, val: valStr, chg: (up ? '+' : '') + chgPct.toFixed(2) + '%', up };
-  });
-  MARKET_CARDS = MARKET_DATA.slice(0, 8);
-  updateMarketUI('실시간');
-}
-
-async function fetchFromNaver() {
-  const naverUrl = 'https://polling.finance.naver.com/api/realtime?query=SERVICE_INDEX:KOSPI,SERVICE_INDEX:KOSDAQ,SERVICE_EXCHANGE:FX_USDKRW';
-  const res = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(naverUrl)}`, { signal: AbortSignal.timeout(5000) });
-  const json = await res.json();
-  const items = json?.result?.areas?.[0]?.datas || [];
-  if (items.length === 0) throw new Error('No naver data');
-  items.forEach(item => {
-    const idx = { 'KOSPI': 0, 'KOSDAQ': 1, 'FX_USDKRW': 2 }[item.cd];
-    if (idx === undefined) return;
-    const price = parseFloat(item.nv);
-    const chgPct = parseFloat(item.cr);
-    const up = chgPct >= 0;
-    MARKET_DATA[idx] = {
-      name: MARKET_SYMBOLS[idx].name,
-      val: price.toLocaleString('ko-KR', { maximumFractionDigits: 2 }),
-      chg: (up ? '+' : '') + chgPct.toFixed(2) + '%',
-      up
-    };
   });
   MARKET_CARDS = MARKET_DATA.slice(0, 8);
   updateMarketUI('실시간');
@@ -1352,7 +1328,7 @@ function buildFullMarket() {
     { title: "🌎 미국 지수", items: MARKET_DATA.filter(m => ["S&P 500","나스닥"].includes(m.name)) },
     { title: "🌏 아시아 지수", items: MARKET_DATA.filter(m => ["닛케이225","상하이종합","항셍"].includes(m.name)) },
     { title: "🌍 유럽 지수", items: MARKET_DATA.filter(m => ["DAX(독일)","FTSE100(영국)"].includes(m.name)) },
-    { title: "💱 환율", items: MARKET_DATA.filter(m => ["USD/KRW"].includes(m.name)) },
+    { title: "💱 환율", items: MARKET_DATA.filter(m => ["USD/KRW","EUR/KRW","EUR/USD"].includes(m.name)) },
     { title: "⛽ 원자재 & 자산", items: MARKET_DATA.filter(m => ["WTI유가","금","은","채권10년","BTC"].includes(m.name)) },
   ];
   let html = '';
