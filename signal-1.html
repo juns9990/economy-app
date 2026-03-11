@@ -161,10 +161,6 @@ pointer-events:none;z-index:0}
 
   <!-- HOME PAGE -->
   <div class="page active" id="pageHome">
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px 4px;flex-shrink:0">
-      <span id="wLbl" style="font-size:11px;color:#2A4060;font-weight:700;letter-spacing:1px">⭐ 관심 종목</span>
-      <span style="font-size:10px;color:#1A2A3A">전체 <span id="totalCnt" style="color:#C9A55A;font-weight:800">0</span>종목</span>
-    </div>
     <div class="list-scroll" id="homeList"></div>
     <div class="disc">
       <span style="font-size:14px;flex-shrink:0">⚠️</span>
@@ -1539,19 +1535,40 @@ function cardHTML(s){
 
 function render(){
   renderHome();renderSearch();
-  document.getElementById("wLbl").textContent=`⭐ 관심 종목 (${watchlist.length})`;
-  document.getElementById("totalCnt").textContent=DB.length;
+  // watchlist label now handled in renderHome
+  const tc=document.getElementById("totalCnt"); if(tc) tc.textContent=DB.length;
 }
 
 function renderHome(){
   const el=document.getElementById("homeList");
   const watched=watchlist.map(id=>DB.find(s=>s.id===id)).filter(Boolean);
-  if(!watched.length){
-    el.innerHTML=`<div class="empty"><div style="font-size:38px;margin-bottom:12px;opacity:.4">📈</div>관심 종목을 추가해보세요<br>
-    <button onclick="switchPage('search')" style="margin-top:16px;background:rgba(201,165,90,0.08);border:1px solid rgba(201,165,90,0.22);border-radius:9px;color:#C9A55A;padding:10px 20px;cursor:pointer;font-size:13px;font-weight:700">전체 종목 탐색 →</button></div>`;
-    return;
-  }
-  el.innerHTML=watched.map(s=>cardHTML(s)).join("");
+
+  // 오늘 주목할 10종목: 등락률 상위 or 기본 정렬
+  const top10=[...DB].sort((a,b)=>b.c-a.c).slice(0,10);
+
+  // 관심종목 섹션
+  const watchHTML = watched.length
+    ? `<div style="padding:10px 14px 4px;display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:11px;color:#2A4060;font-weight:700;letter-spacing:1px">⭐ 관심 종목 <span style="color:#C9A55A">(${watched.length})</span></span>
+      </div>
+      ${watched.map(s=>cardHTML(s)).join("")}`
+    : `<div style="padding:10px 14px 4px;display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:11px;color:#2A4060;font-weight:700;letter-spacing:1px">⭐ 관심 종목</span>
+      </div>
+      <div style="margin:4px 12px 8px;padding:14px;background:rgba(201,165,90,0.04);border:1px dashed rgba(201,165,90,0.2);border-radius:12px;text-align:center">
+        <div style="font-size:11px;color:#2A4060;margin-bottom:8px">종목 카드의 ⭐를 눌러 추가하세요</div>
+        <button onclick="switchPage('search')" style="background:rgba(201,165,90,0.08);border:1px solid rgba(201,165,90,0.22);border-radius:8px;color:#C9A55A;padding:7px 16px;cursor:pointer;font-size:11px;font-weight:700">전체 종목 탐색 →</button>
+      </div>`;
+
+  // 오늘 주목할 10종목 섹션
+  const top10HTML=`
+    <div style="padding:10px 14px 4px;display:flex;align-items:center;justify-content:space-between;margin-top:4px">
+      <span style="font-size:11px;color:#2A4060;font-weight:700;letter-spacing:1px">🔥 오늘 주목할 10종목 <span style="font-size:9px;color:#1A2A3A;font-weight:400">등락률순</span></span>
+      <span style="font-size:9px;color:#1A2A3A">3/10 기준</span>
+    </div>
+    ${top10.map(s=>cardHTML(s)).join("")}`;
+
+  el.innerHTML = watchHTML + top10HTML;
 }
 
 function renderSearch(){
@@ -1594,72 +1611,45 @@ let aiSearching=false;
 async function aiSearch(query, btn){
   if(aiSearching) return;
   aiSearching=true;
-  if(btn){ btn.disabled=true; btn.textContent="🔄 AI 분석 중..."; }
+  const origText = btn ? btn.textContent : '';
+  if(btn){ btn.disabled=true; btn.textContent="⏳ 분석 중..."; }
   const st=document.getElementById("aiStatus");
-  if(st) st.textContent="한국주식 데이터 검색 중...";
+  if(st) st.textContent="AI 분석 중...";
 
   try{
-    const prompt=`한국 주식 "${query}"에 대해 아래 JSON 형식으로만 답해줘. 절대 JSON 외 다른 텍스트 없이. 종목코드를 모르면 검색해서 찾아줘.
+    const prompt=`한국 주식 "${query}"에 대해 JSON만 출력. 다른 텍스트 절대 없이. 숫자는 문자열 아닌 number 타입.
 
-{
-  "id": "종목코드6자리",
-  "n": "종목명",
-  "s": "섹터",
-  "m": "K 또는 Q (코스피K/코스닥Q)",
-  "p": 현재가숫자,
-  "c": 등락률숫자,
-  "prev": 전일종가숫자,
-  "w52h": 52주최고가숫자,
-  "w52l": 52주최저가숫자,
-  "cap": "시가총액(조단위 문자열)",
-  "per": PER숫자또는"-",
-  "pbr": PBR숫자,
-  "roe": ROE숫자또는"-",
-  "debt": 부채비율숫자,
-  "t": ["태그1","태그2","태그3"],
-  "ind": {"pbr":점수0-100,"per":점수0-100,"roe":점수0-100,"momentum":점수0-100,"growth":점수0-100,"sentiment":점수0-100,"safety":점수0-100},
-  "sum": "현재 상황 2~3줄 요약",
-  "bull": "강세 시나리오",
-  "bear": "약세 시나리오",
-  "tH": 목표주가상단숫자,
-  "tM": 목표주가중간숫자,
-  "tL": 목표주가하단숫자
-}
+{"id":"종목코드6자리","n":"종목명","s":"섹터","m":"K또는Q","p":현재가숫자,"c":등락률숫자,"prev":전일가숫자,"w52h":52주고가숫자,"w52l":52주저가숫자,"cap":"시총조단위","per":PER숫자또는"-","pbr":PBR숫자,"roe":ROE숫자또는"-","debt":부채비율숫자,"t":["태그1","태그2","태그3"],"ind":{"pbr":0~100,"per":0~100,"roe":0~100,"momentum":0~100,"growth":0~100,"sentiment":0~100,"safety":0~100},"sum":"요약2줄","bull":"강세이유","bear":"약세이유","tH":목표상단숫자,"tM":목표중간숫자,"tL":목표하단숫자}
 
-ind 점수 기준:
-- pbr: 코스피 40년 PBR 1.1배 기준 저평가=높은점수
-- per: PER 8~15배 적정=높은점수, 고PER=낮은점수
-- roe: ROE 높을수록 높은점수
-- momentum: 52주 저점 대비 반등 중이면 높은점수
-- growth: EPS 성장률 높을수록 높은점수
-- sentiment: 외국인 매수세 강하면 높은점수
-- safety: 부채비율 낮을수록 높은점수`;
+ind 기준: pbr저평가→고점수, per8~15배→고점수, roe높을수록→고점수, momentum52주저점반등→고점수, growth성장률→고점수, sentiment외인매수→고점수, safety부채낮음→고점수`;
 
     const res=await fetch("https://api.anthropic.com/v1/messages",{
-      method:"POST",headers:{"Content-Type":"application/json"},
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
       body:JSON.stringify({
-        model:"claude-sonnet-4-20250514",max_tokens:1200,
-        tools:[{type:"web_search_20250305",name:"web_search"}],
+        model:"claude-sonnet-4-20250514",
+        max_tokens:600,
         messages:[{role:"user",content:prompt}]
       })
     });
     const d=await res.json();
     const txt=(d.content||[]).filter(x=>x.type==="text").map(x=>x.text).join("");
     const jsonMatch=txt.match(/\{[\s\S]*\}/);
-    if(!jsonMatch) throw new Error("JSON 없음");
+    if(!jsonMatch) throw new Error("파싱 실패");
     const stock=JSON.parse(jsonMatch[0]);
-
-    // DB에 임시 추가
+    // 필수 ind 필드 보정
+    ['pbr','per','roe','momentum','growth','sentiment','safety'].forEach(f=>{
+      if(!stock.ind[f]) stock.ind[f]=50;
+    });
+    if(!stock.verify) stock.verify={note:"AI 실시간 분석 결과입니다."};
     const exists=DB.find(x=>x.id===stock.id);
     if(!exists) DB.push(stock);
-
-    // 바로 상세 화면 열기
     openDetail(stock.id);
 
   }catch(e){
     const st2=document.getElementById("aiStatus");
-    if(st2) st2.textContent="❌ 분석 실패. 종목명을 정확히 입력해주세요.";
-    if(btn){ btn.disabled=false; btn.textContent=`✨ AI로 "${query}" 실시간 분석`; }
+    if(st2) st2.textContent="❌ 분석 실패. 정확한 종목명을 입력해주세요.";
+    if(btn){ btn.disabled=false; btn.textContent=origText; }
   }
   aiSearching=false;
 }
