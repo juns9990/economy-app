@@ -686,6 +686,10 @@
     </div>
   </div>
   <div class="header-right">
+    <div style="text-align:right;line-height:1.6;margin-right:8px;">
+      <div style="font-size:10px;color:var(--text2);letter-spacing:.5px;font-weight:600;">v1.3.0</div>
+      <div id="headerDateTime" style="font-size:10px;color:var(--text2);white-space:nowrap;"></div>
+    </div>
     <div class="live-badge">● LIVE</div>
   </div>
 </header>
@@ -1433,6 +1437,160 @@ function closeModal(e) {
   if (e.target === document.getElementById('modalOverlay')) closeModalBtn();
 }
 
+// ===================== 날짜·시간 표시 =====================
+function updateHeaderClock() {
+  const el = document.getElementById('headerDateTime');
+  if (!el) return;
+  const now = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  const dateStr = `${now.getFullYear()}.${pad(now.getMonth()+1)}.${pad(now.getDate())}`;
+  const timeStr = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+  el.textContent = `${dateStr} ${timeStr}`;
+}
+
+
+const CACHE_KEY_NEWS   = 'econ_news_cache';
+const CACHE_KEY_VIDEOS = 'econ_videos_cache';
+const CACHE_TTL_MS     = 24 * 60 * 60 * 1000; // 24시간
+
+function getCached(key) {
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return null;
+    const { ts, data } = JSON.parse(raw);
+    if (Date.now() - ts < CACHE_TTL_MS) return data;
+  } catch(e) {}
+  return null;
+}
+
+function setCache(key, data) {
+  try { localStorage.setItem(key, JSON.stringify({ ts: Date.now(), data })); } catch(e) {}
+}
+
+async function claudeFetch(prompt) {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+      messages: [{ role: 'user', content: prompt }]
+    })
+  });
+  if (!res.ok) throw new Error('API error');
+  const data = await res.json();
+  const text = data.content.filter(b => b.type === 'text').map(b => b.text).join('');
+  const match = text.match(/\{[\s\S]*\}|\[[\s\S]*\]/);
+  if (!match) throw new Error('No JSON');
+  return JSON.parse(match[0]);
+}
+
+async function fetchAndUpdateNews() {
+  const cached = getCached(CACHE_KEY_NEWS);
+  if (cached) { applyNews(cached); return; }
+
+  try {
+    const today = new Date().toISOString().slice(0, 10);
+    const result = await claudeFetch(`오늘(${today}) 기준 한국 및 글로벌 경제 최신 뉴스를 검색해서 아래 JSON 형식으로만 답해줘. 설명 없이 JSON만 출력.
+
+{
+  "home": [
+    {"num":"01","source":"언론사명","title":"뉴스 제목","summary":"한 줄 요약 (50자 이내)","time":"n시간 전 또는 날짜","url":"https://실제기사URL","tags":["tag-korea"]},
+    {"num":"02","source":"언론사명","title":"뉴스 제목","summary":"한 줄 요약","time":"시간","url":"https://실제기사URL","tags":["tag-global"]},
+    {"num":"03","source":"언론사명","title":"뉴스 제목","summary":"한 줄 요약","time":"시간","url":"https://실제기사URL","tags":["tag-korea","tag-market"]},
+    {"num":"04","source":"언론사명","title":"뉴스 제목","summary":"한 줄 요약","time":"시간","url":"https://실제기사URL","tags":["tag-global"]},
+    {"num":"05","source":"언론사명","title":"뉴스 제목","summary":"한 줄 요약","time":"시간","url":"https://실제기사URL","tags":["tag-korea"]}
+  ],
+  "korea": [
+    {"num":"01","source":"언론사명","title":"한국경제 뉴스","summary":"요약","time":"시간","url":"https://실제기사URL"},
+    {"num":"02","source":"언론사명","title":"한국경제 뉴스","summary":"요약","time":"시간","url":"https://실제기사URL"},
+    {"num":"03","source":"언론사명","title":"한국경제 뉴스","summary":"요약","time":"시간","url":"https://실제기사URL"},
+    {"num":"04","source":"언론사명","title":"한국경제 뉴스","summary":"요약","time":"시간","url":"https://실제기사URL"},
+    {"num":"05","source":"언론사명","title":"한국경제 뉴스","summary":"요약","time":"시간","url":"https://실제기사URL"}
+  ],
+  "global": [
+    {"num":"01","source":"언론사명","title":"글로벌 경제 뉴스","summary":"요약","time":"시간","url":"https://실제기사URL"},
+    {"num":"02","source":"언론사명","title":"글로벌 경제 뉴스","summary":"요약","time":"시간","url":"https://실제기사URL"},
+    {"num":"03","source":"언론사명","title":"글로벌 경제 뉴스","summary":"요약","time":"시간","url":"https://실제기사URL"},
+    {"num":"04","source":"언론사명","title":"글로벌 경제 뉴스","summary":"요약","time":"시간","url":"https://실제기사URL"},
+    {"num":"05","source":"언론사명","title":"글로벌 경제 뉴스","summary":"요약","time":"시간","url":"https://실제기사URL"}
+  ]
+}
+
+반드시 오늘 날짜 기준 실제 최신 기사 URL을 포함해야 해. JSON만 출력.`);
+
+    setCache(CACHE_KEY_NEWS, result);
+    applyNews(result);
+  } catch(e) {
+    // 실패 시 기존 하드코딩 뉴스 유지 (이미 렌더됨)
+  }
+}
+
+function applyNews(data) {
+  if (data.home)   buildNews(data.home,   'homeNews');
+  if (data.korea)  buildNews(data.korea,  'koreaNews');
+  if (data.global) buildNews(data.global, 'globalNews');
+}
+
+async function fetchAndUpdateVideos() {
+  const cached = getCached(CACHE_KEY_VIDEOS);
+  if (cached) { applyVideos(cached); return; }
+
+  try {
+    const today = new Date().toISOString().slice(0, 10);
+    const result = await claudeFetch(`오늘(${today}) 기준으로 유튜브에서 한국 경제 관련 최신 영상들을 검색해서 아래 JSON 형식으로만 답해줘. 설명 없이 JSON만.
+
+각 섹션별 실제 유튜브 영상 ID(11자리)와 채널명, 제목을 채워줘. 반드시 실제로 존재하는 영상 ID여야 해.
+
+{
+  "featured": [
+    {"id":"유튜브영상ID","channel":"채널명","title":"영상제목","tags":["tag-korea"],"tagLabels":["한국경제"],"time":"n시간 전"},
+    {"id":"유튜브영상ID","channel":"채널명","title":"영상제목","tags":["tag-global"],"tagLabels":["글로벌"],"time":"n시간 전"},
+    {"id":"유튜브영상ID","channel":"채널명","title":"영상제목","tags":["tag-market"],"tagLabels":["시장"],"time":"n시간 전"},
+    {"id":"유튜브영상ID","channel":"채널명","title":"영상제목","tags":["tag-beginner"],"tagLabels":["입문"],"time":"어제"}
+  ],
+  "korea": [
+    {"id":"유튜브영상ID","channel":"채널명","title":"한국경제 영상제목","tags":["tag-korea"],"tagLabels":["한국경제"],"time":"n시간 전"},
+    {"id":"유튜브영상ID","channel":"채널명","title":"한국경제 영상제목","tags":["tag-korea"],"tagLabels":["한국경제"],"time":"n시간 전"},
+    {"id":"유튜브영상ID","channel":"채널명","title":"한국경제 영상제목","tags":["tag-korea"],"tagLabels":["부동산"],"time":"n시간 전"},
+    {"id":"유튜브영상ID","channel":"채널명","title":"한국경제 영상제목","tags":["tag-korea"],"tagLabels":["금리"],"time":"어제"}
+  ],
+  "global": [
+    {"id":"유튜브영상ID","channel":"채널명","title":"글로벌경제 영상제목","tags":["tag-global"],"tagLabels":["미국"],"time":"n시간 전"},
+    {"id":"유튜브영상ID","channel":"채널명","title":"글로벌경제 영상제목","tags":["tag-global"],"tagLabels":["중국"],"time":"n시간 전"},
+    {"id":"유튜브영상ID","channel":"채널명","title":"글로벌경제 영상제목","tags":["tag-global"],"tagLabels":["유럽"],"time":"n시간 전"},
+    {"id":"유튜브영상ID","channel":"채널명","title":"글로벌경제 영상제목","tags":["tag-global","tag-market"],"tagLabels":["AI","글로벌"],"time":"어제"}
+  ],
+  "market": [
+    {"id":"유튜브영상ID","channel":"채널명","title":"시장분석 영상제목","tags":["tag-market"],"tagLabels":["주식"],"time":"n시간 전"},
+    {"id":"유튜브영상ID","channel":"채널명","title":"시장분석 영상제목","tags":["tag-market"],"tagLabels":["환율"],"time":"n시간 전"},
+    {"id":"유튜브영상ID","channel":"채널명","title":"시장분석 영상제목","tags":["tag-market"],"tagLabels":["원자재"],"time":"n시간 전"}
+  ],
+  "study": [
+    {"id":"유튜브영상ID","channel":"채널명","title":"경제개념 설명 영상","tags":["tag-beginner"],"tagLabels":["입문"],"time":"3일 전"},
+    {"id":"유튜브영상ID","channel":"채널명","title":"경제개념 설명 영상","tags":["tag-beginner"],"tagLabels":["입문","금리"],"time":"1주 전"},
+    {"id":"유튜브영상ID","channel":"채널명","title":"경제개념 설명 영상","tags":["tag-beginner"],"tagLabels":["입문","환율"],"time":"1주 전"}
+  ]
+}
+
+JSON만 출력.`);
+
+    setCache(CACHE_KEY_VIDEOS, result);
+    applyVideos(result);
+  } catch(e) {
+    // 실패 시 기존 하드코딩 영상 유지
+  }
+}
+
+function applyVideos(data) {
+  if (data.featured) buildVideos(data.featured, 'featuredVideos');
+  if (data.korea)    buildVideos(data.korea,    'koreaVideos');
+  if (data.global)   buildVideos(data.global,   'globalVideos');
+  if (data.market)   buildVideos(data.market,   'marketVideos');
+  if (data.study)    buildVideos(data.study,    'studyVideos');
+}
+
 // ===================== INIT =====================
 function init() {
   // 시장 데이터 즉시 전부 표시 (폴백값)
@@ -1441,7 +1599,7 @@ function init() {
   buildMarketCards(MARKET_CARDS, 'marketSummary');
   buildFullMarket();
 
-  // 나머지 콘텐츠
+  // 기존 하드코딩 콘텐츠 즉시 표시
   buildVideos(VIDEOS.featured, 'featuredVideos');
   buildNews(NEWS.home, 'homeNews');
   buildVideos(VIDEOS.korea, 'koreaVideos');
@@ -1453,9 +1611,17 @@ function init() {
   buildConcepts();
   buildVideos(VIDEOS.study, 'studyVideos');
 
-  // 백그라운드에서 실시간 데이터 로드 (성공 시 자동 업데이트)
+  // 날짜·시간 시계 시작
+  updateHeaderClock();
+  setInterval(updateHeaderClock, 1000);
+
+  // 백그라운드: 시장 데이터 실시간 갱신
   fetchMarketData();
   setInterval(fetchMarketData, 5 * 60 * 1000);
+
+  // 백그라운드: 뉴스·영상 하루 1회 자동 업데이트
+  fetchAndUpdateNews();
+  fetchAndUpdateVideos();
 }
 
 init();
