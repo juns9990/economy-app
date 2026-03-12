@@ -796,10 +796,21 @@
 
     <div class="divider"></div>
 
-    <div class="section-header">
-      <div class="section-title">시장 분석 영상</div>
+    <div class="grid-main">
+      <div>
+        <div class="section-header">
+          <div class="section-title">시장 분석 영상</div>
+        </div>
+        <div class="grid-2" id="marketVideos"></div>
+      </div>
+      <div>
+        <div class="section-header">
+          <div class="section-title">시장 뉴스</div>
+          <div class="section-sub">주식 · 환율 · 원자재 헤드라인</div>
+        </div>
+        <div class="news-list" id="marketNews"></div>
+      </div>
     </div>
-    <div class="grid-3" id="marketVideos"></div>
   </div>
 
   <!-- ===== STUDY TAB ===== -->
@@ -1114,6 +1125,13 @@ const NEWS = {
     { num: "03", source: "에너지경제", title: "삼성은 세계로, SK는 미국으로 — 반도체 매출 지도가 갈린다", summary: "삼성 지역 분산 전략 vs SK하이닉스 미국 의존도 72.5%... 전략 차별화", time: "2025.05.17", url: "https://m.ekn.kr/view.php?key=20250517029147490" },
     { num: "04", source: "뱅크몰", title: "2025년 한국은행 금리 인하 — 단순한 완화가 아니다", summary: "금융·통화·재정 간 미세한 균형 조정... 추가 완화와 인플레 억제 사이", time: "최근", url: "https://www.bank-mall.co.kr/plus/blog/12067" },
     { num: "05", source: "국민일보", title: "반도체·AI가 세계 경제 판도 바꾼다 — 글로벌 시장 1조 달러 도전", summary: "2026년 글로벌 반도체 시장 사상 첫 1조 달러 근접 전망", time: "2주 전", url: "https://www.kmib.co.kr/article/view.asp?arcid=1771751963" },
+  ],
+  market: [
+    { num: "01", source: "한국경제", title: "코스피 외국인 순매수 전환 — 반도체주 중심 반등 신호", summary: "3거래일 연속 매도 후 순매수 전환... 삼성전자·SK하이닉스 동반 강세", time: "최근", url: "https://www.hankyung.com/economy" },
+    { num: "02", source: "매일경제", title: "원달러 환율 1,480원대 — 달러 강세 언제까지?", summary: "미 연준 금리 동결 기대감에도 달러인덱스 상승... 수출기업 유리", time: "최근", url: "https://www.mk.co.kr/economy/finance" },
+    { num: "03", source: "연합인포맥스", title: "국제유가 WTI 100달러 돌파 — 중동 지정학 리스크 반영", summary: "이란 관련 긴장 고조로 원유 공급 우려... 에너지 업종 강세", time: "최근", url: "https://news.einfomax.co.kr" },
+    { num: "04", source: "머니투데이", title: "금값 사상 최고치 경신 — 안전자산 수요 급증", summary: "지정학적 불확실성·달러 약세 기대로 금 현물 5,100달러 돌파", time: "최근", url: "https://www.mt.co.kr/economy" },
+    { num: "05", source: "조선비즈", title: "비트코인 8만달러 지지선 — 기관 매수세 유입 주목", summary: "ETF 순유입 지속... 반감기 효과와 기관 수요 맞물려 하방 지지", time: "최근", url: "https://biz.chosun.com/stock/finance-stocks" },
   ],
 };
 
@@ -1515,6 +1533,13 @@ async function fetchAndUpdateNews() {
     {"num":"03","source":"언론사명","title":"글로벌 경제 뉴스","summary":"요약","time":"시간","url":"https://실제기사URL"},
     {"num":"04","source":"언론사명","title":"글로벌 경제 뉴스","summary":"요약","time":"시간","url":"https://실제기사URL"},
     {"num":"05","source":"언론사명","title":"글로벌 경제 뉴스","summary":"요약","time":"시간","url":"https://실제기사URL"}
+  ],
+  "market": [
+    {"num":"01","source":"언론사명","title":"주식·환율·원자재 뉴스","summary":"요약","time":"시간","url":"https://실제기사URL"},
+    {"num":"02","source":"언론사명","title":"주식·환율·원자재 뉴스","summary":"요약","time":"시간","url":"https://실제기사URL"},
+    {"num":"03","source":"언론사명","title":"주식·환율·원자재 뉴스","summary":"요약","time":"시간","url":"https://실제기사URL"},
+    {"num":"04","source":"언론사명","title":"주식·환율·원자재 뉴스","summary":"요약","time":"시간","url":"https://실제기사URL"},
+    {"num":"05","source":"언론사명","title":"주식·환율·원자재 뉴스","summary":"요약","time":"시간","url":"https://실제기사URL"}
   ]
 }
 
@@ -1531,6 +1556,7 @@ function applyNews(data) {
   if (data.home)   buildNews(data.home,   'homeNews');
   if (data.korea)  buildNews(data.korea,  'koreaNews');
   if (data.global) buildNews(data.global, 'globalNews');
+  if (data.market) buildNews(data.market, 'marketNews');
 }
 
 async function fetchAndUpdateVideos() {
@@ -1607,6 +1633,7 @@ function init() {
   buildVideos(VIDEOS.global, 'globalVideos');
   buildNews(NEWS.global, 'globalNews');
   buildVideos(VIDEOS.market, 'marketVideos');
+  buildNews(NEWS.market, 'marketNews');
   buildCategoryBtns();
   buildConcepts();
   buildVideos(VIDEOS.study, 'studyVideos');
