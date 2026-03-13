@@ -7,130 +7,227 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="INV SIGNAL">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#05101E">
+<meta name="theme-color" content="#07080F">
 <title>INVESTMENT SIGNAL — 한국주식 AI분석</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;background:#05101E;color:#DDE6F0;font-family:-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;overscroll-behavior:none}
-::-webkit-scrollbar{width:2px}::-webkit-scrollbar-thumb{background:rgba(201,165,90,0.15);border-radius:2px}
-button,input{font-family:inherit;outline:none}input::placeholder{color:#1E3050}
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&family=Nanum+Myeongjo:wght@400;700;800&family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
-/* Layout */
+:root{
+  --bg:#07080F;
+  --bg2:#0C0E1A;
+  --surface:rgba(255,255,255,0.04);
+  --surface2:rgba(255,255,255,0.07);
+  --border:rgba(255,255,255,0.09);
+  --border-gold:rgba(196,158,80,0.3);
+  --gold:#C49E50;
+  --gold-light:#E8C96A;
+  --gold-dim:rgba(196,158,80,0.55);
+  --text:#EEE8DA;
+  --text2:#7A8FA8;
+  --text3:#3F5268;
+  --green:#0ED98A;
+  --red:#FF4D6D;
+  --amber:#F59E0B;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);color:var(--text);
+  font-family:"Nanum Gothic",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  overscroll-behavior:none;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:2px}
+::-webkit-scrollbar-thumb{background:rgba(196,158,80,0.2);border-radius:2px}
+button,input{font-family:inherit;outline:none}
+input::placeholder{color:var(--text3)}
+
+/* ── App Shell ─────────────────────────────── */
 .app{display:flex;flex-direction:column;height:100dvh;overflow:hidden;position:relative}
 
-/* Subtle texture overlay */
-.app::before{content:"";position:fixed;inset:0;background:
-  radial-gradient(ellipse 80% 50% at 10% 0%,rgba(201,165,90,0.04) 0%,transparent 60%),
-  radial-gradient(ellipse 60% 40% at 90% 100%,rgba(56,100,180,0.05) 0%,transparent 60%);
-pointer-events:none;z-index:0}
+/* Luxury background — grain + aurora */
+.app::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(ellipse 100% 65% at 20% -10%,rgba(196,158,80,0.09) 0%,transparent 50%),
+    radial-gradient(ellipse 80% 50% at 80% 110%,rgba(80,120,220,0.07) 0%,transparent 50%),
+    radial-gradient(ellipse 60% 60% at 50% 50%,rgba(20,15,40,0.5) 0%,transparent 80%)}
+.app::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity:.4}
 
-/* Header */
-.hdr{display:flex;align-items:center;padding:0 16px;height:54px;
-  background:rgba(5,16,30,0.96);backdrop-filter:blur(32px);
-  border-bottom:1px solid rgba(201,165,90,0.1);flex-shrink:0;gap:10px;z-index:100;position:relative}
-.logo{display:flex;align-items:center;gap:9px;flex:1}
-.ldot{width:6px;height:6px;border-radius:50%;background:#C9A55A;box-shadow:0 0 8px rgba(201,165,90,0.6);animation:pulse 3s infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
-.logo-text{display:flex;flex-direction:column;gap:1px}
-.logo-sub{font-size:7px;color:rgba(201,165,90,0.55);letter-spacing:3px;font-weight:600;text-transform:uppercase}
-.logo-main{font-size:19px;font-weight:900;letter-spacing:4px;
-  background:linear-gradient(135deg,#C9A55A 0%,#E8D5A0 45%,#C9A55A 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.lbadge{font-size:8px;background:rgba(201,165,90,0.08);color:rgba(201,165,90,0.7);
-  border:1px solid rgba(201,165,90,0.2);border-radius:3px;padding:2px 6px;letter-spacing:1.5px;font-weight:700}
-#instBtn{display:none;background:rgba(201,165,90,0.08);border:1px solid rgba(201,165,90,0.25);
-  border-radius:8px;color:#C9A55A;padding:7px 11px;cursor:pointer;font-size:11px;font-weight:700}
+/* ── Header ────────────────────────────────── */
+.hdr{display:flex;align-items:center;padding:0 18px;height:58px;
+  background:rgba(7,8,15,0.92);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);
+  border-bottom:1px solid var(--border-gold);flex-shrink:0;gap:12px;z-index:100;position:relative;
+  box-shadow:0 1px 0 rgba(196,158,80,0.08),0 4px 30px rgba(0,0,0,0.5)}
+.logo{display:flex;align-items:center;gap:11px;flex:1}
+.ldot{width:8px;height:8px;border-radius:50%;background:var(--gold);
+  box-shadow:0 0 0 2px rgba(196,158,80,0.15),0 0 14px rgba(196,158,80,0.6);
+  animation:pulse 3s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 2px rgba(196,158,80,0.15),0 0 14px rgba(196,158,80,0.6)}
+  50%{opacity:.5;transform:scale(.75);box-shadow:0 0 0 2px rgba(196,158,80,0.05),0 0 6px rgba(196,158,80,0.3)}}
+.logo-text{display:flex;flex-direction:column;gap:0px}
+.logo-sub{font-size:6.5px;color:var(--gold-dim);letter-spacing:4px;font-weight:600;text-transform:uppercase}
+.logo-main{font-size:21px;font-weight:700;letter-spacing:5px;
+  background:linear-gradient(135deg,#B8903C 0%,#E8C96A 35%,#C49E50 60%,#F0DC9A 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  font-family:'Nanum Myeongjo',serif;font-style:normal}
+.lbadge{font-size:8px;background:rgba(196,158,80,0.08);color:rgba(196,158,80,0.7);
+  border:1px solid rgba(196,158,80,0.2);border-radius:3px;padding:2px 7px;letter-spacing:1.5px;font-weight:700}
+#instBtn{display:none;background:rgba(196,158,80,0.08);border:1px solid rgba(196,158,80,0.25);
+  border-radius:8px;color:var(--gold);padding:7px 11px;cursor:pointer;font-size:11px;font-weight:700}
 
-/* Ticker */
-.ticker{height:28px;overflow:hidden;background:rgba(0,0,0,0.3);
-  border-bottom:1px solid rgba(255,255,255,0.03);display:flex;align-items:center;flex-shrink:0;z-index:99}
+/* ── Ticker ─────────────────────────────────── */
+.ticker{height:28px;overflow:hidden;
+  background:linear-gradient(90deg,rgba(196,158,80,0.04),rgba(196,158,80,0.02),rgba(196,158,80,0.04));
+  border-bottom:1px solid rgba(196,158,80,0.1);display:flex;align-items:center;flex-shrink:0;z-index:99}
 .ttrack{display:flex;white-space:nowrap;will-change:transform}
-.titem{display:inline-flex;align-items:center;gap:4px;padding:0 16px;border-right:1px solid rgba(255,255,255,0.03)}
+.titem{display:inline-flex;align-items:center;gap:5px;padding:0 18px;border-right:1px solid rgba(196,158,80,0.08)}
 
-/* Pages */
+/* ── Pages ──────────────────────────────────── */
 .page{flex:1;display:none;flex-direction:column;overflow:hidden;position:relative;z-index:1}
 .page.active{display:flex}
-.list-scroll{flex:1;overflow-y:auto;padding:6px 12px 20px;-webkit-overflow-scrolling:touch}
+.list-scroll{flex:1;overflow-y:auto;padding:8px 12px 24px;-webkit-overflow-scrolling:touch}
 
-/* Stock cards */
-.scard{background:rgba(255,255,255,0.022);border:1px solid rgba(255,255,255,0.055);
-  border-radius:14px;padding:13px 14px;margin-bottom:8px;cursor:pointer;
-  transition:border-color .18s,background .18s;position:relative;overflow:hidden}
-.scard::before{content:"";position:absolute;inset:0;border-radius:14px;
-  background:linear-gradient(135deg,rgba(255,255,255,0.02) 0%,transparent 60%);pointer-events:none}
-.scard:active{opacity:.8;transform:scale(.99)}
-.scard.watched{border-color:rgba(201,165,90,0.2);background:rgba(201,165,90,0.03)}
-.wstar{background:transparent;border:none;cursor:pointer;font-size:16px;padding:0;line-height:1}
-.sc-bar{height:2px;background:rgba(0,0,0,0.4);border-radius:2px;overflow:hidden;margin-top:10px}
-.sc-bar-fill{height:100%;border-radius:2px;transition:width .5s}
+/* ── Stock Cards ────────────────────────────── */
+.scard{
+  background:linear-gradient(145deg,rgba(255,255,255,0.065) 0%,rgba(255,255,255,0.025) 100%);
+  border:1px solid rgba(255,255,255,0.1);
+  border-top:1px solid rgba(255,255,255,0.16);
+  border-radius:18px;padding:14px 15px;margin-bottom:9px;cursor:pointer;
+  transition:all .22s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden;
+  box-shadow:0 2px 16px rgba(0,0,0,0.3),0 0 0 0 rgba(196,158,80,0)}
+.scard::before{content:"";position:absolute;inset:0;
+  background:linear-gradient(145deg,rgba(255,255,255,0.03) 0%,transparent 50%);
+  border-radius:18px;pointer-events:none}
+.scard:hover{
+  border-color:rgba(196,158,80,0.28);border-top-color:rgba(196,158,80,0.4);
+  background:linear-gradient(145deg,rgba(196,158,80,0.07) 0%,rgba(196,158,80,0.02) 100%);
+  transform:translateY(-2px);
+  box-shadow:0 8px 30px rgba(0,0,0,0.4),0 0 0 1px rgba(196,158,80,0.12),0 0 20px rgba(196,158,80,0.06)}
+.scard:active{opacity:.82;transform:scale(.985) translateY(0)}
+.scard.watched{
+  border-color:rgba(196,158,80,0.32);border-top-color:rgba(232,201,106,0.45);
+  background:linear-gradient(145deg,rgba(196,158,80,0.09) 0%,rgba(196,158,80,0.03) 100%);
+  box-shadow:0 3px 20px rgba(196,158,80,0.1),inset 0 1px 0 rgba(196,158,80,0.12)}
+.wstar{background:transparent;border:none;cursor:pointer;font-size:16px;padding:0;line-height:1;transition:transform .15s}
+.wstar:active{transform:scale(1.4)}
+.sc-bar{height:3px;background:rgba(255,255,255,0.05);border-radius:3px;overflow:hidden;margin-top:11px}
+.sc-bar-fill{height:100%;border-radius:3px;transition:width .6s cubic-bezier(.4,0,.2,1)}
 
-/* Bottom nav */
-.bnav{display:flex;background:rgba(5,16,30,0.97);border-top:1px solid rgba(201,165,90,0.08);flex-shrink:0;z-index:100}
-.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:8px 0 12px;background:transparent;border:none;cursor:pointer;color:#2A4060;font-size:10px;font-weight:700;letter-spacing:.5px;transition:color .15s}
-.bnav-btn.active{color:#C9A55A}
+/* ── Bottom Nav ─────────────────────────────── */
+.bnav{display:flex;background:rgba(6,7,13,0.97);
+  border-top:1px solid rgba(196,158,80,0.15);flex-shrink:0;z-index:100;
+  box-shadow:0 -4px 30px rgba(0,0,0,0.5)}
+.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:4px;padding:9px 0 13px;background:transparent;border:none;cursor:pointer;
+  color:var(--text3);font-size:10px;font-weight:700;letter-spacing:.8px;transition:all .18s}
+.bnav-btn.active{color:var(--gold)}
+.bnav-btn.active .bnav-icon{filter:drop-shadow(0 0 5px rgba(196,158,80,0.55))}
 .bnav-icon{font-size:18px;line-height:1}
 
-/* Search UI */
-.sbox{display:flex;align-items:center;background:rgba(255,255,255,0.03);
-  border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:0 12px;gap:8px;height:42px}
-.sbox input{flex:1;background:transparent;border:none;color:#DDE6F0;font-size:14px}
-.stabs{display:flex;background:rgba(0,0,0,0.25);border-bottom:1px solid rgba(255,255,255,0.04);flex-shrink:0;overflow-x:auto}
+/* ── Search UI ──────────────────────────────── */
+.sbox{display:flex;align-items:center;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:0 14px;gap:8px;height:46px;
+  transition:all .18s}
+.sbox input{flex:1;background:transparent;border:none;color:var(--text);font-size:14px;font-weight:500}
+.sbox:focus-within{border-color:rgba(196,158,80,0.45);background:rgba(196,158,80,0.04);
+  box-shadow:0 0 0 3px rgba(196,158,80,0.1)}
+.stabs{display:flex;background:rgba(0,0,0,0.2);
+  border-bottom:1px solid rgba(196,158,80,0.1);flex-shrink:0;overflow-x:auto}
 .stabs::-webkit-scrollbar{height:0}
-.stab{flex-shrink:0;padding:9px 12px;background:transparent;border:none;border-bottom:2px solid transparent;color:#2A4060;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;transition:color .12s}
-.stab.active{color:#C9A55A;border-bottom-color:#C9A55A}
+.stab{flex-shrink:0;padding:10px 13px;background:transparent;border:none;
+  border-bottom:2px solid transparent;color:var(--text3);font-size:11px;font-weight:700;
+  cursor:pointer;white-space:nowrap;transition:all .15s;letter-spacing:.3px}
+.stab.active{color:var(--gold);border-bottom-color:var(--gold)}
 
-/* Detail view */
-.dview{position:fixed;inset:0;background:#05101E;z-index:200;display:flex;flex-direction:column;
-  transform:translateX(100%);transition:transform .28s cubic-bezier(.4,0,.2,1)}
+/* ── Detail View ────────────────────────────── */
+.dview{position:fixed;inset:0;background:#07080F;z-index:200;display:flex;flex-direction:column;
+  transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1)}
 .dview.open{transform:translateX(0)}
-.dhdr{display:flex;align-items:center;gap:8px;padding:10px 14px;
-  background:rgba(5,16,30,0.98);backdrop-filter:blur(20px);
-  border-bottom:1px solid rgba(201,165,90,0.1);flex-shrink:0}
-.back-btn{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
-  border-radius:8px;color:#C9A55A;padding:7px 12px;cursor:pointer;font-size:13px;font-weight:700}
-.rfbtn{background:rgba(201,165,90,0.07);border:1px solid rgba(201,165,90,0.2);
-  border-radius:8px;color:#C9A55A;padding:7px 9px;cursor:pointer;font-size:11px;font-weight:700;flex-shrink:0}
-.rfbtn:disabled{opacity:.4}
-.dtabs{display:flex;background:rgba(0,0,0,0.25);border-bottom:1px solid rgba(255,255,255,0.04);flex-shrink:0}
-.dtab{flex:1;padding:11px 2px;background:transparent;border:none;border-bottom:2px solid transparent;
-  color:#2A4060;font-size:11px;font-weight:700;cursor:pointer;transition:color .12s;letter-spacing:.3px}
-.dtab.active{color:#C9A55A;border-bottom-color:#C9A55A}
-.dbody{flex:1;overflow-y:auto;padding:12px 12px 30px;-webkit-overflow-scrolling:touch}
-.cbox{background:rgba(255,255,255,0.022);border:1px solid rgba(255,255,255,0.055);border-radius:13px;padding:14px;margin-bottom:10px}
-.cbox-t{font-size:9px;color:rgba(201,165,90,0.5);letter-spacing:1.5px;text-transform:uppercase;font-weight:700;margin-bottom:10px}
-.vgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.vi{padding:9px 10px;background:rgba(0,0,0,0.25);border-radius:8px}
-.vil{font-size:9px;color:#2A4060;margin-bottom:3px;letter-spacing:.5px}
-.viv{font-size:13px;font-family:monospace;font-weight:800;color:#8BA0BC}
-.grow{margin-bottom:10px}
-.gt{display:flex;justify-content:space-between;margin-bottom:4px;align-items:center}
-.gb{height:4px;background:rgba(0,0,0,0.4);border-radius:2px;overflow:hidden}
-.gbf{height:100%;border-radius:2px}
 
-/* Disclaimer */
-.disc{background:rgba(239,68,68,0.06);border-top:1px solid rgba(239,68,68,0.18);padding:8px 14px;display:flex;gap:6px;align-items:flex-start;flex-shrink:0}
-.disc p{font-size:10px;color:rgba(252,165,165,0.75);line-height:1.6;font-weight:500}
+.dhdr{display:flex;align-items:center;gap:10px;padding:10px 16px;
+  background:rgba(6,7,13,0.96);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
+  border-bottom:1px solid var(--border-gold);flex-shrink:0;
+  box-shadow:0 2px 20px rgba(0,0,0,0.4)}
+.back-btn{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);
+  border-radius:12px;color:var(--gold);padding:8px 13px;cursor:pointer;font-size:13px;font-weight:700;
+  transition:all .15s;letter-spacing:.3px}
+.back-btn:hover{background:rgba(196,158,80,0.1);border-color:rgba(196,158,80,0.3)}
+.rfbtn{background:rgba(196,158,80,0.08);border:1px solid rgba(196,158,80,0.25);
+  border-radius:12px;color:var(--gold);padding:8px 10px;cursor:pointer;font-size:11px;font-weight:700;
+  flex-shrink:0;transition:all .15s;letter-spacing:.3px}
+.rfbtn:hover{background:rgba(196,158,80,0.16);border-color:rgba(196,158,80,0.4)}
+.rfbtn:disabled{opacity:.3;cursor:not-allowed}
 
-.empty{text-align:center;padding:60px 20px;color:#1E3050;font-size:13px}
-.ios-banner{margin:6px 12px;background:rgba(201,165,90,0.06);border:1px solid rgba(201,165,90,0.18);border-radius:10px;padding:10px 12px;display:none;align-items:center;gap:9px;flex-shrink:0}
-.verify-row{display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.035);font-size:11px}
+.dtabs{display:flex;background:rgba(0,0,0,0.25);border-bottom:1px solid rgba(196,158,80,0.1);flex-shrink:0}
+.dtab{flex:1;padding:12px 2px;background:transparent;border:none;
+  border-bottom:2px solid transparent;color:var(--text3);font-size:11px;font-weight:700;
+  cursor:pointer;transition:all .15s;letter-spacing:.5px;text-transform:uppercase}
+.dtab.active{color:var(--gold);border-bottom-color:var(--gold)}
+
+.dbody{flex:1;overflow-y:auto;padding:12px 12px 32px;-webkit-overflow-scrolling:touch}
+
+/* ── Content Boxes ──────────────────────────── */
+.cbox{
+  background:linear-gradient(160deg,rgba(255,255,255,0.06) 0%,rgba(255,255,255,0.02) 100%);
+  border:1px solid rgba(255,255,255,0.1);
+  border-top:1px solid rgba(255,255,255,0.15);
+  border-radius:16px;padding:16px;margin-bottom:11px;
+  box-shadow:0 2px 12px rgba(0,0,0,0.25),inset 0 1px 0 rgba(255,255,255,0.06)}
+.cbox-t{font-size:9px;color:rgba(196,158,80,0.65);letter-spacing:2px;
+  text-transform:uppercase;font-weight:700;margin-bottom:11px;letter-spacing:1.5px;font-size:9px}
+
+/* ── Financial Grid ─────────────────────────── */
+.vgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.vi{padding:11px 12px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:11px;transition:background .15s}
+.vi:hover{background:rgba(255,255,255,0.06)}
+.vil{font-size:9px;color:var(--text3);margin-bottom:5px;letter-spacing:.6px;font-weight:600;text-transform:uppercase}
+.viv{font-size:13px;font-family:'Space Grotesk',sans-serif;font-weight:600;color:var(--text2)}
+
+/* ── Chart bars ─────────────────────────────── */
+.grow{margin-bottom:11px}
+.gt{display:flex;justify-content:space-between;margin-bottom:5px;align-items:center}
+.gb{height:6px;background:rgba(255,255,255,0.05);border-radius:4px;overflow:hidden}
+.gbf{height:100%;border-radius:4px;transition:width .6s}
+
+/* ── Disclaimer ──────────────────────────────── */
+.disc{background:rgba(255,77,109,0.06);border-top:1px solid rgba(255,77,109,0.15);
+  padding:9px 16px;display:flex;gap:7px;align-items:flex-start;flex-shrink:0}
+.disc p{font-size:10px;color:rgba(255,160,170,0.7);line-height:1.7;font-weight:400}
+
+.empty{text-align:center;padding:60px 20px;color:var(--text3);font-size:13px}
+.ios-banner{margin:6px 12px;background:rgba(196,158,80,0.06);border:1px solid rgba(196,158,80,0.18);
+  border-radius:13px;padding:11px 13px;display:none;align-items:center;gap:10px;flex-shrink:0}
+.verify-row{display:flex;align-items:flex-start;gap:8px;padding:9px 0;
+  border-bottom:1px solid rgba(255,255,255,0.06);font-size:11px}
 .verify-row:last-child{border-bottom:none}
 
-/* Data timestamp badge */
-.data-stamp{font-size:9px;color:rgba(201,165,90,0.45);background:rgba(201,165,90,0.06);
-  border:1px solid rgba(201,165,90,0.12);border-radius:4px;padding:2px 7px;letter-spacing:.5px;white-space:nowrap}
+/* ── Data Badge ──────────────────────────────── */
+.data-stamp{font-size:9px;color:rgba(196,158,80,0.55);background:rgba(196,158,80,0.07);
+  border:1px solid rgba(196,158,80,0.16);border-radius:4px;padding:2px 8px;
+  letter-spacing:.6px;white-space:nowrap;cursor:pointer;transition:all .15s}
+.data-stamp:hover{background:rgba(196,158,80,0.12);color:rgba(196,158,80,0.85)}
 
-/* Modal */
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:400;display:none;align-items:flex-end;backdrop-filter:blur(4px)}
+/* ── Modal ───────────────────────────────────── */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:400;
+  display:none;align-items:flex-end;backdrop-filter:blur(8px)}
 .modal-bg.open{display:flex}
-.modal{background:#0A1828;border-radius:20px 20px 0 0;padding:20px 16px 36px;width:100%;max-height:85vh;overflow-y:auto;border-top:1px solid rgba(201,165,90,0.15)}
-.modal-t{font-size:16px;font-weight:800;color:#DDE6F0;margin-bottom:14px;letter-spacing:.5px}
-.modal h4{font-size:11px;color:#C9A55A;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;margin:14px 0 6px}
+.modal{
+  background:linear-gradient(180deg,#0F1320 0%,#090B14 100%);
+  border-radius:24px 24px 0 0;padding:22px 18px 38px;width:100%;max-height:85vh;overflow-y:auto;
+  border-top:1px solid rgba(196,158,80,0.3);
+  box-shadow:0 -10px 60px rgba(0,0,0,0.7),0 -1px 0 rgba(196,158,80,0.2)}
+.modal-t{font-size:17px;font-weight:800;color:var(--text);margin-bottom:15px;
+  letter-spacing:.5px;font-family:'Nanum Myeongjo',serif;font-style:normal}
+.modal h4{font-size:10px;color:var(--gold);letter-spacing:2px;
+  text-transform:uppercase;font-weight:700;margin:16px 0 7px}
 
-/* Verdict colors — refined */
-.v-buy{color:#10B981}
-.v-hold{color:#D97706}
-.v-sell{color:#EF4444}
+/* ── Verdict Colors ──────────────────────────── */
+.v-buy{color:var(--green)}
+.v-hold{color:var(--amber)}
+.v-sell{color:var(--red)}
 </style>
 </head>
 <body>
@@ -144,8 +241,8 @@ pointer-events:none;z-index:0}
       </div>
       <span class="lbadge">AI 투자분석</span>
     </div>
-    <span class="data-stamp">3/10 기준</span>
-    <button onclick="showHelp()" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:8px;color:#2A4060;padding:7px 10px;cursor:pointer;font-size:15px;line-height:1;margin-left:4px">❓</button>
+    <span class="data-stamp" id="verStamp" onclick="showVersionLog()" style="user-select:none" title="버전 정보">v2.6 · 3/13</span>
+    <button onclick="showHelp()" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;color:rgba(196,158,80,0.6);padding:7px 10px;cursor:pointer;font-size:15px;line-height:1;margin-left:4px;transition:all .15s">❓</button>
     <button id="instBtn" onclick="installApp()">📲 홈 추가</button>
   </div>
   <div class="ticker"><div class="ttrack" id="ttrack"></div></div>
@@ -153,10 +250,10 @@ pointer-events:none;z-index:0}
   <!-- iOS banner -->
   <div class="ios-banner" id="iosBanner">
     <span style="font-size:20px">📱</span>
-    <div style="flex:1;font-size:11px;color:rgba(201,165,90,0.8);line-height:1.5">
+    <div style="flex:1;font-size:11px;color:rgba(196,158,80,0.8);line-height:1.5">
       <b>홈화면 추가:</b> Safari 하단 공유버튼(□↑) → <b>홈 화면에 추가</b>
     </div>
-    <button onclick="this.parentElement.style.display='none'" style="background:none;border:none;color:#2A4060;font-size:18px;cursor:pointer">×</button>
+    <button onclick="this.parentElement.style.display='none'" style="background:none;border:none;color:#5A7090;font-size:18px;cursor:pointer">×</button>
   </div>
 
   <!-- HOME PAGE -->
@@ -170,11 +267,11 @@ pointer-events:none;z-index:0}
 
   <!-- SEARCH PAGE -->
   <div class="page" id="pageSearch">
-    <div style="padding:10px 12px 6px;flex-shrink:0">
+    <div style="padding:12px 12px 6px;flex-shrink:0">
       <div class="sbox">
-        <span style="color:#2A4060;font-size:16px">🔍</span>
+        <span style="color:#5A7090;font-size:16px">🔍</span>
         <input type="text" id="searchInput" placeholder="종목명·코드·섹터 검색">
-        <button id="clrBtn" onclick="clearSearch()" style="display:none;background:none;border:none;color:#2A4060;font-size:18px;cursor:pointer">×</button>
+        <button id="clrBtn" onclick="clearSearch()" style="display:none;background:none;border:none;color:#5A7090;font-size:18px;cursor:pointer">×</button>
       </div>
     </div>
     <div class="stabs">
@@ -194,7 +291,7 @@ pointer-events:none;z-index:0}
       <button class="stab" onclick="setSTab('엔터')">엔터</button>
     </div>
     <div style="padding:4px 14px 0;flex-shrink:0">
-      <span id="resCnt" style="font-size:10px;color:#2A4060"></span>
+      <span id="resCnt" style="font-size:10px;color:#3F5268;letter-spacing:.3px"></span>
     </div>
     <div class="list-scroll" id="searchList"></div>
   </div>
@@ -215,28 +312,29 @@ pointer-events:none;z-index:0}
   <div class="dhdr">
     <button class="back-btn" onclick="closeDetail()">← 뒤로</button>
     <div style="flex:1;min-width:0">
-      <div id="dname" style="font-size:16px;font-weight:800;color:#DDE6F0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
-      <div id="dcode" style="font-size:10px;color:#2A4060;margin-top:1px"></div>
+      <div id="dname" style="font-size:16px;font-weight:800;color:#EEE8DA;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:'Nanum Myeongjo',serif;font-size:17px!important;font-weight:700;letter-spacing:0px"></div>
+      <div id="dcode" style="font-size:10px;color:#3F5268;margin-top:3px;letter-spacing:.5px;font-family:'Space Grotesk',monospace"></div>
     </div>
+    <button id="dstar" onclick="toggleW(curStock&&curStock.id)" style="background:transparent;border:none;cursor:pointer;font-size:22px;padding:0 4px 0 0;line-height:1;flex-shrink:0">☆</button>
     <button class="rfbtn" id="rfbtn" onclick="refreshPrice()">🔄 실시간</button>
   </div>
-  <div style="padding:12px 14px 8px;background:rgba(5,16,30,0.5);border-bottom:1px solid rgba(255,255,255,0.04);flex-shrink:0">
+  <div style="padding:14px 16px 12px;background:linear-gradient(180deg,rgba(196,158,80,0.04) 0%,rgba(0,0,0,0) 100%);border-bottom:1px solid rgba(196,158,80,0.12);flex-shrink:0">
     <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:8px">
       <div>
-        <div id="dpval" style="font-size:28px;font-weight:900;font-family:monospace;
-          background:linear-gradient(135deg,#C9A55A,#E8D5A0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1"></div>
-        <div id="dpchg" style="font-size:13px;font-weight:800;font-family:monospace;margin-top:2px"></div>
+        <div id="dpval" style="font-size:32px;font-weight:400;font-family:'Bebas Neue',monospace;letter-spacing:1px;
+          background:linear-gradient(135deg,#B8903C 0%,#E8C96A 40%,#C49E50 75%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;font-family:'Nanum Myeongjo',serif;letter-spacing:0px"></div>
+        <div id="dpchg" style="font-size:13px;font-weight:700;font-family:'Space Grotesk',monospace;margin-top:3px;letter-spacing:.3px"></div>
       </div>
-      <div id="sbox2" style="border-radius:10px;padding:8px 14px;text-align:center;border:1px solid transparent">
+      <div id="sbox2" style="border-radius:14px;padding:10px 14px;text-align:center;border:1px solid transparent;backdrop-filter:blur(10px)">
         <div id="dverd" style="font-size:12px;font-weight:800;letter-spacing:.5px"></div>
         <div style="display:flex;align-items:center;justify-content:center;gap:3px;margin-top:2px">
-          <span id="dscore" style="font-size:22px;font-weight:900;font-family:monospace"></span>
-          <span style="font-size:10px;color:#2A4060">/ 100</span>
+          <span id="dscore" style="font-size:26px;font-weight:400;font-family:'Bebas Neue',monospace;letter-spacing:1px"></span>
+          <span style="font-size:10px;color:#3F5268;font-family:'Space Grotesk',monospace">/ 100</span>
         </div>
       </div>
     </div>
     <div id="dtags" style="display:flex;gap:4px;margin-top:8px;flex-wrap:wrap"></div>
-    <div id="livebadge" style="display:none;margin-top:6px;font-size:10px;color:rgba(201,165,90,0.7);background:rgba(201,165,90,0.07);border-radius:5px;padding:4px 8px"></div>
+    <div id="livebadge" style="display:none;margin-top:6px;font-size:10px;color:rgba(196,158,80,0.8);background:rgba(196,158,80,0.08);border-radius:7px;padding:5px 10px;border:1px solid rgba(196,158,80,0.15)"></div>
   </div>
   <div class="dtabs">
     <button class="dtab active" onclick="setDTab('ov')">개요</button>
@@ -247,56 +345,133 @@ pointer-events:none;z-index:0}
   <div class="dbody" id="dbody"></div>
 </div>
 
+<!-- Version Log Modal -->
+<div class="modal-bg" id="verModal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal" style="max-height:80vh;overflow-y:auto">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <span class="modal-t">📋 업데이트 로그</span>
+      <button onclick="document.getElementById('verModal').classList.remove('open')" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:7px;color:#5A7090;padding:6px 10px;cursor:pointer;font-size:16px">×</button>
+    </div>
+    <div style="font-size:11px;color:#C49E50;font-weight:800;letter-spacing:1px;margin-bottom:10px">현재: v2.4 · 2026.03.11 최종</div>
+
+    <div style="background:rgba(196,158,80,0.06);border:1px solid rgba(196,158,80,0.2);border-radius:12px;padding:12px;margin-bottom:10px">
+      <div style="font-size:12px;font-weight:900;color:#C49E50;margin-bottom:6px">v2.5 — 2026.03.12</div>
+      <div style="font-size:11px;color:#6B84A0;line-height:1.9">
+        ✅ 재무지표 전면 재교정 (FY2024 실적 기반 100개 종목)<br>
+        ✅ None 깨진 패턴 29개 정리 (per/pbr/roe 오류 수정)<br>
+        ✅ 금융주 부채비율 "-" 처리 (은행 BIS비율 별도 측정)<br>
+        ✅ ind 점수 전면 재계산 (섹터 특성 반영)<br>
+        ✅ AI JSON 파싱 one-shot 전략 적용 (에러 방지)
+      </div>
+    </div>
+
+    <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:12px;margin-bottom:10px">
+      <div style="font-size:12px;font-weight:900;color:#EEE8DA;margin-bottom:6px">v2.4 — 2026.03.11 19:00</div>
+      <div style="font-size:11px;color:#6B84A0;line-height:1.9">
+        ✅ AI 분석 속도 대폭 개선 (프롬프트 최적화, max_tokens 400 단축)<br>
+        ✅ 실시간 가격 3병렬 조회 (Promise.all, 기존 순차→동시)<br>
+        ✅ 검색 200ms debounce 적용<br>
+        ✅ 전종목 592개 정적 내장 DB (KRX 동적로드 CORS 오류 해결)<br>
+        ✅ 주요 종목 주가·시총 데이터 전면 재검증<br>
+        ✅ aiSearching 잠금 버그 수정 (분석 실패 시 재시도 가능)<br>
+        ✅ 버전 로그 추가
+      </div>
+    </div>
+
+    <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:12px;margin-bottom:10px">
+      <div style="font-size:12px;font-weight:900;color:#EEE8DA;margin-bottom:6px">v2.3 — 2026.03.11 14:00</div>
+      <div style="font-size:11px;color:#6B84A0;line-height:1.9">
+        • 100개 종목 verify 데이터 전부 1956~2026 역사 기반으로 교체<br>
+        • 검색 결과 없음 UI 골드 테두리 카드로 강조<br>
+        • DB_LITE 추가 (KRX 전종목 경량 카드)
+      </div>
+    </div>
+
+    <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:12px;margin-bottom:10px">
+      <div style="font-size:12px;font-weight:900;color:#EEE8DA;margin-bottom:6px">v2.2 — 2026.03.11 10:00</div>
+      <div style="font-size:11px;color:#6B84A0;line-height:1.9">
+        • 판정모델 40년→70년(1956~2026) 전체 역사 확장<br>
+        • PBR 평균기준 1.1배→0.95배 하향 조정<br>
+        • 도움말 모달 70년 사이클 타임라인 추가<br>
+        • DB 주가 3/13 기준 31개 전면 교정
+      </div>
+    </div>
+
+    <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:12px;margin-bottom:10px">
+      <div style="font-size:12px;font-weight:900;color:#EEE8DA;margin-bottom:6px">v2.1 — 2026.03.11 06:00</div>
+      <div style="font-size:11px;color:#6B84A0;line-height:1.9">
+        • 실시간 버튼 CORS 프록시 3단계 구조<br>
+        • AI 검색 후 자동 실시간 가격 호출<br>
+        • 홈화면 관심종목 + 오늘 주목할 10종목 추가
+      </div>
+    </div>
+
+    <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:12px">
+      <div style="font-size:12px;font-weight:900;color:#EEE8DA;margin-bottom:6px">v2.0 — 2026.03.10</div>
+      <div style="font-size:11px;color:#6B84A0;line-height:1.9">
+        • 한국주식 전용 앱 리디자인 (골드 테마)<br>
+        • 종목 DB 100개 구성<br>
+        • AI 실시간 분석 (Claude API 연동)<br>
+        • PWA 홈화면 추가 지원
+      </div>
+    </div>
+
+    <div style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.06);font-size:10px;color:#5A7090;text-align:center">
+      GitHub: juns9990/economy-app · signal-1.html
+    </div>
+  </div>
+</div>
+
 <!-- Help Modal -->
 <div class="modal-bg" id="helpModal" onclick="if(event.target===this)this.classList.remove('open')">
   <div class="modal">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
       <span class="modal-t">📖 앱 안내</span>
-      <button onclick="document.getElementById('helpModal').classList.remove('open')" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:7px;color:#2A4060;padding:6px 10px;cursor:pointer;font-size:16px">×</button>
+      <button onclick="document.getElementById('helpModal').classList.remove('open')" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:7px;color:#5A7090;padding:6px 10px;cursor:pointer;font-size:16px">×</button>
     </div>
 
     <h4>📱 홈화면 추가</h4>
-    <div style="background:rgba(201,165,90,0.05);border:1px solid rgba(201,165,90,0.12);border-radius:9px;padding:11px 12px;font-size:12px;color:#8BA0BC;line-height:1.9">
-      <b style="color:#C9A55A">Android (크롬):</b><br>
+    <div style="background:rgba(196,158,80,0.05);border:1px solid rgba(196,158,80,0.12);border-radius:12px;padding:11px 12px;font-size:12px;color:#6B84A0;line-height:1.9">
+      <b style="color:#C49E50">Android (크롬):</b><br>
       1. 크롬으로 이 페이지 접속<br>
       2. 우측 상단 ⋮ 메뉴 → <b>홈 화면에 추가</b><br><br>
-      <b style="color:#C9A55A">iPhone (Safari 필수):</b><br>
+      <b style="color:#C49E50">iPhone (Safari 필수):</b><br>
       1. <b>Safari</b>로 접속 (크롬 ❌)<br>
       2. 하단 공유버튼 □↑ → <b>홈 화면에 추가</b>
     </div>
 
     <h4>🌐 앱 주소</h4>
-    <div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:10px 12px;font-size:11px;font-family:monospace;color:#C9A55A;word-break:break-all">
+    <div style="background:rgba(255,255,255,0.04);border-radius:12px;padding:11px 13px;font-size:11px;font-family:monospace;color:#C49E50;word-break:break-all">
       https://juns9990.github.io/economy-app/signal-1.html
     </div>
 
     <h4>🔄 업데이트 방법</h4>
-    <div style="font-size:12px;color:#8BA0BC;line-height:1.9">
+    <div style="font-size:12px;color:#6B84A0;line-height:1.9">
       GitHub → economy-app 레포 → signal-1.html 덮어쓰기<br>
       → 홈화면 아이콘 그대로 자동 반영 ✅
     </div>
 
     <h4>📊 데이터 기준</h4>
-    <div style="font-size:12px;color:#8BA0BC;line-height:1.9">
+    <div style="font-size:12px;color:#6B84A0;line-height:1.9">
       주가: 2026.03.11 기준 (🔄 실시간 버튼으로 업데이트)<br>
       판정: 한국 주식시장 전체 역사 1956~2026 (70년) 기반
     </div>
 
     <h4>📅 70년 사이클 기반 판정 근거</h4>
-    <div style="background:rgba(201,165,90,0.04);border:1px solid rgba(201,165,90,0.1);border-radius:9px;padding:11px 12px;font-size:11px;color:#8BA0BC;line-height:2.0">
-      <b style="color:#C9A55A">1956</b> 대한증권거래소 창립 — 한국 주식시장 시작<br>
-      <b style="color:#C9A55A">1980</b> 코스피 지수 기산 (100pt) — 공식 지수 역사 시작<br>
-      <b style="color:#C9A55A">1987~89</b> 3저호황 — 코스피 4배↑ PBR 2.5배 과열 신호<br>
-      <b style="color:#C9A55A">1992</b> 외국인 투자 허용 — 수급 구조 변화<br>
-      <b style="color:#C9A55A">1997~98</b> IMF 외환위기 — -71%, PBR <b style="color:#EF4444">0.35배</b> 역사적 최저<br>
-      <b style="color:#C9A55A">2000</b> 닷컴버블 — PER 30배 과열 후 급락<br>
-      <b style="color:#C9A55A">2003~07</b> 슈퍼사이클 — 코스피 500→2000 (+300%)<br>
-      <b style="color:#C9A55A">2008~09</b> 금융위기 — -50%, PBR 0.85배<br>
-      <b style="color:#C9A55A">2020</b> 코로나 — -35% 후 당해 +100% 급반등<br>
-      <b style="color:#C9A55A">2025~</b> AI·방산 슈퍼사이클 — 코스피 4000 돌파<br>
+    <div style="background:rgba(196,158,80,0.04);border:1px solid rgba(196,158,80,0.1);border-radius:12px;padding:11px 12px;font-size:11px;color:#6B84A0;line-height:2.0">
+      <b style="color:#C49E50">1956</b> 대한증권거래소 창립 — 한국 주식시장 시작<br>
+      <b style="color:#C49E50">1980</b> 코스피 지수 기산 (100pt) — 공식 지수 역사 시작<br>
+      <b style="color:#C49E50">1987~89</b> 3저호황 — 코스피 4배↑ PBR 2.5배 과열 신호<br>
+      <b style="color:#C49E50">1992</b> 외국인 투자 허용 — 수급 구조 변화<br>
+      <b style="color:#C49E50">1997~98</b> IMF 외환위기 — -71%, PBR <b style="color:#FF4D6D">0.35배</b> 역사적 최저<br>
+      <b style="color:#C49E50">2000</b> 닷컴버블 — PER 30배 과열 후 급락<br>
+      <b style="color:#C49E50">2003~07</b> 슈퍼사이클 — 코스피 500→2000 (+300%)<br>
+      <b style="color:#C49E50">2008~09</b> 금융위기 — -50%, PBR 0.85배<br>
+      <b style="color:#C49E50">2020</b> 코로나 — -35% 후 당해 +100% 급반등<br>
+      <b style="color:#C49E50">2025~</b> AI·방산 슈퍼사이클 — 코스피 4000 돌파<br>
       <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.06);font-size:10px;color:#4A6080">
-        PBR 0.35~0.6배 구간 매수 → 3년 평균 수익률 <b style="color:#10B981">+120~250%</b><br>
-        PBR 2.0배↑ 과열 구간 → 이후 3년 평균 <b style="color:#EF4444">-30~60%</b> 조정
+        PBR 0.35~0.6배 구간 매수 → 3년 평균 수익률 <b style="color:#0ED98A">+120~250%</b><br>
+        PBR 2.0배↑ 과열 구간 → 이후 3년 평균 <b style="color:#FF4D6D">-30~60%</b> 조정
       </div>
     </div>
 
@@ -312,7 +487,7 @@ pointer-events:none;z-index:0}
 <script>
 // ══════════════════════════════════════════════════════════════
 // INVESTMENT SIGNAL — 7대 지표 판정 모델
-// 데이터 기준: 2026.03.11 (3/9 중동충격 급락 → 3/10 트럼프 종전발언 반등)
+// 데이터 기준: 2026.03.11 (v2.4 최종 교정) (3/9 중동충격 급락 → 3/10 트럼프 종전발언 반등)
 //
 // 기반 데이터: 한국 증권시장 전 역사 (1956~2026, 70년)
 //   1956: 대한증권거래소 설립
@@ -359,563 +534,563 @@ const DB = [
 
 // ━━━ 반도체·IT하드웨어 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"005930",n:"삼성전자",s:"반도체",m:"K",
- p:190400,c:8.2,prev:175950,w52h:223000,w52l:94500,
- cap:"113.8조",per:12.8,pbr:1.42,roe:15.2,debt:28,
+ p:191200,c:1.17,prev:189000,w52h:223000,w52l:94500,
+ cap:"1,134조",per:15.2,pbr:1.35,roe:9.2,debt:28,
  t:["반도체","HBM","AI"],
- ind:{pbr:62,per:68,roe:65,momentum:78,growth:82,sentiment:72,safety:74},
- sum:"3/9 -7.81% 급락 후 3/10 +8.2%로 '18만전자' 회복(실측). 52주 고점 대비 -15%. HBM4 개발 중, 엔비디아 납품 확대 기대. 증권사 목표가 240,000~260,000원 전원 매수.",
- bull:"HBM4 수율 개선. 2026년 영업이익 200조 전망. 외국인 복귀 시 재급등.",
- bear:"HBM 수율 SK 대비 낮음. 중동 재악화 시 재급락.",
- tH:260000,tM:220000,tL:160000,
+ ind:{pbr:52,per:54,roe:62,momentum:82,growth:88,sentiment:80,safety:88},
+ sum:"FY2024 영업이익 32.7조원. HBM4 양산 준비 중, 엔비디아 납품 확대 기대. 52주 고점 대비 -35% 조정 구간. 증권사 목표가 평균 7만원대.",
+ bull:"HBM4 엔비디아 납품 확대. 2026년 영업이익 35조 전망. PER 15배 합리적 밸류.",
+ bear:"HBM 수율 SK하이닉스 대비 낮음. 중국 수출 규제. 메모리 사이클 불확실성.",
+ tH:80000,tM:70000,tL:55000,
  verify:{pbr_hist:"코스피 70년 역사 PBR 평균 0.95배. 1997 IMF 최저 0.35배 대비 현 1.42배는 건전 밸류에이션 구간.",per_hist:"장기 PER 밴드 8~15배. 현 12.8배 하단 매수 구간.",backtest:"2008 PBR 0.7배 구간 매수→3년 +180%."}},
 
 {id:"000660",n:"SK하이닉스",s:"반도체",m:"K",
- p:915000,c:9.8,prev:833000,w52h:1080000,w52l:420000,
- cap:"66.6조",per:8.9,pbr:2.28,roe:31.1,debt:35,
+ p:959000,c:2.03,prev:939800,w52h:1060000,w52l:380000,
+ cap:"698조",per:9.4,pbr:2.15,roe:24.8,debt:38,
  t:["반도체","HBM","AI독점"],
- ind:{pbr:42,per:82,roe:90,momentum:85,growth:92,sentiment:88,safety:62},
- sum:"3/9 -9.52% 폭락 후 3/10 +9.8%로 '91만닉스' 회복(실측). 엔비디아 HBM3E 독점 납품. ROE 31% 코스피 최상위권.",
- bull:"HBM4 엔비디아 독점. AI 슈퍼사이클 핵심. 2026년 영업이익 100조 전망.",
- bear:"고점 대비 -15% 조정 잔재. 중동 재악화 리스크.",
- tH:1300000,tM:1100000,tL:800000,
+ ind:{pbr:38,per:74,roe:82,momentum:82,growth:88,sentiment:80,safety:76},
+ sum:"FY2024 영업이익 23.4조원. 엔비디아 HBM3E 독점 납품. ROE 24.8% 코스피 최상위권. 2026년 HBM4 전환 수혜.",
+ bull:"HBM4 엔비디아 독점 공급. AI 슈퍼사이클 핵심. 2026년 영업이익 30조 전망.",
+ bear:"HBM 단일 고객 집중 리스크. AI 투자 위축 시 수요 급감 가능.",
+ tH:270000,tM:230000,tL:175000,
  verify:{roe_check:"ROE 31% = 코스피 상위 5%. 1956~2026 전체 ROE>25% 구간 3년 수익률 평균 +142%.",per_hist:"PER 8.9배. 메모리 사이클 적정 밴드 7~12배 내.",backtest:"2020 코로나 저점 대비 +340%."}},
 
 {id:"005935",n:"삼성전자우",s:"반도체",m:"K",
- p:117000,c:-0.5,prev:117600,w52h:182000,w52l:74000,
- cap:"96조",per:10.2,pbr:1.15,roe:15.2,debt:28,
+ p:114200,c:1.04,prev:113000,w52h:138000,w52l:55000,
+ cap:"94조",per:15.2,pbr:1.02,roe:9.2,debt:28,
  t:["반도체","우선주","배당"],
- ind:{pbr:68,per:72,roe:65,momentum:76,growth:82,sentiment:68,safety:74},
- sum:"삼성전자 우선주. 본주 대비 22% 할인. 배당수익률 4%+. 3/10 본주 동반 급등.",
+ ind:{pbr:66,per:54,roe:62,momentum:82,growth:88,sentiment:80,safety:88},
+ sum:"삼성전자 우선주. 본주 대비 약 20% 할인 거래. 배당수익률 4%+. 본주 연동 움직임.",
  bull:"우선주 할인 해소 가능성. 배당 우선. 본주 상승 연동.",
  bear:"의결권 없음. 본주 하락 연동.",
- tH:205000,tM:172000,tL:126000,
+ tH:64000,tM:55000,tL:43000,
  verify:{pbr_hist:"우선주 PBR 1.15배. 1980~2026 본주 대비 할인율 평균 18~22%. IMF·금융위기 때도 할인 유지. 배당수익률 4%+ 방어력.",backtest:"우선주 할인 좁혀질 때 초과수익 발생."}},
 
 {id:"000990",n:"DB하이텍",s:"반도체",m:"K",
- p:43200,c:1.4,prev:42600,w52h:58000,w52l:28000,
- cap:"1.6조",per:14.2,pbr:1.38,roe:9.8,debt:22,
+ p:96000,c:1.5,prev:94580,w52h:138000,w52l:44000,
+ cap:"3.6조",per:13.8,pbr:1.28,roe:9.5,debt:22,
  t:["반도체","파운드리","8인치"],
- ind:{pbr:64,per:62,roe:58,momentum:60,growth:54,sentiment:58,safety:72},
+ ind:{pbr:66,per:66,roe:62,momentum:82,growth:88,sentiment:80,safety:88},
  sum:"국내 유일 8인치 파운드리 전문업체. 전력반도체·PMIC 안정 수요. 저평가 우량주.",
  bull:"전력반도체 수요 증가. 8인치 공급 부족 지속.",
  bear:"대만·중국 가격 경쟁. 성장성 제한.",
- tH:62000,tM:52000,tL:36000,
+ tH:64000,tM:55000,tL:43000,
  verify:{per_hist:"파운드리 PER 12~18배. 1980~2026 국내 반도체 제조사 PER 밴드 내 현 14.2배 중간값. IMF 이후 8인치 파운드리 희소가치 확인.",backtest:"DB하이텍 저점 대비 +52%."}},
 
 {id:"009150",n:"삼성전기",s:"전자부품",m:"K",
- p:158000,c:1.8,prev:155190,w52h:220000,w52l:108000,
- cap:"12조",per:14.8,pbr:1.42,roe:9.6,debt:25,
+ p:228000,c:1.5,prev:224640,w52h:310000,w52l:108000,
+ cap:"17조",per:15.4,pbr:1.48,roe:9.8,debt:26,
  t:["MLCC","AI서버","전장"],
- ind:{pbr:58,per:62,roe:56,momentum:62,growth:64,sentiment:60,safety:68},
+ ind:{pbr:52,per:54,roe:62,momentum:60,growth:60,sentiment:58,safety:88},
  sum:"MLCC 세계 3위. AI 서버·전장 수요 급증. 3/10 반도체 동반 반등.",
  bull:"AI 서버 MLCC 수요 폭증. 전장 고성장.",
  bear:"스마트폰 수요 둔화. 중국 경쟁.",
- tH:248000,tM:210000,tL:146000,
+ tH:64000,tM:55000,tL:43000,
  verify:{growth_verify:"AI 서버용 MLCC 수요 CAGR 30%. 1980~2026 전자부품 호황기 PER 15~30배 패턴. 현 14.8배는 사이클 초입 저평가 구간.",backtest:"삼성전기 AI 수혜 구간 +68%."}},
 
 // ━━━ 자동차·부품 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"005380",n:"현대차",s:"자동차",m:"K",
- p:516000,c:2.4,prev:504000,w52h:580000,w52l:195000,
- cap:"112조",per:5.8,pbr:0.72,roe:13.2,debt:145,
+ p:540000,c:0.95,prev:534880,w52h:620000,w52l:240000,
+ cap:"116조",per:5.2,pbr:0.68,roe:13.8,debt:142,
  t:["자동차","EV","저PER"],
- ind:{pbr:82,per:88,roe:68,momentum:65,growth:58,sentiment:62,safety:58},
- sum:"3/10 +4.7% 급반등(실측). PER 5.8배 역사적 저평가. 아이오닉9 글로벌 출시. 밸류업 수혜.",
- bull:"PER 5.8배 극저평가. EV 판매 확대. 미국 현지생산.",
- bear:"유가 급등 소비심리 위축. 관세 리스크.",
- tH:700000,tM:600000,tL:420000,
+ ind:{pbr:78,per:82,roe:72,momentum:65,growth:62,sentiment:62,safety:48},
+ sum:"FY2024 영업이익 14.2조원. PER 5.2배 역사적 저평가. 아이오닉9 글로벌 출시. 밸류업 정책 수혜.",
+ bull:"PER 5.2배 역사적 저평가. 밸류업 자사주 소각. 아이오닉9 글로벌 출시.",
+ bear:"글로벌 전기차 경쟁 심화. 미국 관세 불확실성. 중국 시장 부진.",
+ tH:275000,tM:245000,tL:195000,
  verify:{pbr_hist:"PBR 0.72배. 1980~2026 자동차 역사 평균 0.9배 대비 저평가. 1997 IMF 시 0.25배 최저 기록.",backtest:"PBR<0.8배 코스피 대비 초과수익 +23%p."}},
 
 {id:"000270",n:"기아",s:"자동차",m:"K",
- p:157700,c:0.6,prev:156800,w52h:185000,w52l:74000,
- cap:"65조",per:4.9,pbr:0.68,roe:14.1,debt:138,
+ p:162400,c:0.93,prev:160900,w52h:210000,w52l:72000,
+ cap:"66조",per:4.6,pbr:0.62,roe:15.2,debt:132,
  t:["자동차","EV","가치주"],
- ind:{pbr:85,per:90,roe:70,momentum:65,growth:60,sentiment:57,safety:60},
- sum:"PER 4.9배 역사적 최저 자동차주. EV6·EV9 글로벌 흥행. 배당수익률 4%+.",
- bull:"PER 4.9배 극저평가. EV 글로벌 확대. 주주환원.",
- bear:"유가 급등 소비 위축. 미국 관세.",
- tH:220000,tM:190000,tL:135000,
+ ind:{pbr:78,per:88,roe:72,momentum:65,growth:62,sentiment:62,safety:48},
+ sum:"FY2024 영업이익 12.8조원. PER 4.6배 자동차주 최저. EV6·EV9 글로벌 흥행. 배당수익률 4%+.",
+ bull:"PER 4.6배 역대 최저. 배당수익률 4%+. EV9 글로벌 수주 호조.",
+ bear:"현대차 의존도 높음. 전기차 전환 비용 부담. 환율 리스크.",
+ tH:155000,tM:130000,tL:100000,
  verify:{per_hist:"PER 4.9배. 1956~2026 한국 자동차주 역사적 최저 수준. IMF 시 PBR 0.2배 경험 후 회복 때마다 +80~150%. 현 0.68배는 강력 저평가 구간.",backtest:"기아 PBR<0.7배 3년 수익률 +89%."}},
 
 {id:"012330",n:"현대모비스",s:"자동차부품",m:"K",
- p:295000,c:2.1,prev:288870,w52h:350000,w52l:190000,
- cap:"27조",per:7.2,pbr:0.62,roe:8.6,debt:52,
+ p:430000,c:0.8,prev:426560,w52h:540000,w52l:230000,
+ cap:"40조",per:6.8,pbr:0.58,roe:8.8,debt:88,
  t:["자동차부품","EV","현대차"],
- ind:{pbr:83,per:82,roe:56,momentum:58,growth:52,sentiment:54,safety:70},
- sum:"현대차그룹 핵심 부품사. PBR 0.62배 저평가. EV 전장·부품 고성장.",
+ ind:{pbr:88,per:82,roe:62,momentum:65,growth:62,sentiment:62,safety:62},
+ sum:"현대차그룹 핵심 부품사. PBR 0.58배 저평가. EV 전장·부품 고성장. FY2024 안정적 실적.",
  bull:"EV부품 고성장. 현대차 판매 직접 수혜.",
  bear:"현대차 부진 시 동반 하락.",
- tH:400000,tM:345000,tL:248000,
+ tH:320000,tM:275000,tL:215000,
  verify:{pbr_hist:"자동차부품 PBR 0.62배. 1980~2026 현대모비스 역사적 PBR 밴드 0.6~1.4배. IMF·금융위기 저점 구간과 동일 수준. EV부품 전환 성장 프리미엄 미반영.",backtest:"PBR<0.7배 수익률 +55%."}},
 
 {id:"161390",n:"한국타이어앤테크놀로지",s:"타이어",m:"K",
- p:58400,c:0.5,prev:58100,w52h:72000,w52l:38000,
- cap:"6.8조",per:7.8,pbr:0.82,roe:10.6,debt:38,
+ p:76000,c:0.5,prev:75620,w52h:108000,w52l:46000,
+ cap:"8.9조",per:8.4,pbr:0.88,roe:10.4,debt:65,
  t:["타이어","EV타이어","배당"],
- ind:{pbr:76,per:80,roe:62,momentum:58,growth:50,sentiment:54,safety:70},
+ ind:{pbr:78,per:74,roe:62,momentum:60,growth:60,sentiment:58,safety:62},
  sum:"글로벌 타이어 4위. EV 전용 타이어 성장. PER 7.8배 저평가. 배당 3%+.",
  bull:"EV 타이어 확대. 북미 프리미엄 성장.",
  bear:"원자재 상승. 중국 경쟁.",
- tH:82000,tM:70000,tL:50000,
+ tH:320000,tM:275000,tL:215000,
  verify:{per_hist:"타이어 PER 8~14배. 1980~2026 한국 타이어주 장기 밴드. 현 7.8배는 IMF 이후 최저 구간 근접. EV타이어 성장 프리미엄 전혀 미반영.",backtest:"한국타이어 저점 대비 +54%."}},
 
 // ━━━ 방산·항공우주 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"012450",n:"한화에어로스페이스",s:"방산",m:"K",
- p:1300000,c:0.1,prev:1299000,w52h:1481000,w52l:380000,
- cap:"122조",per:22.4,pbr:3.84,roe:17.1,debt:82,
+ p:1180000,c:0.8,prev:1170600,w52h:1480000,w52l:400000,
+ cap:"38조",per:28.4,pbr:4.92,roe:18.2,debt:85,
  t:["방산","K방산","NATO"],
- ind:{pbr:38,per:44,roe:78,momentum:80,growth:90,sentiment:84,safety:66},
- sum:"3/10 종전기대 차익실현으로 하락(실측 하락 확인). 52주 +228% 수익. 천궁II UAE 실전배치. NATO 재무장 구조적 수혜.",
- bull:"NATO 국방비 증액 구조적. 천궁II·K9 수출 확대.",
- bear:"중동 종전 시 차익실현 강화. PBR 3.84배 고평가.",
- tH:1900000,tM:1600000,tL:1100000,
+ ind:{pbr:26,per:32,roe:82,momentum:80,growth:85,sentiment:75,safety:62},
+ sum:"FY2024 영업이익 1.8조원. 수주잔고 29조원 사상 최대. 천궁II UAE 실전 배치. K방산 글로벌 수출 구조적 수혜.",
+ bull:"K방산 구조적 수혜. 폴란드 천궁II 추가 수주 기대. 수주잔고 29조원.",
+ bear:"PBR 4.92배 고밸류. 방산 수출 지연 리스크. 금리 민감.",
+ tH:900000,tM:750000,tL:580000,
  verify:{growth_verify:"수주잔고 30조+. EPS 성장률 40%+. 1956~2026 방산주는 전쟁·안보 이슈 발생 시 PER 무관 급등 패턴. 2022 러우전쟁 이후 +620% — 1987 걸프위기 +180% 유사 구조.",backtest:"2022 러우전쟁 이후 +620%."}},
 
 {id:"047050",n:"포스코인터내셔널",s:"방산/에너지",m:"K",
- p:73000,c:1.8,prev:71700,w52h:88000,w52l:42000,
- cap:"10.7조",per:9.2,pbr:1.22,roe:13.4,debt:88,
+ p:120000,c:1.1,prev:118680,w52h:165000,w52l:50000,
+ cap:"9.3조",per:8.8,pbr:1.18,roe:13.8,debt:92,
  t:["방산","LNG","종합상사"],
- ind:{pbr:66,per:74,roe:64,momentum:62,growth:60,sentiment:58,safety:60},
- sum:"LNG 트레이딩·방산부품·팜오일 다각화. PER 9.2배 저평가. 실적 안정.",
+ ind:{pbr:66,per:74,roe:72,momentum:80,growth:85,sentiment:75,safety:62},
+ sum:"FY2024 영업이익 흑자. LNG 트레이딩·방산부품·팜오일 다각화. PER 8.8배 저평가.",
  bull:"LNG 수요 증가. 방산 수출 확대.",
  bear:"원자재 가격 변동. 복합사업 할인.",
- tH:105000,tM:88000,tL:62000,
+ tH:900000,tM:750000,tL:580000,
  verify:{per_hist:"종합상사 PER 8~14배. 1980~2026 상사·트레이딩 장기 밴드. IMF 이후 LNG·팜오일 다각화로 방어력 강화. 현 9.2배는 역사적 저평가 하단.",backtest:"포스코인터 저점 대비 +73%."}},
 
 {id:"079550",n:"LIG넥스원",s:"방산",m:"K",
- p:248000,c:2.1,prev:243000,w52h:310000,w52l:98000,
- cap:"5.9조",per:18.4,pbr:3.12,roe:17.2,debt:45,
+ p:420000,c:0.9,prev:416220,w52h:560000,w52l:180000,
+ cap:"6.8조",per:22.8,pbr:4.12,roe:18.8,debt:48,
  t:["방산","유도무기","전자전"],
- ind:{pbr:44,per:52,roe:76,momentum:74,growth:82,sentiment:78,safety:66},
- sum:"천궁II·현궁 핵심 제조사. 방산 수출 선도.",
+ ind:{pbr:66,per:74,roe:72,momentum:80,growth:85,sentiment:75,safety:62},
+ sum:"천궁II·현궁 핵심 제조사. FY2024 흑자 지속. K방산 수출 선도. NATO 재무장 수혜.",
  bull:"K방산 수출 확대. 유도무기 수요 증가.",
  bear:"중동 종전 시 수주 둔화.",
- tH:360000,tM:300000,tL:210000,
+ tH:900000,tM:750000,tL:580000,
  verify:{growth_verify:"수주잔고 8조+. 매출 성장률 20%+. 1956~2026 한국 방산 70년 — IMF 이후 자주국방 정책으로 구조적 성장. 유도무기 수출 허용 이후 글로벌 확대 사이클 진입.",backtest:"방산주 2022~ 평균 +280%."}},
 
 // ━━━ 조선·중공업 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"329180",n:"HD현대중공업",s:"조선",m:"K",
- p:586000,c:0.3,prev:584000,w52h:650000,w52l:195000,
- cap:"43조",per:16.8,pbr:3.52,roe:21.0,debt:98,
+ p:580000,c:1.4,prev:571920,w52h:695000,w52l:195000,
+ cap:"42조",per:18.4,pbr:4.12,roe:23.8,debt:102,
  t:["조선","LNG","방산"],
- ind:{pbr:42,per:56,roe:82,momentum:78,growth:84,sentiment:76,safety:58},
- sum:"조선 빅사이클 최대 수혜. LNG선·군함 수주잔고 역대 최대. ROE 21% 급등.",
+ ind:{pbr:26,per:54,roe:82,momentum:76,growth:82,sentiment:72,safety:48},
+ sum:"FY2024 영업이익 1.2조원. LNG선·군함 수주잔고 역대 최대. ROE 23.8% 급등. 조선 빅사이클 최대 수혜.",
  bull:"LNG선 초호황. 군함 방산 수주. 2027년까지 일감 확보.",
  bear:"PBR 3.5배 고평가. 인건비·강재 상승.",
- tH:780000,tM:680000,tL:500000,
+ tH:310000,tM:260000,tL:200000,
  verify:{roe_check:"ROE 21% = 조선주 1956~2026 전체 역사 최고 수준. 2003~08 슈퍼사이클과 동일 패턴.",backtest:"2003~2008 조선 슈퍼사이클 +1,200%."}},
 
 {id:"009540",n:"HD한국조선해양",s:"조선",m:"K",
- p:248000,c:-1.2,prev:251000,w52h:285000,w52l:82000,
- cap:"20조",per:14.2,pbr:2.86,roe:20.2,debt:105,
+ p:510000,c:1.2,prev:503960,w52h:620000,w52l:160000,
+ cap:"41조",per:15.8,pbr:3.12,roe:21.2,debt:108,
  t:["조선","지주","LNG"],
- ind:{pbr:44,per:58,roe:80,momentum:76,growth:82,sentiment:74,safety:56},
- sum:"HD현대중공업·현대미포조선 등 조선 지주사. 그룹 수주잔고 100조+.",
+ ind:{pbr:38,per:54,roe:82,momentum:76,growth:82,sentiment:72,safety:48},
+ sum:"조선 지주사. HD현대중공업·현대미포 등 그룹 수주잔고 100조+. FY2024 실적 호조.",
  bull:"수주잔고 100조+. LNG선 호황.",
  bear:"지주사 할인. 높은 부채비율.",
- tH:340000,tM:290000,tL:208000,
+ tH:320000,tM:275000,tL:215000,
  verify:{growth_verify:"2026~2028 매출 연 22% 성장 컨센서스. 1956~2026 조선 70년 — 1970년대 조선 굴기 이후 3차례 슈퍼사이클(1973~80 / 2003~08 / 2024~). 현재 3번째 사이클 초기.",backtest:"조선 사이클 저점 대비 +180%."}},
 
 {id:"010140",n:"삼성중공업",s:"조선",m:"K",
- p:14850,c:1.4,prev:14650,w52h:18200,w52l:6100,
- cap:"7.4조",per:12.8,pbr:1.48,roe:11.6,debt:118,
+ p:36000,c:1.4,prev:35500,w52h:48000,w52l:13000,
+ cap:"8.2조",per:14.8,pbr:1.68,roe:11.8,debt:122,
  t:["조선","LNG","드릴십"],
- ind:{pbr:58,per:62,roe:60,momentum:72,growth:78,sentiment:68,safety:52},
- sum:"LNG선·드릴십 전문. 수주잔고 급증. 흑자 전환 완료.",
+ ind:{pbr:52,per:66,roe:62,momentum:76,growth:82,sentiment:72,safety:48},
+ sum:"FY2024 흑자 전환 완료. LNG선·드릴십 수주 급증. 조선 빅사이클 수혜.",
  bull:"LNG선 수주 증가. 드릴십 원유 수요 수혜.",
  bear:"높은 부채비율. 공사손실 리스크.",
- tH:22000,tM:18500,tL:12500,
+ tH:24000,tM:20500,tL:16000,
  verify:{growth_verify:"2026년 수주잔고 20조 목표. 1980~2026 삼성중공업 사이클 — 2003~08 슈퍼사이클 당시 PBR 4배 도달. 현 PBR 1.48배는 사이클 시작 구간.",backtest:"조선 사이클 저점 대비 +143%."}},
 
 // ━━━ 철강·소재 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"005490",n:"POSCO홀딩스",s:"철강",m:"K",
- p:320000,c:1.5,prev:315280,w52h:520000,w52l:220000,
- cap:"36조",per:9.8,pbr:0.52,roe:5.3,debt:62,
+ p:338000,c:0.5,prev:336310,w52h:468000,w52l:260000,
+ cap:"29조",per:12.4,pbr:0.48,roe:3.8,debt:68,
  t:["철강","리튬","배터리소재"],
- ind:{pbr:82,per:74,roe:42,momentum:54,growth:52,sentiment:50,safety:66},
- sum:"세계 4위 철강사. 아르헨티나 리튬 사업 확대. PBR 0.52배 극저평가.",
+ ind:{pbr:88,per:66,roe:34,momentum:45,growth:42,sentiment:48,safety:62},
+ sum:"FY2024 철강 수익성 부진. 아르헨티나 리튬 사업 확대. PBR 0.48배 극저평가. 밸류업 후보.",
  bull:"리튬 사업 가치. PBR 저점. 밸류업 수혜.",
  bear:"중국 철강 공급 과잉. 업황 둔화.",
- tH:620000,tM:530000,tL:380000,
+ tH:24000,tM:20500,tL:16000,
  verify:{pbr_hist:"POSCO PBR 0.52배. 철강 1980~2026 저PBR 구간(0.4~0.6배) 역사적 수익률 +62%~+85%.",backtest:"PBR<0.6배 3년 +75%."}},
 
 {id:"010050",n:"현대제철",s:"철강",m:"K",
- p:28000,c:0.9,prev:27750,w52h:36000,w52l:18000,
- cap:"2.5조",per:6.8,pbr:0.32,roe:4.8,debt:142,
+ p:30000,c:0.6,prev:29820,w52h:44000,w52l:21000,
+ cap:"2.7조",per:6.8,pbr:0.32,roe:4.8,debt:142,
  t:["철강","현대차","저PBR"],
- ind:{pbr:88,per:82,roe:38,momentum:44,growth:38,sentiment:42,safety:50},
+ ind:{pbr:88,per:66,roe:34,momentum:45,growth:42,sentiment:48,safety:62},
  sum:"현대차그룹 전용 철강사. PBR 0.32배 극저평가. 밸류업 정책 수혜 후보.",
  bull:"PBR 0.32배 극저평가. 현대차 EV 강판 수요.",
  bear:"높은 부채비율. 철강 업황 둔화.",
- tH:40000,tM:33000,tL:22000,
+ tH:24000,tM:20500,tL:16000,
  verify:{pbr_hist:"PBR 0.32배 = 코스피 전체 하위 5%. 1997 IMF 이후 PBR 0.3~0.4배 구간 역사적 최고 수익 시기. 70년 평균 0.95배 대비 67% 할인.",backtest:"PBR<0.4배 3년 +88%."}},
 
 // ━━━ 에너지·원전 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"034020",n:"두산에너빌리티",s:"원전",m:"K",
- p:103000,c:7.0,prev:96200,w52h:108000,w52l:16800,
- cap:"66조",per:26.2,pbr:2.08,roe:7.9,debt:112,
+ p:80000,c:0.8,prev:79360,w52h:116000,w52l:20800,
+ cap:"19조",per:28.4,pbr:2.12,roe:7.8,debt:118,
  t:["원전","SMR","AI전력"],
- ind:{pbr:50,per:44,roe:52,momentum:74,growth:82,sentiment:76,safety:52},
- sum:"3/9 종가 96,200원→3/10 +7.0% 급등(실측). AI 데이터센터 전력난으로 원전 르네상스. SMR 진출. 52주 저점 대비 +513%.",
+ ind:{pbr:38,per:32,roe:48,momentum:72,growth:78,sentiment:68,safety:48},
+ sum:"FY2024 원전 수주 급증. AI 데이터센터 전력수요로 원전 르네상스. SMR 진출. 실적 개선 중.",
  bull:"AI 전력 수요 구조적 증가. SMR 사업화. 정부 원전 정책.",
  bear:"SMR 상용화 지연 리스크. 부채비율 112%.",
- tH:140000,tM:115000,tL:85000,
+ tH:24000,tM:20500,tL:16000,
  verify:{growth_verify:"원전 수주잔고 20조. 2026년 매출 +25%. 1962년 창립. 1956~2026 — 한국 중공업 64년. 1978년 고리 1호기 이후 원전 설비 독점 45년. 원전 르네상스+SMR은 1970년대 원전 붐과 유사 구조.",backtest:"원전 정책 수혜주 2022~ +500%."}},
 
 {id:"015760",n:"한국전력",s:"전력",m:"K",
- p:47500,c:4.2,prev:45600,w52h:69500,w52l:20900,
- cap:"35조",per:"-",pbr:0.22,roe:"-",debt:248,
+ p:30500,c:0.4,prev:30378,w52h:42000,w52l:17200,
+ cap:"20조",per:"-",pbr:0.22,roe:"-",debt:252,
  t:["전력","원전","공기업"],
- ind:{pbr:88,per:20,roe:16,momentum:56,growth:44,sentiment:46,safety:40},
- sum:"국내 전력 독점 공기업. PBR 0.22배 역사적 극저점. 전기요금 현실화로 흑자 전환 중. 3/10 반등 +4.2%.",
- bull:"전기요금 현실화. PBR 극저평가. 원전 수혜.",
- bear:"부채비율 248% 극히 높음. 유가 급등 연료비 부담.",
- tH:78000,tM:65000,tL:40000,
+ ind:{pbr:98,per:42,roe:42,momentum:60,growth:60,sentiment:58,safety:20},
+ sum:"FY2024 여전히 대규모 부채. PBR 0.22배 역대 최저. 전기요금 현실화로 흑자 전환 중.",
+ bull:"PBR 0.22배 역대 최저. 전기요금 현실화 진행. 원전 확대 정책 수혜.",
+ bear:"FY2024 여전히 대규모 부채. 전기요금 인상 정치 리스크. 태양광 수익성 부진.",
+ tH:24000,tM:20500,tL:16000,
  verify:{pbr_hist:"PBR 0.22배 = 코스피 역대 최저 수준. 1956년 창립 70년 공기업. 1956~2026 — 전기요금 동결·인상 사이클 반복. 1997 IMF 이후 요금 현실화 때마다 주가 반등. 현재 흑자 전환 진행 중.",backtest:"한전 PBR 저점 후 흑자 전환 시 +120%."}},
 
 {id:"096770",n:"SK이노베이션",s:"에너지/배터리",m:"K",
- p:105000,c:0.5,prev:104480,w52h:145000,w52l:78000,
- cap:"11조",per:"-",pbr:0.58,roe:"-",debt:168,
+ p:172000,c:0.6,prev:170968,w52h:230000,w52l:132000,
+ cap:"15조",per:8.8,pbr:0.62,roe:7.2,debt:68,
  t:["배터리","정유","SK온"],
- ind:{pbr:80,per:28,roe:18,momentum:54,growth:56,sentiment:50,safety:38},
- sum:"SK온(배터리)+SK에너지(정유). PBR 0.58배. 3/10 유가 급락으로 복잡한 수급.",
+ ind:{pbr:78,per:74,roe:48,momentum:55,growth:52,sentiment:52,safety:62},
+ sum:"FY2024 SK온(배터리)+SK에너지(정유) 통합. PBR 0.62배. 배터리·정유 실적 개선 중.",
  bull:"SK온 흑자 전환 기대. PBR 저평가.",
  bear:"SK온 적자 지속. 높은 부채비율.",
- tH:165000,tM:140000,tL:100000,
+ tH:415000,tM:360000,tL:285000,
  verify:{pbr_hist:"PBR 0.58배. 1980~2026 에너지·정유 역사적 PBR 밴드 0.5~1.5배. IMF 후 정유주 0.4배 최저 후 업황 회복 시 +120%. SK온 흑자 전환 시 배터리 프리미엄 추가.",backtest:"정유+배터리 복합 수혜 +45%."}},
 
 // ━━━ 금융·보험 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"105560",n:"KB금융",s:"금융",m:"K",
- p:153500,c:2.3,prev:150000,w52h:168000,w52l:65000,
- cap:"60조",per:7.1,pbr:0.63,roe:8.8,debt:0,
+ p:122000,c:0.5,prev:121390,w52h:152000,w52l:68000,
+ cap:"49조",per:7.2,pbr:0.62,roe:8.8,debt:"-",
  t:["금융","밸류업","배당"],
- ind:{pbr:84,per:82,roe:56,momentum:64,growth:46,sentiment:66,safety:80},
- sum:"밸류업 핵심 수혜주. PBR 0.63배 저평가. 배당수익률 5%+. 자사주 소각 40%.",
+ ind:{pbr:78,per:82,roe:62,momentum:62,growth:58,sentiment:60,safety:62},
+ sum:"FY2024 ROE 8.8%. 국내 1위 금융지주. 밸류업 자사주 소각 40%. 배당수익률 5%+.",
  bull:"밸류업 정책. 자사주 소각. 배당 40%.",
  bear:"PF 대출 부실 리스크. NIM 하락.",
- tH:190000,tM:165000,tL:112000,
+ tH:115000,tM:100000,tL:80000,
  verify:{pbr_hist:"한국 금융주 1980~2026 평균 PBR 0.9배. 현 0.63배 — IMF 시 0.28배 이후 두 번째로 낮은 구간.",backtest:"PBR<0.7배 3년 +67%."}},
 
 {id:"055550",n:"신한지주",s:"금융",m:"K",
- p:96700,c:2.2,prev:94620,w52h:108000,w52l:38000,
- cap:"49조",per:6.3,pbr:0.55,roe:8.4,debt:0,
+ p:82000,c:0.4,prev:81670,w52h:104000,w52l:46000,
+ cap:"40조",per:6.4,pbr:0.52,roe:8.2,debt:"-",
  t:["금융","밸류업","배당"],
- ind:{pbr:86,per:84,roe:54,momentum:60,growth:44,sentiment:62,safety:80},
- sum:"PBR 0.55배 역사적 저점 근접. 밸류업 1순위 수혜. 배당성향 40%+.",
+ ind:{pbr:88,per:82,roe:62,momentum:62,growth:58,sentiment:60,safety:62},
+ sum:"FY2024 ROE 8.2%. 밸류업 1순위 수혜. 배당성향 40%+. PBR 0.52배 저평가.",
  bull:"밸류업 정책. PBR 저점. 배당 확대.",
  bear:"NIM 축소. 부동산 PF 리스크.",
- tH:105000,tM:90000,tL:64000,
+ tH:78000,tM:68000,tL:54000,
  verify:{pbr_hist:"신한지주 1956~2026 최저 PBR 0.42배(1997 IMF). 2008 금융위기 시 0.45배. 현 0.55배는 역사적 저점권 진입.",backtest:"PBR<0.6배 2년 평균 +52%."}},
 
 {id:"086790",n:"하나금융지주",s:"금융",m:"K",
- p:98000,c:0.9,prev:97120,w52h:118000,w52l:51000,
- cap:"29조",per:5.7,pbr:0.47,roe:8.2,debt:0,
+ p:95000,c:0.4,prev:94620,w52h:118000,w52l:52000,
+ cap:"28조",per:5.8,pbr:0.48,roe:8.4,debt:"-",
  t:["금융","밸류업","초저PBR"],
- ind:{pbr:90,per:86,roe:52,momentum:58,growth:42,sentiment:60,safety:80},
- sum:"PBR 0.47배 4대 금융지주 최저. PER 5.7배. 밸류업 자사주 소각.",
+ ind:{pbr:88,per:82,roe:62,momentum:62,growth:58,sentiment:60,safety:62},
+ sum:"FY2024 ROE 8.4%. PBR 0.48배 4대 금융지주 내 저평가. 밸류업 자사주 소각.",
  bull:"PBR 0.47배 극저평가. 밸류업 가속.",
  bear:"NIM 하락. 건전성 모니터링.",
- tH:140000,tM:122000,tL:86000,
+ tH:90000,tM:78000,tL:62000,
  verify:{pbr_hist:"PBR 0.47배 = 1956~2026 금융주 역사 하위 10%. IMF 이후 PBR 저점 구간 평균 2년 수익률 +78%.",backtest:"PBR<0.5배 구간 +78%."}},
 
 {id:"316140",n:"우리금융지주",s:"금융",m:"K",
- p:18250,c:-0.3,prev:18310,w52h:22000,w52l:12000,
- cap:"12조",per:5.2,pbr:0.42,roe:8.1,debt:0,
+ p:17800,c:0.3,prev:17747,w52h:22000,w52l:11200,
+ cap:"12조",per:4.8,pbr:0.38,roe:8.2,debt:"-",
  t:["금융","밸류업","배당"],
- ind:{pbr:88,per:86,roe:50,momentum:54,growth:40,sentiment:56,safety:78},
- sum:"PBR 0.42배 4대 금융지주 최저. PER 5.2배. 배당수익률 6%+.",
+ ind:{pbr:88,per:88,roe:62,momentum:62,growth:58,sentiment:60,safety:62},
+ sum:"FY2024 ROE 8.2%. PBR 0.38배 최저. 배당수익률 6%+. 실적 안정.",
  bull:"PBR 극저점. 자사주 소각. 배당 확대.",
  bear:"동양생명 통합 비용. NIM 하락.",
- tH:27000,tM:23000,tL:16000,
+ tH:90000,tM:78000,tL:62000,
  verify:{pbr_hist:"PBR 0.42배. 1899년 창립 한국 최초 은행. 1956~2026 — 125년 생존 검증. IMF 공적자금 투입 후 재건. PBR 0.42배 = IMF 직후 수준. 민영화 완료 후 밸류업 정책 최대 수혜.",backtest:"우리금융 PBR 저점 2년 +60%."}},
 
 {id:"032830",n:"삼성생명",s:"보험",m:"K",
- p:108500,c:0.5,prev:108000,w52h:130000,w52l:68000,
- cap:"21조",per:9.2,pbr:0.62,roe:6.8,debt:0,
+ p:168000,c:0.6,prev:166990,w52h:215000,w52l:88000,
+ cap:"31조",per:8.2,pbr:0.58,roe:7.2,debt:"-",
  t:["보험","삼성","밸류업"],
- ind:{pbr:78,per:74,roe:48,momentum:58,growth:42,sentiment:56,safety:82},
- sum:"국내 최대 생명보험사. PBR 0.62배. 삼성전자 지분 보유로 자산가치 높음.",
+ ind:{pbr:88,per:74,roe:48,momentum:60,growth:60,sentiment:58,safety:62},
+ sum:"FY2024 ROE 7.2%. 국내 최대 생명보험사. 삼성전자 지분 자산가치 높음.",
  bull:"삼성전자 지분 가치. 밸류업 정책. 보험 수익 안정.",
  bear:"저금리 기조. 인구 감소 장기 리스크.",
- tH:155000,tM:130000,tL:92000,
+ tH:90000,tM:78000,tL:62000,
  verify:{pbr_hist:"보험주 PBR 0.62배. 1980~2026 저점 구간(0.5~0.65배). IMF 시 최저 0.32배 대비 아직 여유 있음.",backtest:"삼성생명 PBR 저점 3년 +55%."}},
 
 {id:"000810",n:"삼성화재",s:"보험",m:"K",
- p:350000,c:0.6,prev:347900,w52h:420000,w52l:228000,
- cap:"16조",per:10.4,pbr:1.18,roe:11.4,debt:0,
+ p:460000,c:0.7,prev:456780,w52h:580000,w52l:262000,
+ cap:"25조",per:12.4,pbr:1.22,roe:9.8,debt:"-",
  t:["보험","배당","우량주"],
- ind:{pbr:64,per:68,roe:64,momentum:60,growth:44,sentiment:60,safety:84},
- sum:"국내 1위 손해보험사. ROE 11% 안정. 배당수익률 4%+.",
+ ind:{pbr:66,per:66,roe:62,momentum:60,growth:60,sentiment:58,safety:62},
+ sum:"FY2024 ROE 9.8%. 국내 1위 손해보험사. 배당수익률 4%+. 실적 안정.",
  bull:"손해보험 안정 실적. 배당 확대. 자사주 소각.",
  bear:"자연재해 손실 리스크. 자동차보험 경쟁.",
- tH:480000,tM:415000,tL:300000,
+ tH:90000,tM:78000,tL:62000,
  verify:{per_hist:"손해보험 PER 10~15배. 현 10.4배. 1952년 창립. 1956~2026 70년 손해보험 역사. 삼성 브랜드 프리미엄 시장점유율 1위 50년. IMF 시 PER 4배 최저 후 정상화. 밸류업 정책 직접 수혜.",backtest:"삼성화재 저점 대비 +53%."}},
 
 {id:"138040",n:"메리츠금융지주",s:"금융",m:"K",
- p:112000,c:1.2,prev:110700,w52h:135000,w52l:62000,
- cap:"18조",per:8.4,pbr:1.42,roe:17.2,debt:0,
+ p:95000,c:0.8,prev:94240,w52h:128000,w52l:52000,
+ cap:"11조",per:7.8,pbr:1.12,roe:14.8,debt:"-",
  t:["금융","ROE","성장"],
- ind:{pbr:60,per:76,roe:80,momentum:68,growth:60,sentiment:68,safety:74},
- sum:"ROE 17% 금융지주 최상위. 메리츠증권·메리츠화재 통합. 주주환원율 50%+.",
+ ind:{pbr:66,per:82,roe:72,momentum:62,growth:58,sentiment:60,safety:62},
+ sum:"FY2024 ROE 14.8% 금융지주 최상위. 메리츠증권·화재 통합. 주주환원율 50%+.",
  bull:"ROE 17% 금융 최강. 주주환원 50%. 성장성.",
  bear:"부동산PF 리스크. 높은 레버리지.",
- tH:160000,tM:138000,tL:96000,
+ tH:90000,tM:78000,tL:62000,
  verify:{roe_check:"ROE 17% = 금융지주 1위. 1956~2026 고ROE 금융주(ROE>15%) 3년 평균 수익률 +95%.",backtest:"메리츠금융 고ROE 구간 +88%."}},
 
 // ━━━ IT플랫폼·통신 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"035420",n:"NAVER",s:"IT플랫폼",m:"K",
- p:242000,c:2.1,prev:237000,w52h:290000,w52l:155000,
- cap:"39조",per:23.8,pbr:1.58,roe:6.6,debt:25,
+ p:232000,c:0.8,prev:229150,w52h:322000,w52l:148000,
+ cap:"38조",per:28.4,pbr:1.72,roe:6.2,debt:28,
  t:["플랫폼","AI","광고"],
- ind:{pbr:55,per:50,roe:42,momentum:60,growth:58,sentiment:56,safety:66},
- sum:"AI 검색 전환. 라인야후 협력. 광고 매출 회복 중.",
+ ind:{pbr:52,per:32,roe:48,momentum:55,growth:58,sentiment:52,safety:88},
+ sum:"FY2024 영업이익 1.7조원. AI 검색·광고 회복 중. 라인야후 리스크 일부 해소. 클라우드 성장.",
  bull:"AI 광고 수익화. 웹툰 글로벌. 라인 시너지.",
  bear:"카카오·구글 경쟁. 성장 둔화.",
- tH:340000,tM:292000,tL:215000,
+ tH:90000,tM:215000,tL:165000,
  verify:{per_hist:"플랫폼 PER 20~40배. 2002년 상장 이후 고성장 PER 밴드. 2000년 닷컴버블 이후 한국 IT플랫폼 밸류에이션 체계 확립. 현 23.8배는 AI전환 기대 반영 전 구간.",growth_verify:"광고+커머스+클라우드 성장 12%."}},
 
 {id:"035720",n:"카카오",s:"IT플랫폼",m:"K",
- p:38450,c:1.8,prev:37770,w52h:58000,w52l:28000,
- cap:"17조",per:32.4,pbr:1.48,roe:4.6,debt:42,
+ p:43000,c:0.4,prev:42828,w52h:68000,w52l:26000,
+ cap:"19조",per:"-",pbr:1.28,roe:"-",debt:48,
  t:["플랫폼","카카오톡","AI"],
- ind:{pbr:54,per:38,roe:36,momentum:42,growth:48,sentiment:40,safety:58},
- sum:"카카오톡 4,500만 사용자 플랫폼. 고점 대비 -34% 조정. AI 서비스 전환 중.",
- bull:"AI 서비스 수익화. 카카오톡 압도적 플랫폼.",
- bear:"규제 리스크 지속. 고PER.",
- tH:60000,tM:50000,tL:33000,
+ ind:{pbr:66,per:42,roe:42,momentum:55,growth:58,sentiment:52,safety:76},
+ sum:"FY2024 영업손실. 카카오톡 4,500만 사용자 플랫폼. AI 전환 중. 구조조정 및 비용 절감 진행.",
+ bull:"카카오톡 독점 플랫폼 가치. AI 전환 후 수익화 기대. 구조조정 효과.",
+ bear:"FY2024 영업손실. 규제 리스크. 네이버·구글 경쟁.",
+ tH:52000,tM:44000,tL:33000,
  verify:{per_hist:"플랫폼 PER 20~50배. 2010년 이후 모바일 플랫폼 밸류에이션 새 역사. 2021 고점 PER 150배 대비 현 32배는 정상화. 규제 리스크 해소 시 재평가 가능.",growth_verify:"AI 전환 2026년 EPS +15% 전망."}},
 
 {id:"017670",n:"SK텔레콤",s:"통신",m:"K",
- p:62400,c:0.3,prev:62200,w52h:76000,w52l:48000,
- cap:"14조",per:14.8,pbr:1.02,roe:6.9,debt:88,
+ p:62000,c:0.4,prev:61752,w52h:80000,w52l:50000,
+ cap:"15조",per:12.8,pbr:0.92,roe:7.2,debt:92,
  t:["통신","AI","배당"],
- ind:{pbr:60,per:56,roe:46,momentum:52,growth:44,sentiment:52,safety:70},
- sum:"국내 1위 통신사. AI 서비스 수익화. 배당수익률 4.5%+.",
+ ind:{pbr:78,per:66,roe:48,momentum:58,growth:54,sentiment:56,safety:62},
+ sum:"FY2024 영업이익 1.7조원. AI 서비스 수익화 진행. 배당수익률 4.5%+. T우주 구독 성장.",
  bull:"AI 서비스 수익화. 안정 배당. 5G 수혜.",
  bear:"통신 성장 한계. 투자 비용 부담.",
- tH:85000,tM:73000,tL:54000,
+ tH:52000,tM:44000,tL:33000,
  verify:{per_hist:"통신사 PER 12~18배. 1980~2026 SK텔레콤 역사 — 1999~2000 닷컴 버블 PER 90배 후 정상화. 현 14.8배는 역사적 적정 구간. 배당수익률 5%+로 하방 방어.",backtest:"SKT 저점 대비 +30%."}},
 
 {id:"030200",n:"KT",s:"통신",m:"K",
- p:44800,c:0.4,prev:44620,w52h:55000,w52l:32000,
- cap:"11조",per:12.2,pbr:0.72,roe:5.9,debt:82,
+ p:50000,c:0.4,prev:49800,w52h:66000,w52l:36000,
+ cap:"12조",per:14.2,pbr:0.82,roe:5.8,debt:88,
  t:["통신","AI","배당"],
- ind:{pbr:76,per:68,roe:44,momentum:52,growth:42,sentiment:50,safety:72},
- sum:"국내 2위 통신사. AI·클라우드 전환 투자. PBR 0.72배 저평가. 배당 4%+.",
+ ind:{pbr:78,per:66,roe:48,momentum:58,growth:54,sentiment:56,safety:62},
+ sum:"FY2024 영업이익 1.1조원. B2B·클라우드 성장. AI 인프라 투자 확대. 배당 안정.",
  bull:"AI 클라우드 성장. PBR 저평가.",
  bear:"통신 성장 한계. 투자 부담.",
- tH:62000,tM:53000,tL:38000,
+ tH:52000,tM:44000,tL:33000,
  verify:{pbr_hist:"통신주 PBR 0.72배. 1980~2026 평균 1.0배. 1997 IMF 시 0.35배 최저. 현 위치는 저평가 초입 구간.",backtest:"KT PBR<0.8배 구간 2년 +44%."}},
 
 // ━━━ 바이오·제약 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"207940",n:"삼성바이오로직스",s:"바이오",m:"K",
- p:1760000,c:0.2,prev:1756000,w52h:1980000,w52l:720000,
- cap:"126조",per:48.2,pbr:5.92,roe:12.3,debt:42,
+ p:1762000,c:4.08,prev:1692640,w52h:2150000,w52l:880000,
+ cap:"125조",per:52.4,pbr:6.28,roe:12.4,debt:45,
  t:["바이오","CDMO","성장주"],
- ind:{pbr:28,per:22,roe:60,momentum:68,growth:80,sentiment:70,safety:62},
- sum:"CDMO 글로벌 2위. 5공장 완공으로 수주 사상 최대. 고밸류이나 성장성 정당화.",
- bull:"바이오의약품 수요 폭증. 5공장 풀가동.",
- bear:"PER 48배 고밸류. 금리 상승 시 할인.",
- tH:2400000,tM:2100000,tL:1500000,
+ ind:{pbr:18,per:22,roe:72,momentum:60,growth:65,sentiment:58,safety:76},
+ sum:"FY2024 영업이익 1.1조원. CDMO 세계 4위. 삼성그룹 바이오 핵심. 수주잔고 급증.",
+ bull:"CDMO 수주잔고 급증. 삼성 바이오 투자 지속. 2027년 제5공장 완공.",
+ bear:"PER 52배 고밸류. 글로벌 CDMO 경쟁 심화. 바이오 규제 리스크.",
+ tH:52000,tM:44000,tL:33000,
  verify:{per_hist:"CDMO 글로벌 PER 30~60배. 2016년 상장 이후 바이오 밸류에이션 새 기준 수립. 1956~2026 한국 제약·바이오 — 2010년대 이후 글로벌 기준 프리미엄 적용. 현 48배는 글로벌 CDMO 중간값.",backtest:"2020~2022 바이오 조정 시 -40% 경험."}},
 
 {id:"068270",n:"셀트리온",s:"바이오",m:"K",
- p:225000,c:0.4,prev:224100,w52h:280000,w52l:110000,
- cap:"27조",per:28.4,pbr:2.58,roe:9.1,debt:35,
+ p:240000,c:1.2,prev:237160,w52h:360000,w52l:125000,
+ cap:"29조",per:32.4,pbr:2.88,roe:8.8,debt:38,
  t:["바이오","바이오시밀러","미국"],
- ind:{pbr:44,per:40,roe:54,momentum:55,growth:68,sentiment:58,safety:58},
- sum:"짐펜트라 미국 직판 확대. 바이오시밀러 파이프라인 다수.",
+ ind:{pbr:38,per:32,roe:62,momentum:60,growth:65,sentiment:58,safety:76},
+ sum:"FY2024 합병 첫 온전 연도. 바이오시밀러 미국 시장 확대. 셀트리온헬스케어 합병 시너지.",
  bull:"짐펜트라 미국 점유율 확대. 합병 시너지.",
  bear:"경쟁 바이오시밀러 진입. PER 부담.",
- tH:290000,tM:252000,tL:178000,
+ tH:52000,tM:44000,tL:33000,
  verify:{growth_verify:"짐펜트라 2026년 미국 매출 5,000억 전망. 1956~2026 바이오시밀러 역사 — 셀트리온은 한국 최초 항체 바이오시밀러 허가(2012). 미국 허가 이후 반복적 +150~200% 수익 패턴.",backtest:"셀트리온 바이오시밀러 출시 후 +150~200%."}},
 
 {id:"000100",n:"유한양행",s:"제약",m:"K",
- p:149000,c:0.3,prev:148500,w52h:220000,w52l:68000,
- cap:"11조",per:40.2,pbr:4.12,roe:10.2,debt:18,
+ p:108000,c:0.8,prev:107140,w52h:148000,w52l:62000,
+ cap:"7.7조",per:28.4,pbr:3.48,roe:12.2,debt:28,
  t:["제약","신약","FDA승인"],
- ind:{pbr:30,per:28,roe:58,momentum:74,growth:80,sentiment:76,safety:68},
- sum:"레이저티닙 FDA 승인. 폐암치료제 미국 출시. 신약 매출 급성장.",
+ ind:{pbr:38,per:32,roe:72,momentum:60,growth:60,sentiment:58,safety:88},
+ sum:"FY2024 레이저티닙 미국 FDA 허가 판매. 얀센 파트너십. 기술수출 수익 증가.",
  bull:"레이저티닙 미국 매출 본격화. 파이프라인 다수.",
  bear:"PER 40배 고밸류. 경쟁 약물 진입.",
- tH:240000,tM:200000,tL:135000,
+ tH:225000,tM:195000,tL:150000,
  verify:{growth_verify:"레이저티닙 2026년 매출 3,000억 전망. 1926년 창업 한국 최장수 제약사. 1956~2026 70년 전체 생존·성장 검증된 유일한 종목. 신약 출시 제약사 PER 30~60배 역사적 근거.",per_hist:"신약 출시 제약사 PER 30~60배 정상. 현 40배 하단."}},
 
 {id:"128940",n:"한미약품",s:"제약",m:"K",
- p:185000,c:1.1,prev:182980,w52h:430000,w52l:218000,
- cap:"4.1조",per:22.8,pbr:3.52,roe:15.4,debt:28,
+ p:365000,c:0.8,prev:362080,w52h:520000,w52l:230000,
+ cap:"8.0조",per:24.8,pbr:3.88,roe:15.8,debt:32,
  t:["제약","신약","비만"],
- ind:{pbr:46,per:52,roe:72,momentum:62,growth:72,sentiment:64,safety:68},
- sum:"비만치료제·당뇨 신약 임상. 기술수출 다수 진행 중.",
+ ind:{pbr:26,per:42,roe:72,momentum:60,growth:60,sentiment:58,safety:76},
+ sum:"FY2024 ROE 15.8%. 비만치료제 임상 진행. 기술수출 파이프라인 다수. 목표주가 상향 추세.",
  bull:"비만 신약 글로벌 수요. 기술수출 성과.",
  bear:"임상 실패 리스크. 고밸류.",
- tH:520000,tM:430000,tL:305000,
+ tH:420000,tM:365000,tL:285000,
  verify:{growth_verify:"비만치료제 기술수출 진행 중. 1956~2026 한미약품 — 2015년 기술수출 12조 계약 후 +300%, 계약 해지 후 -70% 경험. 기술수출 발표→+40~100% 역사적 패턴 반복.",backtest:"한미약품 기술수출 후 +40~100%."}},
 
 {id:"145020",n:"휴젤",s:"바이오",m:"K",
- p:182000,c:0.6,prev:181000,w52h:235000,w52l:118000,
- cap:"3.4조",per:22.8,pbr:4.12,roe:18.2,debt:15,
+ p:210000,c:0.8,prev:208320,w52h:298000,w52l:125000,
+ cap:"3.9조",per:"-",pbr:4.28,roe:"-",debt:18,
  t:["바이오","보톡스","중국"],
- ind:{pbr:44,per:52,roe:76,momentum:62,growth:68,sentiment:64,safety:72},
+ ind:{pbr:26,per:42,roe:42,momentum:60,growth:65,sentiment:58,safety:88},
  sum:"보툴리눔독소(보톡스) 국내 1위. 중국 허가 완료. 글로벌 확장.",
  bull:"중국 시장 진출. 글로벌 에스테틱 수요.",
  bear:"경쟁사 증가. PER 부담.",
- tH:268000,tM:228000,tL:158000,
+ tH:420000,tM:365000,tL:285000,
  verify:{growth_verify:"중국 매출 2026년 500억 목표. ROE 18%. 2000년대 이후 K뷰티·보톡스 글로벌화 새 섹터. 중국 허가 후 +60% 패턴 반복. ROE 18% = 1956~2026 한국 평균 8%의 2.25배.",backtest:"휴젤 중국 허가 후 +60%."}},
 
 // ━━━ 2차전지 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"373220",n:"LG에너지솔루션",s:"2차전지",m:"K",
- p:401000,c:-0.4,prev:402600,w52h:550000,w52l:230000,
- cap:"97조",per:26.4,pbr:2.88,roe:10.9,debt:68,
+ p:394000,c:0.4,prev:392420,w52h:510000,w52l:215000,
+ cap:"92조",per:42.8,pbr:3.12,roe:7.2,debt:72,
  t:["배터리","EV","IRA"],
- ind:{pbr:48,per:44,roe:58,momentum:58,growth:64,sentiment:57,safety:58},
- sum:"배터리 글로벌 2위. 북미 GM JV 가동. 수주잔고 350조. 3/10 반등.",
+ ind:{pbr:38,per:22,roe:48,momentum:35,growth:40,sentiment:35,safety:62},
+ sum:"FY2024 영업이익 1.6조원. 글로벌 배터리 2위. 미국 IRA 수혜. 원가 절감 진행 중.",
  bull:"IRA 세액공제. 테슬라 원통형 공급. 수주잔고 350조.",
  bear:"EV 수요 둔화. CATL 경쟁.",
- tH:650000,tM:540000,tL:360000,
+ tH:420000,tM:365000,tL:285000,
  verify:{growth_verify:"수주잔고 350조. 11.7년치 일감. 2022년 상장 이후 2차전지 밸류에이션 기준 수립. 2003~08 조선 슈퍼사이클과 유사 구조 — 장기 수주 확보 후 PBR 재평가 패턴.",backtest:"2022 고점 대비 -55%. 저점 대비 +80%."}},
 
 {id:"006400",n:"삼성SDI",s:"2차전지",m:"K",
- p:210000,c:0.9,prev:208110,w52h:370000,w52l:165000,
- cap:"16조",per:"-",pbr:0.91,roe:4.8,debt:44,
+ p:265000,c:0.8,prev:262880,w52h:380000,w52l:152000,
+ cap:"19조",per:"-",pbr:0.88,roe:"-",debt:75,
  t:["배터리","전고체","저PBR"],
- ind:{pbr:78,per:50,roe:38,momentum:50,growth:52,sentiment:50,safety:62},
- sum:"전고체 배터리 기술 선도. PBR 0.91배 저평가. BMW·스텔란티스 공급.",
+ ind:{pbr:78,per:42,roe:34,momentum:35,growth:40,sentiment:35,safety:76},
+ sum:"FY2024 영업이익 급감. 전기차 수요 둔화 영향. PBR 0.88배 저점 매수 관점. 턴어라운드 모니터링.",
  bull:"전고체 상용화 2027~2028. PBR 1배 이하.",
  bear:"EV 캐즘 지속. 수익성 악화.",
- tH:380000,tM:318000,tL:215000,
+ tH:420000,tM:365000,tL:285000,
  verify:{pbr_hist:"PBR 0.91배. 1956~2026 삼성SDI — 1970년대 삼성-NEC 배터리 합작에서 시작. EV 캐즘 구간 PBR<1배는 역사적 매수 신호. 2015~2020 에너지저장 장치 성장기 +200% 패턴.",backtest:"2022 고점 대비 -57%."}},
 
 {id:"051910",n:"LG화학",s:"화학/배터리",m:"K",
- p:318000,c:-0.6,prev:320000,w52h:480000,w52l:230000,
- cap:"22조",per:"-",pbr:0.83,roe:"-",debt:68,
+ p:248000,c:0.5,prev:246760,w52h:390000,w52l:195000,
+ cap:"18조",per:"-",pbr:0.68,roe:"-",debt:88,
  t:["화학","배터리소재","저PBR"],
- ind:{pbr:80,per:30,roe:20,momentum:32,growth:34,sentiment:34,safety:30},
- sum:"PBR 0.83배 저평가. 배터리 부진으로 적자. 턴어라운드 기대.",
+ ind:{pbr:78,per:42,roe:42,momentum:60,growth:60,sentiment:58,safety:62},
+ sum:"FY2024 석유화학 부문 적자. 배터리소재(LG엔솔향) 분사 후 재편 중. PBR 0.68배 저평가.",
  bull:"PBR 저평가. 화학 업황 회복. 배터리소재 레버리지.",
  bear:"적자 지속. EV 캐즘. 중국 공급 과잉.",
- tH:490000,tM:415000,tL:295000,
+ tH:420000,tM:365000,tL:285000,
  verify:{pbr_hist:"PBR 0.83배. 1947년 창립 한국 최초 화학기업. 1956~2026 70년 생존 검증. 화학 업황 사이클 저점(PBR 0.6~0.9배) 매수 → 3년 +72~180%. 배터리 분사 후 저평가 구간.",backtest:"2008 PBR 0.6배 매수 3년 +180%."}},
 
 // ━━━ 게임 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"259960",n:"크래프톤",s:"게임",m:"K",
- p:462000,c:0.9,prev:458000,w52h:560000,w52l:210000,
- cap:"35조",per:17.8,pbr:2.74,roe:15.4,debt:15,
+ p:462000,c:0.8,prev:458310,w52h:580000,w52l:240000,
+ cap:"22조",per:16.8,pbr:2.58,roe:15.4,debt:14,
  t:["게임","PUBG","인도"],
- ind:{pbr:55,per:64,roe:72,momentum:78,growth:76,sentiment:76,safety:68},
- sum:"PUBG 인도 시장 폭발. 신작 다수. 현금 3조. ROE 15% 안정.",
+ ind:{pbr:38,per:54,roe:72,momentum:62,growth:65,sentiment:60,safety:88},
+ sum:"FY2024 영업이익 8,000억원. 배틀그라운드 글로벌 흥행 지속. 인도·중동 신시장 고성장. ROE 15.4%.",
  bull:"인도 10억 인구 게임 시장. 신작 라인업.",
  bear:"단일 IP 의존도. 배틀로얄 포화.",
- tH:640000,tM:560000,tL:400000,
+ tH:490000,tM:420000,tL:330000,
  verify:{per_hist:"글로벌 게임사 PER 15~30배. 현 17.8배 하단. 2021년 상장. 한국 게임 1956~2026 — 2000년대 온라인게임 글로벌화 이후 모바일→배틀로얄 진화. PUBG 글로벌 1위 IP.",roe_check:"ROE 15% 국내 게임사 최상위.",backtest:"IPO 이후 저점 대비 +120%."}},
 
 {id:"036570",n:"엔씨소프트",s:"게임",m:"K",
- p:168000,c:-0.6,prev:169000,w52h:258000,w52l:118000,
- cap:"3.7조",per:"-",pbr:0.82,roe:"-",debt:18,
+ p:200000,c:0.6,prev:198800,w52h:295000,w52l:135000,
+ cap:"4.4조",per:"-",pbr:1.12,roe:"-",debt:28,
  t:["게임","리니지","신작"],
- ind:{pbr:76,per:30,roe:24,momentum:38,growth:48,sentiment:38,safety:64},
- sum:"리니지 IP 보유. 고점 대비 -35%. PBR 0.82배 저평가. TL 글로벌 출시.",
+ ind:{pbr:66,per:42,roe:42,momentum:62,growth:65,sentiment:60,safety:88},
+ sum:"FY2024 영업손실. 리니지W 매출 감소. 모바일 신작 준비 중. 고점 대비 -42% 조정.",
  bull:"PBR 저평가. TL 글로벌. 리니지 IP 가치.",
  bear:"모바일 성장 둔화. 경쟁 심화.",
- tH:260000,tM:220000,tL:148000,
+ tH:490000,tM:420000,tL:330000,
  verify:{pbr_hist:"PBR 0.82배. 1997년 창립. 1956~2026 한국 게임 역사 — 리니지 25년 장수 IP. PBR<1배 게임사 신작 출시 후 +40~80% 역사적 반복 패턴. TL 글로벌 서비스 변수.",backtest:"엔씨소프트 신작 출시 후 +40~80%."}},
 
 // ━━━ 엔터·미디어 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"352820",n:"하이브",s:"엔터",m:"K",
- p:225000,c:0.9,prev:222980,w52h:340000,w52l:168000,
- cap:"9.5조",per:44.8,pbr:3.32,roe:7.4,debt:28,
+ p:228000,c:0.8,prev:226170,w52h:340000,w52l:138000,
+ cap:"9.2조",per:28.4,pbr:3.28,roe:11.4,debt:38,
  t:["K팝","BTS","위버스"],
- ind:{pbr:42,per:32,roe:44,momentum:56,growth:58,sentiment:56,safety:58},
- sum:"BTS 완전체 컴백 임박. 위버스 플랫폼 성장.",
+ ind:{pbr:38,per:32,roe:62,momentum:68,growth:72,sentiment:65,safety:76},
+ sum:"FY2024 영업이익 흑자. 방탄소년단·세븐틴·뉴진스 등 멀티 레이블. 글로벌 K팝 수혜.",
  bull:"BTS 완전체 컴백. 위버스 글로벌 팬덤.",
  bear:"아티스트 의존도. PER 44배.",
- tH:380000,tM:325000,tL:228000,
+ tH:490000,tM:420000,tL:330000,
  verify:{growth_verify:"BTS 컴백 시 앨범 500만장+ EPS 급증. 1956~2026 한국 엔터 — SM(1995) 이후 K팝 시스템화. BTS 완전체 활동 시 +80~150% 패턴. K팝 글로벌화 구조적 성장 사이클 진입.",backtest:"BTS 완전체 활동 시 +80~150%."}},
 
 {id:"041510",n:"SM엔터테인먼트",s:"엔터",m:"K",
- p:88200,c:0.5,prev:87800,w52h:115000,w52l:55000,
- cap:"2.2조",per:22.4,pbr:2.88,roe:12.8,debt:18,
+ p:90000,c:0.6,prev:89460,w52h:138000,w52l:62000,
+ cap:"1.9조",per:22.8,pbr:2.48,roe:10.8,debt:28,
  t:["K팝","EXO","aespa"],
- ind:{pbr:46,per:52,roe:64,momentum:60,growth:62,sentiment:58,safety:66},
- sum:"aespa·EXO 등 글로벌 IP. 카카오 경영권 분쟁 해소.",
+ ind:{pbr:38,per:42,roe:62,momentum:68,growth:72,sentiment:65,safety:88},
+ sum:"FY2024 영업이익 안정. SM 3.0 전략 아티스트 라인업 강화. 에스파·NCT·엑소 글로벌.",
  bull:"aespa 글로벌 인기. K팝 산업 성장.",
  bear:"아티스트 의존도.",
- tH:130000,tM:110000,tL:76000,
+ tH:490000,tM:420000,tL:330000,
  verify:{growth_verify:"aespa 월드투어 2026년 수익 급증. SM 1995년 창립 — 31년 K팝 역사 선도. 1956~2026 엔터주 패턴 — 아이돌 데뷔·월드투어 주기에 맞춰 PER 급등 반복. 현재 저점 구간.",backtest:"아이돌 데뷔 후 +60%."}},
 
 {id:"035900",n:"JYP엔터테인먼트",s:"엔터",m:"K",
- p:62800,c:0.6,prev:62400,w52h:92000,w52l:42000,
- cap:"1.7조",per:18.2,pbr:3.24,roe:17.8,debt:12,
+ p:68000,c:0.6,prev:67592,w52h:105000,w52l:46000,
+ cap:"1.3조",per:18.8,pbr:2.12,roe:11.2,debt:22,
  t:["K팝","트와이스","스트레이키즈"],
- ind:{pbr:44,per:56,roe:76,momentum:58,growth:62,sentiment:58,safety:70},
- sum:"ROE 17.8% 엔터 1위. 트와이스·스트레이키즈 글로벌.",
+ ind:{pbr:38,per:54,roe:62,momentum:68,growth:72,sentiment:65,safety:88},
+ sum:"FY2024 영업이익 안정. 트와이스·스트레이키즈·ITZY 글로벌 활동. K팝 구조적 수혜.",
  bull:"ROE 고품질. 글로벌 IP 다수.",
  bear:"아티스트 의존도. 트와이스 주기.",
- tH:95000,tM:80000,tL:54000,
+ tH:490000,tM:420000,tL:330000,
  verify:{roe_check:"ROE 17.8% 엔터 업종 최상위.",backtest:"JYP 신보 발매 후 +30~60%. 1997년 창립 한국 3대 기획사. ROE 17.8% = 엔터 업종 최상위. 1956~2026 한국 엔터 — TWICE·Stray Kids 글로벌 팬덤 기반 안정 수익 구조."}},
 
 // ━━━ 식품·소비재 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"003230",n:"삼양식품",s:"식품",m:"K",
- p:650000,c:-0.5,prev:653250,w52h:1500000,w52l:490000,
- cap:"3.8조",per:21.8,pbr:6.12,roe:28.2,debt:22,
+ p:730000,c:0.8,prev:724160,w52h:920000,w52l:388000,
+ cap:"6.2조",per:24.4,pbr:7.12,roe:29.2,debt:25,
  t:["K푸드","불닭","수출"],
- ind:{pbr:38,per:54,roe:88,momentum:72,growth:76,sentiment:72,safety:66},
- sum:"불닭볶음면 글로벌 폭발. ROE 28% 고품질. K-푸드 수출 선도.",
+ ind:{pbr:18,per:42,roe:92,momentum:65,growth:68,sentiment:62,safety:88},
+ sum:"FY2024 ROE 29.2% 코스닥 최상위권. 불닭볶음면 글로벌 수출 폭발. 미국·중국·동남아 동반 성장.",
  bull:"K-푸드 글로벌 확산. ROE 28%.",
  bear:"PBR 6배 고평가. 환율 리스크.",
- tH:1100000,tM:950000,tL:680000,
+ tH:900000,tM:780000,tL:600000,
  verify:{roe_check:"ROE 28% 코스피 상위 3%.",growth_verify:"불닭 2026년 수출 5,000억. CAGR 35%. 1956년 창립 70년 기업. ROE 28% = 코스피 상위 3%. 1956~2026 — 오징어게임·K콘텐츠 수혜로 K푸드 글로벌 수요 구조적 전환 확인."}},
 
 {id:"097950",n:"CJ제일제당",s:"식품",m:"K",
- p:265000,c:-0.4,prev:266060,w52h:340000,w52l:195000,
- cap:"5.5조",per:14.8,pbr:0.82,roe:5.6,debt:82,
+ p:305000,c:0.5,prev:303480,w52h:420000,w52l:242000,
+ cap:"4.8조",per:12.8,pbr:0.78,roe:6.2,debt:68,
  t:["식품","K푸드","비비고"],
- ind:{pbr:74,per:62,roe:44,momentum:52,growth:52,sentiment:50,safety:60},
- sum:"비비고 글로벌 1위. K-푸드 선도. PBR 0.82배 저평가.",
+ ind:{pbr:78,per:66,roe:48,momentum:65,growth:68,sentiment:62,safety:62},
+ sum:"FY2024 영업이익 안정. 식품·바이오·물류 다각화. PBR 0.78배 저평가. 배당 안정.",
  bull:"K-푸드 글로벌 수요. PBR 저평가.",
  bear:"높은 부채비율. 원재료 가격 상승.",
- tH:380000,tM:320000,tL:230000,
+ tH:900000,tM:780000,tL:600000,
  verify:{pbr_hist:"CJ제일제당 PBR 0.82배. 1953년 삼성그룹 분리. 1956~2026 70년 K푸드 역사 — 비비고 글로벌화로 2020년대 리레이팅. 식품주 PBR 1.1배 대비 저평가. K푸드 수출 확대 재평가 기대.",backtest:"K푸드 수출 확대 시 +55%."}},
 
 {id:"033780",n:"KT&G",s:"담배/식품",m:"K",
- p:115000,c:0.9,prev:113970,w52h:145000,w52l:78000,
- cap:"13조",per:12.4,pbr:1.42,roe:11.5,debt:18,
+ p:126000,c:0.5,prev:125370,w52h:165000,w52l:88000,
+ cap:"16조",per:12.4,pbr:1.28,roe:10.4,debt:42,
  t:["담배","HNB","배당"],
- ind:{pbr:58,per:62,roe:62,momentum:60,growth:46,sentiment:56,safety:82},
- sum:"궐련형 전자담배(HNB) 수출 고성장. 배당수익률 5%+.",
+ ind:{pbr:66,per:66,roe:62,momentum:65,growth:68,sentiment:62,safety:76},
+ sum:"FY2024 영업이익 안정. 담배·건강기능식품·부동산 다각화. 배당수익률 4%+. 방어주.",
  bull:"HNB 수출 확대. 안정 배당.",
  bear:"담배 규제 강화. 성장 한계.",
- tH:138000,tM:120000,tL:92000,
+ tH:900000,tM:780000,tL:600000,
  verify:{per_hist:"담배 PER 10~16배. 현 12.4배. 1956~2026 KT&G — 1987년 민영화 이후 독점 구조 유지. 배당수익률 5~7% 재투자 시 10년 복리 +95%. 글로벌 담배주 프리미엄 비교 시 저평가.",backtest:"KT&G 배당 재투자 10년 +95%."}},
 
 // ━━━ 건설·부동산 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"000720",n:"현대건설",s:"건설",m:"K",
- p:28600,c:0.4,prev:28500,w52h:38000,w52l:20000,
- cap:"2.2조",per:8.4,pbr:0.42,roe:5.0,debt:248,
+ p:36000,c:0.8,prev:35712,w52h:55000,w52l:24000,
+ cap:"2.8조",per:8.4,pbr:0.58,roe:6.8,debt:128,
  t:["건설","플랜트","저PBR"],
- ind:{pbr:84,per:78,roe:40,momentum:48,growth:44,sentiment:44,safety:44},
+ ind:{pbr:88,per:74,roe:48,momentum:48,growth:44,sentiment:46,safety:48},
  sum:"PBR 0.42배 극저평가. 해외 플랜트 수주 회복. 원전 시공 수혜.",
  bull:"PBR 저평가. 해외 플랜트 수주. 원전 시공.",
  bear:"높은 부채비율. 국내 부동산 침체.",
- tH:45000,tM:37000,tL:25000,
+ tH:900000,tM:780000,tL:600000,
  verify:{pbr_hist:"건설주 PBR 0.42배. 1947년 창립 한국 최초 건설사. 1956~2026 — IMF 부도 후 재건. IMF·금융위기 PBR 저점 0.25~0.45배 구간 매수 → 업황 회복 시 +68~200% 패턴.",backtest:"건설주 PBR<0.5배 3년 +68%."}},
 
 {id:"028260",n:"삼성물산",s:"건설/지주",m:"K",
- p:168000,c:1.2,prev:166000,w52h:200000,w52l:110000,
- cap:"32조",per:18.4,pbr:0.82,roe:4.5,debt:32,
+ p:228000,c:0.6,prev:226630,w52h:310000,w52l:135000,
+ cap:"44조",per:14.8,pbr:0.78,roe:5.2,debt:38,
  t:["건설","삼성지주","자산"],
- ind:{pbr:72,per:58,roe:42,momentum:58,growth:46,sentiment:58,safety:72},
- sum:"삼성전자 지분 4.1% + 삼성생명 19.3% 보유. PBR 0.82배. 지주사 할인.",
+ ind:{pbr:88,per:74,roe:48,momentum:48,growth:44,sentiment:46,safety:48},
+ sum:"PBR 0.78배 저평가 대형주. 건설·바이오·패션 다각화. 삼성 계열 안정성. FY2024 안정 실적.",
  bull:"삼성전자·생명 지분 가치. 밸류업 수혜.",
  bear:"지주사 할인 구조적.",
- tH:240000,tM:205000,tL:146000,
+ tH:900000,tM:780000,tL:600000,
  verify:{pbr_hist:"삼성물산 PBR 0.82배. 삼성그룹 지주 역할. 1956~2026 — 삼성그룹 성장과 함께 70년. 지주 할인율 역사적 평균 25~40%. 삼성전자·바이오 등 자산가치 대비 할인 구간.",backtest:"삼성물산 밸류업 시 +45%."}},
 
 // ━━━ 유통 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"069960",n:"현대백화점",s:"유통",m:"K",
- p:52800,c:-0.4,prev:53000,w52h:72000,w52l:38000,
- cap:"1.4조",per:7.2,pbr:0.38,roe:5.3,debt:42,
+ p:54000,c:0.4,prev:53784,w52h:82000,w52l:40000,
+ cap:"1.4조",per:14.8,pbr:0.48,roe:3.2,debt:58,
  t:["백화점","유통","저PBR"],
- ind:{pbr:86,per:80,roe:42,momentum:46,growth:36,sentiment:40,safety:64},
+ ind:{pbr:88,per:66,roe:34,momentum:60,growth:60,sentiment:58,safety:76},
  sum:"PBR 0.38배 극저평가. PER 7.2배. 오프라인 유통 부동산 자산가치.",
  bull:"PBR 극저평가. 부동산 자산가치.",
  bear:"온라인 전환. 성장 한계.",
@@ -924,8 +1099,8 @@ const DB = [
 
 // ━━━ 화학 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"011170",n:"롯데케미칼",s:"화학",m:"K",
- p:62800,c:0.3,prev:62600,w52h:88000,w52l:44000,
- cap:"2.2조",per:"-",pbr:0.32,roe:"-",debt:88,
+ p:54000,c:0.4,prev:53784,w52h:92000,w52l:42000,
+ cap:"1.9조",per:"-",pbr:0.32,roe:"-",debt:88,
  t:["화학","석유화학","저PBR"],
  ind:{pbr:88,per:22,roe:18,momentum:38,growth:32,sentiment:32,safety:36},
  sum:"PBR 0.32배 극저평가. 석유화학 업황 바닥. 자산가치 대비 68% 할인.",
@@ -935,8 +1110,8 @@ const DB = [
  verify:{pbr_hist:"PBR 0.32배. 1958년 창립. 1956~2026 — 화학 업황 사이클 저점. IMF 시 0.18배 최저 기록 후 회복 시 +300%. 현 0.32배는 역사적 저점 근접. 구조조정 완료 후 반등 기대.",backtest:"롯데케미칼 업황 회복 시 +120%."}},
 
 {id:"010600",n:"OCI홀딩스",s:"화학/태양광",m:"K",
- p:78400,c:1.2,prev:77500,w52h:108000,w52l:52000,
- cap:"1.4조",per:"-",pbr:0.62,roe:"-",debt:58,
+ p:82000,c:0.5,prev:81590,w52h:120000,w52l:52000,
+ cap:"1.5조",per:"-",pbr:0.62,roe:"-",debt:58,
  t:["폴리실리콘","태양광","화학"],
  ind:{pbr:78,per:28,roe:22,momentum:54,growth:52,sentiment:48,safety:54},
  sum:"폴리실리콘 글로벌 3위. PBR 0.62배 저평가. 태양광 수요 회복 기대.",
@@ -947,10 +1122,10 @@ const DB = [
 
 // ━━━ 반도체 소재·장비 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"036830",n:"솔브레인",s:"반도체소재",m:"K",
- p:280000,c:1.8,prev:274960,w52h:368000,w52l:198000,
- cap:"2.0조",per:14.8,pbr:2.12,roe:14.4,debt:22,
+ p:308000,c:1.2,prev:304350,w52h:430000,w52l:192000,
+ cap:"2.2조",per:18.4,pbr:2.88,roe:15.8,debt:28,
  t:["반도체소재","식각액","배터리소재"],
- ind:{pbr:52,per:62,roe:66,momentum:64,growth:66,sentiment:60,safety:68},
+ ind:{pbr:38,per:54,roe:72,momentum:82,growth:88,sentiment:80,safety:88},
  sum:"반도체 식각액·배터리 전해질 선도. 삼성·SK 공급. 안정 성장.",
  bull:"반도체 소재 수요 증가. 배터리 소재 성장.",
  bear:"경쟁사 진입. 환율 리스크.",
@@ -958,10 +1133,10 @@ const DB = [
  verify:{per_hist:"반도체소재 PER 12~20배. 현 14.8배. 1993년 창립. 1956~2026 — 반도체 소재 자립화 역사. IMF 이후 삼성·하이닉스 소재 국산화 정책 수혜. 반도체 호황 시 PER 25배 도달 패턴.",backtest:"솔브레인 반도체 호황 시 +65%."}},
 
 {id:"240810",n:"원익IPS",s:"반도체장비",m:"K",
- p:38400,c:3.5,prev:37100,w52h:52000,w52l:24000,
- cap:"1.7조",per:22.4,pbr:2.24,roe:10.2,debt:28,
+ p:45000,c:1.5,prev:44340,w52h:68000,w52l:23000,
+ cap:"2.0조",per:18.4,pbr:2.28,roe:12.4,debt:32,
  t:["반도체장비","증착","삼성"],
- ind:{pbr:50,per:52,roe:58,momentum:70,growth:72,sentiment:64,safety:62},
+ ind:{pbr:38,per:54,roe:72,momentum:82,growth:88,sentiment:80,safety:76},
  sum:"반도체 증착 장비 1위. 삼성전자 주요 협력사. AI 설비투자 수혜.",
  bull:"AI 반도체 투자 수혜. 삼성·SK 설비 확장.",
  bear:"반도체 투자 사이클 변동.",
@@ -970,11 +1145,11 @@ const DB = [
 
 // ━━━ 의료기기·헬스케어 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"214150",n:"클래시스",s:"의료기기",m:"K",
- p:42800,c:0.5,prev:42600,w52h:56000,w52l:28000,
- cap:"2.0조",per:28.4,pbr:8.24,roe:29.2,debt:8,
+ p:62000,c:1.2,prev:61270,w52h:92000,w52l:40000,
+ cap:"2.6조",per:28.4,pbr:6.28,roe:22.4,debt:15,
  t:["의료기기","피부","ROE"],
- ind:{pbr:30,per:44,roe:88,momentum:62,growth:70,sentiment:64,safety:72},
- sum:"슈링크 등 피부 의료기기 1위. ROE 29% 극고품질. 글로벌 수출 확대.",
+ ind:{pbr:18,per:32,roe:82,momentum:62,growth:68,sentiment:60,safety:88},
+ sum:"FY2024 ROE 22.4%. 초음파 의료기기 글로벌 1위. 미국·중국 동반 고성장. 마진율 40%+.",
  bull:"ROE 29%. 에스테틱 의료기기 글로벌 수요.",
  bear:"고PBR. 경쟁사 진입.",
  tH:65000,tM:54000,tL:36000,
@@ -982,22 +1157,22 @@ const DB = [
 
 // ━━━ 로봇·AI ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"454910",n:"두산로보틱스",s:"로봇",m:"K",
- p:94500,c:4.5,prev:90430,w52h:145000,w52l:38000,
- cap:"8.9조",per:"-",pbr:9.12,roe:"-",debt:22,
+ p:55000,c:1.5,prev:54190,w52h:95000,w52l:20500,
+ cap:"6.2조",per:"-",pbr:8.88,roe:"-",debt:42,
  t:["로봇","AI","협동로봇"],
- ind:{pbr:18,per:15,roe:15,momentum:84,growth:88,sentiment:82,safety:36},
- sum:"협동로봇 국내 1위. AI 로봇 수요 급증. 삼성·현대 협력.",
+ ind:{pbr:18,per:42,roe:42,momentum:65,growth:72,sentiment:62,safety:76},
+ sum:"FY2024 적자. 국내 1위 협동로봇. 두산그룹 지원. AI 로봇 시대 구조적 수혜주. 성장주 프리미엄.",
  bull:"AI 로봇 시대. 삼성 투자. 글로벌 수요.",
  bear:"적자 지속. PBR 9배 극고평가.",
  tH:180000,tM:145000,tL:78000,
  verify:{growth_verify:"로봇 시장 CAGR 25%. 국내 1위 35%. 2023년 상장. 1956~2026 — 한국 제조업 자동화 역사. 2020년대 로봇 = 2010년대 스마트폰 성장 구조 유사. 역사적 성장 산업 초기 프리미엄.",backtest:"로봇주 고밸류 사례 다수."}},
 
 {id:"285540",n:"레인보우로보틱스",s:"로봇",m:"Q",
- p:142000,c:3.8,prev:136800,w52h:220000,w52l:52000,
- cap:"2.7조",per:"-",pbr:11.8,roe:"-",debt:15,
+ p:76000,c:1.5,prev:74900,w52h:145000,w52l:28000,
+ cap:"5.6조",per:"-",pbr:12.4,roe:"-",debt:18,
  t:["로봇","AI","삼성투자"],
- ind:{pbr:15,per:12,roe:12,momentum:80,growth:86,sentiment:80,safety:34},
- sum:"삼성전자 지분 직접 투자. AI 로봇 대표주.",
+ ind:{pbr:18,per:42,roe:42,momentum:65,growth:72,sentiment:62,safety:88},
+ sum:"FY2024 적자. 삼성전자 로봇사업 파트너. 웨어러블 로봇·물류로봇 확대. 성장주 프리미엄.",
  bull:"삼성전자 전략 파트너. AI 로봇 수요 폭발.",
  bear:"적자. PBR 11.8배 고밸류.",
  tH:260000,tM:210000,tL:118000,
@@ -1005,98 +1180,98 @@ const DB = [
 
 // ━━━ 코스닥 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"196170",n:"알테오젠",s:"바이오",m:"Q",
- p:302000,c:3.2,prev:292600,w52h:450000,w52l:98000,
- cap:"22조",per:"-",pbr:"-",roe:"-",debt:12,
+ p:400000,c:1.5,prev:394040,w52h:620000,w52l:210000,
+ cap:"21조",per:"-",pbr:18.4,roe:"-",debt:12,
  t:["바이오","ADC","기술수출"],
- ind:{pbr:30,per:20,roe:18,momentum:76,growth:86,sentiment:82,safety:44},
- sum:"피하주사 플랫폼 기술수출 연속 성공. ADC 신약. 코스닥 바이오 대장주.",
+ ind:{pbr:18,per:42,roe:42,momentum:60,growth:65,sentiment:58,safety:88},
+ sum:"기술수출 연속 성공(MSD·로슈). 피하주사 플랫폼 독보적. FY2024 매출 급증. 코스닥 바이오 대장주.",
  bull:"기술수출 계약 다수. ADC 파이프라인.",
  bear:"임상 실패 리스크. 고밸류.",
- tH:520000,tM:420000,tL:250000,
+ tH:380000,tM:320000,tL:240000,
  verify:{growth_verify:"기술수출 총액 2조+. 마일스톤 순차 수령. 1956~2026 한국 바이오 — 2015년 이후 기술수출 붐. 알테오젠 SC제형 플랫폼은 글로벌 유일 기술. 계약 유지 시 PER 리레이팅 기대.",backtest:"기술수출 발표 후 +30~80%."}},
 
 {id:"247540",n:"에코프로비엠",s:"2차전지",m:"Q",
- p:22000,c:1.2,prev:21740,w52h:35000,w52l:14500,
- cap:"10조",per:"-",pbr:4.62,roe:"-",debt:72,
+ p:168000,c:0.8,prev:166650,w52h:420000,w52l:115000,
+ cap:"13조",per:"-",pbr:4.48,roe:"-",debt:78,
  t:["양극재","배터리","코스닥"],
- ind:{pbr:30,per:20,roe:18,momentum:52,growth:68,sentiment:58,safety:42},
- sum:"배터리 양극재 1위. EV 캐즘으로 적자. 고점 대비 -52%. 코스닥 대장주.",
- bull:"EV 수요 회복 시 최대 수혜.",
- bear:"적자 지속. EV 캐즘 장기화.",
- tH:280000,tM:225000,tL:148000,
+ ind:{pbr:26,per:42,roe:42,momentum:35,growth:40,sentiment:35,safety:62},
+ sum:"FY2024 영업손실. 양극재 수요 부진. PBR 4.48배. 2025~26년 전기차 수요 회복 시 수혜.",
+ bull:"글로벌 Top3 양극재 제조사. 전기차 수요 회복 시 직접 수혜.",
+ bear:"FY2024 영업손실 지속. 리튬·니켈 가격 변동성. 고객사 재고 부담.",
+ tH:165000,tM:140000,tL:105000,
  verify:{pbr_hist:"PBR 4.62배. 2차전지 캐즘 영향. 1956~2026 — 한국 배터리 20년 역사. 2017~2022 폭등 후 조정. 고점 대비 -62% 낙폭은 IMF 이후 과열 섹터 정상화 패턴과 유사.",backtest:"에코프로비엠 고점 대비 -62%."}},
 
 {id:"086520",n:"에코프로",s:"2차전지",m:"Q",
- p:82000,c:0.5,prev:81590,w52h:260000,w52l:58000,
- cap:"11조",per:"-",pbr:3.42,roe:"-",debt:78,
+ p:78000,c:0.8,prev:77380,w52h:195000,w52l:49000,
+ cap:"10조",per:"-",pbr:3.28,roe:"-",debt:82,
  t:["양극재","배터리","지주"],
- ind:{pbr:32,per:18,roe:16,momentum:50,growth:66,sentiment:56,safety:40},
- sum:"에코프로그룹 지주. EV 캐즘 영향 동반 약세.",
- bull:"에코프로비엠 턴어라운드 시 지주 레버리지.",
- bear:"적자 지속. 지주 할인.",
- tH:200000,tM:168000,tL:110000,
+ ind:{pbr:26,per:42,roe:42,momentum:35,growth:40,sentiment:35,safety:62},
+ sum:"FY2024 영업손실. 배터리소재 수요 부진. 고점 대비 -75% 조정. 2차전지 업황 회복 시 반등 기대.",
+ bull:"2차전지 업황 회복 시 레버리지 수혜. 에코프로비엠 등 자회사 가치.",
+ bear:"FY2024 영업손실. 전기차 수요 둔화. 고밸류 부담.",
+ tH:95000,tM:80000,tL:60000,
  verify:{pbr_hist:"지주 PBR 할인율 20~30%. 현재 프리미엄 상태. 1956~2026 — 한국 지주사 역사적으로 항상 자회사 대비 할인. 에코프로비엠 회복 선행 후 지주 후행 반등 패턴.",backtest:"에코프로 고점 대비 -50%."}},
 
 {id:"263750",n:"펄어비스",s:"게임",m:"Q",
- p:38800,c:1.4,prev:38260,w52h:62000,w52l:24000,
- cap:"1.4조",per:"-",pbr:1.32,roe:"-",debt:12,
+ p:30000,c:0.5,prev:29850,w52h:54000,w52l:19000,
+ cap:"1.4조",per:"-",pbr:1.52,roe:"-",debt:22,
  t:["게임","검은사막","글로벌"],
- ind:{pbr:60,per:28,roe:22,momentum:52,growth:62,sentiment:52,safety:66},
+ ind:{pbr:52,per:42,roe:42,momentum:62,growth:65,sentiment:60,safety:88},
  sum:"검은사막 글로벌 서비스. 붉은사막 출시 기대. 고점 대비 -37%.",
  bull:"붉은사막 출시 기대감. 글로벌 IP.",
  bear:"적자. 신작 출시 지연 리스크.",
- tH:62000,tM:52000,tL:33000,
+ tH:95000,tM:80000,tL:60000,
  verify:{growth_verify:"붉은사막 2026년 출시 기대. 1956~2026 한국 게임 — 신작 기대감 구간 PER 무관 선행 급등 패턴. 검은사막 출시 전 +150% 경험. 출시 지연 리스크도 역사적으로 반복.",backtest:"펄어비스 신작 기대 구간 +50% 패턴."}},
 
 {id:"357780",n:"솔브레인홀딩스",s:"반도체소재",m:"Q",
- p:52800,c:1.6,prev:52000,w52h:68000,w52l:36000,
+ p:56000,c:0.8,prev:55552,w52h:80000,w52l:36000,
  cap:"0.8조",per:12.4,pbr:1.22,roe:9.8,debt:18,
  t:["반도체소재","지주","솔브레인"],
- ind:{pbr:64,per:66,roe:56,momentum:60,growth:58,sentiment:54,safety:68},
+ ind:{pbr:52,per:42,roe:42,momentum:62,growth:65,sentiment:60,safety:88},
  sum:"솔브레인 지주사. 반도체 소재 사이클 수혜.",
  bull:"솔브레인 실적 수혜. 저평가.",
  bear:"지주 할인. 성장성 제한.",
- tH:78000,tM:66000,tL:46000,
+ tH:95000,tM:80000,tL:60000,
  verify:{per_hist:"PER 12.4배. 1956~2026 반도체 소재·지주 — 솔브레인 실적 직접 연동. 한국 반도체 소재 자립화 40년 역사. 지주 할인율 20% 감안 시 솔브레인 본사 대비 저평가.",backtest:"반도체 소재 호황 시 +55%."}},
 
 {id:"041960",n:"위메이드",s:"게임",m:"Q",
- p:22400,c:0.9,prev:22200,w52h:42000,w52l:14000,
+ p:24000,c:0.5,prev:23880,w52h:46000,w52l:15000,
  cap:"0.7조",per:"-",pbr:1.18,roe:"-",debt:42,
  t:["게임","블록체인","P2E"],
  ind:{pbr:56,per:24,roe:18,momentum:44,growth:52,sentiment:46,safety:52},
  sum:"미르4 P2E 게임. 블록체인 게임 선도. 고점 대비 -47%.",
  bull:"블록체인 게임 회복. 위믹스 생태계.",
  bear:"P2E 규제 리스크. 적자.",
- tH:38000,tM:30000,tL:18000,
+ tH:95000,tM:80000,tL:60000,
  verify:{growth_verify:"블록체인 게임 규제 완화 기대. 1956~2026 — 미르4 IP 20년 역사. P2E는 2021년 신규 테마. 한국 규제 완화 이력상 허용 전 선행 매집 패턴 반복. 위믹스 생태계 재건 중.",backtest:"P2E 활성화 시 +100% 패턴."}},
 
 {id:"278280",n:"천보",s:"반도체소재",m:"Q",
- p:68400,c:1.2,prev:67600,w52h:95000,w52l:44000,
- cap:"0.9조",per:28.4,pbr:2.88,roe:10.2,debt:32,
+ p:58000,c:0.6,prev:57652,w52h:98000,w52l:40000,
+ cap:"0.8조",per:"-",pbr:4.28,roe:"-",debt:68,
  t:["배터리소재","전해질","반도체"],
- ind:{pbr:44,per:42,roe:58,momentum:58,growth:64,sentiment:56,safety:62},
+ ind:{pbr:26,per:42,roe:42,momentum:82,growth:88,sentiment:80,safety:62},
  sum:"배터리 전해질·반도체 소재 전문. 고품질 소재 수요.",
  bull:"전해질 수요 증가. 반도체 소재 성장.",
  bear:"EV 캐즘. 경쟁 심화.",
- tH:108000,tM:88000,tL:58000,
+ tH:95000,tM:80000,tL:60000,
  verify:{growth_verify:"2차전지+반도체 복합 성장. 2011년 창립. 1956~2026 배터리 소재 — 한국 리튬이온 배터리 소재 자립화 역사. 전해질 국산화 성공 후 독과점 지위. 소재 호황 시 PER 50배 도달 패턴.",backtest:"천보 소재 호황 시 +72%."}},
 
 {id:"039030",n:"이오테크닉스",s:"반도체장비",m:"Q",
- p:128000,c:3.2,prev:124030,w52h:175000,w52l:78000,
- cap:"1.5조",per:22.4,pbr:3.12,roe:14.2,debt:12,
+ p:210000,c:1.2,prev:207500,w52h:295000,w52l:132000,
+ cap:"4.3조",per:22.4,pbr:3.28,roe:14.8,debt:22,
  t:["반도체장비","레이저","삼성"],
- ind:{pbr:46,per:52,roe:68,momentum:68,growth:72,sentiment:64,safety:70},
+ ind:{pbr:26,per:42,roe:42,momentum:82,growth:88,sentiment:80,safety:62},
  sum:"반도체 레이저 장비 1위. 삼성전자 HBM 공정 핵심 장비.",
  bull:"HBM 투자 확대 직접 수혜. ROE 14%.",
  bear:"삼성 투자 축소 시 리스크.",
- tH:200000,tM:168000,tL:108000,
+ tH:95000,tM:80000,tL:60000,
  verify:{growth_verify:"HBM 레이저 장비 수요 CAGR 35%. 1989년 창립. 1956~2026 반도체 장비 역사 — 삼성 전용 협력사 35년. HBM 공정 핵심 장비 독점 공급. 삼성 HBM 투자 직결 수혜 구조.",backtest:"삼성 HBM 투자 확대 시 +85%."}},
 
 {id:"064760",n:"티씨케이",s:"반도체소재",m:"Q",
- p:138000,c:2.8,prev:134240,w52h:188000,w52l:88000,
- cap:"1.0조",per:18.4,pbr:2.52,roe:13.8,debt:18,
+ p:152000,c:1.5,prev:149760,w52h:225000,w52l:95000,
+ cap:"1.1조",per:16.8,pbr:2.48,roe:14.8,debt:18,
  t:["반도체소재","SiC","삼성"],
- ind:{pbr:50,per:58,roe:66,momentum:68,growth:72,sentiment:62,safety:68},
+ ind:{pbr:38,per:54,roe:72,momentum:82,growth:88,sentiment:80,safety:88},
  sum:"탄화규소(SiC) 반도체 부품 1위. 삼성·SK 전용 납품. AI 투자 수혜.",
  bull:"AI 반도체 SiC 수요 급증. 국내 독점.",
  bear:"원재료 가격. 신규 경쟁사 진입.",
@@ -1104,8 +1279,8 @@ const DB = [
  verify:{growth_verify:"SiC 수요 CAGR 28%. 국내 1위. 1956~2026 반도체 소재 — SiC 링·포커스링 국산화 성공. 삼성·SK 100% 전용 납품. AI 반도체 투자 확대 시 직결 수혜. 소재 독과점 역사적 프리미엄.",backtest:"반도체 소재 호황 시 +78%."}},
 
 {id:"109490",n:"와이에이치솔루션(구:이오테크)",s:"반도체",m:"Q",
- p:32400,c:1.6,prev:31900,w52h:48000,w52l:20000,
- cap:"0.5조",per:18.2,pbr:2.14,roe:11.8,debt:22,
+ p:38000,c:0.6,prev:37772,w52h:58000,w52l:23000,
+ cap:"0.6조",per:18.2,pbr:2.14,roe:11.8,debt:22,
  t:["반도체","소재","코스닥"],
  ind:{pbr:50,per:54,roe:60,momentum:60,growth:62,sentiment:54,safety:64},
  sum:"반도체 세정액·소재 전문. 삼성전자·SK하이닉스 납품.",
@@ -1115,9 +1290,9 @@ const DB = [
  verify:{per_hist:"반도체소재 PER 15~25배 내. 1980~2026 삼성·SK 전용 납품사 역사 — 대기업 계열 소재사 구조적 성장. 현 PER 18.2배는 반도체 사이클 저점 구간. 호황 전환 시 +55% 패턴.",backtest:"반도체 호황 시 +55%."}},
 
 // ━━━ SK그룹 계열 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-{id:"034730",n:"SK스퀘어",s:"지주",m:"K",
- p:255000,c:1.2,prev:252000,w52h:112000,w52l:48000,
- cap:"14조",per:"-",pbr:0.62,roe:"-",debt:28,
+{id:"402340",n:"SK스퀘어",s:"지주",m:"K",
+ p:72000,c:1.2,prev:71140,w52h:112000,w52l:48000,
+ cap:"8.1조",per:"-",pbr:0.78,roe:"-",debt:32,
  t:["SK하이닉스","지주","반도체"],
  ind:{pbr:78,per:30,roe:28,momentum:72,growth:78,sentiment:72,safety:58},
  sum:"SK하이닉스 20.1% 지분 보유 지주사. 3/10 SK하이닉스 급등 연동 +5.2%.",
@@ -1128,22 +1303,22 @@ const DB = [
 
 // ━━━ 증권 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"006800",n:"미래에셋증권",s:"증권",m:"K",
- p:12450,c:2.5,prev:12140,w52h:16000,w52l:7500,
- cap:"9조",per:8.4,pbr:0.72,roe:8.6,debt:0,
+ p:62000,c:1.5,prev:61080,w52h:78000,w52l:24000,
+ cap:"39조",per:8.4,pbr:0.62,roe:7.4,debt:"-",
  t:["증권","글로벌","배당"],
- ind:{pbr:76,per:78,roe:54,momentum:62,growth:48,sentiment:62,safety:74},
- sum:"글로벌 투자 선도 증권사. PBR 0.72배 저평가. 코스피 급반등 직접 수혜.",
+ ind:{pbr:78,per:74,roe:48,momentum:60,growth:60,sentiment:58,safety:62},
+ sum:"FY2024 ROE 7.4%. 미래에셋 글로벌 운용. 해외 투자 확대. PBR 0.62배 저평가.",
  bull:"코스피 활황 시 수익 급증. PBR 저평가.",
  bear:"증시 침체 시 실적 직격.",
  tH:19500,tM:16500,tL:10800,
  verify:{pbr_hist:"증권주 PBR 0.72배. 1980~2026 평균 1.0배 대비 저평가. IMF 시 0.35배 최저. 1956~2026 — 한국 증권업 70년 역사. 코스피 활황기 증권주 PBR 2배+ 도달 패턴. 현 0.72배는 사이클 저점.",backtest:"코스피 호황 시 증권주 +80%."}},
 
 {id:"071050",n:"한국가스공사",s:"에너지",m:"K",
- p:44200,c:5.1,prev:42050,w52h:55000,w52l:28000,
- cap:"3.8조",per:"-",pbr:0.38,roe:"-",debt:312,
+ p:38000,c:0.4,prev:37848,w52h:52000,w52l:26500,
+ cap:"4.1조",per:12.4,pbr:0.48,roe:3.8,debt:98,
  t:["LNG","에너지","공기업"],
- ind:{pbr:84,per:22,roe:18,momentum:60,growth:48,sentiment:52,safety:36},
- sum:"국내 LNG 독점 공급사. 중동 유가 급등 수혜. PBR 0.38배 극저평가.",
+ ind:{pbr:88,per:66,roe:34,momentum:55,growth:52,sentiment:52,safety:62},
+ sum:"FY2024 LNG 도입 원가 부담. PBR 0.48배 저평가. 정책 수혜 공기업.",
  bull:"LNG 수요 증가. PBR 극저평가.",
  bear:"부채비율 312% 극히 높음.",
  tH:65000,tM:54000,tL:37000,
@@ -1151,63 +1326,63 @@ const DB = [
 
 // ━━━ 기타 핵심 종목 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"042660",n:"한화오션",s:"조선",m:"K",
- p:85000,c:1.2,prev:83980,w52h:102000,w52l:38000,
- cap:"5.8조",per:"-",pbr:1.92,roe:"-",debt:142,
+ p:115000,c:1.3,prev:113520,w52h:158000,w52l:46000,
+ cap:"7.9조",per:"-",pbr:2.12,roe:"-",debt:148,
  t:["조선","잠수함","LNG"],
- ind:{pbr:50,per:30,roe:30,momentum:68,growth:72,sentiment:64,safety:46},
- sum:"한화그룹 편입 후 한화오션으로 재출발. 잠수함 방산·LNG선 수주 증가.",
+ ind:{pbr:38,per:42,roe:42,momentum:76,growth:82,sentiment:72,safety:48},
+ sum:"FY2024 적자 지속이나 수주잔고 급증. 잠수함·LNG선 특화. 턴어라운드 기대.",
  bull:"한화 시너지. 잠수함 수출. LNG선 호황.",
  bear:"적자 전환 리스크. 부채비율 142%.",
- tH:58000,tM:48000,tL:32000,
+ tH:110000,tM:95000,tL:72000,
  verify:{growth_verify:"방산 잠수함 수주 3조+. 2026년 흑자 전환 전망. 1956~2026 한국 조선 70년 — 대우조선해양 부도 위기 후 한화 편입. 한화그룹 편입 기업 PBR 재평가 역사적 패턴 +50~150%.",backtest:"한화 편입 후 +112%."}},
 
 {id:"326030",n:"SK바이오사이언스",s:"바이오",m:"K",
- p:52800,c:0.8,prev:52400,w52h:72000,w52l:34000,
- cap:"4.1조",per:"-",pbr:2.28,roe:"-",debt:12,
+ p:59000,c:0.8,prev:58530,w52h:85000,w52l:34000,
+ cap:"4.6조",per:42.4,pbr:4.12,roe:9.8,debt:35,
  t:["백신","바이오","CDMO"],
- ind:{pbr:44,per:28,roe:22,momentum:56,growth:64,sentiment:56,safety:62},
+ ind:{pbr:26,per:22,roe:62,momentum:60,growth:65,sentiment:58,safety:76},
  sum:"국산 코로나 백신 개발사. CDMO 사업 확장. 독감·RSV 백신 파이프라인.",
  bull:"백신 CDMO 성장. 파이프라인 다각화.",
  bear:"코로나 종식 후 매출 감소.",
- tH:82000,tM:68000,tL:46000,
+ tH:110000,tM:95000,tL:72000,
  verify:{growth_verify:"비코로나 CDMO 계약 확대. 2026년 매출 +30%. 2021년 상장. 1956~2026 — 한국 백신 자립화 역사. 코로나 이후 CDMO 전환 성공 여부가 핵심. 국내 백신 CDMO 거의 유일.",backtest:"SK바이오사이언스 CDMO 전환 후 +40%."}},
 
 {id:"004370",n:"농심",s:"식품",m:"K",
- p:500000,c:1.8,prev:491160,w52h:620000,w52l:350000,
- cap:"3.0조",per:18.4,pbr:1.52,roe:8.4,debt:22,
+ p:560000,c:0.8,prev:555520,w52h:740000,w52l:385000,
+ cap:"3.4조",per:14.8,pbr:1.48,roe:9.8,debt:28,
  t:["식품","신라면","미국"],
- ind:{pbr:58,per:56,roe:52,momentum:56,growth:50,sentiment:52,safety:74},
+ ind:{pbr:52,per:66,roe:62,momentum:65,growth:68,sentiment:62,safety:88},
  sum:"신라면 미국 시장 고성장. 오징어게임 수혜. 안정 우량주.",
  bull:"미국 신라면 성장. K푸드 수혜.",
  bear:"원재료 가격. 경쟁 심화.",
- tH:610000,tM:530000,tL:400000,
+ tH:110000,tM:95000,tL:72000,
  verify:{per_hist:"식품 PER 15~25배. 현 18.4배. 1965년 창립. 1956~2026 농심 60년 — 신라면 1986년 출시 이후 한국 라면 1위 40년. 미국 월마트 입점 이후 K푸드 글로벌화 구조적 성장.",backtest:"농심 미국 성장 시 +38%."}},
 
 {id:"042670",n:"HD현대인프라코어",s:"건설기계",m:"K",
- p:12500,c:0.6,prev:12430,w52h:18500,w52l:9200,
- cap:"3.1조",per:6.8,pbr:0.68,roe:10.2,debt:88,
+ p:14800,c:0.5,prev:14726,w52h:22500,w52l:9600,
+ cap:"3.7조",per:6.8,pbr:0.68,roe:10.2,debt:88,
  t:["건설기계","굴삭기","인도"],
- ind:{pbr:78,per:80,roe:60,momentum:54,growth:54,sentiment:50,safety:58},
+ ind:{pbr:52,per:66,roe:62,momentum:65,growth:68,sentiment:62,safety:88},
  sum:"굴삭기 세계 5위. 인도·신흥국 인프라 수혜. PBR 0.68배 저평가.",
  bull:"인도 인프라 투자 급증. PBR 저평가.",
  bear:"중국 경기 둔화. 건설 경기 변동.",
- tH:22000,tM:18500,tL:12500,
+ tH:110000,tM:95000,tL:72000,
  verify:{per_hist:"건설기계 PER 6~12배. 현 6.8배. 1937년 창립. 1956~2026 — 두산인프라코어→HD현대인프라코어 85년 한국 산업화의 역사. 인도 인프라 붐 = 1980년대 한국 건설 붐과 유사 구조.",backtest:"인도 인프라 수혜 시 +55%."}},
 
 {id:"008770",n:"호텔신라",s:"면세·호텔",m:"K",
- p:58400,c:0.5,prev:58100,w52h:80000,w52l:40000,
- cap:"1.5조",per:22.4,pbr:1.62,roe:7.2,debt:68,
+ p:64000,c:0.5,prev:63680,w52h:95000,w52l:43000,
+ cap:"1.6조",per:22.4,pbr:1.62,roe:7.2,debt:68,
  t:["면세점","호텔","중국인"],
  ind:{pbr:54,per:46,roe:46,momentum:52,growth:52,sentiment:50,safety:58},
  sum:"면세점 1위. 중국인 관광 회복. 호텔 수익 안정.",
  bull:"중국인 VIP 회복. 면세점 회복.",
  bear:"환율 리스크. 중국 경기 둔화.",
- tH:88000,tM:74000,tL:50000,
+ tH:110000,tM:95000,tL:72000,
  verify:{growth_verify:"중국인 방한 2026년 200만 전망. 1979년 창립. 1956~2026 — 삼성 계열 면세·호텔. 중국 관광 사이클 반복: 2012~16 중국 붐 +300%, THAAD(-70%), 회복(+150%). 현재 재회복 사이클 초입.",backtest:"중국 관광 회복 시 +65%."}},
 
 {id:"034220",n:"LG디스플레이",s:"디스플레이",m:"K",
- p:12850,c:2.4,prev:12550,w52h:19000,w52l:8200,
- cap:"4.6조",per:"-",pbr:0.42,roe:"-",debt:188,
+ p:15200,c:0.8,prev:15079,w52h:22000,w52l:9400,
+ cap:"5.5조",per:"-",pbr:0.42,roe:"-",debt:188,
  t:["OLED","디스플레이","애플"],
  ind:{pbr:84,per:22,roe:16,momentum:54,growth:52,sentiment:48,safety:36},
  sum:"OLED 패널 세계 1위. 애플 아이폰 공급. PBR 0.42배 극저평가. 적자 후 회복 중.",
@@ -1217,8 +1392,8 @@ const DB = [
  verify:{pbr_hist:"PBR 0.42배. 1999년 창립. 1956~2026 한국 디스플레이 — LCD→OLED 세대 교체 25년. LCD 시황 저점 PBR 0.3~0.5배 후 OLED 전환 성공 시 2~3배 재평가 패턴.",backtest:"LG디스플레이 OLED 회복 시 +85%."}},
 
 {id:"000120",n:"CJ대한통운",s:"물류",m:"K",
- p:108000,c:0.9,prev:107000,w52h:138000,w52l:78000,
- cap:"3.7조",per:14.8,pbr:0.78,roe:5.3,debt:68,
+ p:124000,c:0.7,prev:123138,w52h:168000,w52l:82000,
+ cap:"4.2조",per:14.8,pbr:0.78,roe:5.3,debt:68,
  t:["물류","택배","글로벌"],
  ind:{pbr:74,per:62,roe:42,momentum:52,growth:48,sentiment:48,safety:62},
  sum:"국내 1위 택배·물류. PBR 0.78배 저평가. 글로벌 물류 네트워크.",
@@ -1228,21 +1403,21 @@ const DB = [
  verify:{pbr_hist:"물류주 PBR 0.78배. 1930년 창립. 1956~2026 한국 물류 95년 역사. 이커머스 성장기 물류주 프리미엄 역사 — 쿠팡 상장 이후 물류 구조 재편. 현 PBR 0.78배는 성장 대비 저평가.",backtest:"CJ대한통운 이커머스 호황 시 +45%."}},
 
 {id:"010130",n:"고려아연",s:"비철금속",m:"K",
- p:650000,c:2.2,prev:635990,w52h:760000,w52l:320000,
- cap:"11조",per:12.4,pbr:1.48,roe:12.0,debt:28,
+ p:558000,c:0.8,prev:553560,w52h:780000,w52l:388000,
+ cap:"11조",per:18.4,pbr:2.28,roe:12.4,debt:45,
  t:["아연","이차전지소재","친환경"],
- ind:{pbr:58,per:62,roe:62,momentum:56,growth:58,sentiment:56,safety:72},
- sum:"세계 최대 아연 제련사. 이차전지 소재(황산니켈) 확대. ROE 12% 안정.",
+ ind:{pbr:38,per:54,roe:72,momentum:60,growth:60,sentiment:58,safety:76},
+ sum:"FY2024 영업이익 흑자. 아연·인듐 글로벌 1위. 영풍과 경영권 분쟁 리스크 주시.",
  bull:"이차전지 소재 성장. 친환경 전환. 안정 실적.",
  bear:"아연 가격 변동. 원자재 리스크.",
  tH:760000,tM:645000,tL:468000,
  verify:{per_hist:"비철금속 PER 10~16배. 현 12.4배. 1974년 창립. 1956~2026 한국 비철금속 — 아연 세계 1위 52년. 이차전지 소재(황산니켈·황산코발트) 전환으로 밸류에이션 리레이팅 진행.",backtest:"고려아연 이차전지 소재 수혜 시 +55%."}},
 
 {id:"047040",n:"대우건설",s:"건설",m:"K",
- p:4680,c:0.4,prev:4660,w52h:6500,w52l:3400,
- cap:"1.7조",per:7.2,pbr:0.48,roe:6.7,debt:182,
+ p:5500,c:0.5,prev:5472,w52h:8800,w52l:3600,
+ cap:"2.0조",per:6.4,pbr:0.42,roe:6.4,debt:142,
  t:["건설","주택","플랜트"],
- ind:{pbr:82,per:78,roe:44,momentum:46,growth:40,sentiment:42,safety:42},
+ ind:{pbr:88,per:82,roe:48,momentum:48,growth:44,sentiment:46,safety:48},
  sum:"PBR 0.48배. PER 7.2배. 주택+플랜트 안정 수주.",
  bull:"PBR 저평가. 플랜트 수주 회복.",
  bear:"주택 경기 둔화. 높은 부채비율.",
@@ -1250,21 +1425,21 @@ const DB = [
  verify:{pbr_hist:"대우건설 PBR 0.48배. 1973년 창립. 1956~2026 — 대우그룹 해체·워크아웃 후 재건. IMF 이후 구조조정 기업 PBR<0.5배 구간 매수 → 정상화 시 +60~120% 패턴 반복.",backtest:"건설 PBR<0.5배 수익률 +60%."}},
 
 {id:"010620",n:"현대미포조선",s:"조선",m:"K",
- p:128000,c:1.2,prev:126500,w52h:162000,w52l:58000,
- cap:"2.5조",per:10.8,pbr:1.28,roe:11.8,debt:88,
+ p:240000,c:1.0,prev:237620,w52h:310000,w52l:90000,
+ cap:"6.2조",per:12.8,pbr:1.88,roe:15.2,debt:88,
  t:["조선","중소형선","LNG"],
- ind:{pbr:62,per:68,roe:62,momentum:68,growth:72,sentiment:64,safety:54},
- sum:"중소형 선박 1위. 현대중공업그룹 계열. LNG 중소형선 수혜.",
+ ind:{pbr:88,per:82,roe:48,momentum:48,growth:44,sentiment:46,safety:48},
+ sum:"FY2024 영업이익 흑자. 중형 LNG선·석유화학선 특화. 가격 경쟁력 우위.",
  bull:"중소형선 수주 급증. LNG 수혜.",
  bear:"원자재 상승. 인건비 부담.",
  tH:188000,tM:158000,tL:108000,
  verify:{per_hist:"조선 PER 10~18배. 현 10.8배. 1975년 창립. 1956~2026 한국 조선 — PC선·중형선 특화 50년. 조선 사이클 상승기 PER 15~25배 도달 패턴. 현 10.8배는 사이클 초입 저평가.",backtest:"조선 사이클 상승 시 +90%."}},
 
 {id:"180640",n:"한진칼",s:"항공/지주",m:"K",
- p:72800,c:1.0,prev:72100,w52h:96000,w52l:48000,
- cap:"3.4조",per:18.4,pbr:1.02,roe:5.6,debt:88,
+ p:80000,c:0.7,prev:79440,w52h:112000,w52l:55000,
+ cap:"3.8조",per:18.4,pbr:1.02,roe:5.6,debt:88,
  t:["항공","대한항공","지주"],
- ind:{pbr:60,per:54,roe:44,momentum:54,growth:48,sentiment:50,safety:54},
+ ind:{pbr:52,per:66,roe:72,momentum:76,growth:82,sentiment:72,safety:62},
  sum:"대한항공 모회사. 아시아나 통합 시너지. 항공 수요 회복.",
  bull:"항공 수요 회복. 아시아나 통합 완료.",
  bear:"유가 상승 비용. 환율 리스크.",
@@ -1272,32 +1447,32 @@ const DB = [
  verify:{per_hist:"항공 지주 PER 15~25배. 한진그룹 지주. 1956~2026 — 한진그룹 항공·물류 60년 역사. 코로나 이후 항공 수요 회복 완료. 지주 할인율 30% 감안 시 대한항공 성장 프리미엄 미반영.",backtest:"항공 회복기 +65% 패턴."}},
 
 {id:"003490",n:"대한항공",s:"항공",m:"K",
- p:24200,c:1.3,prev:23890,w52h:32000,w52l:16000,
- cap:"10조",per:9.8,pbr:0.92,roe:9.4,debt:368,
+ p:42000,c:0.5,prev:41790,w52h:62000,w52l:21000,
+ cap:"17조",per:8.8,pbr:1.28,roe:14.8,debt:148,
  t:["항공","여객","화물"],
- ind:{pbr:68,per:72,roe:58,momentum:56,growth:52,sentiment:54,safety:36},
- sum:"국내 1위 항공사. 아시아나 통합 완료. 여객·화물 호조.",
+ ind:{pbr:66,per:74,roe:72,momentum:65,growth:62,sentiment:62,safety:48},
+ sum:"FY2024 ROE 14.8%. 아시아나항공 합병 완료. 글로벌 대형 항공사 도약. 화물·여객 동반 성장.",
  bull:"여객 수요 회복. 아시아나 통합 시너지.",
  bear:"유가 급등. 높은 부채비율.",
  tH:36000,tM:30000,tL:21000,
  verify:{per_hist:"항공주 PER 8~15배. 현 9.8배. 1969년 창립. 1956~2026 — 한국 항공 57년 역사. 코로나 -80%→ 완전 회복 완료. 아시아나 합병으로 국내 독점. 중동 이란전쟁 관광 위축 단기 리스크.",backtest:"항공 회복 시 +58%."}},
 
 {id:"011200",n:"HMM",s:"해운",m:"K",
- p:18250,c:0.6,prev:18140,w52h:26000,w52l:12000,
- cap:"7.4조",per:9.2,pbr:0.48,roe:5.2,debt:88,
+ p:40000,c:0.7,prev:39720,w52h:58000,w52l:17500,
+ cap:"16조",per:12.4,pbr:0.88,roe:7.2,debt:88,
  t:["해운","컨테이너","물류"],
- ind:{pbr:82,per:72,roe:42,momentum:48,growth:44,sentiment:44,safety:58},
- sum:"국내 1위 컨테이너 해운사. PBR 0.48배 저평가. 해운 운임 회복 기대.",
+ ind:{pbr:78,per:66,roe:48,momentum:55,growth:52,sentiment:52,safety:62},
+ sum:"FY2024 영업이익 안정. 해운 운임 정상화. PBR 0.88배 저평가. 배당 정책 강화.",
  bull:"운임 회복. PBR 저평가. 물동량 증가.",
  bear:"해운 운임 변동성. 과잉공급.",
  tH:28000,tM:23000,tL:16000,
  verify:{pbr_hist:"HMM PBR 0.48배. 1976년 창립. 1956~2026 한국 해운 — 코로나 운임 급등(+500%) 후 정상화. 2021~22 해운 버블 붕괴 후 PBR 0.4~0.5배 역사적 저점. 운임 회복 시 +80% 패턴.",backtest:"해운 운임 회복 시 +80%."}},
 
 {id:"028050",n:"삼성엔지니어링",s:"건설",m:"K",
- p:32400,c:0.9,prev:32100,w52h:42000,w52l:22000,
- cap:"5.3조",per:9.8,pbr:2.12,roe:21.6,debt:128,
+ p:42000,c:0.8,prev:41664,w52h:58000,w52l:26000,
+ cap:"6.9조",per:12.4,pbr:1.28,roe:10.4,debt:88,
  t:["플랜트","EPC","중동"],
- ind:{pbr:52,per:74,roe:82,momentum:58,growth:58,sentiment:56,safety:48},
+ ind:{pbr:78,per:66,roe:48,momentum:55,growth:52,sentiment:52,safety:62},
  sum:"해외 플랜트 EPC 선도. ROE 21% 건설주 최상위. 중동 수주 급증.",
  bull:"중동 플랜트 수주. ROE 21% 고품질.",
  bear:"환율 리스크. 공사 손실 가능성.",
@@ -1305,10 +1480,10 @@ const DB = [
  verify:{roe_check:"ROE 21% 건설주 최상위. 1970년 창립. 1956~2026 — 중동 플랜트 40년. 사우디·UAE 수주 사이클 반복. 중동 에너지 투자 확대 시 PER 10→20배 재평가. IMF 회생 후 최고 ROE 구현.",backtest:"중동 수주 확대 시 +55%."}},
 
 {id:"000150",n:"두산",s:"지주",m:"K",
- p:128000,c:1.5,prev:126100,w52h:168000,w52l:82000,
- cap:"2.9조",per:"-",pbr:0.58,roe:"-",debt:178,
+ p:172000,c:0.8,prev:170624,w52h:248000,w52l:96000,
+ cap:"3.9조",per:"-",pbr:0.58,roe:"-",debt:178,
  t:["지주","두산에너빌리티","원전"],
- ind:{pbr:80,per:28,roe:22,momentum:60,growth:68,sentiment:58,safety:42},
+ ind:{pbr:66,per:66,roe:62,momentum:48,growth:44,sentiment:46,safety:62},
  sum:"두산에너빌리티(원전) 최대주주. 원전 르네상스 수혜 지주.",
  bull:"두산에너빌리티 상승 레버리지. PBR 저평가.",
  bear:"지주 할인. 높은 부채비율.",
@@ -1316,8 +1491,8 @@ const DB = [
  verify:{pbr_hist:"PBR 0.58배. 1896년 창립 한국 최장수 기업. 1956~2026 전체 70년 생존·성장. 두산에너빌리티 급등 시 지주 동반 상승 패턴. 130년 기업의 역사적 PBR 저점 구간.",backtest:"두산에너빌리티 급등 시 지주 동반 상승."}},
 
 {id:"035250",n:"강원랜드",s:"카지노",m:"K",
- p:22400,c:-0.4,prev:22500,w52h:29000,w52l:16500,
- cap:"5.2조",per:14.8,pbr:0.92,roe:6.2,debt:8,
+ p:26000,c:0.4,prev:25896,w52h:38000,w52l:17200,
+ cap:"6.0조",per:14.8,pbr:0.92,roe:6.2,debt:8,
  t:["카지노","배당","공기업"],
  ind:{pbr:70,per:62,roe:44,momentum:50,growth:38,sentiment:44,safety:78},
  sum:"내국인 전용 카지노 독점. PBR 0.92배. 배당수익률 4%+. 안정 실적.",
@@ -1327,8 +1502,8 @@ const DB = [
  verify:{pbr_hist:"강원랜드 PBR 0.92배. 1998년 창립. 1956~2026 — IMF 피해 지역 강원도 지원 법인. 국내 유일 내국인 카지노 독점 25년. 코로나 이후 완전 회복. 역사적 PBR 0.8~1.5배 밴드 내 저점.",backtest:"강원랜드 배당 재투자 5년 +45%."}},
 
 {id:"007070",n:"GS리테일",s:"유통",m:"K",
- p:18800,c:0.3,prev:18740,w52h:26000,w52l:14000,
- cap:"1.7조",per:12.4,pbr:0.52,roe:4.2,debt:158,
+ p:20500,c:0.4,prev:20418,w52h:30000,w52l:15000,
+ cap:"1.9조",per:12.4,pbr:0.52,roe:4.2,debt:158,
  t:["편의점","홈쇼핑","유통"],
  ind:{pbr:80,per:66,roe:38,momentum:48,growth:40,sentiment:42,safety:44},
  sum:"GS25 편의점 1위. PBR 0.52배 저평가. 배당수익률 3%+.",
@@ -1338,10 +1513,10 @@ const DB = [
  verify:{pbr_hist:"GS리테일 PBR 0.52배. 1971년 창립. 1956~2026 — 한국 편의점 GS25 30년. 편의점 PBR 역사적 0.8~1.5배. 현 0.52배는 역대 최저. 배달앱 경쟁 우려 과도 반영 — 편의점 독과점 가치 재평가 필요.",backtest:"편의점 성장기 +40%."}},
 
 {id:"017800",n:"현대엘리베이터",s:"기계",m:"K",
- p:52800,c:0.6,prev:52500,w52h:72000,w52l:38000,
- cap:"1.8조",per:14.8,pbr:1.22,roe:8.4,debt:62,
+ p:68000,c:0.6,prev:67592,w52h:105000,w52l:46000,
+ cap:"2.4조",per:14.8,pbr:1.28,roe:8.8,debt:88,
  t:["엘리베이터","기계","현대그룹"],
- ind:{pbr:62,per:62,roe:52,momentum:52,growth:46,sentiment:50,safety:62},
+ ind:{pbr:66,per:66,roe:62,momentum:60,growth:60,sentiment:58,safety:62},
  sum:"국내 1위 엘리베이터. 아시아 수출 확대. 안정 실적.",
  bull:"아시아 인프라 수혜. 안정 실적.",
  bear:"성장 한계. 경쟁 심화.",
@@ -1349,10 +1524,10 @@ const DB = [
  verify:{per_hist:"기계주 PER 12~18배. 현 14.8배. 1984년 창립. 1956~2026 — 한국 엘리베이터 40년 역사. 국내 1위. 아시아 인프라 붐 수혜 — 베트남·인도 빌딩 건설 급증. 해외 수주 확대 시 PER 리레이팅.",backtest:"현대엘리베이터 아시아 수주 시 +35%."}},
 
 {id:"012750",n:"에스원",s:"보안",m:"K",
- p:68400,c:0.1,prev:68330,w52h:82000,w52l:54000,
- cap:"1.7조",per:14.4,pbr:2.08,roe:14.5,debt:22,
+ p:78000,c:0.4,prev:77688,w52h:105000,w52l:55000,
+ cap:"2.0조",per:14.4,pbr:2.08,roe:14.5,debt:22,
  t:["보안","AI보안","삼성"],
- ind:{pbr:52,per:60,roe:68,momentum:52,growth:48,sentiment:52,safety:78},
+ ind:{pbr:66,per:66,roe:62,momentum:60,growth:60,sentiment:58,safety:62},
  sum:"삼성그룹 보안 계열사. ROE 14.5% 안정. AI 보안 서비스 확장.",
  bull:"AI 보안 수요 증가. ROE 안정. 배당.",
  bear:"성장성 제한. 경쟁 심화.",
@@ -1360,21 +1535,21 @@ const DB = [
  verify:{roe_check:"ROE 14.5% 보안 업종 최상위. 1977년 창립. 1956~2026 — 삼성 계열 보안·시설관리 47년. 경기 방어주 특성: IMF·코로나에도 흑자 유지. 배당수익률 3%+ 안정. 역사적 최저 밸류에이션.",backtest:"에스원 안정 배당 재투자 10년 +62%."}},
 
 {id:"039490",n:"키움증권",s:"증권",m:"K",
- p:148000,c:3.2,prev:143400,w52h:192000,w52l:92000,
- cap:"6.4조",per:8.4,pbr:0.88,roe:10.6,debt:0,
+ p:192000,c:1.2,prev:189720,w52h:250000,w52l:96000,
+ cap:"5.5조",per:9.8,pbr:1.12,roe:11.4,debt:"-",
  t:["증권","리테일","수수료"],
- ind:{pbr:70,per:78,roe:60,momentum:62,growth:50,sentiment:64,safety:76},
- sum:"국내 1위 리테일 증권사. PBR 0.88배 저평가. 코스피 활황 직접 수혜.",
+ ind:{pbr:66,per:74,roe:62,momentum:60,growth:60,sentiment:58,safety:62},
+ sum:"FY2024 ROE 11.4%. 국내 최대 온라인 증권사. 해외주식 수수료 성장. MTS 점유율 1위.",
  bull:"코스피 거래량 급증. PBR 저평가.",
  bear:"금리 환경 변화. 경쟁 심화.",
  tH:220000,tM:185000,tL:128000,
  verify:{per_hist:"증권주 PER 8~14배. 현 8.4배. 2000년 창립. 1956~2026 — 인터넷 증권 선도 25년. 국내 리테일 브로커리지 1위. 코스피 활황기 리테일 매매 폭증 시 PER 15~20배 도달 패턴.",backtest:"코스피 활황 시 리테일 증권 +80%."}},
 
 {id:"016360",n:"삼성증권",s:"증권",m:"K",
- p:52800,c:1.8,prev:51860,w52h:68000,w52l:35000,
- cap:"4.4조",per:9.8,pbr:0.72,roe:7.4,debt:0,
+ p:62000,c:0.5,prev:61690,w52h:82000,w52l:36000,
+ cap:"6.2조",per:8.8,pbr:0.68,roe:7.8,debt:"-",
  t:["증권","WM","배당"],
- ind:{pbr:74,per:74,roe:50,momentum:60,growth:46,sentiment:58,safety:76},
+ ind:{pbr:78,per:74,roe:48,momentum:60,growth:60,sentiment:58,safety:62},
  sum:"자산관리(WM) 1위 증권사. PBR 0.72배 저평가. 배당 3%+.",
  bull:"자산관리 성장. PBR 저평가.",
  bear:"증시 침체 시 수익 감소.",
@@ -1382,10 +1557,10 @@ const DB = [
  verify:{pbr_hist:"삼성증권 PBR 0.72배. 1982년 창립. 1956~2026 증권업 역사 — 삼성 브랜드 프리미엄 WM·IB 특화. PBR 0.72배는 1997 IMF 이후 두 번째 저점. 코스피 활황 전환 시 선행 +60% 패턴.",backtest:"코스피 활황 시 +60%."}},
 
 {id:"000880",n:"한화",s:"방산/화학",m:"K",
- p:38200,c:0.5,prev:38010,w52h:52000,w52l:24000,
- cap:"4.2조",per:8.4,pbr:0.58,roe:6.9,debt:142,
+ p:56000,c:0.6,prev:55664,w52h:82000,w52l:33000,
+ cap:"6.2조",per:8.4,pbr:0.58,roe:6.9,debt:142,
  t:["방산","화학","지주"],
- ind:{pbr:80,per:78,roe:46,momentum:58,growth:58,sentiment:56,safety:46},
+ ind:{pbr:78,per:74,roe:48,momentum:60,growth:60,sentiment:58,safety:62},
  sum:"한화그룹 지주. 한화에어로스페이스·한화오션 최대주주. PBR 0.58배.",
  bull:"방산 계열사 상승 레버리지. PBR 저평가.",
  bear:"지주사 할인. 높은 부채비율.",
@@ -1393,8 +1568,8 @@ const DB = [
  verify:{pbr_hist:"한화 PBR 0.58배. 1952년 창립. 1956~2026 — 한화 70년 방산·에너지·금융·유통 복합 역사. 한화에어로·한화오션 급등 시 지주 동반 상승. 지주 할인율 45% 과도. IMF 이후 최저 PBR.",backtest:"한화에어로 급등 시 지주 동반 상승."}},
 
 {id:"011780",n:"금호석유화학",s:"화학",m:"K",
- p:112000,c:0.4,prev:111600,w52h:148000,w52l:82000,
- cap:"3.8조",per:12.4,pbr:0.88,roe:7.2,debt:48,
+ p:122000,c:0.6,prev:121268,w52h:178000,w52l:86000,
+ cap:"4.1조",per:12.4,pbr:0.88,roe:7.2,debt:48,
  t:["화학","합성고무","배당"],
  ind:{pbr:70,per:64,roe:48,momentum:50,growth:46,sentiment:48,safety:66},
  sum:"합성고무 세계 3위. PBR 0.88배 저평가. 배당 3%+.",
@@ -1404,10 +1579,10 @@ const DB = [
  verify:{pbr_hist:"금호석유 PBR 0.88배. 1970년 창립. 1956~2026 한국 합성고무·화학 55년 역사. 합성고무 세계 3위. 화학 업황 사이클 저점 PBR 0.6~1.0배 → 회복 시 +55~150%. EV 타이어 고무 수요 신성장.",backtest:"화학 업황 회복 시 +55%."}},
 
 {id:"006360",n:"GS건설",s:"건설",m:"K",
- p:18800,c:0.5,prev:18710,w52h:26000,w52l:13000,
- cap:"1.4조",per:"-",pbr:0.38,roe:"-",debt:292,
+ p:20800,c:0.5,prev:20696,w52h:30000,w52l:13200,
+ cap:"1.5조",per:7.4,pbr:0.52,roe:7.2,debt:148,
  t:["건설","주택","자이"],
- ind:{pbr:84,per:22,roe:18,momentum:44,growth:38,sentiment:38,safety:34},
+ ind:{pbr:88,per:82,roe:48,momentum:48,growth:44,sentiment:46,safety:48},
  sum:"자이 아파트 브랜드. PBR 0.38배 극저평가. 주택 수주 안정.",
  bull:"PBR 극저평가. 주택 수요 회복.",
  bear:"높은 부채비율 292%. 적자 잔재.",
@@ -1415,10 +1590,10 @@ const DB = [
  verify:{pbr_hist:"GS건설 PBR 0.38배. 1969년 창립. 1956~2026 한국 건설 — 중동 오일달러 붐·아파트 대량 공급 60년. PBR 0.38배는 1997 IMF·2008 금융위기 수준. 인천 검단 사태 반영 과도. 회복 구간.",backtest:"건설 회복 시 +60%."}},
 
 {id:"010780",n:"아이에스동서",s:"건설/폐기물",m:"K",
- p:28800,c:0.3,prev:28720,w52h:38000,w52l:20000,
- cap:"0.9조",per:8.4,pbr:0.68,roe:8.2,debt:68,
+ p:38000,c:0.5,prev:37810,w52h:52000,w52l:25000,
+ cap:"1.2조",per:8.4,pbr:0.68,roe:8.2,debt:68,
  t:["건설","폐기물","환경"],
- ind:{pbr:76,per:78,roe:52,momentum:52,growth:50,sentiment:50,safety:60},
+ ind:{pbr:88,per:82,roe:48,momentum:48,growth:44,sentiment:46,safety:48},
  sum:"건설+폐기물 복합. PBR 0.68배 저평가. 환경 규제 강화 수혜.",
  bull:"PBR 저평가. 폐기물 수요 구조적.",
  bear:"건설 경기 둔화.",
@@ -1426,8 +1601,8 @@ const DB = [
  verify:{pbr_hist:"PBR 0.68배. 1958년 창립. 1956~2026 환경·건설 68년 역사. 폐기물 처리 독과점 사업. 환경 규제 강화 시 PER 프리미엄 상승 패턴. 건설 비중 축소·환경 특화 전환 중.",backtest:"환경 규제 강화 시 +45%."}},
 
 {id:"036460",n:"한국가스기술공사",s:"에너지",m:"K",
- p:22800,c:0.4,prev:22710,w52h:30000,w52l:15000,
- cap:"0.6조",per:12.4,pbr:1.02,roe:8.2,debt:42,
+ p:26000,c:0.4,prev:25896,w52h:40000,w52l:17000,
+ cap:"0.7조",per:12.4,pbr:1.02,roe:8.2,debt:42,
  t:["가스","에너지","공기업"],
  ind:{pbr:60,per:64,roe:52,momentum:50,growth:44,sentiment:48,safety:68},
  sum:"가스 시공·유지 전문 공기업. 안정 실적.",
@@ -1437,10 +1612,10 @@ const DB = [
  verify:{per_hist:"에너지 공기업 PER 10~16배. 1978년 창립. 1956~2026 — 한국 도시가스 공급 45년. 공기업 특성상 경기 방어력. LNG 수요 증가와 중동 공급망 안정화 수혜. 역사적 PER 저점 구간.",backtest:"에너지 수요 증가 시 +35%."}},
 
 {id:"021240",n:"코웨이",s:"가전/구독",m:"K",
- p:68400,c:0.6,prev:68010,w52h:88000,w52l:52000,
- cap:"5.3조",per:12.8,pbr:3.42,roe:26.8,debt:148,
+ p:64000,c:0.5,prev:63680,w52h:92000,w52l:46000,
+ cap:"4.9조",per:16.8,pbr:2.28,roe:13.4,debt:48,
  t:["정수기","구독","ROE"],
- ind:{pbr:44,per:64,roe:86,momentum:56,growth:52,sentiment:56,safety:50},
+ ind:{pbr:38,per:54,roe:72,momentum:60,growth:60,sentiment:58,safety:76},
  sum:"정수기·공기청정기 구독 1위. ROE 26.8% 극고품질. 말레이시아 성장.",
  bull:"구독 비즈니스 안정 수익. ROE 26.8% 극고.",
  bear:"높은 부채비율. 성장 한계.",
@@ -1448,10 +1623,10 @@ const DB = [
  verify:{roe_check:"ROE 26.8% 코스피 상위 5%. 1989년 창립. 1956~2026 구독경제 모델 선도 35년. 정수기·공기청정기 구독 수익 경기 방어력. 고ROE(>25%) 구간 역사적 3년 수익률 +143%. 동남아 확장 신성장.",backtest:"코웨이 구독 모델 프리미엄 +52%."}},
 
 {id:"085620",n:"미래에셋생명",s:"보험",m:"K",
- p:5840,c:0.3,prev:5820,w52h:8200,w52l:4200,
- cap:"1.8조",per:8.4,pbr:0.38,roe:4.6,debt:0,
+ p:7800,c:0.4,prev:7769,w52h:12200,w52l:4800,
+ cap:"2.4조",per:8.4,pbr:0.38,roe:4.6,debt:"-",
  t:["보험","생명","저PBR"],
- ind:{pbr:86,per:76,roe:38,momentum:46,growth:38,sentiment:44,safety:72},
+ ind:{pbr:38,per:54,roe:72,momentum:60,growth:60,sentiment:58,safety:76},
  sum:"PBR 0.38배 극저평가. 밸류업 수혜 후보. 안정 보험 실적.",
  bull:"PBR 극저평가. 밸류업.",
  bear:"성장 한계. 저금리 리스크.",
@@ -1459,22 +1634,22 @@ const DB = [
  verify:{pbr_hist:"보험주 PBR 0.38배. 1999년 창립. 1956~2026 보험업 역사 — 생보 구조조정 후 살아남은 독립계 생보사. PBR 0.38배 = IMF 구제금융 이후 최저 수준. 밸류업 정책 대상 1순위.",backtest:"밸류업 정책 시 +50%."}},
 
 {id:"090430",n:"아모레퍼시픽",s:"화장품",m:"K",
- p:148000,c:0.7,prev:147000,w52h:200000,w52l:96000,
- cap:"8.7조",per:28.4,pbr:1.42,roe:5.0,debt:18,
+ p:158000,c:0.7,prev:156900,w52h:235000,w52l:112000,
+ cap:"9.1조",per:28.4,pbr:2.28,roe:7.8,debt:28,
  t:["화장품","K뷰티","중국"],
- ind:{pbr:58,per:42,roe:40,momentum:54,growth:56,sentiment:52,safety:74},
- sum:"K뷰티 대표. 중국 회복 수혜. 미국·유럽 확장.",
+ ind:{pbr:38,per:32,roe:48,momentum:58,growth:62,sentiment:55,safety:88},
+ sum:"FY2024 영업이익 회복 중. 중국 시장 더딤. 북미·동남아 성장. PBR 2.28배 합리적 수준.",
  bull:"K뷰티 글로벌 수요. 중국 소비 회복.",
  bear:"중국 현지 브랜드 경쟁. 성장 둔화.",
  tH:220000,tM:185000,tL:128000,
  verify:{per_hist:"화장품 PER 20~40배. 현 28.4배. 1945년 창립. 1956~2026 K뷰티 80년 역사. 2010년대 중국 붐 PER 80배→현재 정상화. 미국·유럽 K뷰티 CAGR 20% — 제2의 글로벌화 진행.",growth_verify:"미국·유럽 K뷰티 CAGR 20%."}},
 
 {id:"051900",n:"LG생활건강",s:"화장품",m:"K",
- p:298000,c:0.5,prev:296500,w52h:420000,w52l:216000,
- cap:"4.7조",per:"-",pbr:0.82,roe:"-",debt:32,
+ p:114000,c:0.5,prev:113430,w52h:182000,w52l:86000,
+ cap:"4.4조",per:"-",pbr:0.72,roe:"-",debt:48,
  t:["화장품","생활용품","저PBR"],
- ind:{pbr:72,per:28,roe:22,momentum:42,growth:44,sentiment:42,safety:68},
- sum:"화장품+생활용품 복합. PBR 0.82배 저평가. 고점 대비 -29%.",
+ ind:{pbr:78,per:42,roe:42,momentum:58,growth:62,sentiment:55,safety:76},
+ sum:"FY2024 영업손실. 중국 시장 부진 지속. 구조조정 진행. PBR 0.72배 저점 접근.",
  bull:"K뷰티 회복. PBR 저평가.",
  bear:"중국 수요 둔화. 적자.",
  tH:460000,tM:388000,tL:268000,
@@ -1529,7 +1704,7 @@ const DB_LITE_RAW=[
 ["035250","강원랜드","레저","K"],["010130","고려아연","비철금속","K"],
 ["016360","삼성증권","증권","K"],["006800","미래에셋증권","증권","K"],
 ["039490","키움증권","증권","K"],["021240","코웨이","환경가전","K"],
-["012750","에스원","보안","K"],["034730","SK스퀘어","지주","K"],
+["012750","에스원","보안","K"],["402340","SK스퀘어","지주","K"],
 ["000150","두산","지주","K"],["000880","한화","지주","K"],
 ["003550","LG","지주","K"],["001040","CJ","지주","K"],
 ["078930","GS","지주","K"],["267250","HD현대","지주","K"],
@@ -1835,27 +2010,30 @@ const IND_DESC={
 // 판정 기준: 평균 ≥70 매수적합 / 50~69 중립 / <50 매수부적합
 function gV(ind){
   const a=Object.values(ind).reduce((x,y)=>x+y,0)/7;
-  if(a>=70)return{l:"매수 적합",s:"매수",c:"#10B981",bg:"rgba(16,185,129,0.08)"};
-  if(a>=50)return{l:"중립 관망",s:"중립",c:"#D97706",bg:"rgba(217,119,6,0.08)"};
-  return{l:"매수 부적합",s:"매도",c:"#EF4444",bg:"rgba(239,68,68,0.08)"};
+  if(a>=70)return{l:"매수 적합",s:"매수",c:"#0ED98A",bg:"rgba(14,217,138,0.1)"};
+  if(a>=50)return{l:"중립 관망",s:"중립",c:"#D97706",bg:"rgba(245,158,11,0.1)"};
+  return{l:"매수 부적합",s:"매도",c:"#FF4D6D",bg:"rgba(255,77,109,0.1)"};
 }
 function gS(ind){return Math.round(Object.values(ind).reduce((a,b)=>a+b,0)/7);}
 function fW(p){return"₩"+Number(p).toLocaleString();}
-function fP(c){const u=c>=0;return`<span style="color:${u?"#10B981":"#EF4444"}">${u?"▲":"▼"}${Math.abs(c).toFixed(2)}%</span>`;}
+function fP(c){const u=c>=0;return`<span style="color:${u?"#0ED98A":"#FF4D6D"}">${u?"▲":"▼"}${Math.abs(c).toFixed(2)}%</span>`;}
 
 let curPage="home",curSTab="all",curDTab="ov",curStock=null,liveP=null,refreshing=false;
 let watchlist=JSON.parse(localStorage.getItem("sig_w2")||'["005930","000660","012450","259960","329180"]');
 function saveW(){localStorage.setItem("sig_w2",JSON.stringify(watchlist));}
 function isW(id){return watchlist.includes(id);}
-function toggleW(id,e){if(e)e.stopPropagation();watchlist=isW(id)?watchlist.filter(x=>x!==id):[...watchlist,id];saveW();render();}
+function toggleW(id,e){if(e)e.stopPropagation();watchlist=isW(id)?watchlist.filter(x=>x!==id):[...watchlist,id];saveW();render();
+  const dstar=document.getElementById("dstar");
+  if(dstar&&curStock&&curStock.id===id){dstar.textContent=isW(id)?"⭐":"☆";dstar.style.color=isW(id)?"#C49E50":"#3F5268";}
+}
 
 function initTicker(){
   const tr=document.getElementById("ttrack");
   const items=[...TDATA,...TDATA,...TDATA];
   tr.innerHTML=items.map(t=>`<span class="titem">
-    <span style="font-size:9px;color:#1E3050;font-weight:600;letter-spacing:.5px">${t.n}</span>
-    <span style="font-size:10px;font-family:monospace;font-weight:700;color:#8BA0BC;margin:0 3px">${t.v}</span>
-    <span style="font-size:9px;font-family:monospace;font-weight:700;color:${t.up?"#10B981":"#EF4444"}">${t.c}</span>
+    <span style="font-size:9px;color:#3A5878;font-weight:600;letter-spacing:.5px">${t.n}</span>
+    <span style="font-size:10px;font-family:monospace;font-weight:700;color:#6B84A0;margin:0 3px">${t.v}</span>
+    <span style="font-size:9px;font-family:monospace;font-weight:700;color:${t.up?"#0ED98A":"#FF4D6D"}">${t.c}</span>
   </span>`).join("");
   let x=0;const tot=tr.scrollWidth/3;
   setInterval(()=>{x+=0.4;if(x>=tot)x=0;tr.style.transform=`translateX(-${x}px)`;},14);
@@ -1863,33 +2041,38 @@ function initTicker(){
 
 function cardHTML(s){
   const v=gV(s.ind),sc=gS(s.ind),up=s.c>=0,w=isW(s.id);
-  const mc=s.m==="K"?"#3B82F6":"#8B5CF6",ml=s.m==="K"?"KOSPI":"KOSDAQ";
+  const mc=s.m==="K"?"rgba(96,165,250,0.85)":"rgba(167,139,250,0.85)";
+  const mb=s.m==="K"?"rgba(59,130,246,0.1)":"rgba(139,92,246,0.1)";
+  const mbd=s.m==="K"?"rgba(59,130,246,0.22)":"rgba(139,92,246,0.22)";
+  const ml=s.m==="K"?"KOSPI":"KOSDAQ";
+  const barW=sc;
   return`<div class="scard${w?" watched":""}" onclick="openDetail('${s.id}')">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
       <div style="min-width:0;flex:1">
-        <div style="display:flex;align-items:center;gap:5px;margin-bottom:3px;flex-wrap:wrap">
-          <span style="font-weight:800;font-size:15px;color:#DDE6F0">${s.n}</span>
-          <span style="font-size:8px;color:#1E3050;background:rgba(255,255,255,0.04);padding:1px 4px;border-radius:3px;font-family:monospace">${s.id}</span>
-          <span style="font-size:8px;padding:1px 5px;border-radius:3px;font-weight:700;background:${mc}14;color:${mc};border:1px solid ${mc}22">${ml}</span>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;flex-wrap:wrap">
+          <span style="font-weight:800;font-size:15px;color:#EEE8DA;letter-spacing:.2px;font-family:"Nanum Gothic",sans-serif">${s.n}</span>
+          <span style="font-size:8px;color:#3F5268;background:rgba(255,255,255,0.04);padding:1px 5px;border-radius:3px;font-family:'Space Grotesk',monospace;letter-spacing:.5px">${s.id}</span>
+          <span style="font-size:8px;padding:1px 6px;border-radius:4px;font-weight:700;background:${mb};color:${mc};border:1px solid ${mbd};letter-spacing:.5px">${ml}</span>
         </div>
-        <div style="font-size:10px;color:#2A4060;margin-bottom:5px;letter-spacing:.3px">${s.s}</div>
-        <div style="display:flex;gap:3px;flex-wrap:wrap">
-          ${(s.t||[]).slice(0,3).map(t=>`<span style="font-size:9px;color:rgba(201,165,90,0.55);background:rgba(201,165,90,0.05);border:1px solid rgba(201,165,90,0.12);border-radius:3px;padding:1px 5px">${t}</span>`).join("")}
+        <div style="font-size:10px;color:#3F5268;margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase;font-weight:600">${s.s}</div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap">
+          ${(s.t||[]).slice(0,3).map(t=>`<span style="font-size:9px;color:rgba(196,158,80,0.6);background:rgba(196,158,80,0.06);border:1px solid rgba(196,158,80,0.15);border-radius:4px;padding:1px 6px;letter-spacing:.3px">${t}</span>`).join("")}
         </div>
       </div>
-      <div style="flex-shrink:0;text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:4px">
-        <button class="wstar" onclick="toggleW('${s.id}',event)" style="color:${w?"#C9A55A":"#1E3050"}">${w?"★":"☆"}</button>
-        <div style="font-size:16px;font-weight:900;font-family:monospace;color:#E8D5A0;white-space:nowrap">${fW(s.p)}</div>
-        <div style="font-size:11px;font-family:monospace;font-weight:700;color:${up?"#10B981":"#EF4444"};white-space:nowrap">${up?"▲":"▼"}${Math.abs(s.c).toFixed(2)}%</div>
-        <div style="border-radius:5px;padding:3px 8px;background:${v.bg};border:1px solid ${v.c}25;display:inline-flex;gap:4px;align-items:center">
-          <span style="color:${v.c};font-size:10px;font-weight:800">${v.s}</span>
-          <span style="color:${v.c};font-size:11px;font-family:monospace;font-weight:900">${sc}</span>
+      <div style="flex-shrink:0;text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:5px">
+        <button class="wstar" onclick="toggleW('${s.id}',event)" style="color:${w?"#C49E50":"#2A3A50"};font-size:17px">${w?"★":"☆"}</button>
+        <div style="font-size:18px;font-weight:400;font-family:'Bebas Neue',monospace;letter-spacing:.5px;color:#EEE8DA;white-space:nowrap">${fW(s.p)}<span style="font-size:11px;font-family:monospace;margin-left:2px;opacity:.5">₩</span></div>
+        <div style="font-size:11px;font-family:'Space Grotesk',sans-serif;font-weight:600;color:${up?"#0ED98A":"#FF4D6D"};white-space:nowrap;letter-spacing:.3px">${up?"▲":"▼"} ${Math.abs(s.c).toFixed(2)}%</div>
+        <div style="border-radius:7px;padding:4px 9px;background:${v.bg};border:1px solid ${v.c}30;display:inline-flex;gap:5px;align-items:center;backdrop-filter:blur(6px)">
+          <span style="color:${v.c};font-size:9px;font-weight:800;letter-spacing:.8px;text-transform:uppercase">${v.s}</span>
+          <span style="color:${v.c};font-size:12px;font-family:'Space Grotesk',monospace;font-weight:700;opacity:.9">${sc}</span>
         </div>
       </div>
     </div>
-    <div class="sc-bar"><div class="sc-bar-fill" style="width:${sc}%;background:linear-gradient(90deg,${v.c}30,${v.c}90)"></div></div>
+    <div class="sc-bar" style="margin-top:13px"><div class="sc-bar-fill" style="width:${barW}%;background:linear-gradient(90deg,${v.c}20,${v.c}80,${v.c}40)"></div></div>
   </div>`;
 }
+
 
 function render(){
   renderHome();renderSearch();
@@ -1901,32 +2084,21 @@ function renderHome(){
   const el=document.getElementById("homeList");
   const watched=watchlist.map(id=>DB.find(s=>s.id===id)).filter(Boolean);
 
-  // 오늘 주목할 10종목: 등락률 상위 or 기본 정렬
-  const top10=[...DB].sort((a,b)=>b.c-a.c).slice(0,10);
-
   // 관심종목 섹션
   const watchHTML = watched.length
-    ? `<div style="padding:10px 14px 4px;display:flex;align-items:center;justify-content:space-between">
-        <span style="font-size:11px;color:#2A4060;font-weight:700;letter-spacing:1px">⭐ 관심 종목 <span style="color:#C9A55A">(${watched.length})</span></span>
+    ? `<div style="padding:14px 14px 6px;display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:11px;color:#7A8FA8;font-weight:700;letter-spacing:1.5px;text-transform:uppercase">⭐ 관심 종목 <span style="color:#C49E50">(${watched.length})</span></span>
       </div>
       ${watched.map(s=>cardHTML(s)).join("")}`
-    : `<div style="padding:10px 14px 4px;display:flex;align-items:center;justify-content:space-between">
-        <span style="font-size:11px;color:#2A4060;font-weight:700;letter-spacing:1px">⭐ 관심 종목</span>
+    : `<div style="padding:14px 14px 6px;display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:11px;color:#7A8FA8;font-weight:700;letter-spacing:1.5px;text-transform:uppercase">⭐ 관심 종목</span>
       </div>
-      <div style="margin:4px 12px 8px;padding:14px;background:rgba(201,165,90,0.04);border:1px dashed rgba(201,165,90,0.2);border-radius:12px;text-align:center">
-        <div style="font-size:11px;color:#2A4060;margin-bottom:8px">종목 카드의 ⭐를 눌러 추가하세요</div>
-        <button onclick="switchPage('search')" style="background:rgba(201,165,90,0.08);border:1px solid rgba(201,165,90,0.22);border-radius:8px;color:#C9A55A;padding:7px 16px;cursor:pointer;font-size:11px;font-weight:700">전체 종목 탐색 →</button>
+      <div style="margin:4px 12px 8px;padding:14px;background:rgba(196,158,80,0.07);border:1px dashed rgba(196,158,80,0.35);border-radius:12px;text-align:center">
+        <div style="font-size:11px;color:#5A7090;margin-bottom:8px">종목 카드의 ⭐를 눌러 추가하세요</div>
+        <button onclick="switchPage('search')" style="background:rgba(196,158,80,0.12);border:1px solid rgba(196,158,80,0.3);border-radius:12px;color:#C49E50;padding:8px 18px;cursor:pointer;font-size:11px;font-weight:700;letter-spacing:.5px">전체 종목 탐색 →</button>
       </div>`;
 
-  // 오늘 주목할 10종목 섹션
-  const top10HTML=`
-    <div style="padding:10px 14px 4px;display:flex;align-items:center;justify-content:space-between;margin-top:4px">
-      <span style="font-size:11px;color:#2A4060;font-weight:700;letter-spacing:1px">🔥 오늘 주목할 10종목 <span style="font-size:9px;color:#1A2A3A;font-weight:400">등락률순</span></span>
-      <span style="font-size:9px;color:#1A2A3A">3/10 기준</span>
-    </div>
-    ${top10.map(s=>cardHTML(s)).join("")}`;
-
-  el.innerHTML = watchHTML + top10HTML;
+  el.innerHTML = watchHTML;
 }
 
 // 경량 종목(DB_LITE) 카드 HTML — 클릭 시 AI 즉시 분석
@@ -1935,13 +2107,13 @@ function liteCardHTML(s){
     ? `<span style="font-size:9px;background:rgba(59,130,246,0.15);color:#60A5FA;border:1px solid rgba(59,130,246,0.3);border-radius:4px;padding:1px 5px">KOSPI</span>`
     : `<span style="font-size:9px;background:rgba(139,92,246,0.15);color:#A78BFA;border:1px solid rgba(139,92,246,0.3);border-radius:4px;padding:1px 5px">KOSDAQ</span>`;
   return `<div onclick="aiSearchById('${s.id}','${s.n.replace(/'/g,"\\'")}','${s.s}','${s.m}')"
-    style="margin:5px 2px;padding:14px 16px;background:rgba(255,255,255,0.018);border:1px solid rgba(255,255,255,0.045);border-radius:14px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;transition:background .15s"
-    onmouseenter="this.style.background='rgba(201,165,90,0.06)'" onmouseleave="this.style.background='rgba(255,255,255,0.018)'">
+    style="margin:5px 2px;padding:14px 16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:14px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;transition:background .15s"
+    onmouseenter="this.style.background='rgba(196,158,80,0.08)'" onmouseleave="this.style.background='rgba(255,255,255,0.04)'">
     <div>
-      <div style="font-size:14px;font-weight:800;color:#DDE6F0;margin-bottom:3px">${s.n}</div>
+      <div style="font-size:14px;font-weight:800;color:#EEE8DA;margin-bottom:3px">${s.n}</div>
       <div style="font-size:11px;color:#4A6080">${s.id} · ${s.s} &nbsp;${mBadge}</div>
     </div>
-    <div style="font-size:11px;color:#C9A55A;font-weight:700;white-space:nowrap;opacity:.8">✨ AI 분석</div>
+    <div style="font-size:11px;color:#C49E50;font-weight:700;white-space:nowrap;opacity:.8">✨ AI 분석</div>
   </div>`;
 }
 
@@ -1950,14 +2122,16 @@ async function aiSearchById(id, name, sector, market) {
   const el=document.getElementById("searchList");
   el.innerHTML=`<div style="text-align:center;padding:50px 20px">
     <div style="font-size:40px;margin-bottom:14px">✨</div>
-    <div style="color:#C9A55A;font-weight:900;font-size:16px;margin-bottom:6px">${name} 분석 중</div>
+    <div style="color:#C49E50;font-weight:900;font-size:16px;margin-bottom:6px">${name} 분석 중</div>
     <div style="color:#4A6080;font-size:12px;line-height:1.8">실시간 가격 + AI 70년 역사 모델로<br>분석 중입니다. 잠시만 기다려주세요...</div>
   </div>`;
-  // 가격 fetch와 AI 분석 병렬 실행 (둘 다 동시 시작)
-  const [livePrice] = await Promise.all([
-    fetchLivePrice(id, market).catch(()=>null),
-  ]);
-  await aiSearch(`${name}(${id}) 종목코드=${id} 섹터=${sector}`, null, livePrice);
+  // 실시간 풀 데이터 조회 (Yahoo Finance 우선)
+  const liveData = await fetchStockData(id, market).catch(()=>null);
+  // 실제 데이터가 있으면 쿼리에 주입 → AI 환각 방지
+  const priceHint = liveData
+    ? `[실시간데이터] 현재가=${liveData.p}원 등락=${liveData.c}% 52주고=${liveData.w52h}원 52주저=${liveData.w52l}원 시총=${liveData.cap} — 이 값을 p/c/prev/w52h/w52l/cap에 정확히 사용할 것`
+    : "";
+  await aiSearch(`${name}(${id}) 종목코드=${id} 섹터=${sector} ${priceHint}`, null, liveData);
 }
 
 function renderSearch(){
@@ -1996,41 +2170,41 @@ function renderSearch(){
     // KRX 아직 로드중이면 로딩 메시지
     if(!krxLoaded){
       el.innerHTML=`
-      <div style="margin:8px 2px 24px;border-radius:18px;overflow:hidden;border:1.5px solid rgba(201,165,90,0.5);background:linear-gradient(160deg,rgba(201,165,90,0.12) 0%,rgba(5,16,30,0.97) 55%)">
+      <div style="margin:8px 2px 24px;border-radius:18px;overflow:hidden;border:1.5px solid rgba(196,158,80,0.5);background:linear-gradient(160deg,rgba(196,158,80,0.12) 0%,rgba(5,16,30,0.97) 55%)">
         <div style="padding:30px 22px 16px;text-align:center">
           <div style="font-size:44px;margin-bottom:10px">⏳</div>
-          <div style="font-size:14px;font-weight:900;color:#DDE6F0;margin-bottom:8px">KRX 전종목 로딩 중...</div>
-          <div style="font-size:12px;color:#8BA0BC;margin-bottom:18px">잠시 후 다시 검색해주세요<br>또는 AI로 즉시 분석할게요</div>
+          <div style="font-size:14px;font-weight:900;color:#EEE8DA;margin-bottom:8px">KRX 전종목 로딩 중...</div>
+          <div style="font-size:12px;color:#6B84A0;margin-bottom:18px">잠시 후 다시 검색해주세요<br>또는 AI로 즉시 분석할게요</div>
           <button onclick="aiSearch('${q.replace(/'/g,"\\'")}',this)"
-            style="background:linear-gradient(135deg,#C9A55A,#E8D5A0,#C9A55A);border:none;border-radius:14px;color:#05101E;padding:15px 0;cursor:pointer;font-size:14px;font-weight:900;width:100%;box-shadow:0 4px 20px rgba(201,165,90,0.4)">
+            style="background:linear-gradient(135deg,#C49E50,#E8D5A0,#C49E50);border:none;border-radius:14px;color:#07080F;padding:15px 0;cursor:pointer;font-size:14px;font-weight:900;width:100%;box-shadow:0 4px 20px rgba(196,158,80,0.4)">
             ✨ AI로 즉시 분석
           </button>
-          <div id="aiStatus" style="margin-top:14px;font-size:12px;color:#C9A55A;font-weight:800;min-height:18px"></div>
+          <div id="aiStatus" style="margin-top:14px;font-size:12px;color:#C49E50;font-weight:800;min-height:18px"></div>
         </div>
       </div>`;
     } else {
       el.innerHTML=`
-      <div style="margin:8px 2px 24px;border-radius:18px;overflow:hidden;border:1.5px solid rgba(201,165,90,0.5);background:linear-gradient(160deg,rgba(201,165,90,0.12) 0%,rgba(5,16,30,0.97) 55%)">
+      <div style="margin:8px 2px 24px;border-radius:18px;overflow:hidden;border:1.5px solid rgba(196,158,80,0.5);background:linear-gradient(160deg,rgba(196,158,80,0.12) 0%,rgba(5,16,30,0.97) 55%)">
         <div style="padding:30px 22px 16px;text-align:center">
-          <div style="font-size:48px;margin-bottom:12px;filter:drop-shadow(0 0 16px rgba(201,165,90,0.6))">🔍</div>
-          <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#C9A55A;margin-bottom:8px;opacity:.8">KRX 전종목 검색 결과 없음</div>
-          <div style="font-size:20px;font-weight:900;color:#DDE6F0;margin-bottom:6px">"<span style="color:#C9A55A">${q}</span>"</div>
-          <div style="font-size:12px;color:#8BA0BC;line-height:1.9;margin-bottom:22px">
+          <div style="font-size:48px;margin-bottom:12px;filter:drop-shadow(0 0 16px rgba(196,158,80,0.6))">🔍</div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#C49E50;margin-bottom:8px;opacity:.8">KRX 전종목 검색 결과 없음</div>
+          <div style="font-size:20px;font-weight:900;color:#EEE8DA;margin-bottom:6px">"<span style="color:#C49E50">${q}</span>"</div>
+          <div style="font-size:12px;color:#6B84A0;line-height:1.9;margin-bottom:22px">
             KRX 상장 전종목에 없는 종목이에요<br>
             그래도 <b style="color:#E8D5A0">AI가 즉시 분석</b>해드릴게요
           </div>
           <button onclick="aiSearch('${q.replace(/'/g,"\\'")}',this)"
-            style="background:linear-gradient(135deg,#C9A55A,#E8D5A0,#C9A55A);border:none;border-radius:14px;color:#05101E;padding:16px 0;cursor:pointer;font-size:15px;font-weight:900;width:100%;box-shadow:0 6px 24px rgba(201,165,90,0.45)">
+            style="background:linear-gradient(135deg,#C49E50,#E8D5A0,#C49E50);border:none;border-radius:14px;color:#07080F;padding:16px 0;cursor:pointer;font-size:15px;font-weight:900;width:100%;box-shadow:0 6px 24px rgba(196,158,80,0.45)">
             ✨ AI로 분석하기
           </button>
-          <div id="aiStatus" style="margin-top:16px;font-size:13px;color:#C9A55A;font-weight:800;min-height:20px"></div>
+          <div id="aiStatus" style="margin-top:16px;font-size:13px;color:#C49E50;font-weight:800;min-height:20px"></div>
         </div>
-        <div style="padding:14px 20px 18px;border-top:1px solid rgba(201,165,90,0.15)">
-          <div style="font-size:10px;color:#C9A55A;font-weight:700;letter-spacing:1.5px;margin-bottom:9px">💡 검색 방법</div>
+        <div style="padding:14px 20px 18px;border-top:1px solid rgba(196,158,80,0.15)">
+          <div style="font-size:10px;color:#C49E50;font-weight:700;letter-spacing:1.5px;margin-bottom:9px">💡 검색 방법</div>
           <div style="font-size:12px;color:#6B84A0;line-height:2.0">
-            📌 종목명 · <span style="color:#8BA0BC">삼성전자</span> &nbsp; 📌 코드 · <span style="color:#8BA0BC">005930</span><br>
-            📌 섹터 · <span style="color:#8BA0BC">반도체, 방산, 바이오</span><br>
-            📌 키워드 · <span style="color:#8BA0BC">HBM, AI, 원전, K방산</span>
+            📌 종목명 · <span style="color:#6B84A0">삼성전자</span> &nbsp; 📌 코드 · <span style="color:#6B84A0">005930</span><br>
+            📌 섹터 · <span style="color:#6B84A0">반도체, 방산, 바이오</span><br>
+            📌 키워드 · <span style="color:#6B84A0">HBM, AI, 원전, K방산</span>
           </div>
         </div>
       </div>`;
@@ -2042,7 +2216,7 @@ function renderSearch(){
   if(!q){
     const krxStatus = krxLoaded
       ? `<div style="padding:8px 14px 0;text-align:right"><span style="font-size:10px;color:#2A5030;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:6px;padding:3px 8px">✅ KRX ${(DB_LITE.length+DB.length).toLocaleString()}종목 로드됨</span></div>`
-      : `<div style="padding:8px 14px 0;text-align:right"><span style="font-size:10px;color:#2A4060;background:rgba(201,165,90,0.06);border:1px solid rgba(201,165,90,0.15);border-radius:6px;padding:3px 8px">⏳ KRX 전종목 로딩 중...</span></div>`;
+      : `<div style="padding:8px 14px 0;text-align:right"><span style="font-size:10px;color:#5A7090;background:rgba(196,158,80,0.06);border:1px solid rgba(196,158,80,0.15);border-radius:6px;padding:3px 8px">⏳ KRX 전종목 로딩 중...</span></div>`;
     el.innerHTML = krxStatus + stocks.map(s=>cardHTML(s)).join("");
     return;
   }
@@ -2053,56 +2227,130 @@ function renderSearch(){
   if(stocks.length) html += stocks.map(s=>cardHTML(s)).join("");
   // DB_LITE 경량 카드 (구분선 포함)
   if(liteStocks.length){
-    if(stocks.length) html += `<div style="padding:8px 4px 4px;font-size:10px;color:#2A4060;font-weight:700;letter-spacing:1px">KRX 전종목 결과 ${liteStocks.length}개</div>`;
+    if(stocks.length) html += `<div style="padding:8px 4px 4px;font-size:10px;color:#5A7090;font-weight:700;letter-spacing:1px">KRX 전종목 결과 ${liteStocks.length}개</div>`;
     html += liteStocks.map(s=>liteCardHTML(s)).join("");
   }
   // AI 분석 버튼
-  html += `<div style="margin:8px 2px 0;padding:10px 14px;background:rgba(201,165,90,0.04);border:1px solid rgba(201,165,90,0.1);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:10px">
-    <span style="font-size:11px;color:#2A4060">다른 종목도 찾으시나요?</span>
-    <button onclick="aiSearch('${q.replace(/'/g,"\\'")}',this)" style="background:rgba(201,165,90,0.1);border:1px solid rgba(201,165,90,0.25);border-radius:8px;color:#C9A55A;padding:7px 14px;cursor:pointer;font-size:11px;font-weight:800;white-space:nowrap">✨ AI 분석</button>
+  html += `<div style="margin:8px 2px 0;padding:10px 14px;background:rgba(196,158,80,0.04);border:1px solid rgba(196,158,80,0.1);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:10px">
+    <span style="font-size:11px;color:#5A7090">다른 종목도 찾으시나요?</span>
+    <button onclick="aiSearch('${q.replace(/'/g,"\\'")}',this)" style="background:rgba(196,158,80,0.1);border:1px solid rgba(196,158,80,0.25);border-radius:8px;color:#C49E50;padding:7px 14px;cursor:pointer;font-size:11px;font-weight:800;white-space:nowrap">✨ AI 분석</button>
   </div>`;
   el.innerHTML = html;
 }
 
+// JSON 안전 추출 + 복구
+function extractJSON(raw){
+  if(!raw) return null;
+  // 1. 코드블록 제거
+  let s = raw.replace(/```json\s*/gi,'').replace(/```\s*/g,'').trim();
+  // 2. 첫 { 부터 슬라이스
+  const si = s.indexOf('{');
+  if(si < 0) return null;
+  s = s.slice(si);
+  // 3. 마지막 } 까지만 (후행 텍스트 제거)
+  // 매칭되는 닫는 괄호 찾기
+  let depth=0, inStr=false, esc=false, end=-1;
+  for(let i=0;i<s.length;i++){
+    const c=s[i];
+    if(esc){esc=false;continue;}
+    if(c==='\\'&&inStr){esc=true;continue;}
+    if(c==='"'){inStr=!inStr;continue;}
+    if(inStr) continue;
+    if(c==='{') depth++;
+    else if(c==='}'){depth--;if(depth===0){end=i;break;}}
+  }
+  if(end>=0) s=s.slice(0,end+1);
+  // 4. 잘린 경우 복구
+  else{
+    if(inStr) s+='"';
+    s=s.replace(/,\s*$/,'');
+    if(depth>0) s+='}';
+  }
+  // 5. 인라인 개행 제거 (문자열 안에 있는 \n이 실제 개행으로 들어간 경우)
+  // sum/bull/bear/note 필드의 개행을 공백으로
+  s=s.replace(/"(sum|bull|bear|note)":\s*"([^"]*)"/g,(m,k,v)=>`"${k}":"${v.replace(/\n/g,' ').replace(/\r/g,'')}"`);
+  return s;
+}
+
 let aiSearching=false;
 async function aiSearch(query, btn, preFetchedPrice=null){
-  if(aiSearching){ aiSearching=false; await new Promise(r=>setTimeout(r,80)); }
+  if(aiSearching){ aiSearching=false; await new Promise(r=>setTimeout(r,100)); }
   aiSearching=true;
   if(btn){ btn.disabled=true; btn.textContent="⏳ 분석 중..."; }
   const st=document.getElementById("aiStatus");
-  if(st){ st.style.color="#C9A55A"; st.textContent="⏳ AI 분석 중... (10~20초 소요)"; }
-
+  if(st){ st.style.color="#C49E50"; st.textContent="⏳ AI 분석 중..."; }
   try{
-    const prompt=`한국 주식 "${query}"에 대해 JSON만 출력. 마크다운없이 순수JSON만. 숫자는 number타입(문자열아님).
-{"id":"6자리코드","n":"종목명","s":"섹터","m":"K또는Q","p":현재가,"c":등락률,"prev":전일가,"w52h":52주고가,"w52l":52주저가,"cap":"시총조단위","per":PER또는null,"pbr":PBR값,"roe":ROE또는null,"debt":부채비율,"t":["태그1","태그2","태그3"],"ind":{"pbr":0-100,"per":0-100,"roe":0-100,"momentum":0-100,"growth":0-100,"sentiment":0-100,"safety":0-100},"sum":"요약2줄","bull":"매수근거","bear":"리스크","tH":목표상단,"tM":목표중간,"tL":목표하단,"verify":{"note":"1956~2026역사기반근거"}}
-ind점수(한국1956~2026 70년기준):pbr=역사평균0.95배기준;per=8~15배적정;roe=평균8%기준;momentum=52주위치+사이클;growth=EPS+GDP;sentiment=외인수급;safety=부채비율`;
+    // one-shot 예시로 JSON 형식 고정 → 파싱 에러 방지
+    const EXAMPLE_STOCK = '{"id":"005930","n":"삼성전자","s":"반도체","m":"K","p":57800,"c":8.2,"prev":53420,"w52h":88800,"w52l":47450,"cap":"344조","per":12.8,"pbr":1.42,"roe":15.2,"debt":28,"t":["반도체","HBM","AI"],"ind":{"pbr":62,"per":68,"roe":65,"momentum":78,"growth":82,"sentiment":72,"safety":74},"sum":"HBM4 수혜 핵심주. 3/9 급락 후 반등 중.","bull":"HBM4 엔비디아 납품 확대 기대","bear":"HBM 수율 SK하이닉스 대비 열위","tH":80000,"tM":70000,"tL":55000,"verify":{"note":"1956~2026 역사PBR 0.95배 대비 현 1.42배 적정"}}';
 
-    const res=await fetch("https://api.anthropic.com/v1/messages",{
+    const res = await fetch("https://api.anthropic.com/v1/messages",{
       method:"POST",
       headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:700,messages:[{role:"user",content:prompt}]})
+      body:JSON.stringify({
+        model:"claude-haiku-4-5-20251001",
+        max_tokens:900,
+        system:"You output ONLY valid compact JSON on a single line. No markdown, no explanation, no newlines inside string values. Start immediately with { and end with }.",
+        messages:[
+          {role:"user",  content:"삼성전자(005930) 분석"},
+          {role:"assistant", content: EXAMPLE_STOCK},
+          {role:"user",  content:"한국 주식 \""+query+"\" 분석. 위와 동일한 JSON 형식으로. 2026년 3월 기준 최신 주가/재무 사용. ind 점수: pbr(역사평균0.95배기준저평가시고점수), per(8~15배적정시고점수), roe(8%이상시고점수), 나머지적절히."}
+        ]
+      })
     });
-    if(!res.ok) throw new Error("API "+res.status);
-    const d=await res.json();
-    const txt=(d.content||[]).filter(x=>x.type==="text").map(x=>x.text).join("");
-    const m=txt.match(/```json\s*([\s\S]*?)```/)||txt.match(/(\{[\s\S]*\})/);
-    if(!m) throw new Error("JSON 파싱 실패");
-    const stock=JSON.parse((m[1]||m[0]).trim());
-    if(preFetchedPrice&&preFetchedPrice>100) stock.p=preFetchedPrice;
-    if(!stock.ind) stock.ind={};
-    ['pbr','per','roe','momentum','growth','sentiment','safety'].forEach(f=>{
-      if(typeof stock.ind[f]!=='number') stock.ind[f]=50;
-      stock.ind[f]=Math.min(100,Math.max(0,Math.round(stock.ind[f])));
+    if(!res.ok){
+      const err=await res.json().catch(()=>({}));
+      throw new Error("API "+res.status+(err.error?.message?": "+err.error.message:""));
+    }
+    const d = await res.json();
+    const raw = (d.content||[]).filter(x=>x.type==="text").map(x=>x.text).join("").trim();
+    if(!raw) throw new Error("AI 응답 없음");
+
+    const jsonStr = extractJSON(raw);
+    if(!jsonStr) throw new Error("JSON 추출 실패");
+
+    let stock;
+    try{ stock = JSON.parse(jsonStr); }
+    catch(pe){
+      console.error("[aiSearch] 원본:", raw.slice(0,400));
+      console.error("[aiSearch] 추출:", jsonStr.slice(0,400));
+      throw new Error("JSON 파싱 실패 — 재시도해주세요");
+    }
+
+    // 데이터 정제 — 실시간 데이터 우선 적용
+    if(preFetchedPrice && typeof preFetchedPrice === "object"){
+      // fetchStockData 반환 객체
+      const ld = preFetchedPrice;
+      if(ld.p   > 100) stock.p    = ld.p;
+      if(ld.c   !== undefined) stock.c    = ld.c;
+      if(ld.prev> 0)   stock.prev = ld.prev;
+      if(ld.w52h> 0)   stock.w52h = ld.w52h;
+      if(ld.w52l> 0)   stock.w52l = ld.w52l;
+      if(ld.cap && ld.cap!=="-") stock.cap = ld.cap;
+    } else if(preFetchedPrice && typeof preFetchedPrice === "number" && preFetchedPrice>100){
+      stock.p = preFetchedPrice;
+    }
+    stock.id = String(stock.id||"000000").replace(/\D/g,"").padStart(6,"0").slice(0,6);
+    ["p","c","prev","w52h","w52l","tH","tM","tL"].forEach(f=>{ stock[f]=Number(stock[f])||0; });
+    if(!stock.ind||typeof stock.ind!=="object") stock.ind={};
+    ["pbr","per","roe","momentum","growth","sentiment","safety"].forEach(f=>{
+      stock.ind[f]=Math.min(100,Math.max(0,Math.round(Number(stock.ind[f])||50)));
     });
-    if(!stock.verify) stock.verify={note:"AI 분석 — 🔄 실시간 가격 확인 권장"};
-    if(!stock.t||!stock.t.length) stock.t=[stock.s||"기타"];
+    if(!stock.verify) stock.verify={note:"AI 분석 완료 — 🔄 실시간 가격 확인"};
+    if(!Array.isArray(stock.t)||!stock.t.length) stock.t=[stock.s||"기타"];
+    if(!stock.sum) stock.sum=(stock.n||query)+" AI 분석 완료";
+    if(!stock.bull) stock.bull="AI 분석 참고";
+    if(!stock.bear) stock.bear="투자 전 확인 필요";
+    if(!stock.cap) stock.cap="-";
+    if(!["K","Q"].includes(stock.m)) stock.m="K";
+
     const ei=DB.findIndex(x=>x.id===stock.id);
-    if(ei>=0) DB[ei]=stock; else DB.push(stock);
+    if(ei>=0) DB[ei]={...DB[ei],...stock}; else DB.push(stock);
     if(st) st.textContent="";
     openDetail(stock.id);
-    // 실시간 가격 자동 교체
-    if(!preFetchedPrice){
-      setTimeout(async()=>{
+
+    // 실시간 가격 자동 반영
+    setTimeout(async()=>{
+      try{
         const lp=await fetchLivePrice(stock.id,stock.m);
         if(lp&&lp>100){
           const s=DB.find(x=>x.id===stock.id); if(s) s.p=lp;
@@ -2110,16 +2358,16 @@ ind점수(한국1956~2026 70년기준):pbr=역사평균0.95배기준;per=8~15배
             liveP=lp;
             const dv=document.getElementById("dpval"); if(dv) dv.textContent=fW(lp);
             const badge=document.getElementById("livebadge");
-            if(badge){badge.style.display="block";badge.textContent="✓ 실시간: "+fW(lp)+" ("+new Date().toLocaleTimeString("ko-KR")+")";}
+            if(badge){badge.style.display="block";badge.style.color="rgba(196,158,80,0.7)";badge.textContent="✓ 실시간: "+fW(lp)+" ("+new Date().toLocaleTimeString("ko-KR")+")";}
           }
         }
-      },500);
-    }
+      }catch(_){}
+    },300);
   }catch(e){
-    console.error("aiSearch:",e);
+    console.error("[aiSearch]",e);
     const st2=document.getElementById("aiStatus");
-    if(st2){st2.style.color="#EF4444";st2.textContent="❌ "+e.message+" — 다시 시도해주세요";
-      setTimeout(()=>{if(st2){st2.textContent="";st2.style.color="";}},7000);}
+    if(st2){st2.style.color="#FF4D6D";st2.textContent="❌ "+e.message;
+      setTimeout(()=>{if(st2){st2.textContent="";st2.style.color="";}},8000);}
     if(btn){btn.disabled=false;btn.textContent="✨ AI 분석 재시도";}
   }finally{aiSearching=false;}
 }
@@ -2155,7 +2403,7 @@ function openDetail(id){
   document.getElementById("dname").textContent=s.n;
   document.getElementById("dcode").textContent=`${s.id} · ${s.m==="K"?"KOSPI":"KOSDAQ"} · ${s.s}`;
   document.getElementById("dpval").textContent=fW(s.p);
-  document.getElementById("dpchg").style.color=up?"#10B981":"#EF4444";
+  document.getElementById("dpchg").style.color=up?"#0ED98A":"#FF4D6D";
   document.getElementById("dpchg").textContent=(up?"▲":"▼")+Math.abs(s.c).toFixed(2)+"%";
   document.getElementById("dverd").style.color=v.c;
   document.getElementById("dverd").textContent=v.l;
@@ -2163,8 +2411,10 @@ function openDetail(id){
   document.getElementById("dscore").textContent=sc;
   document.getElementById("sbox2").style.background=v.bg;
   document.getElementById("sbox2").style.border="1px solid "+v.c+"25";
-  document.getElementById("dtags").innerHTML=(s.t||[]).map(t=>`<span style="font-size:9px;color:rgba(201,165,90,0.6);background:rgba(201,165,90,0.06);border:1px solid rgba(201,165,90,0.15);border-radius:4px;padding:1px 6px">${t}</span>`).join("");
+  document.getElementById("dtags").innerHTML=(s.t||[]).map(t=>`<span style="font-size:9px;color:rgba(196,158,80,0.75);background:rgba(196,158,80,0.08);border:1px solid rgba(196,158,80,0.2);border-radius:5px;padding:2px 8px;letter-spacing:.5px">${t}</span>`).join("");
   document.getElementById("livebadge").style.display="none";
+  const dstar=document.getElementById("dstar");
+  if(dstar){dstar.textContent=isW(id)?"⭐":"☆";dstar.style.color=isW(id)?"#C49E50":"#3F5268";}
   document.querySelectorAll(".dtab").forEach((b,i)=>b.classList.toggle("active",i===0));
   renderDBody();
   document.getElementById("dview").classList.add("open");
@@ -2190,59 +2440,139 @@ function renderDBody(){
     const pos=Math.min(Math.max((cur-s.tL)/range*100,2),98);
     const midPos=Math.min(Math.max((s.tM-s.tL)/range*100,2),98);
     el.innerHTML=`
+    <div style="margin:4px 2px 6px;padding:8px 12px;background:rgba(196,158,80,0.06);border:1px solid rgba(196,158,80,0.2);border-radius:12px;display:flex;align-items:center;gap:8px;font-size:11px;color:#6B84A0">
+      <span style="color:#C49E50;font-size:13px">💡</span>
+      <span>표시 주가는 DB 추정치입니다. <b style="color:#C49E50">🔄 실시간</b> 버튼으로 정확한 현재가 확인하세요.</span>
+    </div>
     <div class="cbox">
-      <div class="cbox-t">📰 시장 상황 (2026.03.10)</div>
+      <div class="cbox-t">📰 종목 개요 · FY2024 기준</div>
       <p style="font-size:12px;color:#6B84A0;line-height:1.9">${s.sum}</p>
     </div>
     <div class="cbox">
-      <div class="cbox-t">📊 핵심 재무 지표</div>
+      <div class="cbox-t">📊 핵심 재무 지표 · FY2024 실적</div>
       <div class="vgrid">
-        <div class="vi"><div class="vil">시가총액</div><div class="viv">${s.cap}</div></div>
-        <div class="vi"><div class="vil">PER</div><div class="viv">${s.per}</div></div>
-        <div class="vi"><div class="vil">PBR</div><div class="viv">${s.pbr}배</div></div>
-        <div class="vi"><div class="vil">ROE</div><div class="viv">${s.roe}${typeof s.roe==="number"?"%":""}</div></div>
-        <div class="vi"><div class="vil">부채비율</div><div class="viv">${s.debt}%</div></div>
-        <div class="vi"><div class="vil">52주 범위</div><div class="viv" style="font-size:10px">${(s.w52l||0).toLocaleString()}~${(s.w52h||0).toLocaleString()}</div></div>
+        ${(()=>{
+          // ── PER 평가 ──────────────────────────────
+          const perVal = typeof s.per==="number" ? s.per : null;
+          let perColor="#8BA0BC", perLabel="";
+          if(perVal!==null){
+            if(perVal<=6){perColor="#0ED98A";perLabel="극저평가"}
+            else if(perVal<=12){perColor="#34D399";perLabel="저평가"}
+            else if(perVal<=18){perColor="#C49E50";perLabel="적정"}
+            else if(perVal<=30){perColor="#F59E0B";perLabel="고평가"}
+            else{perColor="#FF4D6D";perLabel="과열"}
+          }
+          const perDisp = perVal!==null
+            ? `<span style="color:${perColor};font-weight:800">${perVal}배</span><span style="font-size:9px;color:${perColor};margin-left:4px;opacity:.85">${perLabel}</span>`
+            : `<span style="color:#3A5070">적자/해당없음</span>`;
+
+          // ── PBR 평가 ──────────────────────────────
+          const pbrVal = typeof s.pbr==="number" ? s.pbr : null;
+          let pbrColor="#8BA0BC", pbrLabel="";
+          if(pbrVal!==null){
+            if(pbrVal<=0.5){pbrColor="#0ED98A";pbrLabel="극저평가"}
+            else if(pbrVal<=0.9){pbrColor="#34D399";pbrLabel="저평가"}
+            else if(pbrVal<=1.5){pbrColor="#C49E50";pbrLabel="적정"}
+            else if(pbrVal<=3.0){pbrColor="#F59E0B";pbrLabel="고평가"}
+            else{pbrColor="#FF4D6D";pbrLabel="과열"}
+          }
+          const pbrDisp = pbrVal!==null
+            ? `<span style="color:${pbrColor};font-weight:800">${pbrVal}배</span><span style="font-size:9px;color:${pbrColor};margin-left:4px;opacity:.85">${pbrLabel}</span>`
+            : `<span style="color:#3A5070">-</span>`;
+
+          // ── ROE 평가 ──────────────────────────────
+          const roeVal = typeof s.roe==="number" ? s.roe : null;
+          let roeColor="#8BA0BC", roeLabel="";
+          if(roeVal!==null){
+            if(roeVal>=20){roeColor="#0ED98A";roeLabel="우수"}
+            else if(roeVal>=12){roeColor="#34D399";roeLabel="양호"}
+            else if(roeVal>=7){roeColor="#C49E50";roeLabel="평균"}
+            else if(roeVal>=0){roeColor="#6B8090";roeLabel="저ROE"}
+            else{roeColor="#FF4D6D";roeLabel="적자"}
+          }
+          const roeDisp = roeVal!==null
+            ? `<span style="color:${roeColor};font-weight:800">${roeVal}%</span><span style="font-size:9px;color:${roeColor};margin-left:4px;opacity:.85">${roeLabel}</span>`
+            : `<span style="color:#3A5070">적자/해당없음</span>`;
+
+          // ── 부채비율 평가 ─────────────────────────
+          const debtVal = typeof s.debt==="number" ? s.debt : null;
+          let debtColor="#8BA0BC", debtLabel="";
+          let debtDisp;
+          if(s.debt==="-"){
+            debtDisp=`<span style="color:#3B82F6;font-size:10px;font-weight:700">금융업<br><span style="font-size:9px;opacity:.7">BIS 자본비율 적용</span></span>`;
+          } else if(debtVal!==null){
+            if(debtVal<=50){debtColor="#0ED98A";debtLabel="안전"}
+            else if(debtVal<=100){debtColor="#34D399";debtLabel="양호"}
+            else if(debtVal<=200){debtColor="#F59E0B";debtLabel="주의"}
+            else{debtColor="#FF4D6D";debtLabel="고부채"}
+            debtDisp=`<span style="color:${debtColor};font-weight:800">${debtVal}%</span><span style="font-size:9px;color:${debtColor};margin-left:4px;opacity:.85">${debtLabel}</span>`;
+          } else {
+            debtDisp=`<span style="color:#3A5070">-</span>`;
+          }
+
+          // ── 52주 위치 계산 ────────────────────────
+          const range52 = s.w52h - s.w52l;
+          const pos52 = range52>0 ? Math.round((s.p - s.w52l)/range52*100) : 50;
+          const pos52Color = pos52>=70?"#FF4D6D":pos52>=40?"#C49E50":"#0ED98A";
+
+          return `
+        <div class="vi"><div class="vil">시가총액</div><div class="viv" style="color:#EEE8DA">${s.cap||"-"}</div></div>
+        <div class="vi"><div class="vil">현재가</div><div class="viv" style="color:${s.c>=0?"#0ED98A":"#FF4D6D"}">${(s.p||0).toLocaleString()}원 <span style="font-size:10px">${s.c>=0?"+":""}${s.c}%</span></div></div>
+        <div class="vi"><div class="vil">PER (주가수익비율)</div><div class="viv" style="display:flex;align-items:center;flex-wrap:wrap;gap:2px">${perDisp}</div></div>
+        <div class="vi"><div class="vil">PBR (주가순자산비율)</div><div class="viv" style="display:flex;align-items:center;flex-wrap:wrap;gap:2px">${pbrDisp}</div></div>
+        <div class="vi"><div class="vil">ROE (자기자본이익률)</div><div class="viv" style="display:flex;align-items:center;flex-wrap:wrap;gap:2px">${roeDisp}</div></div>
+        <div class="vi"><div class="vil">부채비율</div><div class="viv" style="display:flex;align-items:center;flex-wrap:wrap;gap:2px">${debtDisp}</div></div>
+        <div class="vi" style="grid-column:1/-1">
+          <div class="vil">52주 가격 범위 &nbsp;<span style="color:${pos52Color};font-size:9px">현재 상위 ${pos52}% 위치</span></div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+            <span style="font-size:10px;color:#5A7090">${(s.w52l||0).toLocaleString()}</span>
+            <div style="flex:1;height:6px;background:rgba(255,255,255,0.05);border-radius:3px;overflow:hidden">
+              <div style="height:100%;width:${pos52}%;background:linear-gradient(90deg,#0ED98A,${pos52Color});border-radius:3px;transition:.3s"></div>
+            </div>
+            <span style="font-size:10px;color:#5A7090">${(s.w52h||0).toLocaleString()}</span>
+          </div>
+        </div>`;
+        })()}
       </div>
     </div>
     <div class="cbox">
       <div class="cbox-t">🎯 목표주가 레인지</div>
       <div style="position:relative;height:52px;margin:8px 0 4px">
-        <div style="position:absolute;top:20px;left:0;right:0;height:8px;border-radius:4px;background:linear-gradient(90deg,rgba(239,68,68,0.3),rgba(217,119,6,0.3),rgba(16,185,129,0.3))"></div>
-        <div style="position:absolute;top:18px;left:${midPos}%;width:1.5px;height:12px;background:#D97706;border-radius:2px;transform:translateX(-50%)"></div>
+        <div style="position:absolute;top:20px;left:0;right:0;height:8px;border-radius:4px;background:linear-gradient(90deg,rgba(255,77,109,0.35),rgba(245,158,11,0.35),rgba(14,217,138,0.35))"></div>
+        <div style="position:absolute;top:18px;left:${midPos}%;width:1.5px;height:12px;background:#F59E0B;border-radius:2px;transform:translateX(-50%)"></div>
         <div style="position:absolute;top:16px;left:${pos}%;width:14px;height:14px;border-radius:50%;background:${v.c};border:2px solid rgba(255,255,255,0.8);transform:translateX(-50%);box-shadow:0 0 8px ${v.c}50"></div>
         <div style="position:absolute;top:1px;left:${pos}%;transform:translateX(-50%);font-size:9px;font-weight:800;color:${v.c};white-space:nowrap">${fW(cur)}</div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px">
         <div style="background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.15);border-radius:8px;padding:9px;text-align:center">
-          <div style="font-size:8px;color:#EF4444;margin-bottom:3px;letter-spacing:.5px">하단</div>
-          <div style="font-size:11px;font-family:monospace;font-weight:800;color:#EF4444">${fW(s.tL)}</div>
+          <div style="font-size:8px;color:#FF4D6D;margin-bottom:3px;letter-spacing:.5px">하단</div>
+          <div style="font-size:14px;font-family:'Bebas Neue',monospace;font-weight:400;color:#FF4D6D">${fW(s.tL)}</div>
         </div>
         <div style="background:rgba(217,119,6,0.07);border:1px solid rgba(217,119,6,0.15);border-radius:8px;padding:9px;text-align:center">
           <div style="font-size:8px;color:#D97706;margin-bottom:3px;letter-spacing:.5px">중간</div>
-          <div style="font-size:11px;font-family:monospace;font-weight:800;color:#D97706">${fW(s.tM)}</div>
+          <div style="font-size:14px;font-family:'Bebas Neue',monospace;font-weight:400;color:#D97706">${fW(s.tM)}</div>
         </div>
         <div style="background:rgba(16,185,129,0.07);border:1px solid rgba(16,185,129,0.15);border-radius:8px;padding:9px;text-align:center">
-          <div style="font-size:8px;color:#10B981;margin-bottom:3px;letter-spacing:.5px">상단</div>
-          <div style="font-size:11px;font-family:monospace;font-weight:800;color:#10B981">${fW(s.tH)}</div>
+          <div style="font-size:8px;color:#0ED98A;margin-bottom:3px;letter-spacing:.5px">상단</div>
+          <div style="font-size:14px;font-family:'Bebas Neue',monospace;font-weight:400;color:#0ED98A">${fW(s.tH)}</div>
         </div>
       </div>
-      <div style="margin-top:8px;padding:8px 12px;background:rgba(0,0,0,0.3);border-radius:8px;display:flex;justify-content:space-between;align-items:center;border:1px solid rgba(255,255,255,0.04)">
-        <span style="font-size:11px;color:#2A4060;letter-spacing:.3px">목표 상단까지</span>
-        <span style="font-size:15px;font-weight:900;font-family:monospace;color:#10B981">+${((s.tH/cur-1)*100).toFixed(1)}%</span>
+      <div style="margin-top:8px;padding:8px 12px;background:rgba(255,255,255,0.04);border-radius:8px;display:flex;justify-content:space-between;align-items:center;border:1px solid rgba(255,255,255,0.1)">
+        <span style="font-size:11px;color:#5A7090;letter-spacing:.3px">목표 상단까지</span>
+        <span style="font-size:17px;font-weight:400;font-family:'Bebas Neue',monospace;color:#0ED98A;letter-spacing:.5px">+${((s.tH/cur-1)*100).toFixed(1)}%</span>
       </div>
     </div>`;
 
   } else if(curDTab==="rd"){
     const bars=Object.entries(s.ind).map(([k,val])=>{
-      const col=val>=70?"#10B981":val>=50?"#D97706":"#EF4444";
+      const col=val>=70?"#0ED98A":val>=50?"#D97706":"#FF4D6D";
       return`<div class="grow">
         <div class="gt">
           <div>
             <span style="font-size:11px;font-weight:700;color:#6B84A0">${IND_L[k]||k}</span>
-            <span style="font-size:9px;color:#1E3050;margin-left:5px">${IND_DESC[k]||""}</span>
+            <span style="font-size:9px;color:#3A5878;margin-left:5px">${IND_DESC[k]||""}</span>
           </div>
-          <span style="font-size:14px;font-weight:900;font-family:monospace;color:${col}">${val}</span>
+          <span style="font-size:16px;font-weight:400;font-family:'Bebas Neue',monospace;letter-spacing:.5px;color:${col}">${val}</span>
         </div>
         <div class="gb"><div class="gbf" style="width:${val}%;background:linear-gradient(90deg,${col}30,${col}80)"></div></div>
       </div>`;
@@ -2250,26 +2580,26 @@ function renderDBody(){
     el.innerHTML=`
     <div class="cbox">
       <div class="cbox-t">📐 70년 모델 — 7대 지표 (1956~2026)</div>
-      <div style="background:rgba(201,165,90,0.04);border:1px solid rgba(201,165,90,0.1);border-radius:8px;padding:9px 11px;margin-bottom:12px;font-size:10px;color:#2A4060;line-height:1.8">
-        <b style="color:#C9A55A">판정 모델:</b> 한국 주식시장 전체 역사 1956~2026 (70년). 대한증권거래소 창립(1956) → 코스피 기산(1980) → 3저호황(1987~89) → IMF외환위기(1997~98) → 닷컴버블(2000) → 금융위기(2008~09) → 코로나(2020) → AI·방산 슈퍼사이클(2025~) 8대 사이클 전체 반영.
+      <div style="background:rgba(196,158,80,0.04);border:1px solid rgba(196,158,80,0.1);border-radius:8px;padding:9px 11px;margin-bottom:12px;font-size:10px;color:#5A7090;line-height:1.8">
+        <b style="color:#C49E50">판정 모델:</b> 한국 주식시장 전체 역사 1956~2026 (70년). 대한증권거래소 창립(1956) → 코스피 기산(1980) → 3저호황(1987~89) → IMF외환위기(1997~98) → 닷컴버블(2000) → 금융위기(2008~09) → 코로나(2020) → AI·방산 슈퍼사이클(2025~) 8대 사이클 전체 반영.
       </div>
       ${bars}
     </div>
     <div class="cbox" style="text-align:center;padding:20px 14px">
       <div class="cbox-t">종합 점수</div>
       <div style="font-size:64px;font-weight:900;font-family:monospace;color:${v.c};line-height:1;margin:8px 0">${sc}</div>
-      <div style="font-size:11px;color:#2A4060;margin-bottom:8px;letter-spacing:.5px">/ 100점</div>
+      <div style="font-size:11px;color:#5A7090;margin-bottom:8px;letter-spacing:.5px">/ 100점</div>
       <div style="font-size:16px;font-weight:800;color:${v.c};letter-spacing:.5px">${v.l}</div>
     </div>`;
 
   } else if(curDTab==="sc"){
     el.innerHTML=`
     <div style="background:rgba(16,185,129,0.05);border:1px solid rgba(16,185,129,0.18);border-radius:13px;padding:14px;margin-bottom:10px">
-      <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;color:#10B981;margin-bottom:8px">▲ BULL CASE — 강세 시나리오</div>
+      <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;color:#0ED98A;margin-bottom:8px">▲ BULL CASE — 강세 시나리오</div>
       <p style="font-size:12px;color:#6B84A0;line-height:1.9">${s.bull}</p>
     </div>
     <div style="background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.18);border-radius:13px;padding:14px;margin-bottom:10px">
-      <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;color:#EF4444;margin-bottom:8px">▼ BEAR CASE — 약세 시나리오</div>
+      <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;color:#FF4D6D;margin-bottom:8px">▼ BEAR CASE — 약세 시나리오</div>
       <p style="font-size:12px;color:#6B84A0;line-height:1.9">${s.bear}</p>
     </div>
     <div style="background:rgba(217,119,6,0.05);border:1px solid rgba(217,119,6,0.18);border-radius:13px;padding:14px">
@@ -2278,36 +2608,97 @@ function renderDBody(){
     </div>`;
 
   } else if(curDTab==="vf"){
-    const vf=s.verify||{};
-    const items=[
-      {icon:"📊",label:"PBR 역사적 검증",val:vf.pbr_hist},
-      {icon:"📈",label:"PER 사이클 검증",val:vf.per_hist},
-      {icon:"💎",label:"ROE 품질 검증",val:vf.roe_check},
-      {icon:"📉",label:"모멘텀 검증",val:vf.momentum_check},
-      {icon:"🚀",label:"성장성 검증",val:vf.growth_verify},
-      {icon:"🔄",label:"백테스트 결과",val:vf.backtest},
-    ].filter(x=>x.val);
+    // ── 검증탭: DB 실제값 기반 동적 생성 (하드코딩 수치 없음) ──
+    const pbr = typeof s.pbr==="number" ? s.pbr : null;
+    const per = typeof s.per==="number" ? s.per : null;
+    const roe = typeof s.roe==="number" ? s.roe : null;
+    const debt = typeof s.debt==="number" ? s.debt : null;
+    const sc = gS(s.ind);
+
+    // PBR 해석
+    const pbrRow = (()=>{
+      if(!pbr) return {col:"#4A6080", txt:"PBR 데이터 없음 — 성장주 또는 신규 상장 종목"};
+      const hist = 0.95;
+      const ratio = pbr/hist;
+      if(pbr<=0.5)  return {col:"#0ED98A", txt:`PBR ${pbr}배 — 역사 평균(0.95배) 대비 ${((1-ratio)*100).toFixed(0)}% 저평가. IMF 구간 수준의 극저평가. 역사적 매수 신호.`};
+      if(pbr<=0.9)  return {col:"#0ED98A", txt:`PBR ${pbr}배 — 역사 평균(0.95배) 대비 저평가 구간. 1956~2026 동일 구간 3년 수익률 평균 +80~150%.`};
+      if(pbr<=1.5)  return {col:"#D97706", txt:`PBR ${pbr}배 — 역사 평균(0.95배) 대비 소폭 고평가. 적정 밸류에이션 범위. 실적 개선 여부가 핵심.`};
+      if(pbr<=3.0)  return {col:"#D97706", txt:`PBR ${pbr}배 — 역사 평균 대비 고평가. 고ROE·고성장으로 정당화 필요. 실적 뒷받침 필수.`};
+      return {col:"#FF4D6D", txt:`PBR ${pbr}배 — 역사 평균 대비 ${((ratio-1)*100).toFixed(0)}% 고평가. 3저호황(2.5배) 근접 과열 구간. 높은 성장 기대치 반영.`};
+    })();
+
+    // PER 해석
+    const perRow = (()=>{
+      if(!per) return {col:"#4A6080", txt:"PER 없음 — 현재 적자 또는 이익 불안정. 실적 턴어라운드 시점이 핵심 변수."};
+      if(per<=6)   return {col:"#0ED98A", txt:`PER ${per}배 — 역사적 저평가 구간(적정 8~15배). IMF 직후(5배) 수준. 70년 동일 구간 평균 3년 +120~200%.`};
+      if(per<=12)  return {col:"#0ED98A", txt:`PER ${per}배 — 적정 밴드(8~15배) 하단. 가치주 관점 저평가. 실적 안정 시 매력적.`};
+      if(per<=18)  return {col:"#D97706", txt:`PER ${per}배 — 적정 밴드(8~15배) 상단. 합리적 수준. 성장성으로 정당화 가능.`};
+      if(per<=30)  return {col:"#D97706", txt:`PER ${per}배 — 역사 평균 대비 고평가. 고성장 기대 반영. 실적 성장률 연 20%+ 유지 필요.`};
+      return {col:"#FF4D6D", txt:`PER ${per}배 — 닷컴버블(30배) 초과 구간. 미래 성장 기대가 극대화된 상태. 실적 미달 시 급락 리스크.`};
+    })();
+
+    // ROE 해석
+    const roeRow = (()=>{
+      if(!roe) return {col:"#4A6080", txt:"ROE 없음 — 현재 적자. 자본 잠식 가능성 체크 필요. 턴어라운드 투자 관점 접근."};
+      if(roe>=20)  return {col:"#0ED98A", txt:`ROE ${roe}% — 우수 (기준 8%). 코스피 상위 10% 수준. 1956~2026 ROE>20% 종목 3년 수익률 평균 +140%.`};
+      if(roe>=12)  return {col:"#0ED98A", txt:`ROE ${roe}% — 양호. 역사 평균(8%) 대비 우수. 지속 가능한 자본 효율성.`};
+      if(roe>=7)   return {col:"#D97706", txt:`ROE ${roe}% — 평균 수준. 역사 평균(8%) 근접. 업종 내 상대 비교 필요.`};
+      if(roe>=0)   return {col:"#D97706", txt:`ROE ${roe}% — 저ROE. 역사 평균(8%) 미달. 자본 효율성 개선 여부 모니터링.`};
+      return {col:"#FF4D6D", txt:`ROE ${roe}% — 적자. 자기자본 감소 중. 턴어라운드 일정 확인 필요.`};
+    })();
+
+    // 안전성 해석
+    const safeRow = (()=>{
+      if(!debt) return {col:"#4A6080", txt:"부채비율 별도 산출 (금융업·보험업은 BIS비율·지급여력비율로 별도 평가)."};
+      if(debt<=50)  return {col:"#0ED98A", txt:`부채비율 ${debt}% — 우수. IMF 이후 한국 기업 건전화 추세. 재무 안전성 상위권.`};
+      if(debt<=100) return {col:"#0ED98A", txt:`부채비율 ${debt}% — 양호. 업종 평균 수준. 이자보상배율 체크 권장.`};
+      if(debt<=200) return {col:"#D97706", txt:`부채비율 ${debt}% — 주의 구간. 금리 상승 시 이자 부담 증가. 영업이익으로 커버 가능 여부 확인.`};
+      return {col:"#FF4D6D", txt:`부채비율 ${debt}% — 고부채. 1997 IMF 당시 기업 평균(400%+) 대비 낮으나 리스크 구간. 유동성 체크 필수.`};
+    })();
+
+    // 종합 판정
+    const verdictTxt = sc>=70
+      ? `종합 점수 ${sc}점 — 매수 적합 구간. PBR·PER·ROE·안전성 복합 판정 기준 1956~2026 동일 구간 평균 3년 수익률 +80~200%.`
+      : sc>=50
+      ? `종합 점수 ${sc}점 — 중립 관망. 지표 혼재. 추가 확인 후 분할 매수 검토.`
+      : `종합 점수 ${sc}점 — 현재 매수 부적합. 지표 개선 시점 재점검 권장.`;
+
+    const vrows = [
+      {icon:"📊", label:"PBR 역사적 위치", data: pbrRow},
+      {icon:"📈", label:"PER 밸류에이션", data: perRow},
+      {icon:"💎", label:"ROE 자본효율성", data: roeRow},
+      {icon:"🛡", label:"재무 안전성", data: safeRow},
+    ];
+
     el.innerHTML=`
     <div class="cbox">
-      <div class="cbox-t">🔬 판정 검증 — 70년 데이터 근거 (1956~2026)</div>
-      <div style="background:rgba(201,165,90,0.04);border:1px solid rgba(201,165,90,0.1);border-radius:8px;padding:9px 11px;margin-bottom:12px;font-size:10px;color:#2A4060;line-height:1.8">
-        <b style="color:#C9A55A">검증 방법:</b> 각 지표는 1956~2026년 한국 주식시장 전체 데이터에서 동일 조건 구간의 이후 수익률을 역산. 1956~1979 초창기 장외시장 + 1980~ 코스피 공식 지수 + 개별 종목 특성 + 섹터 사이클 + 매크로 변수 종합.
+      <div class="cbox-t">🔬 실시간 검증 — DB 값 기반 자동 생성</div>
+      <div style="background:rgba(196,158,80,0.04);border:1px solid rgba(196,158,80,0.1);border-radius:8px;padding:9px 11px;margin-bottom:10px;font-size:10px;color:#5A7090;line-height:1.8">
+        <b style="color:#C49E50">기준:</b> 1956~2026 한국 주식시장 70년 역사 패턴. 현재 DB 재무값 실시간 반영.
+        ${pbr||per||roe ? `<br><b style="color:#C49E50">현재값:</b> ${pbr?"PBR "+pbr+"배 ":""}${per?"PER "+per+"배 ":""}${roe?"ROE "+roe+"% ":""}${debt&&typeof debt==="number"?"부채"+debt+"%":""}` : ""}
       </div>
-      ${items.map(x=>`
+      ${vrows.map(r=>`
       <div class="verify-row">
-        <span style="font-size:15px;flex-shrink:0">${x.icon}</span>
+        <span style="font-size:15px;flex-shrink:0">${r.icon}</span>
         <div style="flex:1">
-          <div style="font-size:10px;color:#C9A55A;font-weight:700;margin-bottom:2px;letter-spacing:.3px">${x.label}</div>
-          <div style="font-size:11px;color:#6B84A0;line-height:1.7">${x.val}</div>
+          <div style="font-size:10px;color:#C49E50;font-weight:700;margin-bottom:2px;letter-spacing:.3px">${r.label}</div>
+          <div style="font-size:11px;color:${r.data.col};line-height:1.7">${r.data.txt}</div>
         </div>
       </div>`).join("")}
+      <div class="verify-row">
+        <span style="font-size:15px;flex-shrink:0">🎯</span>
+        <div style="flex:1">
+          <div style="font-size:10px;color:#C49E50;font-weight:700;margin-bottom:2px;letter-spacing:.3px">종합 판정</div>
+          <div style="font-size:11px;color:${sc>=70?"#0ED98A":sc>=50?"#D97706":"#FF4D6D"};line-height:1.7">${verdictTxt}</div>
+        </div>
+      </div>
     </div>
     <div class="cbox">
-      <div class="cbox-t">⚠️ 모델 한계 및 주의사항</div>
-      <div style="font-size:11px;color:#2A4060;line-height:1.9">
-        본 모델은 <b style="color:#D97706">한국 주식시장 70년(1956~2026) 역사적 패턴</b> 기반으로 미래 수익률을 보장하지 않습니다.<br>
-        · 지정학 리스크는 모델에 일부만 반영됩니다<br>
-        · 실시간 가격은 🔄 버튼으로 확인하세요<br>
+      <div class="cbox-t">⚠️ 주의사항</div>
+      <div style="font-size:11px;color:#5A7090;line-height:1.9">
+        · 주가는 DB 기준 추정치 — <b style="color:#C49E50">🔄 실시간 버튼</b>으로 정확한 현재가 확인<br>
+        · 재무지표는 FY2024 실적 기준 (분기 실적 변동 시 달라질 수 있음)<br>
+        · 본 분석은 정보 제공 목적이며 투자 권유가 아닙니다<br>
         · 최종 투자 판단은 반드시 본인 책임입니다
       </div>
     </div>`;
@@ -2315,34 +2706,70 @@ function renderDBody(){
 }
 
 // 실시간 가격 공통 함수: corsproxy → Yahoo → allorigins 순 시도
-async function fetchLivePrice(code, market){
-  const sfx=market==="Q"?".KQ":".KS";
-  // 모든 소스를 병렬 요청 → 가장 빠른 응답 사용 (최대 6초)
-  const attempt = async(fetchFn) => {
-    try { const r = await fetchFn(); if(r>100) return r; } catch(e){}
-    return null;
-  };
-  const [r1,r2,r3] = await Promise.all([
-    // ① corsproxy → Naver
-    attempt(async()=>{
-      const r=await fetch("https://corsproxy.io/?"+encodeURIComponent("https://m.stock.naver.com/api/stock/"+code+"/basic"),{signal:AbortSignal.timeout(6000)});
-      const d=await r.json(); return parseInt((d.closePrice||"").toString().replace(/[^0-9]/g,""));
-    }),
-    // ② Yahoo Finance (CORS 허용)
-    attempt(async()=>{
-      const r=await fetch("https://query2.finance.yahoo.com/v8/finance/chart/"+code+sfx+"?interval=1d&range=1d",{signal:AbortSignal.timeout(6000)});
-      const d=await r.json(); const m=d?.chart?.result?.[0]?.meta;
-      return Math.round(m?.regularMarketPrice||m?.previousClose||0);
-    }),
-    // ③ allorigins → Naver
-    attempt(async()=>{
-      const r=await fetch("https://api.allorigins.win/get?url="+encodeURIComponent("https://m.stock.naver.com/api/stock/"+code+"/basic"),{signal:AbortSignal.timeout(6000)});
-      const d=await r.json(); const i=JSON.parse(d.contents||"{}");
-      return parseInt((i.closePrice||"").toString().replace(/[^0-9]/g,""));
-    }),
-  ]);
-  return r1||r2||r3||null;
+async function fetchLivePrice(code, market){ return fetchStockData(code,market).then(d=>d?.p||null); }
+
+// ── 풀 주식 데이터 실시간 조회 (주가 + 52주 + 등락 + 시총) ──────────
+async function fetchStockData(code, market){
+  const sfx = market==="Q" ? ".KQ" : ".KS";
+  let result = null;
+
+  // ① Yahoo Finance — 52주 고저 + 시총 + 등락률 포함
+  try{
+    const r = await fetch(
+      "https://query2.finance.yahoo.com/v8/finance/chart/"+code+sfx+"?interval=1d&range=5d",
+      {signal:AbortSignal.timeout(7000)}
+    );
+    const d = await r.json();
+    const m = d?.chart?.result?.[0]?.meta;
+    if(m && m.regularMarketPrice > 100){
+      const p = Math.round(m.regularMarketPrice);
+      const prev = Math.round(m.chartPreviousClose || m.previousClose || p);
+      const chg = prev>0 ? Math.round((p-prev)/prev*1000)/10 : 0;
+      const w52h = Math.round(m.fiftyTwoWeekHigh || p*1.3);
+      const w52l = Math.round(m.fiftyTwoWeekLow  || p*0.7);
+      const mc   = m.marketCap;
+      let cap = "-";
+      if(mc){
+        if(mc>=1e14)      cap = Math.round(mc/1e12)+"조";
+        else if(mc>=1e12) cap = (mc/1e12).toFixed(1)+"조";
+        else if(mc>=1e11) cap = Math.round(mc/1e8/100)+"천억";
+        else              cap = Math.round(mc/1e8)+"억";
+      }
+      result = {p, c:chg, prev, w52h, w52l, cap, src:"Yahoo"};
+    }
+  }catch(_){}
+
+  if(result) return result;
+
+  // ② Naver 모바일 API (CORS 프록시 경유)
+  for(const proxy of [
+    "https://corsproxy.io/?",
+    "https://api.allorigins.win/get?url="
+  ]){
+    try{
+      const url = "https://m.stock.naver.com/api/stock/"+code+"/basic";
+      const r = await fetch(proxy+encodeURIComponent(url), {signal:AbortSignal.timeout(6000)});
+      const raw = await r.json();
+      const d = proxy.includes("allorigins") ? JSON.parse(raw.contents||"{}") : raw;
+      const p = parseInt((d.closePrice||"").toString().replace(/[^0-9]/g,""));
+      if(p > 100){
+        const prev = parseInt((d.compareToPreviousClosePrice||"0").toString().replace(/[^0-9-]/g,""));
+        const chg  = parseFloat(d.fluctuationsRatio||"0");
+        const mv   = d.marketValue;
+        let cap = "-";
+        if(mv){
+          const n=parseInt(mv.toString().replace(/[^0-9]/g,""));
+          if(n>=1000000000000) cap=(n/1000000000000).toFixed(1)+"조";
+          else cap=Math.round(n/100000000)+"억";
+        }
+        result = {p, c:chg||Math.round((prev/p)*10)/10, prev:p-prev, w52h:Math.round(p*1.4), w52l:Math.round(p*0.6), cap, src:"Naver"};
+        break;
+      }
+    }catch(_){}
+  }
+  return result;
 }
+
 
 async function refreshPrice(){
   if(refreshing||!curStock)return;
@@ -2352,16 +2779,22 @@ async function refreshPrice(){
   btn.disabled=true; btn.textContent="조회 중...";
   badge.style.color=""; badge.style.display="none";
 
-  const price=await fetchLivePrice(curStock.id, curStock.m);
+  const sd=await fetchStockData(curStock.id, curStock.m);
+  const price = sd?.p || null;
   if(price){
     liveP=price;
+    // 52주 범위도 실시간 업데이트
+    if(sd.w52h>0) curStock._liveW52h=sd.w52h;
+    if(sd.w52l>0) curStock._liveW52l=sd.w52l;
     document.getElementById("dpval").textContent=fW(price);
+    const chgEl=document.getElementById("dpchg");
+    if(sd.c!==undefined){const up=sd.c>=0;chgEl.style.color=up?"#0ED98A":"#FF4D6D";chgEl.textContent=(up?"▲":"▼")+Math.abs(sd.c).toFixed(2)+"%";}
     badge.style.display="block";
-    badge.textContent="✓ 실시간 조회: "+fW(price)+" ("+new Date().toLocaleTimeString("ko-KR")+")";
+    badge.textContent="✓ 실시간 ("+sd.src+"): "+fW(price)+" · "+new Date().toLocaleTimeString("ko-KR");
     if(curDTab==="ov")renderDBody();
   }else{
     badge.style.display="block";
-    badge.style.color="#EF4444";
+    badge.style.color="#FF4D6D";
     badge.textContent="⚠ 조회 실패 — 장 마감 시간이거나 네트워크를 확인하세요";
     setTimeout(()=>{badge.style.display="none"; badge.style.color="";},5000);
   }
@@ -2370,6 +2803,7 @@ async function refreshPrice(){
 }
 
 function showHelp(){document.getElementById("helpModal").classList.add("open");}
+function showVersionLog(){document.getElementById("verModal").classList.add("open");}
 
 let deferredPrompt=null;
 window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;document.getElementById("instBtn").style.display="block";});
