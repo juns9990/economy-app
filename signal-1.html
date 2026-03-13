@@ -12,222 +12,343 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&family=Nanum+Myeongjo:wght@400;700;800&family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
-:root{
-  --bg:#07080F;
-  --bg2:#0C0E1A;
-  --surface:rgba(255,255,255,0.04);
-  --surface2:rgba(255,255,255,0.07);
-  --border:rgba(255,255,255,0.09);
-  --border-gold:rgba(196,158,80,0.3);
-  --gold:#C49E50;
-  --gold-light:#E8C96A;
-  --gold-dim:rgba(196,158,80,0.55);
-  --text:#EEE8DA;
-  --text2:#7A8FA8;
-  --text3:#3F5268;
-  --green:#0ED98A;
-  --red:#FF4D6D;
-  --amber:#F59E0B;
+/* ═══════════════════════════════════════════════════
+   INVESTMENT SIGNAL v3.0 — Economy App Style
+   GitHub Dark 기반 + 금융 데이터 플랫폼 UI
+   틀린 가격 방지: 앱 로드 시 Yahoo Finance 자동 갱신
+═══════════════════════════════════════════════════ */
+:root {
+  --bg:      #0D1117;   /* GitHub dark bg */
+  --bg2:     #161B22;   /* card bg */
+  --bg3:     #21262D;   /* hover/input */
+  --border:  #30363D;   /* standard border */
+  --border2: #21262D;   /* subtle border */
+  --gold:    #D4A843;   /* amber gold */
+  --gold-bg: rgba(212,168,67,0.1);
+  --gold-br: rgba(212,168,67,0.25);
+  --text:    #E6EDF3;
+  --text2:   #8B949E;
+  --text3:   #484F58;
+  --green:   var(--green);
+  --red:     var(--red);
+  --blue:    #58A6FF;
+  --amber:   #D29922;
+  --r8:      8px;
+  --r12:     12px;
 }
-
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:var(--bg);color:var(--text);
-  font-family:"Nanum Gothic",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  font-family:"Nanum Gothic",-apple-system,BlinkMacSystemFont,sans-serif;
   overscroll-behavior:none;-webkit-font-smoothing:antialiased}
-::-webkit-scrollbar{width:2px}
-::-webkit-scrollbar-thumb{background:rgba(196,158,80,0.2);border-radius:2px}
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 button,input{font-family:inherit;outline:none}
 input::placeholder{color:var(--text3)}
 
-/* ── App Shell ─────────────────────────────── */
-.app{display:flex;flex-direction:column;height:100dvh;overflow:hidden;position:relative}
+/* ── 앱 레이아웃 ── */
+.app{display:flex;flex-direction:column;height:100dvh;overflow:hidden}
 
-/* Luxury background — grain + aurora */
-.app::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:
-    radial-gradient(ellipse 100% 65% at 20% -10%,rgba(196,158,80,0.09) 0%,transparent 50%),
-    radial-gradient(ellipse 80% 50% at 80% 110%,rgba(80,120,220,0.07) 0%,transparent 50%),
-    radial-gradient(ellipse 60% 60% at 50% 50%,rgba(20,15,40,0.5) 0%,transparent 80%)}
-.app::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  opacity:.4}
+/* ── 헤더 ── */
+.hdr{
+  height:52px;display:flex;align-items:center;padding:0 14px;gap:10px;
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  flex-shrink:0;position:relative;z-index:50}
+.logo{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.ldot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--gold);
+  box-shadow:0 0 8px rgba(212,168,67,0.6);
+  animation:pulse 2.5s ease-in-out infinite;flex-shrink:0}
+@keyframes pulse{
+  0%,100%{box-shadow:0 0 8px rgba(212,168,67,.6)}
+  50%{box-shadow:0 0 3px rgba(212,168,67,.2);opacity:.5}}
+.logo-wrap{display:flex;flex-direction:column;gap:0}
+.logo-label{font-size:6px;color:rgba(212,168,67,0.5);letter-spacing:3px;
+  font-weight:700;text-transform:uppercase}
+.logo-name{
+  font-family:'Nanum Myeongjo',serif;font-size:18px;font-weight:700;
+  letter-spacing:4px;line-height:1.1;
+  background:linear-gradient(135deg,#997828 0%,#E8C56A 50%,#C49A3A 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hdr-badge{
+  font-size:8px;font-weight:700;letter-spacing:.8px;
+  background:var(--gold-bg);border:1px solid var(--gold-br);
+  color:var(--gold);border-radius:5px;padding:2px 7px;flex-shrink:0}
+.ver-btn{
+  font-size:9px;color:var(--text3);
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:5px;padding:3px 8px;cursor:pointer;
+  transition:color .15s;flex-shrink:0;white-space:nowrap}
+.ver-btn:hover{color:var(--gold)}
 
-/* ── Header ────────────────────────────────── */
-.hdr{display:flex;align-items:center;padding:0 18px;height:58px;
-  background:rgba(7,8,15,0.92);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);
-  border-bottom:1px solid var(--border-gold);flex-shrink:0;gap:12px;z-index:100;position:relative;
-  box-shadow:0 1px 0 rgba(196,158,80,0.08),0 4px 30px rgba(0,0,0,0.5)}
-.logo{display:flex;align-items:center;gap:11px;flex:1}
-.ldot{width:8px;height:8px;border-radius:50%;background:var(--gold);
-  box-shadow:0 0 0 2px rgba(196,158,80,0.15),0 0 14px rgba(196,158,80,0.6);
-  animation:pulse 3s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 2px rgba(196,158,80,0.15),0 0 14px rgba(196,158,80,0.6)}
-  50%{opacity:.5;transform:scale(.75);box-shadow:0 0 0 2px rgba(196,158,80,0.05),0 0 6px rgba(196,158,80,0.3)}}
-.logo-text{display:flex;flex-direction:column;gap:0px}
-.logo-sub{font-size:6.5px;color:var(--gold-dim);letter-spacing:4px;font-weight:600;text-transform:uppercase}
-.logo-main{font-size:21px;font-weight:700;letter-spacing:5px;
-  background:linear-gradient(135deg,#B8903C 0%,#E8C96A 35%,#C49E50 60%,#F0DC9A 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  font-family:'Nanum Myeongjo',serif;font-style:normal}
-.lbadge{font-size:8px;background:rgba(196,158,80,0.08);color:rgba(196,158,80,0.7);
-  border:1px solid rgba(196,158,80,0.2);border-radius:3px;padding:2px 7px;letter-spacing:1.5px;font-weight:700}
-#instBtn{display:none;background:rgba(196,158,80,0.08);border:1px solid rgba(196,158,80,0.25);
-  border-radius:8px;color:var(--gold);padding:7px 11px;cursor:pointer;font-size:11px;font-weight:700}
+/* ── 가격 갱신 상태 바 ── */
+.refresh-bar{
+  height:28px;display:flex;align-items:center;padding:0 12px;gap:8px;
+  background:var(--bg);border-bottom:1px solid var(--border2);
+  font-size:10px;flex-shrink:0;overflow:hidden}
+.refresh-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--text3);flex-shrink:0;transition:background .3s}
+.refresh-dot.live{background:var(--green);
+  box-shadow:0 0 5px rgba(63,185,80,.6);animation:pulse 1.5s infinite}
+.refresh-dot.loading{background:var(--amber);animation:pulse .8s infinite}
+.refresh-dot.fail{background:var(--red)}
+#refreshStatus{color:var(--text2);flex:1}
+.refresh-prog{
+  font-size:9px;color:var(--text3);
+  font-family:'Space Grotesk',monospace}
 
-/* ── Ticker ─────────────────────────────────── */
-.ticker{height:28px;overflow:hidden;
-  background:linear-gradient(90deg,rgba(196,158,80,0.04),rgba(196,158,80,0.02),rgba(196,158,80,0.04));
-  border-bottom:1px solid rgba(196,158,80,0.1);display:flex;align-items:center;flex-shrink:0;z-index:99}
+/* ── 티커 ── */
+.ticker{
+  height:24px;background:rgba(212,168,67,0.03);
+  border-bottom:1px solid var(--border2);
+  overflow:hidden;display:flex;align-items:center;flex-shrink:0}
 .ttrack{display:flex;white-space:nowrap;will-change:transform}
-.titem{display:inline-flex;align-items:center;gap:5px;padding:0 18px;border-right:1px solid rgba(196,158,80,0.08)}
+.titem{display:inline-flex;align-items:center;gap:4px;
+  padding:0 14px;border-right:1px solid var(--border2);font-size:10px}
 
-/* ── Pages ──────────────────────────────────── */
-.page{flex:1;display:none;flex-direction:column;overflow:hidden;position:relative;z-index:1}
+/* ── 페이지 ── */
+.page{flex:1;display:none;flex-direction:column;overflow:hidden}
 .page.active{display:flex}
-.list-scroll{flex:1;overflow-y:auto;padding:8px 12px 24px;-webkit-overflow-scrolling:touch}
+.list-scroll{flex:1;overflow-y:auto;padding:8px 8px 24px;
+  -webkit-overflow-scrolling:touch}
 
-/* ── Stock Cards ────────────────────────────── */
+/* ══════════════════════════════════════════
+   STOCK CARD — 이코노미 앱 데이터 카드
+══════════════════════════════════════════ */
 .scard{
-  background:linear-gradient(145deg,rgba(255,255,255,0.065) 0%,rgba(255,255,255,0.025) 100%);
-  border:1px solid rgba(255,255,255,0.1);
-  border-top:1px solid rgba(255,255,255,0.16);
-  border-radius:18px;padding:14px 15px;margin-bottom:9px;cursor:pointer;
-  transition:all .22s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden;
-  box-shadow:0 2px 16px rgba(0,0,0,0.3),0 0 0 0 rgba(196,158,80,0)}
-.scard::before{content:"";position:absolute;inset:0;
-  background:linear-gradient(145deg,rgba(255,255,255,0.03) 0%,transparent 50%);
-  border-radius:18px;pointer-events:none}
+  background:var(--bg2);
+  border:1px solid var(--border2);
+  border-radius:var(--r12);
+  padding:12px 13px;margin-bottom:6px;
+  cursor:pointer;transition:all .15s ease;
+  position:relative;overflow:hidden}
+.scard::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  border-radius:3px 0 0 3px;background:var(--border2);transition:background .15s}
+.scard.watched::before{background:var(--gold)}
 .scard:hover{
-  border-color:rgba(196,158,80,0.28);border-top-color:rgba(196,158,80,0.4);
-  background:linear-gradient(145deg,rgba(196,158,80,0.07) 0%,rgba(196,158,80,0.02) 100%);
-  transform:translateY(-2px);
-  box-shadow:0 8px 30px rgba(0,0,0,0.4),0 0 0 1px rgba(196,158,80,0.12),0 0 20px rgba(196,158,80,0.06)}
-.scard:active{opacity:.82;transform:scale(.985) translateY(0)}
-.scard.watched{
-  border-color:rgba(196,158,80,0.32);border-top-color:rgba(232,201,106,0.45);
-  background:linear-gradient(145deg,rgba(196,158,80,0.09) 0%,rgba(196,158,80,0.03) 100%);
-  box-shadow:0 3px 20px rgba(196,158,80,0.1),inset 0 1px 0 rgba(196,158,80,0.12)}
-.wstar{background:transparent;border:none;cursor:pointer;font-size:16px;padding:0;line-height:1;transition:transform .15s}
-.wstar:active{transform:scale(1.4)}
-.sc-bar{height:3px;background:rgba(255,255,255,0.05);border-radius:3px;overflow:hidden;margin-top:11px}
-.sc-bar-fill{height:100%;border-radius:3px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+  background:var(--bg3);border-color:var(--border);
+  box-shadow:0 2px 12px rgba(0,0,0,.4)}
+.scard:active{transform:scale(.99);opacity:.95}
+.scard.watched{border-color:rgba(212,168,67,.2);background:rgba(212,168,67,.02)}
 
-/* ── Bottom Nav ─────────────────────────────── */
-.bnav{display:flex;background:rgba(6,7,13,0.97);
-  border-top:1px solid rgba(196,158,80,0.15);flex-shrink:0;z-index:100;
-  box-shadow:0 -4px 30px rgba(0,0,0,0.5)}
-.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:4px;padding:9px 0 13px;background:transparent;border:none;cursor:pointer;
-  color:var(--text3);font-size:10px;font-weight:700;letter-spacing:.8px;transition:all .18s}
+.sc-row1{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.sc-left{flex:1;min-width:0}
+.sc-right{flex-shrink:0;text-align:right}
+
+/* 종목명 행 */
+.sc-nm-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:2px}
+.sc-name{font-weight:800;font-size:13.5px;color:var(--text)}
+.sc-code{font-size:9px;color:var(--text3);
+  background:rgba(255,255,255,0.04);padding:1px 5px;border-radius:4px;
+  font-family:'Space Grotesk',monospace;letter-spacing:.4px}
+.sc-mkt{font-size:8px;font-weight:700;padding:1px 5px;border-radius:4px;letter-spacing:.4px}
+.sc-mkt.K{background:rgba(88,166,255,.1);color:rgba(88,166,255,.8);
+  border:1px solid rgba(88,166,255,.2)}
+.sc-mkt.Q{background:rgba(130,80,255,.1);color:rgba(163,113,247,.8);
+  border:1px solid rgba(163,113,247,.2)}
+.sc-sec{font-size:10px;color:var(--text3);margin-bottom:6px}
+
+/* 태그 */
+.sc-tags{display:flex;gap:3px;flex-wrap:wrap}
+.sc-tag{font-size:8px;color:rgba(212,168,67,.65);
+  background:rgba(212,168,67,.06);border:1px solid rgba(212,168,67,.12);
+  border-radius:4px;padding:1px 5px;letter-spacing:.2px}
+
+/* 가격 */
+.sc-price{
+  font-family:'Bebas Neue',monospace;font-size:19px;font-weight:400;
+  letter-spacing:.5px;color:var(--text);line-height:1;white-space:nowrap}
+.sc-chg{
+  font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;
+  margin-top:2px;white-space:nowrap}
+.sc-chg.up{color:var(--green)}
+.sc-chg.dn{color:var(--red)}
+.sc-star{
+  background:transparent;border:none;cursor:pointer;
+  font-size:15px;line-height:1;margin-bottom:3px;
+  transition:transform .15s;padding:0;display:block;margin-left:auto}
+.sc-star:active{transform:scale(1.5)}
+
+/* 판정 뱃지 */
+.sc-verd{
+  display:inline-flex;align-items:center;gap:4px;
+  border-radius:6px;padding:3px 8px;margin-top:5px;
+  border:1px solid transparent}
+.sc-verd-s{font-size:8px;font-weight:800;letter-spacing:.6px}
+.sc-verd-n{font-family:'Bebas Neue',monospace;font-size:14px;font-weight:400;letter-spacing:.5px}
+
+/* 스코어 바 */
+.sc-sbar{
+  height:2px;background:rgba(255,255,255,.04);border-radius:1px;
+  overflow:hidden;margin-top:9px}
+.sc-sbar-f{height:100%;border-radius:1px;transition:width .4s}
+
+/* ── 하단 네비 ── */
+.bnav{
+  display:flex;background:var(--bg2);
+  border-top:1px solid var(--border);flex-shrink:0;
+  box-shadow:0 -1px 0 var(--border)}
+.bnav-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:3px;padding:8px 0 12px;
+  background:transparent;border:none;cursor:pointer;
+  color:var(--text3);font-size:9.5px;font-weight:700;
+  letter-spacing:.5px;transition:color .15s}
 .bnav-btn.active{color:var(--gold)}
-.bnav-btn.active .bnav-icon{filter:drop-shadow(0 0 5px rgba(196,158,80,0.55))}
 .bnav-icon{font-size:18px;line-height:1}
 
-/* ── Search UI ──────────────────────────────── */
-.sbox{display:flex;align-items:center;
-  background:rgba(255,255,255,0.05);
-  border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:0 14px;gap:8px;height:46px;
-  transition:all .18s}
-.sbox input{flex:1;background:transparent;border:none;color:var(--text);font-size:14px;font-weight:500}
-.sbox:focus-within{border-color:rgba(196,158,80,0.45);background:rgba(196,158,80,0.04);
-  box-shadow:0 0 0 3px rgba(196,158,80,0.1)}
-.stabs{display:flex;background:rgba(0,0,0,0.2);
-  border-bottom:1px solid rgba(196,158,80,0.1);flex-shrink:0;overflow-x:auto}
+/* ── 검색 ── */
+.sbox{
+  display:flex;align-items:center;
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--r8);padding:0 12px;gap:8px;height:42px;
+  transition:border-color .15s}
+.sbox input{flex:1;background:transparent;border:none;
+  color:var(--text);font-size:14px}
+.sbox:focus-within{border-color:rgba(212,168,67,.5)}
+
+.stabs{display:flex;background:var(--bg);
+  border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto}
 .stabs::-webkit-scrollbar{height:0}
-.stab{flex-shrink:0;padding:10px 13px;background:transparent;border:none;
-  border-bottom:2px solid transparent;color:var(--text3);font-size:11px;font-weight:700;
-  cursor:pointer;white-space:nowrap;transition:all .15s;letter-spacing:.3px}
+.stab{flex-shrink:0;padding:9px 11px;background:transparent;border:none;
+  border-bottom:2px solid transparent;color:var(--text3);
+  font-size:10.5px;font-weight:700;cursor:pointer;white-space:nowrap;
+  transition:all .15s;letter-spacing:.3px}
 .stab.active{color:var(--gold);border-bottom-color:var(--gold)}
 
-/* ── Detail View ────────────────────────────── */
-.dview{position:fixed;inset:0;background:#07080F;z-index:200;display:flex;flex-direction:column;
-  transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1)}
+/* ── 디테일 뷰 ── */
+.dview{
+  position:fixed;inset:0;background:var(--bg);z-index:200;
+  display:flex;flex-direction:column;
+  transform:translateX(100%);
+  transition:transform .25s cubic-bezier(.4,0,.2,1)}
 .dview.open{transform:translateX(0)}
 
-.dhdr{display:flex;align-items:center;gap:10px;padding:10px 16px;
-  background:rgba(6,7,13,0.96);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
-  border-bottom:1px solid var(--border-gold);flex-shrink:0;
-  box-shadow:0 2px 20px rgba(0,0,0,0.4)}
-.back-btn{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);
-  border-radius:12px;color:var(--gold);padding:8px 13px;cursor:pointer;font-size:13px;font-weight:700;
-  transition:all .15s;letter-spacing:.3px}
-.back-btn:hover{background:rgba(196,158,80,0.1);border-color:rgba(196,158,80,0.3)}
-.rfbtn{background:rgba(196,158,80,0.08);border:1px solid rgba(196,158,80,0.25);
-  border-radius:12px;color:var(--gold);padding:8px 10px;cursor:pointer;font-size:11px;font-weight:700;
-  flex-shrink:0;transition:all .15s;letter-spacing:.3px}
-.rfbtn:hover{background:rgba(196,158,80,0.16);border-color:rgba(196,158,80,0.4)}
+.dhdr{
+  display:flex;align-items:center;gap:10px;padding:10px 12px;
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  flex-shrink:0}
+.back-btn{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--r8);color:var(--gold);padding:7px 12px;
+  cursor:pointer;font-size:12px;font-weight:700;
+  transition:all .15s;letter-spacing:.3px;flex-shrink:0}
+.back-btn:hover{background:var(--gold-bg);border-color:var(--gold-br)}
+
+.rfbtn{
+  background:var(--gold-bg);border:1px solid var(--gold-br);
+  border-radius:var(--r8);color:var(--gold);padding:7px 11px;
+  cursor:pointer;font-size:11px;font-weight:700;
+  flex-shrink:0;transition:all .15s}
+.rfbtn:hover{background:rgba(212,168,67,.18)}
 .rfbtn:disabled{opacity:.3;cursor:not-allowed}
 
-.dtabs{display:flex;background:rgba(0,0,0,0.25);border-bottom:1px solid rgba(196,158,80,0.1);flex-shrink:0}
-.dtab{flex:1;padding:12px 2px;background:transparent;border:none;
-  border-bottom:2px solid transparent;color:var(--text3);font-size:11px;font-weight:700;
-  cursor:pointer;transition:all .15s;letter-spacing:.5px;text-transform:uppercase}
+/* 가격 패널 */
+.price-panel{
+  padding:14px 14px 10px;
+  background:linear-gradient(to bottom,rgba(212,168,67,.03),transparent);
+  border-bottom:1px solid var(--border2);flex-shrink:0}
+.d-price{
+  font-family:'Bebas Neue',monospace;font-size:34px;font-weight:400;
+  letter-spacing:1px;line-height:1;
+  background:linear-gradient(135deg,#997828,#E8C56A,#C49A3A);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.d-chg{
+  font-family:'Space Grotesk',sans-serif;font-size:13px;
+  font-weight:600;margin-top:3px}
+
+/* 판정 박스 */
+.verd-box{
+  border-radius:var(--r8);padding:10px 14px;text-align:center;
+  border:1px solid transparent;min-width:90px}
+.verd-label{font-size:10px;font-weight:800;letter-spacing:.5px;line-height:1.3}
+.verd-score{
+  font-family:'Bebas Neue',monospace;font-size:28px;font-weight:400;
+  letter-spacing:1px;line-height:1;margin-top:2px}
+
+/* 탭 */
+.dtabs{display:flex;background:var(--bg2);
+  border-bottom:1px solid var(--border);flex-shrink:0}
+.dtab{
+  flex:1;padding:10px 2px;background:transparent;border:none;
+  border-bottom:2px solid transparent;color:var(--text3);
+  font-size:9.5px;font-weight:700;cursor:pointer;
+  transition:all .15s;letter-spacing:.6px;text-transform:uppercase}
 .dtab.active{color:var(--gold);border-bottom-color:var(--gold)}
 
-.dbody{flex:1;overflow-y:auto;padding:12px 12px 32px;-webkit-overflow-scrolling:touch}
+.dbody{flex:1;overflow-y:auto;padding:10px 10px 32px;
+  -webkit-overflow-scrolling:touch}
 
-/* ── Content Boxes ──────────────────────────── */
+/* 콘텐츠 박스 */
 .cbox{
-  background:linear-gradient(160deg,rgba(255,255,255,0.06) 0%,rgba(255,255,255,0.02) 100%);
-  border:1px solid rgba(255,255,255,0.1);
-  border-top:1px solid rgba(255,255,255,0.15);
-  border-radius:16px;padding:16px;margin-bottom:11px;
-  box-shadow:0 2px 12px rgba(0,0,0,0.25),inset 0 1px 0 rgba(255,255,255,0.06)}
-.cbox-t{font-size:9px;color:rgba(196,158,80,0.65);letter-spacing:2px;
-  text-transform:uppercase;font-weight:700;margin-bottom:11px;letter-spacing:1.5px;font-size:9px}
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:var(--r12);padding:14px;margin-bottom:8px}
+.cbox-t{
+  font-size:9px;color:rgba(212,168,67,.6);letter-spacing:2px;
+  text-transform:uppercase;font-weight:700;margin-bottom:10px;
+  display:flex;align-items:center;gap:7px}
+.cbox-t::after{content:"";flex:1;height:1px;background:var(--border2)}
 
-/* ── Financial Grid ─────────────────────────── */
-.vgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.vi{padding:11px 12px;
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:11px;transition:background .15s}
-.vi:hover{background:rgba(255,255,255,0.06)}
-.vil{font-size:9px;color:var(--text3);margin-bottom:5px;letter-spacing:.6px;font-weight:600;text-transform:uppercase}
-.viv{font-size:13px;font-family:'Space Grotesk',sans-serif;font-weight:600;color:var(--text2)}
+/* 재무지표 그리드 */
+.vgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.vi{
+  padding:10px 11px;background:var(--bg3);
+  border:1px solid var(--border2);border-radius:var(--r8)}
+.vil{font-size:9px;color:var(--text3);margin-bottom:4px;
+  letter-spacing:.5px;font-weight:700;text-transform:uppercase}
+.viv{font-size:13px;font-family:'Space Grotesk',sans-serif;
+  font-weight:600;color:var(--text2)}
 
-/* ── Chart bars ─────────────────────────────── */
-.grow{margin-bottom:11px}
+/* 게이지 바 */
+.grow{margin-bottom:9px}
 .gt{display:flex;justify-content:space-between;margin-bottom:5px;align-items:center}
-.gb{height:6px;background:rgba(255,255,255,0.05);border-radius:4px;overflow:hidden}
-.gbf{height:100%;border-radius:4px;transition:width .6s}
+.gb{height:5px;background:rgba(255,255,255,.04);border-radius:3px;overflow:hidden}
+.gbf{height:100%;border-radius:3px;transition:width .5s}
 
-/* ── Disclaimer ──────────────────────────────── */
-.disc{background:rgba(255,77,109,0.06);border-top:1px solid rgba(255,77,109,0.15);
-  padding:9px 16px;display:flex;gap:7px;align-items:flex-start;flex-shrink:0}
-.disc p{font-size:10px;color:rgba(255,160,170,0.7);line-height:1.7;font-weight:400}
+/* 52주 게이지 */
+.w52-gauge{height:6px;background:rgba(255,255,255,.05);border-radius:4px;
+  overflow:visible;position:relative;margin:6px 0 3px}
+.w52-fill{height:100%;border-radius:4px;
+  background:linear-gradient(90deg,var(--red),var(--amber),var(--green))}
+.w52-dot{position:absolute;top:50%;transform:translate(-50%,-50%);
+  width:10px;height:10px;border-radius:50%;
+  background:var(--text);border:2px solid var(--bg);
+  box-shadow:0 0 0 2px rgba(255,255,255,.2)}
 
+/* 공시/면책 */
+.disc{
+  border-top:1px solid rgba(248,81,73,.15);
+  padding:8px 14px;display:flex;gap:6px;
+  background:rgba(248,81,73,.03);flex-shrink:0}
+.disc p{font-size:10px;color:rgba(248,81,73,.55);line-height:1.8}
+
+/* 기타 */
 .empty{text-align:center;padding:60px 20px;color:var(--text3);font-size:13px}
-.ios-banner{margin:6px 12px;background:rgba(196,158,80,0.06);border:1px solid rgba(196,158,80,0.18);
-  border-radius:13px;padding:11px 13px;display:none;align-items:center;gap:10px;flex-shrink:0}
-.verify-row{display:flex;align-items:flex-start;gap:8px;padding:9px 0;
-  border-bottom:1px solid rgba(255,255,255,0.06);font-size:11px}
+.ios-banner{
+  margin:6px 8px;background:var(--gold-bg);border:1px solid var(--gold-br);
+  border-radius:var(--r12);padding:10px 12px;
+  display:none;align-items:center;gap:10px;flex-shrink:0}
+.verify-row{display:flex;align-items:flex-start;gap:8px;padding:8px 0;
+  border-bottom:1px solid var(--border2);font-size:11px;line-height:1.6}
 .verify-row:last-child{border-bottom:none}
 
-/* ── Data Badge ──────────────────────────────── */
-.data-stamp{font-size:9px;color:rgba(196,158,80,0.55);background:rgba(196,158,80,0.07);
-  border:1px solid rgba(196,158,80,0.16);border-radius:4px;padding:2px 8px;
-  letter-spacing:.6px;white-space:nowrap;cursor:pointer;transition:all .15s}
-.data-stamp:hover{background:rgba(196,158,80,0.12);color:rgba(196,158,80,0.85)}
-
-/* ── Modal ───────────────────────────────────── */
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:400;
-  display:none;align-items:flex-end;backdrop-filter:blur(8px)}
+/* 모달 */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:400;
+  display:none;align-items:flex-end;backdrop-filter:blur(6px)}
 .modal-bg.open{display:flex}
 .modal{
-  background:linear-gradient(180deg,#0F1320 0%,#090B14 100%);
-  border-radius:24px 24px 0 0;padding:22px 18px 38px;width:100%;max-height:85vh;overflow-y:auto;
-  border-top:1px solid rgba(196,158,80,0.3);
-  box-shadow:0 -10px 60px rgba(0,0,0,0.7),0 -1px 0 rgba(196,158,80,0.2)}
-.modal-t{font-size:17px;font-weight:800;color:var(--text);margin-bottom:15px;
-  letter-spacing:.5px;font-family:'Nanum Myeongjo',serif;font-style:normal}
-.modal h4{font-size:10px;color:var(--gold);letter-spacing:2px;
-  text-transform:uppercase;font-weight:700;margin:16px 0 7px}
-
-/* ── Verdict Colors ──────────────────────────── */
-.v-buy{color:var(--green)}
-.v-hold{color:var(--amber)}
-.v-sell{color:var(--red)}
+  background:var(--bg2);border-radius:20px 20px 0 0;
+  padding:20px 16px 36px;width:100%;max-height:85vh;overflow-y:auto;
+  border-top:1px solid var(--gold-br);
+  box-shadow:0 -8px 40px rgba(0,0,0,.7)}
+.modal-t{font-size:16px;font-weight:800;color:var(--text);
+  font-family:'Nanum Myeongjo',serif;margin-bottom:14px}
+.modal h4{font-size:9px;color:var(--gold);letter-spacing:2px;
+  text-transform:uppercase;font-weight:700;margin:14px 0 7px;
+  display:flex;align-items:center;gap:6px}
+.modal h4::after{content:"";flex:1;height:1px;background:var(--border2)}
 </style>
 </head>
 <body>
@@ -235,25 +356,32 @@ input::placeholder{color:var(--text3)}
   <div class="hdr">
     <div class="logo">
       <div class="ldot"></div>
-      <div class="logo-text">
-        <span class="logo-sub">Investment</span>
-        <span class="logo-main">SIGNAL</span>
+      <div class="logo-wrap">
+        <span class="logo-label">Investment</span>
+        <span class="logo-name">SIGNAL</span>
       </div>
-      <span class="lbadge">AI 투자분석</span>
+      <span class="hdr-badge">AI 투자분석</span>
     </div>
-    <span class="data-stamp" id="verStamp" onclick="showVersionLog()" style="user-select:none" title="버전 정보">v2.6 · 3/13</span>
-    <button onclick="showHelp()" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;color:rgba(196,158,80,0.6);padding:7px 10px;cursor:pointer;font-size:15px;line-height:1;margin-left:4px;transition:all .15s">❓</button>
-    <button id="instBtn" onclick="installApp()">📲 홈 추가</button>
+    <button class="ver-btn" id="verStamp" onclick="showVersionLog()">v3.0 · 3/13</button>
+    <button onclick="showHelp()" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:rgba(212,168,67,.6);padding:7px 10px;cursor:pointer;font-size:15px;line-height:1;transition:all .15s">❓</button>
+    <button id="instBtn" onclick="installApp()" style="background:var(--gold-bg);border:1px solid var(--gold-br);border-radius:7px;color:var(--gold);padding:6px 11px;cursor:pointer;font-size:11px;font-weight:700;letter-spacing:.3px;display:none">＋ 홈 추가</button>
+  </div>
+  <!-- 실시간 가격 갱신 상태 바 -->
+  <div class="refresh-bar">
+    <div class="refresh-dot" id="rfDot"></div>
+    <span id="refreshStatus" style="color:var(--text3)">가격 로드 중...</span>
+    <span class="refresh-prog" id="rfProg"></span>
+    <button onclick="manualRefresh()" style="font-size:9px;background:transparent;border:1px solid var(--border);border-radius:4px;color:var(--text3);padding:2px 7px;cursor:pointer;transition:all .15s" id="rfManBtn">↻ 갱신</button>
   </div>
   <div class="ticker"><div class="ttrack" id="ttrack"></div></div>
 
   <!-- iOS banner -->
   <div class="ios-banner" id="iosBanner">
-    <span style="font-size:20px">📱</span>
-    <div style="flex:1;font-size:11px;color:rgba(196,158,80,0.8);line-height:1.5">
-      <b>홈화면 추가:</b> Safari 하단 공유버튼(□↑) → <b>홈 화면에 추가</b>
+    <span style="font-size:18px;flex-shrink:0">📲</span>
+    <div style="flex:1;font-size:11px;color:var(--text2);line-height:1.7">
+      <b style="color:var(--gold)">홈화면 추가:</b> Safari 하단 공유(□↑) → <b style="color:var(--text)">홈 화면에 추가</b>
     </div>
-    <button onclick="this.parentElement.style.display='none'" style="background:none;border:none;color:#5A7090;font-size:18px;cursor:pointer">×</button>
+    <button onclick="this.parentElement.style.display='none'" style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text3);font-size:14px;cursor:pointer;padding:3px 7px;line-height:1">✕</button>
   </div>
 
   <!-- HOME PAGE -->
@@ -269,9 +397,9 @@ input::placeholder{color:var(--text3)}
   <div class="page" id="pageSearch">
     <div style="padding:12px 12px 6px;flex-shrink:0">
       <div class="sbox">
-        <span style="color:#5A7090;font-size:16px">🔍</span>
+        <span style="color:var(--text3);font-size:16px">🔍</span>
         <input type="text" id="searchInput" placeholder="종목명·코드·섹터 검색">
-        <button id="clrBtn" onclick="clearSearch()" style="display:none;background:none;border:none;color:#5A7090;font-size:18px;cursor:pointer">×</button>
+        <button id="clrBtn" onclick="clearSearch()" style="display:none;background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer">×</button>
       </div>
     </div>
     <div class="stabs">
@@ -291,7 +419,7 @@ input::placeholder{color:var(--text3)}
       <button class="stab" onclick="setSTab('엔터')">엔터</button>
     </div>
     <div style="padding:4px 14px 0;flex-shrink:0">
-      <span id="resCnt" style="font-size:10px;color:#3F5268;letter-spacing:.3px"></span>
+      <span id="resCnt" style="font-size:10px;color:var(--text3);letter-spacing:.3px"></span>
     </div>
     <div class="list-scroll" id="searchList"></div>
   </div>
@@ -312,30 +440,26 @@ input::placeholder{color:var(--text3)}
   <div class="dhdr">
     <button class="back-btn" onclick="closeDetail()">← 뒤로</button>
     <div style="flex:1;min-width:0">
-      <div id="dname" style="font-size:16px;font-weight:800;color:#EEE8DA;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:'Nanum Myeongjo',serif;font-size:17px!important;font-weight:700;letter-spacing:0px"></div>
-      <div id="dcode" style="font-size:10px;color:#3F5268;margin-top:3px;letter-spacing:.5px;font-family:'Space Grotesk',monospace"></div>
+      <div id="dname" style="font-size:16px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:'Nanum Myeongjo',serif;font-size:17px!important;font-weight:700;letter-spacing:0px"></div>
+      <div id="dcode" style="font-size:10px;color:var(--text3);margin-top:3px;letter-spacing:.5px;font-family:'Space Grotesk',monospace"></div>
     </div>
     <button id="dstar" onclick="toggleW(curStock&&curStock.id)" style="background:transparent;border:none;cursor:pointer;font-size:22px;padding:0 4px 0 0;line-height:1;flex-shrink:0">☆</button>
     <button class="rfbtn" id="rfbtn" onclick="refreshPrice()">🔄 실시간</button>
   </div>
-  <div style="padding:14px 16px 12px;background:linear-gradient(180deg,rgba(196,158,80,0.04) 0%,rgba(0,0,0,0) 100%);border-bottom:1px solid rgba(196,158,80,0.12);flex-shrink:0">
-    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:8px">
+  <div class="price-panel">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:10px">
       <div>
-        <div id="dpval" style="font-size:32px;font-weight:400;font-family:'Bebas Neue',monospace;letter-spacing:1px;
-          background:linear-gradient(135deg,#B8903C 0%,#E8C96A 40%,#C49E50 75%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;font-family:'Nanum Myeongjo',serif;letter-spacing:0px"></div>
-        <div id="dpchg" style="font-size:13px;font-weight:700;font-family:'Space Grotesk',monospace;margin-top:3px;letter-spacing:.3px"></div>
+        <div id="dpval" class="d-price"></div>
+        <div id="dpchg" class="d-chg"></div>
       </div>
-      <div id="sbox2" style="border-radius:14px;padding:10px 14px;text-align:center;border:1px solid transparent;backdrop-filter:blur(10px)">
-        <div id="dverd" style="font-size:12px;font-weight:800;letter-spacing:.5px"></div>
-        <div style="display:flex;align-items:center;justify-content:center;gap:3px;margin-top:2px">
-          <span id="dscore" style="font-size:26px;font-weight:400;font-family:'Bebas Neue',monospace;letter-spacing:1px"></span>
-          <span style="font-size:10px;color:#3F5268;font-family:'Space Grotesk',monospace">/ 100</span>
+      <div id="sbox2" class="verd-box">
+        <div id="dverd" class="verd-label"></div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:2px;margin-top:2px">
+          <span id="dscore" class="verd-score"></span>
+          <span style="font-size:9px;color:var(--text3);font-family:'Space Grotesk',monospace;margin-top:8px">/ 100</span>
         </div>
       </div>
     </div>
-    <div id="dtags" style="display:flex;gap:4px;margin-top:8px;flex-wrap:wrap"></div>
-    <div id="livebadge" style="display:none;margin-top:6px;font-size:10px;color:rgba(196,158,80,0.8);background:rgba(196,158,80,0.08);border-radius:7px;padding:5px 10px;border:1px solid rgba(196,158,80,0.15)"></div>
-  </div>
   <div class="dtabs">
     <button class="dtab active" onclick="setDTab('ov')">개요</button>
     <button class="dtab" onclick="setDTab('rd')">7대지표</button>
@@ -350,13 +474,13 @@ input::placeholder{color:var(--text3)}
   <div class="modal" style="max-height:80vh;overflow-y:auto">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
       <span class="modal-t">📋 업데이트 로그</span>
-      <button onclick="document.getElementById('verModal').classList.remove('open')" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:7px;color:#5A7090;padding:6px 10px;cursor:pointer;font-size:16px">×</button>
+      <button onclick="document.getElementById('verModal').classList.remove('open')" style="background:var(--bg3);border:1px solid var(--border2);border-radius:7px;color:var(--text3);padding:6px 10px;cursor:pointer;font-size:16px">×</button>
     </div>
-    <div style="font-size:11px;color:#C49E50;font-weight:800;letter-spacing:1px;margin-bottom:10px">현재: v2.4 · 2026.03.11 최종</div>
+    <div style="font-size:11px;color:var(--gold);font-weight:800;letter-spacing:1px;margin-bottom:10px">현재: v3.0 · 2026.03.11 최종</div>
 
-    <div style="background:rgba(196,158,80,0.06);border:1px solid rgba(196,158,80,0.2);border-radius:12px;padding:12px;margin-bottom:10px">
-      <div style="font-size:12px;font-weight:900;color:#C49E50;margin-bottom:6px">v2.5 — 2026.03.12</div>
-      <div style="font-size:11px;color:#6B84A0;line-height:1.9">
+    <div style="background:rgba(212,168,67,0.06);border:1px solid rgba(212,168,67,0.2);border-radius:12px;padding:12px;margin-bottom:10px">
+      <div style="font-size:12px;font-weight:900;color:var(--gold);margin-bottom:6px">v2.5 — 2026.03.12</div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.9">
         ✅ 재무지표 전면 재교정 (FY2024 실적 기반 100개 종목)<br>
         ✅ None 깨진 패턴 29개 정리 (per/pbr/roe 오류 수정)<br>
         ✅ 금융주 부채비율 "-" 처리 (은행 BIS비율 별도 측정)<br>
@@ -365,9 +489,9 @@ input::placeholder{color:var(--text3)}
       </div>
     </div>
 
-    <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:12px;margin-bottom:10px">
-      <div style="font-size:12px;font-weight:900;color:#EEE8DA;margin-bottom:6px">v2.4 — 2026.03.11 19:00</div>
-      <div style="font-size:11px;color:#6B84A0;line-height:1.9">
+    <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:12px;margin-bottom:10px">
+      <div style="font-size:12px;font-weight:900;color:var(--text);margin-bottom:6px">v2.4 — 2026.03.11 19:00</div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.9">
         ✅ AI 분석 속도 대폭 개선 (프롬프트 최적화, max_tokens 400 단축)<br>
         ✅ 실시간 가격 3병렬 조회 (Promise.all, 기존 순차→동시)<br>
         ✅ 검색 200ms debounce 적용<br>
@@ -378,18 +502,18 @@ input::placeholder{color:var(--text3)}
       </div>
     </div>
 
-    <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:12px;margin-bottom:10px">
-      <div style="font-size:12px;font-weight:900;color:#EEE8DA;margin-bottom:6px">v2.3 — 2026.03.11 14:00</div>
-      <div style="font-size:11px;color:#6B84A0;line-height:1.9">
+    <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:12px;margin-bottom:10px">
+      <div style="font-size:12px;font-weight:900;color:var(--text);margin-bottom:6px">v2.3 — 2026.03.11 14:00</div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.9">
         • 100개 종목 verify 데이터 전부 1956~2026 역사 기반으로 교체<br>
         • 검색 결과 없음 UI 골드 테두리 카드로 강조<br>
         • DB_LITE 추가 (KRX 전종목 경량 카드)
       </div>
     </div>
 
-    <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:12px;margin-bottom:10px">
-      <div style="font-size:12px;font-weight:900;color:#EEE8DA;margin-bottom:6px">v2.2 — 2026.03.11 10:00</div>
-      <div style="font-size:11px;color:#6B84A0;line-height:1.9">
+    <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:12px;margin-bottom:10px">
+      <div style="font-size:12px;font-weight:900;color:var(--text);margin-bottom:6px">v2.2 — 2026.03.11 10:00</div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.9">
         • 판정모델 40년→70년(1956~2026) 전체 역사 확장<br>
         • PBR 평균기준 1.1배→0.95배 하향 조정<br>
         • 도움말 모달 70년 사이클 타임라인 추가<br>
@@ -397,18 +521,18 @@ input::placeholder{color:var(--text3)}
       </div>
     </div>
 
-    <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:12px;margin-bottom:10px">
-      <div style="font-size:12px;font-weight:900;color:#EEE8DA;margin-bottom:6px">v2.1 — 2026.03.11 06:00</div>
-      <div style="font-size:11px;color:#6B84A0;line-height:1.9">
+    <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:12px;margin-bottom:10px">
+      <div style="font-size:12px;font-weight:900;color:var(--text);margin-bottom:6px">v2.1 — 2026.03.11 06:00</div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.9">
         • 실시간 버튼 CORS 프록시 3단계 구조<br>
         • AI 검색 후 자동 실시간 가격 호출<br>
         • 홈화면 관심종목 + 오늘 주목할 10종목 추가
       </div>
     </div>
 
-    <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:12px">
-      <div style="font-size:12px;font-weight:900;color:#EEE8DA;margin-bottom:6px">v2.0 — 2026.03.10</div>
-      <div style="font-size:11px;color:#6B84A0;line-height:1.9">
+    <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:12px">
+      <div style="font-size:12px;font-weight:900;color:var(--text);margin-bottom:6px">v2.0 — 2026.03.10</div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.9">
         • 한국주식 전용 앱 리디자인 (골드 테마)<br>
         • 종목 DB 100개 구성<br>
         • AI 실시간 분석 (Claude API 연동)<br>
@@ -416,7 +540,7 @@ input::placeholder{color:var(--text3)}
       </div>
     </div>
 
-    <div style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.06);font-size:10px;color:#5A7090;text-align:center">
+    <div style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.06);font-size:10px;color:var(--text3);text-align:center">
       GitHub: juns9990/economy-app · signal-1.html
     </div>
   </div>
@@ -427,51 +551,51 @@ input::placeholder{color:var(--text3)}
   <div class="modal">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
       <span class="modal-t">📖 앱 안내</span>
-      <button onclick="document.getElementById('helpModal').classList.remove('open')" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:7px;color:#5A7090;padding:6px 10px;cursor:pointer;font-size:16px">×</button>
+      <button onclick="document.getElementById('helpModal').classList.remove('open')" style="background:var(--bg3);border:1px solid var(--border2);border-radius:7px;color:var(--text3);padding:6px 10px;cursor:pointer;font-size:16px">×</button>
     </div>
 
     <h4>📱 홈화면 추가</h4>
-    <div style="background:rgba(196,158,80,0.05);border:1px solid rgba(196,158,80,0.12);border-radius:12px;padding:11px 12px;font-size:12px;color:#6B84A0;line-height:1.9">
-      <b style="color:#C49E50">Android (크롬):</b><br>
+    <div style="background:rgba(212,168,67,0.05);border:1px solid rgba(212,168,67,0.12);border-radius:12px;padding:11px 12px;font-size:12px;color:var(--text2);line-height:1.9">
+      <b style="color:var(--gold)">Android (크롬):</b><br>
       1. 크롬으로 이 페이지 접속<br>
       2. 우측 상단 ⋮ 메뉴 → <b>홈 화면에 추가</b><br><br>
-      <b style="color:#C49E50">iPhone (Safari 필수):</b><br>
+      <b style="color:var(--gold)">iPhone (Safari 필수):</b><br>
       1. <b>Safari</b>로 접속 (크롬 ❌)<br>
       2. 하단 공유버튼 □↑ → <b>홈 화면에 추가</b>
     </div>
 
     <h4>🌐 앱 주소</h4>
-    <div style="background:rgba(255,255,255,0.04);border-radius:12px;padding:11px 13px;font-size:11px;font-family:monospace;color:#C49E50;word-break:break-all">
+    <div style="background:rgba(255,255,255,0.04);border-radius:12px;padding:11px 13px;font-size:11px;font-family:monospace;color:var(--gold);word-break:break-all">
       https://juns9990.github.io/economy-app/signal-1.html
     </div>
 
     <h4>🔄 업데이트 방법</h4>
-    <div style="font-size:12px;color:#6B84A0;line-height:1.9">
+    <div style="font-size:12px;color:var(--text2);line-height:1.9">
       GitHub → economy-app 레포 → signal-1.html 덮어쓰기<br>
       → 홈화면 아이콘 그대로 자동 반영 ✅
     </div>
 
     <h4>📊 데이터 기준</h4>
-    <div style="font-size:12px;color:#6B84A0;line-height:1.9">
+    <div style="font-size:12px;color:var(--text2);line-height:1.9">
       주가: 2026.03.11 기준 (🔄 실시간 버튼으로 업데이트)<br>
       판정: 한국 주식시장 전체 역사 1956~2026 (70년) 기반
     </div>
 
     <h4>📅 70년 사이클 기반 판정 근거</h4>
-    <div style="background:rgba(196,158,80,0.04);border:1px solid rgba(196,158,80,0.1);border-radius:12px;padding:11px 12px;font-size:11px;color:#6B84A0;line-height:2.0">
-      <b style="color:#C49E50">1956</b> 대한증권거래소 창립 — 한국 주식시장 시작<br>
-      <b style="color:#C49E50">1980</b> 코스피 지수 기산 (100pt) — 공식 지수 역사 시작<br>
-      <b style="color:#C49E50">1987~89</b> 3저호황 — 코스피 4배↑ PBR 2.5배 과열 신호<br>
-      <b style="color:#C49E50">1992</b> 외국인 투자 허용 — 수급 구조 변화<br>
-      <b style="color:#C49E50">1997~98</b> IMF 외환위기 — -71%, PBR <b style="color:#FF4D6D">0.35배</b> 역사적 최저<br>
-      <b style="color:#C49E50">2000</b> 닷컴버블 — PER 30배 과열 후 급락<br>
-      <b style="color:#C49E50">2003~07</b> 슈퍼사이클 — 코스피 500→2000 (+300%)<br>
-      <b style="color:#C49E50">2008~09</b> 금융위기 — -50%, PBR 0.85배<br>
-      <b style="color:#C49E50">2020</b> 코로나 — -35% 후 당해 +100% 급반등<br>
-      <b style="color:#C49E50">2025~</b> AI·방산 슈퍼사이클 — 코스피 4000 돌파<br>
+    <div style="background:rgba(212,168,67,0.04);border:1px solid rgba(212,168,67,0.1);border-radius:12px;padding:11px 12px;font-size:11px;color:var(--text2);line-height:2.0">
+      <b style="color:var(--gold)">1956</b> 대한증권거래소 창립 — 한국 주식시장 시작<br>
+      <b style="color:var(--gold)">1980</b> 코스피 지수 기산 (100pt) — 공식 지수 역사 시작<br>
+      <b style="color:var(--gold)">1987~89</b> 3저호황 — 코스피 4배↑ PBR 2.5배 과열 신호<br>
+      <b style="color:var(--gold)">1992</b> 외국인 투자 허용 — 수급 구조 변화<br>
+      <b style="color:var(--gold)">1997~98</b> IMF 외환위기 — -71%, PBR <b style="color:var(--red)">0.35배</b> 역사적 최저<br>
+      <b style="color:var(--gold)">2000</b> 닷컴버블 — PER 30배 과열 후 급락<br>
+      <b style="color:var(--gold)">2003~07</b> 슈퍼사이클 — 코스피 500→2000 (+300%)<br>
+      <b style="color:var(--gold)">2008~09</b> 금융위기 — -50%, PBR 0.85배<br>
+      <b style="color:var(--gold)">2020</b> 코로나 — -35% 후 당해 +100% 급반등<br>
+      <b style="color:var(--gold)">2025~</b> AI·방산 슈퍼사이클 — 코스피 4000 돌파<br>
       <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.06);font-size:10px;color:#4A6080">
-        PBR 0.35~0.6배 구간 매수 → 3년 평균 수익률 <b style="color:#0ED98A">+120~250%</b><br>
-        PBR 2.0배↑ 과열 구간 → 이후 3년 평균 <b style="color:#FF4D6D">-30~60%</b> 조정
+        PBR 0.35~0.6배 구간 매수 → 3년 평균 수익률 <b style="color:var(--green)">+120~250%</b><br>
+        PBR 2.0배↑ 과열 구간 → 이후 3년 평균 <b style="color:var(--red)">-30~60%</b> 조정
       </div>
     </div>
 
@@ -534,7 +658,7 @@ const DB = [
 
 // ━━━ 반도체·IT하드웨어 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"005930",n:"삼성전자",s:"반도체",m:"K",
- p:191200,c:1.17,prev:189000,w52h:223000,w52l:94500,
+ p:189500,c:9.22,prev:173500,w52h:223000,w52l:94500,
  cap:"1,134조",per:15.2,pbr:1.35,roe:9.2,debt:28,
  t:["반도체","HBM","AI"],
  ind:{pbr:52,per:54,roe:62,momentum:82,growth:88,sentiment:80,safety:88},
@@ -545,7 +669,7 @@ const DB = [
  verify:{pbr_hist:"코스피 70년 역사 PBR 평균 0.95배. 1997 IMF 최저 0.35배 대비 현 1.42배는 건전 밸류에이션 구간.",per_hist:"장기 PER 밴드 8~15배. 현 12.8배 하단 매수 구간.",backtest:"2008 PBR 0.7배 구간 매수→3년 +180%."}},
 
 {id:"000660",n:"SK하이닉스",s:"반도체",m:"K",
- p:959000,c:2.03,prev:939800,w52h:1060000,w52l:380000,
+ p:951000,c:-5.56,prev:1007000,w52h:1096000,w52l:560000,
  cap:"698조",per:9.4,pbr:2.15,roe:24.8,debt:38,
  t:["반도체","HBM","AI독점"],
  ind:{pbr:38,per:74,roe:82,momentum:82,growth:88,sentiment:80,safety:76},
@@ -556,7 +680,7 @@ const DB = [
  verify:{roe_check:"ROE 31% = 코스피 상위 5%. 1956~2026 전체 ROE>25% 구간 3년 수익률 평균 +142%.",per_hist:"PER 8.9배. 메모리 사이클 적정 밴드 7~12배 내.",backtest:"2020 코로나 저점 대비 +340%."}},
 
 {id:"005935",n:"삼성전자우",s:"반도체",m:"K",
- p:114200,c:1.04,prev:113000,w52h:138000,w52l:55000,
+ p:102500,c:-2.94,prev:105600,w52h:130000,w52l:54000,
  cap:"94조",per:15.2,pbr:1.02,roe:9.2,debt:28,
  t:["반도체","우선주","배당"],
  ind:{pbr:66,per:54,roe:62,momentum:82,growth:88,sentiment:80,safety:88},
@@ -567,7 +691,7 @@ const DB = [
  verify:{pbr_hist:"우선주 PBR 1.15배. 1980~2026 본주 대비 할인율 평균 18~22%. IMF·금융위기 때도 할인 유지. 배당수익률 4%+ 방어력.",backtest:"우선주 할인 좁혀질 때 초과수익 발생."}},
 
 {id:"000990",n:"DB하이텍",s:"반도체",m:"K",
- p:96000,c:1.5,prev:94580,w52h:138000,w52l:44000,
+ p:102500,c:-2.94,prev:105600,w52h:130000,w52l:54000,
  cap:"3.6조",per:13.8,pbr:1.28,roe:9.5,debt:22,
  t:["반도체","파운드리","8인치"],
  ind:{pbr:66,per:66,roe:62,momentum:82,growth:88,sentiment:80,safety:88},
@@ -590,7 +714,7 @@ const DB = [
 
 // ━━━ 자동차·부품 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"005380",n:"현대차",s:"자동차",m:"K",
- p:540000,c:0.95,prev:534880,w52h:620000,w52l:240000,
+ p:504000,c:2.54,prev:491000,w52h:620000,w52l:260000,
  cap:"116조",per:5.2,pbr:0.68,roe:13.8,debt:142,
  t:["자동차","EV","저PER"],
  ind:{pbr:78,per:82,roe:72,momentum:65,growth:62,sentiment:62,safety:48},
@@ -601,7 +725,7 @@ const DB = [
  verify:{pbr_hist:"PBR 0.72배. 1980~2026 자동차 역사 평균 0.9배 대비 저평가. 1997 IMF 시 0.25배 최저 기록.",backtest:"PBR<0.8배 코스피 대비 초과수익 +23%p."}},
 
 {id:"000270",n:"기아",s:"자동차",m:"K",
- p:162400,c:0.93,prev:160900,w52h:210000,w52l:72000,
+ p:157700,c:2.4,prev:154000,w52h:210000,w52l:78000,
  cap:"66조",per:4.6,pbr:0.62,roe:15.2,debt:132,
  t:["자동차","EV","가치주"],
  ind:{pbr:78,per:88,roe:72,momentum:65,growth:62,sentiment:62,safety:48},
@@ -612,7 +736,7 @@ const DB = [
  verify:{per_hist:"PER 4.9배. 1956~2026 한국 자동차주 역사적 최저 수준. IMF 시 PBR 0.2배 경험 후 회복 때마다 +80~150%. 현 0.68배는 강력 저평가 구간.",backtest:"기아 PBR<0.7배 3년 수익률 +89%."}},
 
 {id:"012330",n:"현대모비스",s:"자동차부품",m:"K",
- p:430000,c:0.8,prev:426560,w52h:540000,w52l:230000,
+ p:157700,c:2.4,prev:154000,w52h:210000,w52l:78000,
  cap:"40조",per:6.8,pbr:0.58,roe:8.8,debt:88,
  t:["자동차부품","EV","현대차"],
  ind:{pbr:88,per:82,roe:62,momentum:65,growth:62,sentiment:62,safety:62},
@@ -635,7 +759,7 @@ const DB = [
 
 // ━━━ 방산·항공우주 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"012450",n:"한화에어로스페이스",s:"방산",m:"K",
- p:1180000,c:0.8,prev:1170600,w52h:1480000,w52l:400000,
+ p:1371000,c:20.0,prev:1142000,w52h:1500000,w52l:580000,
  cap:"38조",per:28.4,pbr:4.92,roe:18.2,debt:85,
  t:["방산","K방산","NATO"],
  ind:{pbr:26,per:32,roe:82,momentum:80,growth:85,sentiment:75,safety:62},
@@ -646,7 +770,7 @@ const DB = [
  verify:{growth_verify:"수주잔고 30조+. EPS 성장률 40%+. 1956~2026 방산주는 전쟁·안보 이슈 발생 시 PER 무관 급등 패턴. 2022 러우전쟁 이후 +620% — 1987 걸프위기 +180% 유사 구조.",backtest:"2022 러우전쟁 이후 +620%."}},
 
 {id:"047050",n:"포스코인터내셔널",s:"방산/에너지",m:"K",
- p:120000,c:1.1,prev:118680,w52h:165000,w52l:50000,
+ p:1371000,c:20.0,prev:1142000,w52h:1500000,w52l:580000,
  cap:"9.3조",per:8.8,pbr:1.18,roe:13.8,debt:92,
  t:["방산","LNG","종합상사"],
  ind:{pbr:66,per:74,roe:72,momentum:80,growth:85,sentiment:75,safety:62},
@@ -657,7 +781,7 @@ const DB = [
  verify:{per_hist:"종합상사 PER 8~14배. 1980~2026 상사·트레이딩 장기 밴드. IMF 이후 LNG·팜오일 다각화로 방어력 강화. 현 9.2배는 역사적 저평가 하단.",backtest:"포스코인터 저점 대비 +73%."}},
 
 {id:"079550",n:"LIG넥스원",s:"방산",m:"K",
- p:420000,c:0.9,prev:416220,w52h:560000,w52l:180000,
+ p:650000,c:28.2,prev:507000,w52h:844000,w52l:200000,
  cap:"6.8조",per:22.8,pbr:4.12,roe:18.8,debt:48,
  t:["방산","유도무기","전자전"],
  ind:{pbr:66,per:74,roe:72,momentum:80,growth:85,sentiment:75,safety:62},
@@ -669,7 +793,7 @@ const DB = [
 
 // ━━━ 조선·중공업 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"329180",n:"HD현대중공업",s:"조선",m:"K",
- p:580000,c:1.4,prev:571920,w52h:695000,w52l:195000,
+ p:637000,c:1.24,prev:629000,w52h:710000,w52l:210000,
  cap:"42조",per:18.4,pbr:4.12,roe:23.8,debt:102,
  t:["조선","LNG","방산"],
  ind:{pbr:26,per:54,roe:82,momentum:76,growth:82,sentiment:72,safety:48},
@@ -680,7 +804,7 @@ const DB = [
  verify:{roe_check:"ROE 21% = 조선주 1956~2026 전체 역사 최고 수준. 2003~08 슈퍼사이클과 동일 패턴.",backtest:"2003~2008 조선 슈퍼사이클 +1,200%."}},
 
 {id:"009540",n:"HD한국조선해양",s:"조선",m:"K",
- p:510000,c:1.2,prev:503960,w52h:620000,w52l:160000,
+ p:565000,c:1.3,prev:558000,w52h:640000,w52l:192000,
  cap:"41조",per:15.8,pbr:3.12,roe:21.2,debt:108,
  t:["조선","지주","LNG"],
  ind:{pbr:38,per:54,roe:82,momentum:76,growth:82,sentiment:72,safety:48},
@@ -691,7 +815,7 @@ const DB = [
  verify:{growth_verify:"2026~2028 매출 연 22% 성장 컨센서스. 1956~2026 조선 70년 — 1970년대 조선 굴기 이후 3차례 슈퍼사이클(1973~80 / 2003~08 / 2024~). 현재 3번째 사이클 초기.",backtest:"조선 사이클 저점 대비 +180%."}},
 
 {id:"010140",n:"삼성중공업",s:"조선",m:"K",
- p:36000,c:1.4,prev:35500,w52h:48000,w52l:13000,
+ p:42000,c:7.1,prev:39200,w52h:48000,w52l:18200,
  cap:"8.2조",per:14.8,pbr:1.68,roe:11.8,debt:122,
  t:["조선","LNG","드릴십"],
  ind:{pbr:52,per:66,roe:62,momentum:76,growth:82,sentiment:72,safety:48},
@@ -703,7 +827,7 @@ const DB = [
 
 // ━━━ 철강·소재 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"005490",n:"POSCO홀딩스",s:"철강",m:"K",
- p:338000,c:0.5,prev:336310,w52h:468000,w52l:260000,
+ p:42000,c:7.1,prev:39200,w52h:48000,w52l:18200,
  cap:"29조",per:12.4,pbr:0.48,roe:3.8,debt:68,
  t:["철강","리튬","배터리소재"],
  ind:{pbr:88,per:66,roe:34,momentum:45,growth:42,sentiment:48,safety:62},
@@ -726,7 +850,7 @@ const DB = [
 
 // ━━━ 에너지·원전 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"034020",n:"두산에너빌리티",s:"원전",m:"K",
- p:80000,c:0.8,prev:79360,w52h:116000,w52l:20800,
+ p:89200,c:2.5,prev:87000,w52h:120000,w52l:48000,
  cap:"19조",per:28.4,pbr:2.12,roe:7.8,debt:118,
  t:["원전","SMR","AI전력"],
  ind:{pbr:38,per:32,roe:48,momentum:72,growth:78,sentiment:68,safety:48},
@@ -737,7 +861,7 @@ const DB = [
  verify:{growth_verify:"원전 수주잔고 20조. 2026년 매출 +25%. 1962년 창립. 1956~2026 — 한국 중공업 64년. 1978년 고리 1호기 이후 원전 설비 독점 45년. 원전 르네상스+SMR은 1970년대 원전 붐과 유사 구조.",backtest:"원전 정책 수혜주 2022~ +500%."}},
 
 {id:"015760",n:"한국전력",s:"전력",m:"K",
- p:30500,c:0.4,prev:30378,w52h:42000,w52l:17200,
+ p:89200,c:2.5,prev:87000,w52h:120000,w52l:48000,
  cap:"20조",per:"-",pbr:0.22,roe:"-",debt:252,
  t:["전력","원전","공기업"],
  ind:{pbr:98,per:42,roe:42,momentum:60,growth:60,sentiment:58,safety:20},
@@ -748,7 +872,7 @@ const DB = [
  verify:{pbr_hist:"PBR 0.22배 = 코스피 역대 최저 수준. 1956년 창립 70년 공기업. 1956~2026 — 전기요금 동결·인상 사이클 반복. 1997 IMF 이후 요금 현실화 때마다 주가 반등. 현재 흑자 전환 진행 중.",backtest:"한전 PBR 저점 후 흑자 전환 시 +120%."}},
 
 {id:"096770",n:"SK이노베이션",s:"에너지/배터리",m:"K",
- p:172000,c:0.6,prev:170968,w52h:230000,w52l:132000,
+ p:165000,c:-1.8,prev:168000,w52h:200000,w52l:110000,
  cap:"15조",per:8.8,pbr:0.62,roe:7.2,debt:68,
  t:["배터리","정유","SK온"],
  ind:{pbr:78,per:74,roe:48,momentum:55,growth:52,sentiment:52,safety:62},
@@ -760,7 +884,7 @@ const DB = [
 
 // ━━━ 금융·보험 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"105560",n:"KB금융",s:"금융",m:"K",
- p:122000,c:0.5,prev:121390,w52h:152000,w52l:68000,
+ p:128000,c:2.4,prev:125000,w52h:145000,w52l:85000,
  cap:"49조",per:7.2,pbr:0.62,roe:8.8,debt:"-",
  t:["금융","밸류업","배당"],
  ind:{pbr:78,per:82,roe:62,momentum:62,growth:58,sentiment:60,safety:62},
@@ -771,7 +895,7 @@ const DB = [
  verify:{pbr_hist:"한국 금융주 1980~2026 평균 PBR 0.9배. 현 0.63배 — IMF 시 0.28배 이후 두 번째로 낮은 구간.",backtest:"PBR<0.7배 3년 +67%."}},
 
 {id:"055550",n:"신한지주",s:"금융",m:"K",
- p:82000,c:0.4,prev:81670,w52h:104000,w52l:46000,
+ p:128000,c:2.4,prev:125000,w52h:145000,w52l:85000,
  cap:"40조",per:6.4,pbr:0.52,roe:8.2,debt:"-",
  t:["금융","밸류업","배당"],
  ind:{pbr:88,per:82,roe:62,momentum:62,growth:58,sentiment:60,safety:62},
@@ -838,7 +962,7 @@ const DB = [
 
 // ━━━ IT플랫폼·통신 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"035420",n:"NAVER",s:"IT플랫폼",m:"K",
- p:232000,c:0.8,prev:229150,w52h:322000,w52l:148000,
+ p:230000,c:2.2,prev:225000,w52h:280000,w52l:160000,
  cap:"38조",per:28.4,pbr:1.72,roe:6.2,debt:28,
  t:["플랫폼","AI","광고"],
  ind:{pbr:52,per:32,roe:48,momentum:55,growth:58,sentiment:52,safety:88},
@@ -849,7 +973,7 @@ const DB = [
  verify:{per_hist:"플랫폼 PER 20~40배. 2002년 상장 이후 고성장 PER 밴드. 2000년 닷컴버블 이후 한국 IT플랫폼 밸류에이션 체계 확립. 현 23.8배는 AI전환 기대 반영 전 구간.",growth_verify:"광고+커머스+클라우드 성장 12%."}},
 
 {id:"035720",n:"카카오",s:"IT플랫폼",m:"K",
- p:43000,c:0.4,prev:42828,w52h:68000,w52l:26000,
+ p:45000,c:1.1,prev:44500,w52h:72000,w52l:32000,
  cap:"19조",per:"-",pbr:1.28,roe:"-",debt:48,
  t:["플랫폼","카카오톡","AI"],
  ind:{pbr:66,per:42,roe:42,momentum:55,growth:58,sentiment:52,safety:76},
@@ -860,7 +984,7 @@ const DB = [
  verify:{per_hist:"플랫폼 PER 20~50배. 2010년 이후 모바일 플랫폼 밸류에이션 새 역사. 2021 고점 PER 150배 대비 현 32배는 정상화. 규제 리스크 해소 시 재평가 가능.",growth_verify:"AI 전환 2026년 EPS +15% 전망."}},
 
 {id:"017670",n:"SK텔레콤",s:"통신",m:"K",
- p:62000,c:0.4,prev:61752,w52h:80000,w52l:50000,
+ p:45000,c:1.1,prev:44500,w52h:72000,w52l:32000,
  cap:"15조",per:12.8,pbr:0.92,roe:7.2,debt:92,
  t:["통신","AI","배당"],
  ind:{pbr:78,per:66,roe:48,momentum:58,growth:54,sentiment:56,safety:62},
@@ -883,7 +1007,7 @@ const DB = [
 
 // ━━━ 바이오·제약 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"207940",n:"삼성바이오로직스",s:"바이오",m:"K",
- p:1762000,c:4.08,prev:1692640,w52h:2150000,w52l:880000,
+ p:1760000,c:0.63,prev:1738000,w52h:2200000,w52l:800000,
  cap:"125조",per:52.4,pbr:6.28,roe:12.4,debt:45,
  t:["바이오","CDMO","성장주"],
  ind:{pbr:18,per:22,roe:72,momentum:60,growth:65,sentiment:58,safety:76},
@@ -894,7 +1018,7 @@ const DB = [
  verify:{per_hist:"CDMO 글로벌 PER 30~60배. 2016년 상장 이후 바이오 밸류에이션 새 기준 수립. 1956~2026 한국 제약·바이오 — 2010년대 이후 글로벌 기준 프리미엄 적용. 현 48배는 글로벌 CDMO 중간값.",backtest:"2020~2022 바이오 조정 시 -40% 경험."}},
 
 {id:"068270",n:"셀트리온",s:"바이오",m:"K",
- p:240000,c:1.2,prev:237160,w52h:360000,w52l:125000,
+ p:238000,c:-0.8,prev:240000,w52h:300000,w52l:140000,
  cap:"29조",per:32.4,pbr:2.88,roe:8.8,debt:38,
  t:["바이오","바이오시밀러","미국"],
  ind:{pbr:38,per:32,roe:62,momentum:60,growth:65,sentiment:58,safety:76},
@@ -905,7 +1029,7 @@ const DB = [
  verify:{growth_verify:"짐펜트라 2026년 미국 매출 5,000억 전망. 1956~2026 바이오시밀러 역사 — 셀트리온은 한국 최초 항체 바이오시밀러 허가(2012). 미국 허가 이후 반복적 +150~200% 수익 패턴.",backtest:"셀트리온 바이오시밀러 출시 후 +150~200%."}},
 
 {id:"000100",n:"유한양행",s:"제약",m:"K",
- p:108000,c:0.8,prev:107140,w52h:148000,w52l:62000,
+ p:238000,c:-0.8,prev:240000,w52h:300000,w52l:140000,
  cap:"7.7조",per:28.4,pbr:3.48,roe:12.2,debt:28,
  t:["제약","신약","FDA승인"],
  ind:{pbr:38,per:32,roe:72,momentum:60,growth:60,sentiment:58,safety:88},
@@ -939,7 +1063,7 @@ const DB = [
 
 // ━━━ 2차전지 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"373220",n:"LG에너지솔루션",s:"2차전지",m:"K",
- p:394000,c:0.4,prev:392420,w52h:510000,w52l:215000,
+ p:402500,c:2.4,prev:393000,w52h:510000,w52l:178000,
  cap:"92조",per:42.8,pbr:3.12,roe:7.2,debt:72,
  t:["배터리","EV","IRA"],
  ind:{pbr:38,per:22,roe:48,momentum:35,growth:40,sentiment:35,safety:62},
@@ -950,7 +1074,7 @@ const DB = [
  verify:{growth_verify:"수주잔고 350조. 11.7년치 일감. 2022년 상장 이후 2차전지 밸류에이션 기준 수립. 2003~08 조선 슈퍼사이클과 유사 구조 — 장기 수주 확보 후 PBR 재평가 패턴.",backtest:"2022 고점 대비 -55%. 저점 대비 +80%."}},
 
 {id:"006400",n:"삼성SDI",s:"2차전지",m:"K",
- p:265000,c:0.8,prev:262880,w52h:380000,w52l:152000,
+ p:402500,c:2.4,prev:393000,w52h:510000,w52l:178000,
  cap:"19조",per:"-",pbr:0.88,roe:"-",debt:75,
  t:["배터리","전고체","저PBR"],
  ind:{pbr:78,per:42,roe:34,momentum:35,growth:40,sentiment:35,safety:76},
@@ -973,7 +1097,7 @@ const DB = [
 
 // ━━━ 게임 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"259960",n:"크래프톤",s:"게임",m:"K",
- p:462000,c:0.8,prev:458310,w52h:580000,w52l:240000,
+ p:440000,c:-1.2,prev:445000,w52h:530000,w52l:210000,
  cap:"22조",per:16.8,pbr:2.58,roe:15.4,debt:14,
  t:["게임","PUBG","인도"],
  ind:{pbr:38,per:54,roe:72,momentum:62,growth:65,sentiment:60,safety:88},
@@ -984,7 +1108,7 @@ const DB = [
  verify:{per_hist:"글로벌 게임사 PER 15~30배. 현 17.8배 하단. 2021년 상장. 한국 게임 1956~2026 — 2000년대 온라인게임 글로벌화 이후 모바일→배틀로얄 진화. PUBG 글로벌 1위 IP.",roe_check:"ROE 15% 국내 게임사 최상위.",backtest:"IPO 이후 저점 대비 +120%."}},
 
 {id:"036570",n:"엔씨소프트",s:"게임",m:"K",
- p:200000,c:0.6,prev:198800,w52h:295000,w52l:135000,
+ p:440000,c:-1.2,prev:445000,w52h:530000,w52l:210000,
  cap:"4.4조",per:"-",pbr:1.12,roe:"-",debt:28,
  t:["게임","리니지","신작"],
  ind:{pbr:66,per:42,roe:42,momentum:62,growth:65,sentiment:60,safety:88},
@@ -1030,7 +1154,7 @@ const DB = [
 
 // ━━━ 식품·소비재 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"003230",n:"삼양식품",s:"식품",m:"K",
- p:730000,c:0.8,prev:724160,w52h:920000,w52l:388000,
+ p:480000,c:-3.2,prev:496000,w52h:880000,w52l:280000,
  cap:"6.2조",per:24.4,pbr:7.12,roe:29.2,debt:25,
  t:["K푸드","불닭","수출"],
  ind:{pbr:18,per:42,roe:92,momentum:65,growth:68,sentiment:62,safety:88},
@@ -1041,7 +1165,7 @@ const DB = [
  verify:{roe_check:"ROE 28% 코스피 상위 3%.",growth_verify:"불닭 2026년 수출 5,000억. CAGR 35%. 1956년 창립 70년 기업. ROE 28% = 코스피 상위 3%. 1956~2026 — 오징어게임·K콘텐츠 수혜로 K푸드 글로벌 수요 구조적 전환 확인."}},
 
 {id:"097950",n:"CJ제일제당",s:"식품",m:"K",
- p:305000,c:0.5,prev:303480,w52h:420000,w52l:242000,
+ p:480000,c:-3.2,prev:496000,w52h:880000,w52l:280000,
  cap:"4.8조",per:12.8,pbr:0.78,roe:6.2,debt:68,
  t:["식품","K푸드","비비고"],
  ind:{pbr:78,per:66,roe:48,momentum:65,growth:68,sentiment:62,safety:62},
@@ -1133,7 +1257,7 @@ const DB = [
  verify:{per_hist:"반도체소재 PER 12~20배. 현 14.8배. 1993년 창립. 1956~2026 — 반도체 소재 자립화 역사. IMF 이후 삼성·하이닉스 소재 국산화 정책 수혜. 반도체 호황 시 PER 25배 도달 패턴.",backtest:"솔브레인 반도체 호황 시 +65%."}},
 
 {id:"240810",n:"원익IPS",s:"반도체장비",m:"K",
- p:45000,c:1.5,prev:44340,w52h:68000,w52l:23000,
+ p:123500,c:-1.7,prev:125600,w52h:180000,w52l:30000,
  cap:"2.0조",per:18.4,pbr:2.28,roe:12.4,debt:32,
  t:["반도체장비","증착","삼성"],
  ind:{pbr:38,per:54,roe:72,momentum:82,growth:88,sentiment:80,safety:76},
@@ -1145,7 +1269,7 @@ const DB = [
 
 // ━━━ 의료기기·헬스케어 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"214150",n:"클래시스",s:"의료기기",m:"K",
- p:62000,c:1.2,prev:61270,w52h:92000,w52l:40000,
+ p:123500,c:-1.7,prev:125600,w52h:180000,w52l:30000,
  cap:"2.6조",per:28.4,pbr:6.28,roe:22.4,debt:15,
  t:["의료기기","피부","ROE"],
  ind:{pbr:18,per:32,roe:82,momentum:62,growth:68,sentiment:60,safety:88},
@@ -1157,7 +1281,7 @@ const DB = [
 
 // ━━━ 로봇·AI ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"454910",n:"두산로보틱스",s:"로봇",m:"K",
- p:55000,c:1.5,prev:54190,w52h:95000,w52l:20500,
+ p:110900,c:19.1,prev:93000,w52h:148000,w52l:33000,
  cap:"6.2조",per:"-",pbr:8.88,roe:"-",debt:42,
  t:["로봇","AI","협동로봇"],
  ind:{pbr:18,per:42,roe:42,momentum:65,growth:72,sentiment:62,safety:76},
@@ -1168,7 +1292,7 @@ const DB = [
  verify:{growth_verify:"로봇 시장 CAGR 25%. 국내 1위 35%. 2023년 상장. 1956~2026 — 한국 제조업 자동화 역사. 2020년대 로봇 = 2010년대 스마트폰 성장 구조 유사. 역사적 성장 산업 초기 프리미엄.",backtest:"로봇주 고밸류 사례 다수."}},
 
 {id:"285540",n:"레인보우로보틱스",s:"로봇",m:"Q",
- p:76000,c:1.5,prev:74900,w52h:145000,w52l:28000,
+ p:840000,c:-2.3,prev:860000,w52h:1100000,w52l:130000,
  cap:"5.6조",per:"-",pbr:12.4,roe:"-",debt:18,
  t:["로봇","AI","삼성투자"],
  ind:{pbr:18,per:42,roe:42,momentum:65,growth:72,sentiment:62,safety:88},
@@ -1180,7 +1304,7 @@ const DB = [
 
 // ━━━ 코스닥 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"196170",n:"알테오젠",s:"바이오",m:"Q",
- p:400000,c:1.5,prev:394040,w52h:620000,w52l:210000,
+ p:383000,c:-6.1,prev:408000,w52h:620000,w52l:82000,
  cap:"21조",per:"-",pbr:18.4,roe:"-",debt:12,
  t:["바이오","ADC","기술수출"],
  ind:{pbr:18,per:42,roe:42,momentum:60,growth:65,sentiment:58,safety:88},
@@ -1191,7 +1315,7 @@ const DB = [
  verify:{growth_verify:"기술수출 총액 2조+. 마일스톤 순차 수령. 1956~2026 한국 바이오 — 2015년 이후 기술수출 붐. 알테오젠 SC제형 플랫폼은 글로벌 유일 기술. 계약 유지 시 PER 리레이팅 기대.",backtest:"기술수출 발표 후 +30~80%."}},
 
 {id:"247540",n:"에코프로비엠",s:"2차전지",m:"Q",
- p:168000,c:0.8,prev:166650,w52h:420000,w52l:115000,
+ p:199500,c:-9.9,prev:221500,w52h:380000,w52l:98000,
  cap:"13조",per:"-",pbr:4.48,roe:"-",debt:78,
  t:["양극재","배터리","코스닥"],
  ind:{pbr:26,per:42,roe:42,momentum:35,growth:40,sentiment:35,safety:62},
@@ -1202,7 +1326,7 @@ const DB = [
  verify:{pbr_hist:"PBR 4.62배. 2차전지 캐즘 영향. 1956~2026 — 한국 배터리 20년 역사. 2017~2022 폭등 후 조정. 고점 대비 -62% 낙폭은 IMF 이후 과열 섹터 정상화 패턴과 유사.",backtest:"에코프로비엠 고점 대비 -62%."}},
 
 {id:"086520",n:"에코프로",s:"2차전지",m:"Q",
- p:78000,c:0.8,prev:77380,w52h:195000,w52l:49000,
+ p:164000,c:-11.4,prev:185000,w52h:350000,w52l:58000,
  cap:"10조",per:"-",pbr:3.28,roe:"-",debt:82,
  t:["양극재","배터리","지주"],
  ind:{pbr:26,per:42,roe:42,momentum:35,growth:40,sentiment:35,safety:62},
@@ -1213,7 +1337,7 @@ const DB = [
  verify:{pbr_hist:"지주 PBR 할인율 20~30%. 현재 프리미엄 상태. 1956~2026 — 한국 지주사 역사적으로 항상 자회사 대비 할인. 에코프로비엠 회복 선행 후 지주 후행 반등 패턴.",backtest:"에코프로 고점 대비 -50%."}},
 
 {id:"263750",n:"펄어비스",s:"게임",m:"Q",
- p:30000,c:0.5,prev:29850,w52h:54000,w52l:19000,
+ p:164000,c:-11.4,prev:185000,w52h:350000,w52l:58000,
  cap:"1.4조",per:"-",pbr:1.52,roe:"-",debt:22,
  t:["게임","검은사막","글로벌"],
  ind:{pbr:52,per:42,roe:42,momentum:62,growth:65,sentiment:60,safety:88},
@@ -1291,7 +1415,7 @@ const DB = [
 
 // ━━━ SK그룹 계열 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"402340",n:"SK스퀘어",s:"지주",m:"K",
- p:72000,c:1.2,prev:71140,w52h:112000,w52l:48000,
+ p:561000,c:-0.71,prev:565000,w52h:681000,w52l:74000,
  cap:"8.1조",per:"-",pbr:0.78,roe:"-",debt:32,
  t:["SK하이닉스","지주","반도체"],
  ind:{pbr:78,per:30,roe:28,momentum:72,growth:78,sentiment:72,safety:58},
@@ -1303,7 +1427,7 @@ const DB = [
 
 // ━━━ 증권 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"006800",n:"미래에셋증권",s:"증권",m:"K",
- p:62000,c:1.5,prev:61080,w52h:78000,w52l:24000,
+ p:561000,c:-0.71,prev:565000,w52h:681000,w52l:74000,
  cap:"39조",per:8.4,pbr:0.62,roe:7.4,debt:"-",
  t:["증권","글로벌","배당"],
  ind:{pbr:78,per:74,roe:48,momentum:60,growth:60,sentiment:58,safety:62},
@@ -1326,7 +1450,7 @@ const DB = [
 
 // ━━━ 기타 핵심 종목 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"042660",n:"한화오션",s:"조선",m:"K",
- p:115000,c:1.3,prev:113520,w52h:158000,w52l:46000,
+ p:103000,c:-14.7,prev:120700,w52h:154800,w52l:62350,
  cap:"7.9조",per:"-",pbr:2.12,roe:"-",debt:148,
  t:["조선","잠수함","LNG"],
  ind:{pbr:38,per:42,roe:42,momentum:76,growth:82,sentiment:72,safety:48},
@@ -1337,7 +1461,7 @@ const DB = [
  verify:{growth_verify:"방산 잠수함 수주 3조+. 2026년 흑자 전환 전망. 1956~2026 한국 조선 70년 — 대우조선해양 부도 위기 후 한화 편입. 한화그룹 편입 기업 PBR 재평가 역사적 패턴 +50~150%.",backtest:"한화 편입 후 +112%."}},
 
 {id:"326030",n:"SK바이오사이언스",s:"바이오",m:"K",
- p:59000,c:0.8,prev:58530,w52h:85000,w52l:34000,
+ p:103000,c:-14.7,prev:120700,w52h:154800,w52l:62350,
  cap:"4.6조",per:42.4,pbr:4.12,roe:9.8,debt:35,
  t:["백신","바이오","CDMO"],
  ind:{pbr:26,per:22,roe:62,momentum:60,growth:65,sentiment:58,safety:76},
@@ -1403,7 +1527,7 @@ const DB = [
  verify:{pbr_hist:"물류주 PBR 0.78배. 1930년 창립. 1956~2026 한국 물류 95년 역사. 이커머스 성장기 물류주 프리미엄 역사 — 쿠팡 상장 이후 물류 구조 재편. 현 PBR 0.78배는 성장 대비 저평가.",backtest:"CJ대한통운 이커머스 호황 시 +45%."}},
 
 {id:"010130",n:"고려아연",s:"비철금속",m:"K",
- p:558000,c:0.8,prev:553560,w52h:780000,w52l:388000,
+ p:620000,c:1.6,prev:610000,w52h:860000,w52l:380000,
  cap:"11조",per:18.4,pbr:2.28,roe:12.4,debt:45,
  t:["아연","이차전지소재","친환경"],
  ind:{pbr:38,per:54,roe:72,momentum:60,growth:60,sentiment:58,safety:76},
@@ -1414,7 +1538,7 @@ const DB = [
  verify:{per_hist:"비철금속 PER 10~16배. 현 12.4배. 1974년 창립. 1956~2026 한국 비철금속 — 아연 세계 1위 52년. 이차전지 소재(황산니켈·황산코발트) 전환으로 밸류에이션 리레이팅 진행.",backtest:"고려아연 이차전지 소재 수혜 시 +55%."}},
 
 {id:"047040",n:"대우건설",s:"건설",m:"K",
- p:5500,c:0.5,prev:5472,w52h:8800,w52l:3600,
+ p:620000,c:1.6,prev:610000,w52h:860000,w52l:380000,
  cap:"2.0조",per:6.4,pbr:0.42,roe:6.4,debt:142,
  t:["건설","주택","플랜트"],
  ind:{pbr:88,per:82,roe:48,momentum:48,growth:44,sentiment:46,safety:48},
@@ -1447,7 +1571,7 @@ const DB = [
  verify:{per_hist:"항공 지주 PER 15~25배. 한진그룹 지주. 1956~2026 — 한진그룹 항공·물류 60년 역사. 코로나 이후 항공 수요 회복 완료. 지주 할인율 30% 감안 시 대한항공 성장 프리미엄 미반영.",backtest:"항공 회복기 +65% 패턴."}},
 
 {id:"003490",n:"대한항공",s:"항공",m:"K",
- p:42000,c:0.5,prev:41790,w52h:62000,w52l:21000,
+ p:44000,c:2.3,prev:43000,w52h:55000,w52l:30000,
  cap:"17조",per:8.8,pbr:1.28,roe:14.8,debt:148,
  t:["항공","여객","화물"],
  ind:{pbr:66,per:74,roe:72,momentum:65,growth:62,sentiment:62,safety:48},
@@ -1458,7 +1582,7 @@ const DB = [
  verify:{per_hist:"항공주 PER 8~15배. 현 9.8배. 1969년 창립. 1956~2026 — 한국 항공 57년 역사. 코로나 -80%→ 완전 회복 완료. 아시아나 합병으로 국내 독점. 중동 이란전쟁 관광 위축 단기 리스크.",backtest:"항공 회복 시 +58%."}},
 
 {id:"011200",n:"HMM",s:"해운",m:"K",
- p:40000,c:0.7,prev:39720,w52h:58000,w52l:17500,
+ p:42000,c:2.4,prev:41000,w52h:55000,w52l:25000,
  cap:"16조",per:12.4,pbr:0.88,roe:7.2,debt:88,
  t:["해운","컨테이너","물류"],
  ind:{pbr:78,per:66,roe:48,momentum:55,growth:52,sentiment:52,safety:62},
@@ -1469,7 +1593,7 @@ const DB = [
  verify:{pbr_hist:"HMM PBR 0.48배. 1976년 창립. 1956~2026 한국 해운 — 코로나 운임 급등(+500%) 후 정상화. 2021~22 해운 버블 붕괴 후 PBR 0.4~0.5배 역사적 저점. 운임 회복 시 +80% 패턴.",backtest:"해운 운임 회복 시 +80%."}},
 
 {id:"028050",n:"삼성엔지니어링",s:"건설",m:"K",
- p:42000,c:0.8,prev:41664,w52h:58000,w52l:26000,
+ p:42000,c:2.4,prev:41000,w52h:55000,w52l:25000,
  cap:"6.9조",per:12.4,pbr:1.28,roe:10.4,debt:88,
  t:["플랜트","EPC","중동"],
  ind:{pbr:78,per:66,roe:48,momentum:55,growth:52,sentiment:52,safety:62},
@@ -1480,7 +1604,7 @@ const DB = [
  verify:{roe_check:"ROE 21% 건설주 최상위. 1970년 창립. 1956~2026 — 중동 플랜트 40년. 사우디·UAE 수주 사이클 반복. 중동 에너지 투자 확대 시 PER 10→20배 재평가. IMF 회생 후 최고 ROE 구현.",backtest:"중동 수주 확대 시 +55%."}},
 
 {id:"000150",n:"두산",s:"지주",m:"K",
- p:172000,c:0.8,prev:170624,w52h:248000,w52l:96000,
+ p:180000,c:2.9,prev:175000,w52h:250000,w52l:100000,
  cap:"3.9조",per:"-",pbr:0.58,roe:"-",debt:178,
  t:["지주","두산에너빌리티","원전"],
  ind:{pbr:66,per:66,roe:62,momentum:48,growth:44,sentiment:46,safety:62},
@@ -1491,7 +1615,7 @@ const DB = [
  verify:{pbr_hist:"PBR 0.58배. 1896년 창립 한국 최장수 기업. 1956~2026 전체 70년 생존·성장. 두산에너빌리티 급등 시 지주 동반 상승 패턴. 130년 기업의 역사적 PBR 저점 구간.",backtest:"두산에너빌리티 급등 시 지주 동반 상승."}},
 
 {id:"035250",n:"강원랜드",s:"카지노",m:"K",
- p:26000,c:0.4,prev:25896,w52h:38000,w52l:17200,
+ p:180000,c:2.9,prev:175000,w52h:250000,w52l:100000,
  cap:"6.0조",per:14.8,pbr:0.92,roe:6.2,debt:8,
  t:["카지노","배당","공기업"],
  ind:{pbr:70,per:62,roe:44,momentum:50,growth:38,sentiment:44,safety:78},
@@ -2010,13 +2134,13 @@ const IND_DESC={
 // 판정 기준: 평균 ≥70 매수적합 / 50~69 중립 / <50 매수부적합
 function gV(ind){
   const a=Object.values(ind).reduce((x,y)=>x+y,0)/7;
-  if(a>=70)return{l:"매수 적합",s:"매수",c:"#0ED98A",bg:"rgba(14,217,138,0.1)"};
+  if(a>=70)return{l:"매수 적합",s:"매수",c:"var(--green)",bg:"rgba(14,217,138,0.1)"};
   if(a>=50)return{l:"중립 관망",s:"중립",c:"#D97706",bg:"rgba(245,158,11,0.1)"};
-  return{l:"매수 부적합",s:"매도",c:"#FF4D6D",bg:"rgba(255,77,109,0.1)"};
+  return{l:"매수 부적합",s:"매도",c:"var(--red)",bg:"rgba(255,77,109,0.1)"};
 }
 function gS(ind){return Math.round(Object.values(ind).reduce((a,b)=>a+b,0)/7);}
 function fW(p){return"₩"+Number(p).toLocaleString();}
-function fP(c){const u=c>=0;return`<span style="color:${u?"#0ED98A":"#FF4D6D"}">${u?"▲":"▼"}${Math.abs(c).toFixed(2)}%</span>`;}
+function fP(c){const u=c>=0;return`<span style="color:${u?"var(--green)":"var(--red)"}">${u?"▲":"▼"}${Math.abs(c).toFixed(2)}%</span>`;}
 
 let curPage="home",curSTab="all",curDTab="ov",curStock=null,liveP=null,refreshing=false;
 let watchlist=JSON.parse(localStorage.getItem("sig_w2")||'["005930","000660","012450","259960","329180"]');
@@ -2024,7 +2148,7 @@ function saveW(){localStorage.setItem("sig_w2",JSON.stringify(watchlist));}
 function isW(id){return watchlist.includes(id);}
 function toggleW(id,e){if(e)e.stopPropagation();watchlist=isW(id)?watchlist.filter(x=>x!==id):[...watchlist,id];saveW();render();
   const dstar=document.getElementById("dstar");
-  if(dstar&&curStock&&curStock.id===id){dstar.textContent=isW(id)?"⭐":"☆";dstar.style.color=isW(id)?"#C49E50":"#3F5268";}
+  if(dstar&&curStock&&curStock.id===id){dstar.textContent=isW(id)?"⭐":"☆";dstar.style.color=isW(id)?"var(--gold)":"#3F5268";}
 }
 
 function initTicker(){
@@ -2032,45 +2156,42 @@ function initTicker(){
   const items=[...TDATA,...TDATA,...TDATA];
   tr.innerHTML=items.map(t=>`<span class="titem">
     <span style="font-size:9px;color:#3A5878;font-weight:600;letter-spacing:.5px">${t.n}</span>
-    <span style="font-size:10px;font-family:monospace;font-weight:700;color:#6B84A0;margin:0 3px">${t.v}</span>
-    <span style="font-size:9px;font-family:monospace;font-weight:700;color:${t.up?"#0ED98A":"#FF4D6D"}">${t.c}</span>
+    <span style="font-size:10px;font-family:monospace;font-weight:700;color:var(--text2);margin:0 3px">${t.v}</span>
+    <span style="font-size:9px;font-family:monospace;font-weight:700;color:${t.up?"var(--green)":"var(--red)"}">${t.c}</span>
   </span>`).join("");
   let x=0;const tot=tr.scrollWidth/3;
   setInterval(()=>{x+=0.4;if(x>=tot)x=0;tr.style.transform=`translateX(-${x}px)`;},14);
 }
 
 function cardHTML(s){
-  const v=gV(s.ind),sc=gS(s.ind),up=s.c>=0,w=isW(s.id);
-  const mc=s.m==="K"?"rgba(96,165,250,0.85)":"rgba(167,139,250,0.85)";
-  const mb=s.m==="K"?"rgba(59,130,246,0.1)":"rgba(139,92,246,0.1)";
-  const mbd=s.m==="K"?"rgba(59,130,246,0.22)":"rgba(139,92,246,0.22)";
-  const ml=s.m==="K"?"KOSPI":"KOSDAQ";
-  const barW=sc;
-  return`<div class="scard${w?" watched":""}" onclick="openDetail('${s.id}')">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
-      <div style="min-width:0;flex:1">
-        <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;flex-wrap:wrap">
-          <span style="font-weight:800;font-size:15px;color:#EEE8DA;letter-spacing:.2px;font-family:"Nanum Gothic",sans-serif">${s.n}</span>
-          <span style="font-size:8px;color:#3F5268;background:rgba(255,255,255,0.04);padding:1px 5px;border-radius:3px;font-family:'Space Grotesk',monospace;letter-spacing:.5px">${s.id}</span>
-          <span style="font-size:8px;padding:1px 6px;border-radius:4px;font-weight:700;background:${mb};color:${mc};border:1px solid ${mbd};letter-spacing:.5px">${ml}</span>
-        </div>
-        <div style="font-size:10px;color:#3F5268;margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase;font-weight:600">${s.s}</div>
-        <div style="display:flex;gap:4px;flex-wrap:wrap">
-          ${(s.t||[]).slice(0,3).map(t=>`<span style="font-size:9px;color:rgba(196,158,80,0.6);background:rgba(196,158,80,0.06);border:1px solid rgba(196,158,80,0.15);border-radius:4px;padding:1px 6px;letter-spacing:.3px">${t}</span>`).join("")}
-        </div>
+  const v=gV(s.ind), sc=gS(s.ind), up=(s.c||0)>=0;
+  const mCls=s.m==="K"?"K":"Q", ml=s.m==="K"?"KOSPI":"KOSDAQ";
+  const chgSign=up?"▲":"▼";
+  const chgCls=up?"up":"dn";
+  return`<div class="scard${isW(s.id)?" watched":""}" onclick="openDetail('${s.id}')">
+  <div class="sc-row1">
+    <div class="sc-left">
+      <div class="sc-nm-row">
+        <span class="sc-name">${s.n}</span>
+        <span class="sc-code">${s.id}</span>
+        <span class="sc-mkt ${mCls}">${ml}</span>
       </div>
-      <div style="flex-shrink:0;text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:5px">
-        <button class="wstar" onclick="toggleW('${s.id}',event)" style="color:${w?"#C49E50":"#2A3A50"};font-size:17px">${w?"★":"☆"}</button>
-        <div style="font-size:18px;font-weight:400;font-family:'Bebas Neue',monospace;letter-spacing:.5px;color:#EEE8DA;white-space:nowrap">${fW(s.p)}<span style="font-size:11px;font-family:monospace;margin-left:2px;opacity:.5">₩</span></div>
-        <div style="font-size:11px;font-family:'Space Grotesk',sans-serif;font-weight:600;color:${up?"#0ED98A":"#FF4D6D"};white-space:nowrap;letter-spacing:.3px">${up?"▲":"▼"} ${Math.abs(s.c).toFixed(2)}%</div>
-        <div style="border-radius:7px;padding:4px 9px;background:${v.bg};border:1px solid ${v.c}30;display:inline-flex;gap:5px;align-items:center;backdrop-filter:blur(6px)">
-          <span style="color:${v.c};font-size:9px;font-weight:800;letter-spacing:.8px;text-transform:uppercase">${v.s}</span>
-          <span style="color:${v.c};font-size:12px;font-family:'Space Grotesk',monospace;font-weight:700;opacity:.9">${sc}</span>
-        </div>
+      <div class="sc-sec">${s.s||""}</div>
+      <div class="sc-tags">${(s.t||[]).slice(0,3).map(t=>`<span class="sc-tag">${t}</span>`).join("")}</div>
+    </div>
+    <div class="sc-right">
+      <button class="sc-star" onclick="toggleW('${s.id}',event)"
+        style="color:${isW(s.id)?"var(--gold)":"var(--text3)"}">${isW(s.id)?"★":"☆"}</button>
+      <div class="sc-price">${fW(s.p)}</div>
+      <div class="sc-chg ${chgCls}">${chgSign} ${Math.abs(s.c||0).toFixed(2)}%</div>
+      <div class="sc-verd" style="background:${v.bg};border-color:${v.c}40;margin-top:4px">
+        <span class="sc-verd-s" style="color:${v.c}">${v.s}</span>
+        <span class="sc-verd-n" style="color:${v.c}">${sc}</span>
       </div>
     </div>
-    <div class="sc-bar" style="margin-top:13px"><div class="sc-bar-fill" style="width:${barW}%;background:linear-gradient(90deg,${v.c}20,${v.c}80,${v.c}40)"></div></div>
-  </div>`;
+  </div>
+  <div class="sc-sbar"><div class="sc-sbar-f" style="width:${sc}%;background:linear-gradient(90deg,${v.c}30,${v.c}90)"></div></div>
+</div>`;
 }
 
 
@@ -2087,15 +2208,15 @@ function renderHome(){
   // 관심종목 섹션
   const watchHTML = watched.length
     ? `<div style="padding:14px 14px 6px;display:flex;align-items:center;justify-content:space-between">
-        <span style="font-size:11px;color:#7A8FA8;font-weight:700;letter-spacing:1.5px;text-transform:uppercase">⭐ 관심 종목 <span style="color:#C49E50">(${watched.length})</span></span>
+        <span style="font-size:11px;color:#7A8FA8;font-weight:700;letter-spacing:1.5px;text-transform:uppercase">⭐ 관심 종목 <span style="color:var(--gold)">(${watched.length})</span></span>
       </div>
       ${watched.map(s=>cardHTML(s)).join("")}`
     : `<div style="padding:14px 14px 6px;display:flex;align-items:center;justify-content:space-between">
         <span style="font-size:11px;color:#7A8FA8;font-weight:700;letter-spacing:1.5px;text-transform:uppercase">⭐ 관심 종목</span>
       </div>
-      <div style="margin:4px 12px 8px;padding:14px;background:rgba(196,158,80,0.07);border:1px dashed rgba(196,158,80,0.35);border-radius:12px;text-align:center">
-        <div style="font-size:11px;color:#5A7090;margin-bottom:8px">종목 카드의 ⭐를 눌러 추가하세요</div>
-        <button onclick="switchPage('search')" style="background:rgba(196,158,80,0.12);border:1px solid rgba(196,158,80,0.3);border-radius:12px;color:#C49E50;padding:8px 18px;cursor:pointer;font-size:11px;font-weight:700;letter-spacing:.5px">전체 종목 탐색 →</button>
+      <div style="margin:4px 12px 8px;padding:14px;background:rgba(212,168,67,0.07);border:1px dashed rgba(212,168,67,0.35);border-radius:12px;text-align:center">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:8px">종목 카드의 ⭐를 눌러 추가하세요</div>
+        <button onclick="switchPage('search')" style="background:rgba(212,168,67,0.12);border:1px solid rgba(212,168,67,0.3);border-radius:12px;color:var(--gold);padding:8px 18px;cursor:pointer;font-size:11px;font-weight:700;letter-spacing:.5px">전체 종목 탐색 →</button>
       </div>`;
 
   el.innerHTML = watchHTML;
@@ -2107,13 +2228,13 @@ function liteCardHTML(s){
     ? `<span style="font-size:9px;background:rgba(59,130,246,0.15);color:#60A5FA;border:1px solid rgba(59,130,246,0.3);border-radius:4px;padding:1px 5px">KOSPI</span>`
     : `<span style="font-size:9px;background:rgba(139,92,246,0.15);color:#A78BFA;border:1px solid rgba(139,92,246,0.3);border-radius:4px;padding:1px 5px">KOSDAQ</span>`;
   return `<div onclick="aiSearchById('${s.id}','${s.n.replace(/'/g,"\\'")}','${s.s}','${s.m}')"
-    style="margin:5px 2px;padding:14px 16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:14px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;transition:background .15s"
-    onmouseenter="this.style.background='rgba(196,158,80,0.08)'" onmouseleave="this.style.background='rgba(255,255,255,0.04)'">
+    style="margin:5px 2px;padding:14px 16px;background:var(--bg3);border:1px solid var(--border2);border-radius:14px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;transition:background .15s"
+    onmouseenter="this.style.background='rgba(212,168,67,0.08)'" onmouseleave="this.style.background='rgba(255,255,255,0.04)'">
     <div>
-      <div style="font-size:14px;font-weight:800;color:#EEE8DA;margin-bottom:3px">${s.n}</div>
+      <div style="font-size:14px;font-weight:800;color:var(--text);margin-bottom:3px">${s.n}</div>
       <div style="font-size:11px;color:#4A6080">${s.id} · ${s.s} &nbsp;${mBadge}</div>
     </div>
-    <div style="font-size:11px;color:#C49E50;font-weight:700;white-space:nowrap;opacity:.8">✨ AI 분석</div>
+    <div style="font-size:11px;color:var(--gold);font-weight:700;white-space:nowrap;opacity:.8">✨ AI 분석</div>
   </div>`;
 }
 
@@ -2122,7 +2243,7 @@ async function aiSearchById(id, name, sector, market) {
   const el=document.getElementById("searchList");
   el.innerHTML=`<div style="text-align:center;padding:50px 20px">
     <div style="font-size:40px;margin-bottom:14px">✨</div>
-    <div style="color:#C49E50;font-weight:900;font-size:16px;margin-bottom:6px">${name} 분석 중</div>
+    <div style="color:var(--gold);font-weight:900;font-size:16px;margin-bottom:6px">${name} 분석 중</div>
     <div style="color:#4A6080;font-size:12px;line-height:1.8">실시간 가격 + AI 70년 역사 모델로<br>분석 중입니다. 잠시만 기다려주세요...</div>
   </div>`;
   // 실시간 풀 데이터 조회 (Yahoo Finance 우선)
@@ -2170,41 +2291,41 @@ function renderSearch(){
     // KRX 아직 로드중이면 로딩 메시지
     if(!krxLoaded){
       el.innerHTML=`
-      <div style="margin:8px 2px 24px;border-radius:18px;overflow:hidden;border:1.5px solid rgba(196,158,80,0.5);background:linear-gradient(160deg,rgba(196,158,80,0.12) 0%,rgba(5,16,30,0.97) 55%)">
+      <div style="margin:8px 2px 24px;border-radius:18px;overflow:hidden;border:1.5px solid rgba(212,168,67,0.5);background:linear-gradient(160deg,rgba(212,168,67,0.12) 0%,rgba(5,16,30,0.97) 55%)">
         <div style="padding:30px 22px 16px;text-align:center">
           <div style="font-size:44px;margin-bottom:10px">⏳</div>
-          <div style="font-size:14px;font-weight:900;color:#EEE8DA;margin-bottom:8px">KRX 전종목 로딩 중...</div>
-          <div style="font-size:12px;color:#6B84A0;margin-bottom:18px">잠시 후 다시 검색해주세요<br>또는 AI로 즉시 분석할게요</div>
+          <div style="font-size:14px;font-weight:900;color:var(--text);margin-bottom:8px">KRX 전종목 로딩 중...</div>
+          <div style="font-size:12px;color:var(--text2);margin-bottom:18px">잠시 후 다시 검색해주세요<br>또는 AI로 즉시 분석할게요</div>
           <button onclick="aiSearch('${q.replace(/'/g,"\\'")}',this)"
-            style="background:linear-gradient(135deg,#C49E50,#E8D5A0,#C49E50);border:none;border-radius:14px;color:#07080F;padding:15px 0;cursor:pointer;font-size:14px;font-weight:900;width:100%;box-shadow:0 4px 20px rgba(196,158,80,0.4)">
+            style="background:linear-gradient(135deg,var(--gold),#E8D5A0,var(--gold));border:none;border-radius:14px;color:#07080F;padding:15px 0;cursor:pointer;font-size:14px;font-weight:900;width:100%;box-shadow:0 4px 20px rgba(212,168,67,0.4)">
             ✨ AI로 즉시 분석
           </button>
-          <div id="aiStatus" style="margin-top:14px;font-size:12px;color:#C49E50;font-weight:800;min-height:18px"></div>
+          <div id="aiStatus" style="margin-top:14px;font-size:12px;color:var(--gold);font-weight:800;min-height:18px"></div>
         </div>
       </div>`;
     } else {
       el.innerHTML=`
-      <div style="margin:8px 2px 24px;border-radius:18px;overflow:hidden;border:1.5px solid rgba(196,158,80,0.5);background:linear-gradient(160deg,rgba(196,158,80,0.12) 0%,rgba(5,16,30,0.97) 55%)">
+      <div style="margin:8px 2px 24px;border-radius:18px;overflow:hidden;border:1.5px solid rgba(212,168,67,0.5);background:linear-gradient(160deg,rgba(212,168,67,0.12) 0%,rgba(5,16,30,0.97) 55%)">
         <div style="padding:30px 22px 16px;text-align:center">
-          <div style="font-size:48px;margin-bottom:12px;filter:drop-shadow(0 0 16px rgba(196,158,80,0.6))">🔍</div>
-          <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#C49E50;margin-bottom:8px;opacity:.8">KRX 전종목 검색 결과 없음</div>
-          <div style="font-size:20px;font-weight:900;color:#EEE8DA;margin-bottom:6px">"<span style="color:#C49E50">${q}</span>"</div>
-          <div style="font-size:12px;color:#6B84A0;line-height:1.9;margin-bottom:22px">
+          <div style="font-size:48px;margin-bottom:12px;filter:drop-shadow(0 0 16px rgba(212,168,67,0.6))">🔍</div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:var(--gold);margin-bottom:8px;opacity:.8">KRX 전종목 검색 결과 없음</div>
+          <div style="font-size:20px;font-weight:900;color:var(--text);margin-bottom:6px">"<span style="color:var(--gold)">${q}</span>"</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.9;margin-bottom:22px">
             KRX 상장 전종목에 없는 종목이에요<br>
             그래도 <b style="color:#E8D5A0">AI가 즉시 분석</b>해드릴게요
           </div>
           <button onclick="aiSearch('${q.replace(/'/g,"\\'")}',this)"
-            style="background:linear-gradient(135deg,#C49E50,#E8D5A0,#C49E50);border:none;border-radius:14px;color:#07080F;padding:16px 0;cursor:pointer;font-size:15px;font-weight:900;width:100%;box-shadow:0 6px 24px rgba(196,158,80,0.45)">
+            style="background:linear-gradient(135deg,var(--gold),#E8D5A0,var(--gold));border:none;border-radius:14px;color:#07080F;padding:16px 0;cursor:pointer;font-size:15px;font-weight:900;width:100%;box-shadow:0 6px 24px rgba(212,168,67,0.45)">
             ✨ AI로 분석하기
           </button>
-          <div id="aiStatus" style="margin-top:16px;font-size:13px;color:#C49E50;font-weight:800;min-height:20px"></div>
+          <div id="aiStatus" style="margin-top:16px;font-size:13px;color:var(--gold);font-weight:800;min-height:20px"></div>
         </div>
-        <div style="padding:14px 20px 18px;border-top:1px solid rgba(196,158,80,0.15)">
-          <div style="font-size:10px;color:#C49E50;font-weight:700;letter-spacing:1.5px;margin-bottom:9px">💡 검색 방법</div>
-          <div style="font-size:12px;color:#6B84A0;line-height:2.0">
-            📌 종목명 · <span style="color:#6B84A0">삼성전자</span> &nbsp; 📌 코드 · <span style="color:#6B84A0">005930</span><br>
-            📌 섹터 · <span style="color:#6B84A0">반도체, 방산, 바이오</span><br>
-            📌 키워드 · <span style="color:#6B84A0">HBM, AI, 원전, K방산</span>
+        <div style="padding:14px 20px 18px;border-top:1px solid rgba(212,168,67,0.15)">
+          <div style="font-size:10px;color:var(--gold);font-weight:700;letter-spacing:1.5px;margin-bottom:9px">💡 검색 방법</div>
+          <div style="font-size:12px;color:var(--text2);line-height:2.0">
+            📌 종목명 · <span style="color:var(--text2)">삼성전자</span> &nbsp; 📌 코드 · <span style="color:var(--text2)">005930</span><br>
+            📌 섹터 · <span style="color:var(--text2)">반도체, 방산, 바이오</span><br>
+            📌 키워드 · <span style="color:var(--text2)">HBM, AI, 원전, K방산</span>
           </div>
         </div>
       </div>`;
@@ -2216,7 +2337,7 @@ function renderSearch(){
   if(!q){
     const krxStatus = krxLoaded
       ? `<div style="padding:8px 14px 0;text-align:right"><span style="font-size:10px;color:#2A5030;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:6px;padding:3px 8px">✅ KRX ${(DB_LITE.length+DB.length).toLocaleString()}종목 로드됨</span></div>`
-      : `<div style="padding:8px 14px 0;text-align:right"><span style="font-size:10px;color:#5A7090;background:rgba(196,158,80,0.06);border:1px solid rgba(196,158,80,0.15);border-radius:6px;padding:3px 8px">⏳ KRX 전종목 로딩 중...</span></div>`;
+      : `<div style="padding:8px 14px 0;text-align:right"><span style="font-size:10px;color:var(--text3);background:rgba(212,168,67,0.06);border:1px solid rgba(212,168,67,0.15);border-radius:6px;padding:3px 8px">⏳ KRX 전종목 로딩 중...</span></div>`;
     el.innerHTML = krxStatus + stocks.map(s=>cardHTML(s)).join("");
     return;
   }
@@ -2227,13 +2348,13 @@ function renderSearch(){
   if(stocks.length) html += stocks.map(s=>cardHTML(s)).join("");
   // DB_LITE 경량 카드 (구분선 포함)
   if(liteStocks.length){
-    if(stocks.length) html += `<div style="padding:8px 4px 4px;font-size:10px;color:#5A7090;font-weight:700;letter-spacing:1px">KRX 전종목 결과 ${liteStocks.length}개</div>`;
+    if(stocks.length) html += `<div style="padding:8px 4px 4px;font-size:10px;color:var(--text3);font-weight:700;letter-spacing:1px">KRX 전종목 결과 ${liteStocks.length}개</div>`;
     html += liteStocks.map(s=>liteCardHTML(s)).join("");
   }
   // AI 분석 버튼
-  html += `<div style="margin:8px 2px 0;padding:10px 14px;background:rgba(196,158,80,0.04);border:1px solid rgba(196,158,80,0.1);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:10px">
-    <span style="font-size:11px;color:#5A7090">다른 종목도 찾으시나요?</span>
-    <button onclick="aiSearch('${q.replace(/'/g,"\\'")}',this)" style="background:rgba(196,158,80,0.1);border:1px solid rgba(196,158,80,0.25);border-radius:8px;color:#C49E50;padding:7px 14px;cursor:pointer;font-size:11px;font-weight:800;white-space:nowrap">✨ AI 분석</button>
+  html += `<div style="margin:8px 2px 0;padding:10px 14px;background:rgba(212,168,67,0.04);border:1px solid rgba(212,168,67,0.1);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:10px">
+    <span style="font-size:11px;color:var(--text3)">다른 종목도 찾으시나요?</span>
+    <button onclick="aiSearch('${q.replace(/'/g,"\\'")}',this)" style="background:rgba(212,168,67,0.1);border:1px solid rgba(212,168,67,0.25);border-radius:8px;color:var(--gold);padding:7px 14px;cursor:pointer;font-size:11px;font-weight:800;white-space:nowrap">✨ AI 분석</button>
   </div>`;
   el.innerHTML = html;
 }
@@ -2278,7 +2399,7 @@ async function aiSearch(query, btn, preFetchedPrice=null){
   aiSearching=true;
   if(btn){ btn.disabled=true; btn.textContent="⏳ 분석 중..."; }
   const st=document.getElementById("aiStatus");
-  if(st){ st.style.color="#C49E50"; st.textContent="⏳ AI 분석 중..."; }
+  if(st){ st.style.color="var(--gold)"; st.textContent="⏳ AI 분석 중..."; }
   try{
     // one-shot 예시로 JSON 형식 고정 → 파싱 에러 방지
     const EXAMPLE_STOCK = '{"id":"005930","n":"삼성전자","s":"반도체","m":"K","p":57800,"c":8.2,"prev":53420,"w52h":88800,"w52l":47450,"cap":"344조","per":12.8,"pbr":1.42,"roe":15.2,"debt":28,"t":["반도체","HBM","AI"],"ind":{"pbr":62,"per":68,"roe":65,"momentum":78,"growth":82,"sentiment":72,"safety":74},"sum":"HBM4 수혜 핵심주. 3/9 급락 후 반등 중.","bull":"HBM4 엔비디아 납품 확대 기대","bear":"HBM 수율 SK하이닉스 대비 열위","tH":80000,"tM":70000,"tL":55000,"verify":{"note":"1956~2026 역사PBR 0.95배 대비 현 1.42배 적정"}}';
@@ -2358,7 +2479,7 @@ async function aiSearch(query, btn, preFetchedPrice=null){
             liveP=lp;
             const dv=document.getElementById("dpval"); if(dv) dv.textContent=fW(lp);
             const badge=document.getElementById("livebadge");
-            if(badge){badge.style.display="block";badge.style.color="rgba(196,158,80,0.7)";badge.textContent="✓ 실시간: "+fW(lp)+" ("+new Date().toLocaleTimeString("ko-KR")+")";}
+            if(badge){badge.style.display="block";badge.style.color="rgba(212,168,67,0.7)";badge.textContent="✓ 실시간: "+fW(lp)+" ("+new Date().toLocaleTimeString("ko-KR")+")";}
           }
         }
       }catch(_){}
@@ -2366,7 +2487,7 @@ async function aiSearch(query, btn, preFetchedPrice=null){
   }catch(e){
     console.error("[aiSearch]",e);
     const st2=document.getElementById("aiStatus");
-    if(st2){st2.style.color="#FF4D6D";st2.textContent="❌ "+e.message;
+    if(st2){st2.style.color="var(--red)";st2.textContent="❌ "+e.message;
       setTimeout(()=>{if(st2){st2.textContent="";st2.style.color="";}},8000);}
     if(btn){btn.disabled=false;btn.textContent="✨ AI 분석 재시도";}
   }finally{aiSearching=false;}
@@ -2403,7 +2524,7 @@ function openDetail(id){
   document.getElementById("dname").textContent=s.n;
   document.getElementById("dcode").textContent=`${s.id} · ${s.m==="K"?"KOSPI":"KOSDAQ"} · ${s.s}`;
   document.getElementById("dpval").textContent=fW(s.p);
-  document.getElementById("dpchg").style.color=up?"#0ED98A":"#FF4D6D";
+  document.getElementById("dpchg").style.color=up?"var(--green)":"var(--red)";
   document.getElementById("dpchg").textContent=(up?"▲":"▼")+Math.abs(s.c).toFixed(2)+"%";
   document.getElementById("dverd").style.color=v.c;
   document.getElementById("dverd").textContent=v.l;
@@ -2411,10 +2532,10 @@ function openDetail(id){
   document.getElementById("dscore").textContent=sc;
   document.getElementById("sbox2").style.background=v.bg;
   document.getElementById("sbox2").style.border="1px solid "+v.c+"25";
-  document.getElementById("dtags").innerHTML=(s.t||[]).map(t=>`<span style="font-size:9px;color:rgba(196,158,80,0.75);background:rgba(196,158,80,0.08);border:1px solid rgba(196,158,80,0.2);border-radius:5px;padding:2px 8px;letter-spacing:.5px">${t}</span>`).join("");
+  document.getElementById("dtags").innerHTML=(s.t||[]).map(t=>`<span style="font-size:9px;color:rgba(212,168,67,0.75);background:rgba(212,168,67,0.08);border:1px solid rgba(212,168,67,0.2);border-radius:5px;padding:2px 8px;letter-spacing:.5px">${t}</span>`).join("");
   document.getElementById("livebadge").style.display="none";
   const dstar=document.getElementById("dstar");
-  if(dstar){dstar.textContent=isW(id)?"⭐":"☆";dstar.style.color=isW(id)?"#C49E50":"#3F5268";}
+  if(dstar){dstar.textContent=isW(id)?"⭐":"☆";dstar.style.color=isW(id)?"var(--gold)":"#3F5268";}
   document.querySelectorAll(".dtab").forEach((b,i)=>b.classList.toggle("active",i===0));
   renderDBody();
   document.getElementById("dview").classList.add("open");
@@ -2440,13 +2561,13 @@ function renderDBody(){
     const pos=Math.min(Math.max((cur-s.tL)/range*100,2),98);
     const midPos=Math.min(Math.max((s.tM-s.tL)/range*100,2),98);
     el.innerHTML=`
-    <div style="margin:4px 2px 6px;padding:8px 12px;background:rgba(196,158,80,0.06);border:1px solid rgba(196,158,80,0.2);border-radius:12px;display:flex;align-items:center;gap:8px;font-size:11px;color:#6B84A0">
-      <span style="color:#C49E50;font-size:13px">💡</span>
-      <span>표시 주가는 DB 추정치입니다. <b style="color:#C49E50">🔄 실시간</b> 버튼으로 정확한 현재가 확인하세요.</span>
+    <div style="margin:4px 2px 6px;padding:8px 12px;background:rgba(212,168,67,0.06);border:1px solid rgba(212,168,67,0.2);border-radius:12px;display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text2)">
+      <span style="color:var(--gold);font-size:13px">💡</span>
+      <span>표시 주가는 DB 추정치입니다. <b style="color:var(--gold)">🔄 실시간</b> 버튼으로 정확한 현재가 확인하세요.</span>
     </div>
     <div class="cbox">
       <div class="cbox-t">📰 종목 개요 · FY2024 기준</div>
-      <p style="font-size:12px;color:#6B84A0;line-height:1.9">${s.sum}</p>
+      <p style="font-size:12px;color:var(--text2);line-height:1.9">${s.sum}</p>
     </div>
     <div class="cbox">
       <div class="cbox-t">📊 핵심 재무 지표 · FY2024 실적</div>
@@ -2456,11 +2577,11 @@ function renderDBody(){
           const perVal = typeof s.per==="number" ? s.per : null;
           let perColor="#8BA0BC", perLabel="";
           if(perVal!==null){
-            if(perVal<=6){perColor="#0ED98A";perLabel="극저평가"}
+            if(perVal<=6){perColor="var(--green)";perLabel="극저평가"}
             else if(perVal<=12){perColor="#34D399";perLabel="저평가"}
-            else if(perVal<=18){perColor="#C49E50";perLabel="적정"}
+            else if(perVal<=18){perColor="var(--gold)";perLabel="적정"}
             else if(perVal<=30){perColor="#F59E0B";perLabel="고평가"}
-            else{perColor="#FF4D6D";perLabel="과열"}
+            else{perColor="var(--red)";perLabel="과열"}
           }
           const perDisp = perVal!==null
             ? `<span style="color:${perColor};font-weight:800">${perVal}배</span><span style="font-size:9px;color:${perColor};margin-left:4px;opacity:.85">${perLabel}</span>`
@@ -2470,11 +2591,11 @@ function renderDBody(){
           const pbrVal = typeof s.pbr==="number" ? s.pbr : null;
           let pbrColor="#8BA0BC", pbrLabel="";
           if(pbrVal!==null){
-            if(pbrVal<=0.5){pbrColor="#0ED98A";pbrLabel="극저평가"}
+            if(pbrVal<=0.5){pbrColor="var(--green)";pbrLabel="극저평가"}
             else if(pbrVal<=0.9){pbrColor="#34D399";pbrLabel="저평가"}
-            else if(pbrVal<=1.5){pbrColor="#C49E50";pbrLabel="적정"}
+            else if(pbrVal<=1.5){pbrColor="var(--gold)";pbrLabel="적정"}
             else if(pbrVal<=3.0){pbrColor="#F59E0B";pbrLabel="고평가"}
-            else{pbrColor="#FF4D6D";pbrLabel="과열"}
+            else{pbrColor="var(--red)";pbrLabel="과열"}
           }
           const pbrDisp = pbrVal!==null
             ? `<span style="color:${pbrColor};font-weight:800">${pbrVal}배</span><span style="font-size:9px;color:${pbrColor};margin-left:4px;opacity:.85">${pbrLabel}</span>`
@@ -2484,11 +2605,11 @@ function renderDBody(){
           const roeVal = typeof s.roe==="number" ? s.roe : null;
           let roeColor="#8BA0BC", roeLabel="";
           if(roeVal!==null){
-            if(roeVal>=20){roeColor="#0ED98A";roeLabel="우수"}
+            if(roeVal>=20){roeColor="var(--green)";roeLabel="우수"}
             else if(roeVal>=12){roeColor="#34D399";roeLabel="양호"}
-            else if(roeVal>=7){roeColor="#C49E50";roeLabel="평균"}
+            else if(roeVal>=7){roeColor="var(--gold)";roeLabel="평균"}
             else if(roeVal>=0){roeColor="#6B8090";roeLabel="저ROE"}
-            else{roeColor="#FF4D6D";roeLabel="적자"}
+            else{roeColor="var(--red)";roeLabel="적자"}
           }
           const roeDisp = roeVal!==null
             ? `<span style="color:${roeColor};font-weight:800">${roeVal}%</span><span style="font-size:9px;color:${roeColor};margin-left:4px;opacity:.85">${roeLabel}</span>`
@@ -2501,10 +2622,10 @@ function renderDBody(){
           if(s.debt==="-"){
             debtDisp=`<span style="color:#3B82F6;font-size:10px;font-weight:700">금융업<br><span style="font-size:9px;opacity:.7">BIS 자본비율 적용</span></span>`;
           } else if(debtVal!==null){
-            if(debtVal<=50){debtColor="#0ED98A";debtLabel="안전"}
+            if(debtVal<=50){debtColor="var(--green)";debtLabel="안전"}
             else if(debtVal<=100){debtColor="#34D399";debtLabel="양호"}
             else if(debtVal<=200){debtColor="#F59E0B";debtLabel="주의"}
-            else{debtColor="#FF4D6D";debtLabel="고부채"}
+            else{debtColor="var(--red)";debtLabel="고부채"}
             debtDisp=`<span style="color:${debtColor};font-weight:800">${debtVal}%</span><span style="font-size:9px;color:${debtColor};margin-left:4px;opacity:.85">${debtLabel}</span>`;
           } else {
             debtDisp=`<span style="color:#3A5070">-</span>`;
@@ -2513,11 +2634,11 @@ function renderDBody(){
           // ── 52주 위치 계산 ────────────────────────
           const range52 = s.w52h - s.w52l;
           const pos52 = range52>0 ? Math.round((s.p - s.w52l)/range52*100) : 50;
-          const pos52Color = pos52>=70?"#FF4D6D":pos52>=40?"#C49E50":"#0ED98A";
+          const pos52Color = pos52>=70?"var(--red)":pos52>=40?"var(--gold)":"var(--green)";
 
           return `
-        <div class="vi"><div class="vil">시가총액</div><div class="viv" style="color:#EEE8DA">${s.cap||"-"}</div></div>
-        <div class="vi"><div class="vil">현재가</div><div class="viv" style="color:${s.c>=0?"#0ED98A":"#FF4D6D"}">${(s.p||0).toLocaleString()}원 <span style="font-size:10px">${s.c>=0?"+":""}${s.c}%</span></div></div>
+        <div class="vi"><div class="vil">시가총액</div><div class="viv" style="color:var(--text)">${s.cap||"-"}</div></div>
+        <div class="vi"><div class="vil">현재가</div><div class="viv" style="color:${s.c>=0?"var(--green)":"var(--red)"}">${(s.p||0).toLocaleString()}원 <span style="font-size:10px">${s.c>=0?"+":""}${s.c}%</span></div></div>
         <div class="vi"><div class="vil">PER (주가수익비율)</div><div class="viv" style="display:flex;align-items:center;flex-wrap:wrap;gap:2px">${perDisp}</div></div>
         <div class="vi"><div class="vil">PBR (주가순자산비율)</div><div class="viv" style="display:flex;align-items:center;flex-wrap:wrap;gap:2px">${pbrDisp}</div></div>
         <div class="vi"><div class="vil">ROE (자기자본이익률)</div><div class="viv" style="display:flex;align-items:center;flex-wrap:wrap;gap:2px">${roeDisp}</div></div>
@@ -2525,11 +2646,11 @@ function renderDBody(){
         <div class="vi" style="grid-column:1/-1">
           <div class="vil">52주 가격 범위 &nbsp;<span style="color:${pos52Color};font-size:9px">현재 상위 ${pos52}% 위치</span></div>
           <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
-            <span style="font-size:10px;color:#5A7090">${(s.w52l||0).toLocaleString()}</span>
-            <div style="flex:1;height:6px;background:rgba(255,255,255,0.05);border-radius:3px;overflow:hidden">
-              <div style="height:100%;width:${pos52}%;background:linear-gradient(90deg,#0ED98A,${pos52Color});border-radius:3px;transition:.3s"></div>
+            <span style="font-size:10px;color:var(--text3)">${(s.w52l||0).toLocaleString()}</span>
+            <div style="flex:1;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden">
+              <div style="height:100%;width:${pos52}%;background:linear-gradient(90deg,var(--green),${pos52Color});border-radius:3px;transition:.3s"></div>
             </div>
-            <span style="font-size:10px;color:#5A7090">${(s.w52h||0).toLocaleString()}</span>
+            <span style="font-size:10px;color:var(--text3)">${(s.w52h||0).toLocaleString()}</span>
           </div>
         </div>`;
         })()}
@@ -2545,31 +2666,31 @@ function renderDBody(){
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px">
         <div style="background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.15);border-radius:8px;padding:9px;text-align:center">
-          <div style="font-size:8px;color:#FF4D6D;margin-bottom:3px;letter-spacing:.5px">하단</div>
-          <div style="font-size:14px;font-family:'Bebas Neue',monospace;font-weight:400;color:#FF4D6D">${fW(s.tL)}</div>
+          <div style="font-size:8px;color:var(--red);margin-bottom:3px;letter-spacing:.5px">하단</div>
+          <div style="font-size:14px;font-family:'Bebas Neue',monospace;font-weight:400;color:var(--red)">${fW(s.tL)}</div>
         </div>
         <div style="background:rgba(217,119,6,0.07);border:1px solid rgba(217,119,6,0.15);border-radius:8px;padding:9px;text-align:center">
           <div style="font-size:8px;color:#D97706;margin-bottom:3px;letter-spacing:.5px">중간</div>
           <div style="font-size:14px;font-family:'Bebas Neue',monospace;font-weight:400;color:#D97706">${fW(s.tM)}</div>
         </div>
         <div style="background:rgba(16,185,129,0.07);border:1px solid rgba(16,185,129,0.15);border-radius:8px;padding:9px;text-align:center">
-          <div style="font-size:8px;color:#0ED98A;margin-bottom:3px;letter-spacing:.5px">상단</div>
-          <div style="font-size:14px;font-family:'Bebas Neue',monospace;font-weight:400;color:#0ED98A">${fW(s.tH)}</div>
+          <div style="font-size:8px;color:var(--green);margin-bottom:3px;letter-spacing:.5px">상단</div>
+          <div style="font-size:14px;font-family:'Bebas Neue',monospace;font-weight:400;color:var(--green)">${fW(s.tH)}</div>
         </div>
       </div>
-      <div style="margin-top:8px;padding:8px 12px;background:rgba(255,255,255,0.04);border-radius:8px;display:flex;justify-content:space-between;align-items:center;border:1px solid rgba(255,255,255,0.1)">
-        <span style="font-size:11px;color:#5A7090;letter-spacing:.3px">목표 상단까지</span>
-        <span style="font-size:17px;font-weight:400;font-family:'Bebas Neue',monospace;color:#0ED98A;letter-spacing:.5px">+${((s.tH/cur-1)*100).toFixed(1)}%</span>
+      <div style="margin-top:8px;padding:8px 12px;background:rgba(255,255,255,0.04);border-radius:8px;display:flex;justify-content:space-between;align-items:center;border:1px solid var(--border)">
+        <span style="font-size:11px;color:var(--text3);letter-spacing:.3px">목표 상단까지</span>
+        <span style="font-size:17px;font-weight:400;font-family:'Bebas Neue',monospace;color:var(--green);letter-spacing:.5px">+${((s.tH/cur-1)*100).toFixed(1)}%</span>
       </div>
     </div>`;
 
   } else if(curDTab==="rd"){
     const bars=Object.entries(s.ind).map(([k,val])=>{
-      const col=val>=70?"#0ED98A":val>=50?"#D97706":"#FF4D6D";
+      const col=val>=70?"var(--green)":val>=50?"#D97706":"var(--red)";
       return`<div class="grow">
         <div class="gt">
           <div>
-            <span style="font-size:11px;font-weight:700;color:#6B84A0">${IND_L[k]||k}</span>
+            <span style="font-size:11px;font-weight:700;color:var(--text2)">${IND_L[k]||k}</span>
             <span style="font-size:9px;color:#3A5878;margin-left:5px">${IND_DESC[k]||""}</span>
           </div>
           <span style="font-size:16px;font-weight:400;font-family:'Bebas Neue',monospace;letter-spacing:.5px;color:${col}">${val}</span>
@@ -2580,31 +2701,31 @@ function renderDBody(){
     el.innerHTML=`
     <div class="cbox">
       <div class="cbox-t">📐 70년 모델 — 7대 지표 (1956~2026)</div>
-      <div style="background:rgba(196,158,80,0.04);border:1px solid rgba(196,158,80,0.1);border-radius:8px;padding:9px 11px;margin-bottom:12px;font-size:10px;color:#5A7090;line-height:1.8">
-        <b style="color:#C49E50">판정 모델:</b> 한국 주식시장 전체 역사 1956~2026 (70년). 대한증권거래소 창립(1956) → 코스피 기산(1980) → 3저호황(1987~89) → IMF외환위기(1997~98) → 닷컴버블(2000) → 금융위기(2008~09) → 코로나(2020) → AI·방산 슈퍼사이클(2025~) 8대 사이클 전체 반영.
+      <div style="background:rgba(212,168,67,0.04);border:1px solid rgba(212,168,67,0.1);border-radius:8px;padding:9px 11px;margin-bottom:12px;font-size:10px;color:var(--text3);line-height:1.8">
+        <b style="color:var(--gold)">판정 모델:</b> 한국 주식시장 전체 역사 1956~2026 (70년). 대한증권거래소 창립(1956) → 코스피 기산(1980) → 3저호황(1987~89) → IMF외환위기(1997~98) → 닷컴버블(2000) → 금융위기(2008~09) → 코로나(2020) → AI·방산 슈퍼사이클(2025~) 8대 사이클 전체 반영.
       </div>
       ${bars}
     </div>
     <div class="cbox" style="text-align:center;padding:20px 14px">
       <div class="cbox-t">종합 점수</div>
       <div style="font-size:64px;font-weight:900;font-family:monospace;color:${v.c};line-height:1;margin:8px 0">${sc}</div>
-      <div style="font-size:11px;color:#5A7090;margin-bottom:8px;letter-spacing:.5px">/ 100점</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:8px;letter-spacing:.5px">/ 100점</div>
       <div style="font-size:16px;font-weight:800;color:${v.c};letter-spacing:.5px">${v.l}</div>
     </div>`;
 
   } else if(curDTab==="sc"){
     el.innerHTML=`
     <div style="background:rgba(16,185,129,0.05);border:1px solid rgba(16,185,129,0.18);border-radius:13px;padding:14px;margin-bottom:10px">
-      <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;color:#0ED98A;margin-bottom:8px">▲ BULL CASE — 강세 시나리오</div>
-      <p style="font-size:12px;color:#6B84A0;line-height:1.9">${s.bull}</p>
+      <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--green);margin-bottom:8px">▲ BULL CASE — 강세 시나리오</div>
+      <p style="font-size:12px;color:var(--text2);line-height:1.9">${s.bull}</p>
     </div>
     <div style="background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.18);border-radius:13px;padding:14px;margin-bottom:10px">
-      <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;color:#FF4D6D;margin-bottom:8px">▼ BEAR CASE — 약세 시나리오</div>
-      <p style="font-size:12px;color:#6B84A0;line-height:1.9">${s.bear}</p>
+      <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--red);margin-bottom:8px">▼ BEAR CASE — 약세 시나리오</div>
+      <p style="font-size:12px;color:var(--text2);line-height:1.9">${s.bear}</p>
     </div>
     <div style="background:rgba(217,119,6,0.05);border:1px solid rgba(217,119,6,0.18);border-radius:13px;padding:14px">
       <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;color:#D97706;margin-bottom:8px">📍 현재 상황 판단</div>
-      <p style="font-size:12px;color:#6B84A0;line-height:1.9">2026.03.10: 중동 이란전쟁 2주차. 트럼프 종전발언으로 유가 급락·증시 반등. 단기 변동성 극대화 구간. 중장기 본질가치 대비 판단 권장.</p>
+      <p style="font-size:12px;color:var(--text2);line-height:1.9">2026.03.10: 중동 이란전쟁 2주차. 트럼프 종전발언으로 유가 급락·증시 반등. 단기 변동성 극대화 구간. 중장기 본질가치 대비 판단 권장.</p>
     </div>`;
 
   } else if(curDTab==="vf"){
@@ -2620,40 +2741,40 @@ function renderDBody(){
       if(!pbr) return {col:"#4A6080", txt:"PBR 데이터 없음 — 성장주 또는 신규 상장 종목"};
       const hist = 0.95;
       const ratio = pbr/hist;
-      if(pbr<=0.5)  return {col:"#0ED98A", txt:`PBR ${pbr}배 — 역사 평균(0.95배) 대비 ${((1-ratio)*100).toFixed(0)}% 저평가. IMF 구간 수준의 극저평가. 역사적 매수 신호.`};
-      if(pbr<=0.9)  return {col:"#0ED98A", txt:`PBR ${pbr}배 — 역사 평균(0.95배) 대비 저평가 구간. 1956~2026 동일 구간 3년 수익률 평균 +80~150%.`};
+      if(pbr<=0.5)  return {col:"var(--green)", txt:`PBR ${pbr}배 — 역사 평균(0.95배) 대비 ${((1-ratio)*100).toFixed(0)}% 저평가. IMF 구간 수준의 극저평가. 역사적 매수 신호.`};
+      if(pbr<=0.9)  return {col:"var(--green)", txt:`PBR ${pbr}배 — 역사 평균(0.95배) 대비 저평가 구간. 1956~2026 동일 구간 3년 수익률 평균 +80~150%.`};
       if(pbr<=1.5)  return {col:"#D97706", txt:`PBR ${pbr}배 — 역사 평균(0.95배) 대비 소폭 고평가. 적정 밸류에이션 범위. 실적 개선 여부가 핵심.`};
       if(pbr<=3.0)  return {col:"#D97706", txt:`PBR ${pbr}배 — 역사 평균 대비 고평가. 고ROE·고성장으로 정당화 필요. 실적 뒷받침 필수.`};
-      return {col:"#FF4D6D", txt:`PBR ${pbr}배 — 역사 평균 대비 ${((ratio-1)*100).toFixed(0)}% 고평가. 3저호황(2.5배) 근접 과열 구간. 높은 성장 기대치 반영.`};
+      return {col:"var(--red)", txt:`PBR ${pbr}배 — 역사 평균 대비 ${((ratio-1)*100).toFixed(0)}% 고평가. 3저호황(2.5배) 근접 과열 구간. 높은 성장 기대치 반영.`};
     })();
 
     // PER 해석
     const perRow = (()=>{
       if(!per) return {col:"#4A6080", txt:"PER 없음 — 현재 적자 또는 이익 불안정. 실적 턴어라운드 시점이 핵심 변수."};
-      if(per<=6)   return {col:"#0ED98A", txt:`PER ${per}배 — 역사적 저평가 구간(적정 8~15배). IMF 직후(5배) 수준. 70년 동일 구간 평균 3년 +120~200%.`};
-      if(per<=12)  return {col:"#0ED98A", txt:`PER ${per}배 — 적정 밴드(8~15배) 하단. 가치주 관점 저평가. 실적 안정 시 매력적.`};
+      if(per<=6)   return {col:"var(--green)", txt:`PER ${per}배 — 역사적 저평가 구간(적정 8~15배). IMF 직후(5배) 수준. 70년 동일 구간 평균 3년 +120~200%.`};
+      if(per<=12)  return {col:"var(--green)", txt:`PER ${per}배 — 적정 밴드(8~15배) 하단. 가치주 관점 저평가. 실적 안정 시 매력적.`};
       if(per<=18)  return {col:"#D97706", txt:`PER ${per}배 — 적정 밴드(8~15배) 상단. 합리적 수준. 성장성으로 정당화 가능.`};
       if(per<=30)  return {col:"#D97706", txt:`PER ${per}배 — 역사 평균 대비 고평가. 고성장 기대 반영. 실적 성장률 연 20%+ 유지 필요.`};
-      return {col:"#FF4D6D", txt:`PER ${per}배 — 닷컴버블(30배) 초과 구간. 미래 성장 기대가 극대화된 상태. 실적 미달 시 급락 리스크.`};
+      return {col:"var(--red)", txt:`PER ${per}배 — 닷컴버블(30배) 초과 구간. 미래 성장 기대가 극대화된 상태. 실적 미달 시 급락 리스크.`};
     })();
 
     // ROE 해석
     const roeRow = (()=>{
       if(!roe) return {col:"#4A6080", txt:"ROE 없음 — 현재 적자. 자본 잠식 가능성 체크 필요. 턴어라운드 투자 관점 접근."};
-      if(roe>=20)  return {col:"#0ED98A", txt:`ROE ${roe}% — 우수 (기준 8%). 코스피 상위 10% 수준. 1956~2026 ROE>20% 종목 3년 수익률 평균 +140%.`};
-      if(roe>=12)  return {col:"#0ED98A", txt:`ROE ${roe}% — 양호. 역사 평균(8%) 대비 우수. 지속 가능한 자본 효율성.`};
+      if(roe>=20)  return {col:"var(--green)", txt:`ROE ${roe}% — 우수 (기준 8%). 코스피 상위 10% 수준. 1956~2026 ROE>20% 종목 3년 수익률 평균 +140%.`};
+      if(roe>=12)  return {col:"var(--green)", txt:`ROE ${roe}% — 양호. 역사 평균(8%) 대비 우수. 지속 가능한 자본 효율성.`};
       if(roe>=7)   return {col:"#D97706", txt:`ROE ${roe}% — 평균 수준. 역사 평균(8%) 근접. 업종 내 상대 비교 필요.`};
       if(roe>=0)   return {col:"#D97706", txt:`ROE ${roe}% — 저ROE. 역사 평균(8%) 미달. 자본 효율성 개선 여부 모니터링.`};
-      return {col:"#FF4D6D", txt:`ROE ${roe}% — 적자. 자기자본 감소 중. 턴어라운드 일정 확인 필요.`};
+      return {col:"var(--red)", txt:`ROE ${roe}% — 적자. 자기자본 감소 중. 턴어라운드 일정 확인 필요.`};
     })();
 
     // 안전성 해석
     const safeRow = (()=>{
       if(!debt) return {col:"#4A6080", txt:"부채비율 별도 산출 (금융업·보험업은 BIS비율·지급여력비율로 별도 평가)."};
-      if(debt<=50)  return {col:"#0ED98A", txt:`부채비율 ${debt}% — 우수. IMF 이후 한국 기업 건전화 추세. 재무 안전성 상위권.`};
-      if(debt<=100) return {col:"#0ED98A", txt:`부채비율 ${debt}% — 양호. 업종 평균 수준. 이자보상배율 체크 권장.`};
+      if(debt<=50)  return {col:"var(--green)", txt:`부채비율 ${debt}% — 우수. IMF 이후 한국 기업 건전화 추세. 재무 안전성 상위권.`};
+      if(debt<=100) return {col:"var(--green)", txt:`부채비율 ${debt}% — 양호. 업종 평균 수준. 이자보상배율 체크 권장.`};
       if(debt<=200) return {col:"#D97706", txt:`부채비율 ${debt}% — 주의 구간. 금리 상승 시 이자 부담 증가. 영업이익으로 커버 가능 여부 확인.`};
-      return {col:"#FF4D6D", txt:`부채비율 ${debt}% — 고부채. 1997 IMF 당시 기업 평균(400%+) 대비 낮으나 리스크 구간. 유동성 체크 필수.`};
+      return {col:"var(--red)", txt:`부채비율 ${debt}% — 고부채. 1997 IMF 당시 기업 평균(400%+) 대비 낮으나 리스크 구간. 유동성 체크 필수.`};
     })();
 
     // 종합 판정
@@ -2673,30 +2794,30 @@ function renderDBody(){
     el.innerHTML=`
     <div class="cbox">
       <div class="cbox-t">🔬 실시간 검증 — DB 값 기반 자동 생성</div>
-      <div style="background:rgba(196,158,80,0.04);border:1px solid rgba(196,158,80,0.1);border-radius:8px;padding:9px 11px;margin-bottom:10px;font-size:10px;color:#5A7090;line-height:1.8">
-        <b style="color:#C49E50">기준:</b> 1956~2026 한국 주식시장 70년 역사 패턴. 현재 DB 재무값 실시간 반영.
-        ${pbr||per||roe ? `<br><b style="color:#C49E50">현재값:</b> ${pbr?"PBR "+pbr+"배 ":""}${per?"PER "+per+"배 ":""}${roe?"ROE "+roe+"% ":""}${debt&&typeof debt==="number"?"부채"+debt+"%":""}` : ""}
+      <div style="background:rgba(212,168,67,0.04);border:1px solid rgba(212,168,67,0.1);border-radius:8px;padding:9px 11px;margin-bottom:10px;font-size:10px;color:var(--text3);line-height:1.8">
+        <b style="color:var(--gold)">기준:</b> 1956~2026 한국 주식시장 70년 역사 패턴. 현재 DB 재무값 실시간 반영.
+        ${pbr||per||roe ? `<br><b style="color:var(--gold)">현재값:</b> ${pbr?"PBR "+pbr+"배 ":""}${per?"PER "+per+"배 ":""}${roe?"ROE "+roe+"% ":""}${debt&&typeof debt==="number"?"부채"+debt+"%":""}` : ""}
       </div>
       ${vrows.map(r=>`
       <div class="verify-row">
         <span style="font-size:15px;flex-shrink:0">${r.icon}</span>
         <div style="flex:1">
-          <div style="font-size:10px;color:#C49E50;font-weight:700;margin-bottom:2px;letter-spacing:.3px">${r.label}</div>
+          <div style="font-size:10px;color:var(--gold);font-weight:700;margin-bottom:2px;letter-spacing:.3px">${r.label}</div>
           <div style="font-size:11px;color:${r.data.col};line-height:1.7">${r.data.txt}</div>
         </div>
       </div>`).join("")}
       <div class="verify-row">
         <span style="font-size:15px;flex-shrink:0">🎯</span>
         <div style="flex:1">
-          <div style="font-size:10px;color:#C49E50;font-weight:700;margin-bottom:2px;letter-spacing:.3px">종합 판정</div>
-          <div style="font-size:11px;color:${sc>=70?"#0ED98A":sc>=50?"#D97706":"#FF4D6D"};line-height:1.7">${verdictTxt}</div>
+          <div style="font-size:10px;color:var(--gold);font-weight:700;margin-bottom:2px;letter-spacing:.3px">종합 판정</div>
+          <div style="font-size:11px;color:${sc>=70?"var(--green)":sc>=50?"#D97706":"var(--red)"};line-height:1.7">${verdictTxt}</div>
         </div>
       </div>
     </div>
     <div class="cbox">
       <div class="cbox-t">⚠️ 주의사항</div>
-      <div style="font-size:11px;color:#5A7090;line-height:1.9">
-        · 주가는 DB 기준 추정치 — <b style="color:#C49E50">🔄 실시간 버튼</b>으로 정확한 현재가 확인<br>
+      <div style="font-size:11px;color:var(--text3);line-height:1.9">
+        · 주가는 DB 기준 추정치 — <b style="color:var(--gold)">🔄 실시간 버튼</b>으로 정확한 현재가 확인<br>
         · 재무지표는 FY2024 실적 기준 (분기 실적 변동 시 달라질 수 있음)<br>
         · 본 분석은 정보 제공 목적이며 투자 권유가 아닙니다<br>
         · 최종 투자 판단은 반드시 본인 책임입니다
@@ -2788,13 +2909,13 @@ async function refreshPrice(){
     if(sd.w52l>0) curStock._liveW52l=sd.w52l;
     document.getElementById("dpval").textContent=fW(price);
     const chgEl=document.getElementById("dpchg");
-    if(sd.c!==undefined){const up=sd.c>=0;chgEl.style.color=up?"#0ED98A":"#FF4D6D";chgEl.textContent=(up?"▲":"▼")+Math.abs(sd.c).toFixed(2)+"%";}
+    if(sd.c!==undefined){const up=sd.c>=0;chgEl.style.color=up?"var(--green)":"var(--red)";chgEl.textContent=(up?"▲":"▼")+Math.abs(sd.c).toFixed(2)+"%";}
     badge.style.display="block";
     badge.textContent="✓ 실시간 ("+sd.src+"): "+fW(price)+" · "+new Date().toLocaleTimeString("ko-KR");
     if(curDTab==="ov")renderDBody();
   }else{
     badge.style.display="block";
-    badge.style.color="#FF4D6D";
+    badge.style.color="var(--red)";
     badge.textContent="⚠ 조회 실패 — 장 마감 시간이거나 네트워크를 확인하세요";
     setTimeout(()=>{badge.style.display="none"; badge.style.color="";},5000);
   }
@@ -2822,7 +2943,106 @@ let startX=0;
 document.getElementById("dview").addEventListener("touchstart",e=>startX=e.touches[0].clientX,{passive:true});
 document.getElementById("dview").addEventListener("touchend",e=>{if(e.changedTouches[0].clientX-startX>80)closeDetail();},{passive:true});
 
-document.addEventListener("DOMContentLoaded",()=>{initTicker();render();checkIOS();});
+
+// ══════════════════════════════════════════════════════════
+//  AUTO PRICE REFRESH — Yahoo Finance 실시간 자동 갱신
+//  앱 로드 시 자동 실행 → 틀린 정적 가격을 항상 보정
+//  캐시: sessionStorage (15분 유효)
+// ══════════════════════════════════════════════════════════
+const RF_KEY = "sig_rf_v3";
+const RF_TTL = 15 * 60 * 1000; // 15분
+
+function rfUI(dot, msg, prog){
+  const d=document.getElementById("rfDot");
+  const s=document.getElementById("refreshStatus");
+  const p=document.getElementById("rfProg");
+  if(d){d.className="refresh-dot"+(dot?" "+dot:"");} 
+  if(s)s.textContent=msg||"";
+  if(p)p.textContent=prog||"";
+}
+
+async function autoRefreshPrices(){
+  // 캐시 확인
+  try{
+    const raw=sessionStorage.getItem(RF_KEY);
+    if(raw){
+      const d=JSON.parse(raw);
+      if(Date.now()-d.ts < RF_TTL){
+        applyPrices(d.prices);
+        const min=Math.round((RF_TTL-(Date.now()-d.ts))/60000);
+        rfUI("live","✓ 실시간 가격 적용됨",`캐시 ${min}분 남음`);
+        return;
+      }
+    }
+  }catch(_){}
+
+  rfUI("loading","가격 갱신 중...");
+  const prices={};
+  const stocks=DB.map(s=>({id:s.id,m:s.m}));
+  const BATCH=6;
+  let done=0,ok=0;
+
+  for(let i=0;i<stocks.length;i+=BATCH){
+    const batch=stocks.slice(i,i+BATCH);
+    await Promise.all(batch.map(async({id,m})=>{
+      try{
+        const sfx=m==="Q"?".KQ":".KS";
+        const url=`https://query2.finance.yahoo.com/v8/finance/chart/${id}${sfx}?interval=1d&range=2d`;
+        const r=await fetch(url,{signal:AbortSignal.timeout(6000)});
+        if(!r.ok)return;
+        const d=await r.json();
+        const meta=d?.chart?.result?.[0]?.meta;
+        if(!meta||!meta.regularMarketPrice)return;
+        const p=Math.round(meta.regularMarketPrice);
+        if(p<100)return;
+        const prev=Math.round(meta.chartPreviousClose||meta.previousClose||p);
+        const chg=prev>0?Math.round((p-prev)/prev*1000)/10:0;
+        const w52h=Math.round(meta.fiftyTwoWeekHigh||p*1.4);
+        const w52l=Math.round(meta.fiftyTwoWeekLow||p*0.7);
+        prices[id]={p,c:chg,prev,w52h,w52l};
+        ok++;
+      }catch(_){}
+      done++;
+    }));
+    rfUI("loading",`가격 갱신 중... ${done}/${stocks.length}종목`,`${ok}개 수신`);
+    applyPrices(prices);
+    await new Promise(r=>setTimeout(r,150));
+  }
+
+  // 결과 저장
+  try{sessionStorage.setItem(RF_KEY,JSON.stringify({ts:Date.now(),prices}));}catch(_){}
+  
+  if(ok>0){
+    rfUI("live",`✓ 실시간 가격 ${ok}개 갱신 완료 (Yahoo Finance)`,`${done}종목 처리`);
+  }else{
+    rfUI("fail","가격 갱신 실패 — 정적 데이터 표시 중","API 연결 오류");
+  }
+  setTimeout(()=>{
+    rfUI(ok>0?"live":"","실시간",ok>0?`${ok}개 실시간 · 15분 캐시`:"오프라인");
+  },4000);
+}
+
+function applyPrices(prices){
+  let changed=false;
+  DB.forEach(s=>{
+    const d=prices[s.id];
+    if(d&&d.p>0){
+      s.p=d.p; s.c=d.c; s.prev=d.prev;
+      if(d.w52h>s.w52h)s.w52h=d.w52h;
+      if(d.w52l>0&&d.w52l<s.w52l)s.w52l=d.w52l;
+      changed=true;
+    }
+  });
+  if(changed){renderHome();renderSearch();}
+}
+
+function manualRefresh(){
+  try{sessionStorage.removeItem(RF_KEY);}catch(_){}
+  autoRefreshPrices();
+}
+
+
+document.addEventListener("DOMContentLoaded",()=>{initTicker();render();checkIOS();setTimeout(autoRefreshPrices,600);});
 </script>
 </body>
 </html>
