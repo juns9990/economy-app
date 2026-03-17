@@ -349,6 +349,18 @@ input::placeholder{color:var(--text3)}
   text-transform:uppercase;font-weight:700;margin:14px 0 7px;
   display:flex;align-items:center;gap:6px}
 .modal h4::after{content:"";flex:1;height:1px;background:var(--border2)}
+
+.apikey-bar{display:flex;align-items:center;gap:8px;padding:8px 14px;
+  background:rgba(248,81,73,0.06);border-bottom:1px solid rgba(248,81,73,0.2);
+  font-size:11px}
+.apikey-bar.ok{background:rgba(63,185,80,0.06);border-bottom:1px solid rgba(63,185,80,0.2)}
+.apikey-inp{flex:1;background:var(--bg3);border:1px solid var(--border);
+  border-radius:6px;color:var(--text);padding:5px 9px;font-size:11px;
+  font-family:monospace;outline:none}
+.apikey-inp:focus{border-color:var(--gold)}
+.apikey-btn{background:var(--gold-bg);border:1px solid var(--gold-br);
+  border-radius:6px;color:var(--gold);padding:5px 10px;
+  cursor:pointer;font-size:11px;font-weight:700;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -382,6 +394,16 @@ input::placeholder{color:var(--text3)}
       <b style="color:var(--gold)">홈화면 추가:</b> Safari 하단 공유(□↑) → <b style="color:var(--text)">홈 화면에 추가</b>
     </div>
     <button onclick="this.parentElement.style.display='none'" style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text3);font-size:14px;cursor:pointer;padding:3px 7px;line-height:1">✕</button>
+  </div>
+
+  
+  <!-- API 키 설정 바 -->
+  <div id="apikeyBar" class="apikey-bar">
+    <span style="color:var(--red);font-size:13px">🔑</span>
+    <span style="color:var(--text2);flex-shrink:0">AI 분석용 API 키</span>
+    <input id="apikeyInp" class="apikey-inp" type="password"
+      placeholder="sk-ant-api03-..." autocomplete="off"/>
+    <button class="apikey-btn" onclick="saveApiKey()">저장</button>
   </div>
 
   <!-- HOME PAGE -->
@@ -2243,6 +2265,7 @@ function liteCardHTML(s){
 // 종목코드로 AI 분석 실행 (DB_LITE 카드 클릭 시)
 async function aiSearchById(id, name, sector, market) {
   const el=document.getElementById("searchList");
+  if(!el)return;
   el.innerHTML=`<div style="text-align:center;padding:50px 20px">
     <div style="font-size:40px;margin-bottom:14px">✨</div>
     <div style="color:var(--gold);font-weight:900;font-size:16px;margin-bottom:6px">${name} 분석 중</div>
@@ -2398,6 +2421,15 @@ function extractJSON(raw){
 
 let aiSearching=false;
 async function aiSearch(query, btn, preFetchedPrice=null){
+  // API 키 체크
+  const ak = getApiKey();
+  if(!ak){
+    const st=document.getElementById("aiStatus");
+    if(st){st.style.color="var(--red)";st.textContent="⚠ API 키 없음 — 상단 🔑 버튼에서 설정";}
+    if(btn){btn.disabled=false;btn.textContent="✨ AI 분석";}
+    alert("AI 분석을 사용하려면 상단의 API 키를 먼저 입력하세요.\n\n📌 Anthropic Console(console.anthropic.com)에서\n   API 키를 발급받을 수 있습니다.");
+    return;
+  }
   if(aiSearching){ aiSearching=false; await new Promise(r=>setTimeout(r,100)); }
   aiSearching=true;
   if(btn){ btn.disabled=true; btn.textContent="⏳ 분석 중..."; }
@@ -2409,7 +2441,12 @@ async function aiSearch(query, btn, preFetchedPrice=null){
 
     const res = await fetch("https://api.anthropic.com/v1/messages",{
       method:"POST",
-      headers:{"Content-Type":"application/json"},
+      headers:{
+        "Content-Type":"application/json",
+        "x-api-key": getApiKey(),
+        "anthropic-version":"2023-06-01",
+        "anthropic-dangerous-direct-browser-access":"true"
+      },
       body:JSON.stringify({
         model:"claude-haiku-4-5-20251001",
         max_tokens:900,
@@ -3052,7 +3089,43 @@ function manualRefresh(){
 }
 
 
-document.addEventListener("DOMContentLoaded",()=>{initTicker();render();checkIOS();setTimeout(autoRefreshPrices,600);});
+
+// ── API 키 관리 ─────────────────────────────────────────────
+const AKEY_STORE = 'sig_akey_v1';
+let cachedApiKey = '';
+
+function loadApiKey(){
+  try{ cachedApiKey = localStorage.getItem(AKEY_STORE)||''; }catch(_){}
+  const bar = document.getElementById('apikeyBar');
+  const inp = document.getElementById('apikeyInp');
+  if(!bar||!inp) return;
+  if(cachedApiKey){
+    inp.value = '••••••••' + cachedApiKey.slice(-6);
+    bar.className = 'apikey-bar ok';
+    bar.querySelector('span').textContent = '✅';
+  }
+}
+
+function saveApiKey(){
+  const inp = document.getElementById('apikeyInp');
+  if(!inp) return;
+  const v = inp.value.trim();
+  if(!v || v.startsWith('•')){ alert('Anthropic API 키를 입력하세요 (sk-ant-...)'); return; }
+  if(!v.startsWith('sk-ant-')){ alert('올바른 API 키 형식이 아닙니다\n(sk-ant- 로 시작해야 합니다)'); return; }
+  try{ localStorage.setItem(AKEY_STORE, v); cachedApiKey = v; }catch(_){}
+  inp.value = '••••••••' + v.slice(-6);
+  const bar = document.getElementById('apikeyBar');
+  if(bar){ bar.className='apikey-bar ok'; bar.querySelector('span').textContent='✅'; }
+  alert('✅ API 키 저장 완료!\nAI 분석 기능을 사용할 수 있습니다.');
+}
+
+function getApiKey(){
+  if(cachedApiKey) return cachedApiKey;
+  try{ cachedApiKey = localStorage.getItem(AKEY_STORE)||''; }catch(_){}
+  return cachedApiKey;
+}
+
+document.addEventListener("DOMContentLoaded",()=>{initTicker();render();checkIOS();loadApiKey();setTimeout(autoRefreshPrices,600);});
 </script>
 </body>
 </html>
