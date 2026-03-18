@@ -2,8 +2,45 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>이코노미 스쿨 — 경제 학습 앱</title>
+
+  <!-- PWA 메타 -->
+  <meta name="theme-color" content="#0a0c10">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="이코노미 스쿨">
+  <meta name="description" content="한국·글로벌 경제 학습 앱 — 뉴스·영상·시장 데이터">
+
+  <!-- PWA 아이콘 (SVG 인라인 data URI) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'><rect width='28' height='28' rx='6' fill='%23f0b429'/><path d='M6 20L10 14L14 17L18 10L22 8' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+  <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAACXBIWXMAAAsTAAALEwEAmpwYAAAF8WlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgOS4xLWMwMDEgNzkuYTg3OTlhYiwgMjAyMy8wNi8yNS0xNzozMjo1NyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIDI1LjAgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MDAwMDAwMDEiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MDAwMDAwMDEiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDowMDAwMDAwMCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDowMDAwMDAwMCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PgHtWVkAAAMUSURBVHja7NsxCoMwFIDhxMGhQ+gJPIJn8ALiJXQQ3Lp16tKhJxARB0EQdHDp4NBT+AkScijEJC95L3wgJCH5+ZOXkAAAAAAAAAAAAAAAAAAAAAAAABjnnHPOOeecc84555xzzjnnnHPOOeecc84555xzzjnnnHPOOef8VxERAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACwBxgABRgABRgABRgABRgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA">
+
+  <!-- PWA manifest 인라인 -->
+  <script>
+    const manifestData = {
+      name: "이코노미 스쿨",
+      short_name: "이코노미",
+      description: "한국·글로벌 경제 학습 앱",
+      start_url: "./economy-app.html",
+      display: "standalone",
+      background_color: "#0a0c10",
+      theme_color: "#0a0c10",
+      orientation: "portrait-primary",
+      icons: [
+        { src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='40' fill='%23f0b429'/><path d='M40 138L70 96L96 114L124 70L152 56' stroke='%23000' stroke-width='16' stroke-linecap='round' stroke-linejoin='round'/></svg>", sizes: "192x192", type: "image/svg+xml" },
+        { src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='100' fill='%23f0b429'/><path d='M100 360L180 248L256 296L332 180L412 148' stroke='%23000' stroke-width='40' stroke-linecap='round' stroke-linejoin='round'/></svg>", sizes: "512x512", type: "image/svg+xml" }
+      ]
+    };
+    const blob = new Blob([JSON.stringify(manifestData)], {type:'application/json'});
+    const manifestUrl = URL.createObjectURL(blob);
+    const link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = manifestUrl;
+    document.currentScript.after(link);
+  </script>
+
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -669,6 +706,47 @@
       color: var(--text);
       line-height: 1.7;
     }
+
+    /* ===== PWA 설치 버튼 ===== */
+    #installBtn {
+      display: none;
+      align-items: center;
+      gap: 5px;
+      background: var(--accent);
+      color: #000;
+      border: none;
+      border-radius: 20px;
+      padding: 6px 12px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      font-family: 'Noto Sans KR', sans-serif;
+      transition: opacity .2s;
+    }
+    #installBtn:active { opacity: .7; }
+
+    /* ===== iOS 설치 안내 배너 ===== */
+    #iosBanner {
+      display: none;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: #1a1f2b;
+      border-top: 1px solid var(--border);
+      padding: 14px 16px 24px;
+      z-index: 9999;
+      font-size: 13px;
+      color: var(--text);
+      align-items: center;
+      gap: 12px;
+    }
+    #iosBanner svg { flex-shrink: 0; }
+    #iosBanner p { flex: 1; line-height: 1.5; }
+    #iosBanner strong { color: var(--accent); }
+    #iosBannerClose {
+      background: none; border: none; color: var(--text2);
+      font-size: 18px; cursor: pointer; padding: 4px;
+    }
   </style>
 </head>
 <body>
@@ -690,9 +768,24 @@
       <div style="font-size:10px;color:var(--text2);letter-spacing:.5px;font-weight:600;">v1.3.0</div>
       <div id="headerDateTime" style="font-size:10px;color:var(--text2);white-space:nowrap;"></div>
     </div>
+    <button id="installBtn" onclick="triggerInstall()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+      앱 설치
+    </button>
     <div class="live-badge">● LIVE</div>
   </div>
 </header>
+
+<!-- iOS 설치 안내 배너 -->
+<div id="iosBanner">
+  <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+    <rect width="32" height="32" rx="8" fill="#f0b429"/>
+    <path d="M7 22L11 16L15 19L19 12L23 10" stroke="#000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <p>홈 화면에 추가하면 앱처럼 사용할 수 있어요!<br>
+  Safari 하단 <strong>공유 버튼(□↑)</strong> → <strong>"홈 화면에 추가"</strong> 탭하세요.</p>
+  <button id="iosBannerClose" onclick="dismissIosBanner()">✕</button>
+</div>
 
 <!-- TICKER -->
 <div class="ticker-wrap">
@@ -1466,37 +1559,44 @@ function updateHeaderClock() {
   el.textContent = `${dateStr} ${timeStr}`;
 }
 
+// ===================== 캐시 (날짜 기반 — 날짜 바뀌면 자동 무효화) =====================
+function todayKey(base) {
+  const d = new Date();
+  const pad = n => String(n).padStart(2,'0');
+  return `${base}_${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}`;
+}
 
-const CACHE_KEY_NEWS   = 'econ_news_cache';
-const CACHE_KEY_VIDEOS = 'econ_videos_cache';
-const CACHE_TTL_MS     = 24 * 60 * 60 * 1000; // 24시간
-
-function getCached(key) {
+function getCached(base) {
   try {
-    const raw = localStorage.getItem(key);
-    if (!raw) return null;
-    const { ts, data } = JSON.parse(raw);
-    if (Date.now() - ts < CACHE_TTL_MS) return data;
+    const val = localStorage.getItem(todayKey(base));
+    return val ? JSON.parse(val) : null;
+  } catch(e) { return null; }
+}
+
+function setCache(base, data) {
+  try {
+    // 어제 캐시 정리
+    const yesterday = new Date(Date.now() - 864e5);
+    const pad = n => String(n).padStart(2,'0');
+    const oldKey = `${base}_${yesterday.getFullYear()}${pad(yesterday.getMonth()+1)}${pad(yesterday.getDate())}`;
+    localStorage.removeItem(oldKey);
+    localStorage.setItem(todayKey(base), JSON.stringify(data));
   } catch(e) {}
-  return null;
 }
 
-function setCache(key, data) {
-  try { localStorage.setItem(key, JSON.stringify({ ts: Date.now(), data })); } catch(e) {}
-}
-
+// ===================== Claude API 호출 =====================
 async function claudeFetch(prompt) {
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       model: 'claude-sonnet-4-20250514',
-      max_tokens: 1000,
+      max_tokens: 2000,
       tools: [{ type: 'web_search_20250305', name: 'web_search' }],
       messages: [{ role: 'user', content: prompt }]
     })
   });
-  if (!res.ok) throw new Error('API error');
+  if (!res.ok) throw new Error('API ' + res.status);
   const data = await res.json();
   const text = data.content.filter(b => b.type === 'text').map(b => b.text).join('');
   const match = text.match(/\{[\s\S]*\}|\[[\s\S]*\]/);
@@ -1504,21 +1604,73 @@ async function claudeFetch(prompt) {
   return JSON.parse(match[0]);
 }
 
+// ===================== 시장 데이터 (날짜 캐시 + 프록시 순차 시도) =====================
+async function fetchMarketData() {
+  // 오늘 캐시 있으면 바로 사용
+  const cached = getCached('econ_market');
+  if (cached) { applyMarketDataFromCache(cached); return; }
+
+  const symbols = MARKET_SYMBOLS.map(s => s.symbol).join(',');
+  const baseUrl = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbols}&fields=regularMarketPrice,regularMarketChangePercent`;
+  const proxies = [
+    `https://api.allorigins.win/raw?url=${encodeURIComponent(baseUrl)}`,
+    `https://corsproxy.io/?${encodeURIComponent(baseUrl)}`,
+    `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(baseUrl)}`,
+  ];
+
+  for (const proxyUrl of proxies) {
+    try {
+      const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(6000) });
+      if (!res.ok) continue;
+      const json = await res.json();
+      const quotes = json?.quoteResponse?.result || [];
+      if (quotes.length > 0) {
+        setCache('econ_market', { type: 'quotes', data: quotes });
+        applyMarketData(quotes);
+        return;
+      }
+    } catch(e) { continue; }
+  }
+  updateMarketUI('참고값');
+}
+
+function applyMarketDataFromCache(cached) {
+  if (cached.type === 'quotes') applyMarketData(cached.data);
+  else updateMarketUI('참고값');
+}
+
+function applyMarketData(quotes) {
+  MARKET_DATA = MARKET_SYMBOLS.map(s => {
+    const q = quotes.find(q => q.symbol === s.symbol);
+    if (!q) return FALLBACK_DATA.find(f => f.name === s.name) || { name: s.name, val: '—', chg: '—', up: true };
+    const price = q.regularMarketPrice;
+    const chgPct = q.regularMarketChangePercent;
+    const up = chgPct >= 0;
+    const valStr = s.prefix + (s.decimals === 0
+      ? Math.round(price).toLocaleString()
+      : price.toLocaleString('ko-KR', { minimumFractionDigits: s.decimals, maximumFractionDigits: s.decimals }));
+    return { name: s.name, val: valStr, chg: (up ? '+' : '') + chgPct.toFixed(2) + '%', up };
+  });
+  MARKET_CARDS = MARKET_DATA.slice(0, 8);
+  updateMarketUI('실시간');
+}
+
+// ===================== 뉴스 자동 업데이트 (하루 1회) =====================
 async function fetchAndUpdateNews() {
-  const cached = getCached(CACHE_KEY_NEWS);
+  const cached = getCached('econ_news');
   if (cached) { applyNews(cached); return; }
 
   try {
-    const today = new Date().toISOString().slice(0, 10);
-    const result = await claudeFetch(`오늘(${today}) 기준 한국 및 글로벌 경제 최신 뉴스를 검색해서 아래 JSON 형식으로만 답해줘. 설명 없이 JSON만 출력.
+    const today = new Date().toLocaleDateString('ko-KR', { year:'numeric', month:'2-digit', day:'2-digit' }).replace(/\. /g,'.').replace('.','');
+    const result = await claudeFetch(`오늘(${today}) 날짜 기준으로 한국 경제 및 글로벌 경제 최신 뉴스를 웹에서 검색해서 아래 JSON 형식으로만 답해줘. 마크다운이나 설명 없이 JSON만 출력.
 
 {
   "home": [
-    {"num":"01","source":"언론사명","title":"뉴스 제목","summary":"한 줄 요약 (50자 이내)","time":"n시간 전 또는 날짜","url":"https://실제기사URL","tags":["tag-korea"]},
-    {"num":"02","source":"언론사명","title":"뉴스 제목","summary":"한 줄 요약","time":"시간","url":"https://실제기사URL","tags":["tag-global"]},
-    {"num":"03","source":"언론사명","title":"뉴스 제목","summary":"한 줄 요약","time":"시간","url":"https://실제기사URL","tags":["tag-korea","tag-market"]},
-    {"num":"04","source":"언론사명","title":"뉴스 제목","summary":"한 줄 요약","time":"시간","url":"https://실제기사URL","tags":["tag-global"]},
-    {"num":"05","source":"언론사명","title":"뉴스 제목","summary":"한 줄 요약","time":"시간","url":"https://실제기사URL","tags":["tag-korea"]}
+    {"num":"01","source":"언론사명","title":"뉴스제목","summary":"50자 이내 요약","time":"n시간 전","url":"https://실제기사URL","tags":["tag-korea"]},
+    {"num":"02","source":"언론사명","title":"뉴스제목","summary":"요약","time":"n시간 전","url":"https://실제기사URL","tags":["tag-global"]},
+    {"num":"03","source":"언론사명","title":"뉴스제목","summary":"요약","time":"n시간 전","url":"https://실제기사URL","tags":["tag-market"]},
+    {"num":"04","source":"언론사명","title":"뉴스제목","summary":"요약","time":"n시간 전","url":"https://실제기사URL","tags":["tag-global"]},
+    {"num":"05","source":"언론사명","title":"뉴스제목","summary":"요약","time":"n시간 전","url":"https://실제기사URL","tags":["tag-korea"]}
   ],
   "korea": [
     {"num":"01","source":"언론사명","title":"한국경제 뉴스","summary":"요약","time":"시간","url":"https://실제기사URL"},
@@ -1543,13 +1695,11 @@ async function fetchAndUpdateNews() {
   ]
 }
 
-반드시 오늘 날짜 기준 실제 최신 기사 URL을 포함해야 해. JSON만 출력.`);
+반드시 오늘 날짜 기준 실제 존재하는 기사 URL 포함. JSON만 출력.`);
 
-    setCache(CACHE_KEY_NEWS, result);
+    setCache('econ_news', result);
     applyNews(result);
-  } catch(e) {
-    // 실패 시 기존 하드코딩 뉴스 유지 (이미 렌더됨)
-  }
+  } catch(e) { /* 실패 시 하드코딩 유지 */ }
 }
 
 function applyNews(data) {
@@ -1559,54 +1709,53 @@ function applyNews(data) {
   if (data.market) buildNews(data.market, 'marketNews');
 }
 
+// ===================== 영상 자동 업데이트 (하루 1회) =====================
 async function fetchAndUpdateVideos() {
-  const cached = getCached(CACHE_KEY_VIDEOS);
+  const cached = getCached('econ_videos');
   if (cached) { applyVideos(cached); return; }
 
   try {
-    const today = new Date().toISOString().slice(0, 10);
-    const result = await claudeFetch(`오늘(${today}) 기준으로 유튜브에서 한국 경제 관련 최신 영상들을 검색해서 아래 JSON 형식으로만 답해줘. 설명 없이 JSON만.
+    const today = new Date().toLocaleDateString('ko-KR', { year:'numeric', month:'2-digit', day:'2-digit' }).replace(/\. /g,'.').replace('.','');
+    const result = await claudeFetch(`오늘(${today}) 날짜 기준으로 유튜브에서 한국 경제 관련 최신 영상들을 검색해서 아래 JSON 형식으로만 답해줘. 설명 없이 JSON만.
 
-각 섹션별 실제 유튜브 영상 ID(11자리)와 채널명, 제목을 채워줘. 반드시 실제로 존재하는 영상 ID여야 해.
+반드시 실제로 존재하는 유튜브 영상 ID(11자리)를 사용해야 해. 삼프로TV, 한국은행, 매일경제TV, KBS경제, JTBC경제, 체인지그라운드 등 유명 채널 우선.
 
 {
   "featured": [
-    {"id":"유튜브영상ID","channel":"채널명","title":"영상제목","tags":["tag-korea"],"tagLabels":["한국경제"],"time":"n시간 전"},
-    {"id":"유튜브영상ID","channel":"채널명","title":"영상제목","tags":["tag-global"],"tagLabels":["글로벌"],"time":"n시간 전"},
-    {"id":"유튜브영상ID","channel":"채널명","title":"영상제목","tags":["tag-market"],"tagLabels":["시장"],"time":"n시간 전"},
-    {"id":"유튜브영상ID","channel":"채널명","title":"영상제목","tags":["tag-beginner"],"tagLabels":["입문"],"time":"어제"}
+    {"id":"11자리영상ID","channel":"채널명","title":"영상제목","tags":["tag-korea"],"tagLabels":["한국경제"],"time":"n시간 전"},
+    {"id":"11자리영상ID","channel":"채널명","title":"영상제목","tags":["tag-global"],"tagLabels":["글로벌"],"time":"n시간 전"},
+    {"id":"11자리영상ID","channel":"채널명","title":"영상제목","tags":["tag-market"],"tagLabels":["시장"],"time":"n시간 전"},
+    {"id":"11자리영상ID","channel":"채널명","title":"영상제목","tags":["tag-beginner"],"tagLabels":["입문"],"time":"어제"}
   ],
   "korea": [
-    {"id":"유튜브영상ID","channel":"채널명","title":"한국경제 영상제목","tags":["tag-korea"],"tagLabels":["한국경제"],"time":"n시간 전"},
-    {"id":"유튜브영상ID","channel":"채널명","title":"한국경제 영상제목","tags":["tag-korea"],"tagLabels":["한국경제"],"time":"n시간 전"},
-    {"id":"유튜브영상ID","channel":"채널명","title":"한국경제 영상제목","tags":["tag-korea"],"tagLabels":["부동산"],"time":"n시간 전"},
-    {"id":"유튜브영상ID","channel":"채널명","title":"한국경제 영상제목","tags":["tag-korea"],"tagLabels":["금리"],"time":"어제"}
+    {"id":"11자리영상ID","channel":"채널명","title":"한국경제 영상","tags":["tag-korea"],"tagLabels":["한국경제"],"time":"n시간 전"},
+    {"id":"11자리영상ID","channel":"채널명","title":"한국경제 영상","tags":["tag-korea"],"tagLabels":["금리"],"time":"n시간 전"},
+    {"id":"11자리영상ID","channel":"채널명","title":"한국경제 영상","tags":["tag-korea"],"tagLabels":["부동산"],"time":"n시간 전"},
+    {"id":"11자리영상ID","channel":"채널명","title":"한국경제 영상","tags":["tag-korea"],"tagLabels":["수출"],"time":"어제"}
   ],
   "global": [
-    {"id":"유튜브영상ID","channel":"채널명","title":"글로벌경제 영상제목","tags":["tag-global"],"tagLabels":["미국"],"time":"n시간 전"},
-    {"id":"유튜브영상ID","channel":"채널명","title":"글로벌경제 영상제목","tags":["tag-global"],"tagLabels":["중국"],"time":"n시간 전"},
-    {"id":"유튜브영상ID","channel":"채널명","title":"글로벌경제 영상제목","tags":["tag-global"],"tagLabels":["유럽"],"time":"n시간 전"},
-    {"id":"유튜브영상ID","channel":"채널명","title":"글로벌경제 영상제목","tags":["tag-global","tag-market"],"tagLabels":["AI","글로벌"],"time":"어제"}
+    {"id":"11자리영상ID","channel":"채널명","title":"글로벌경제 영상","tags":["tag-global"],"tagLabels":["미국"],"time":"n시간 전"},
+    {"id":"11자리영상ID","channel":"채널명","title":"글로벌경제 영상","tags":["tag-global"],"tagLabels":["중국"],"time":"n시간 전"},
+    {"id":"11자리영상ID","channel":"채널명","title":"글로벌경제 영상","tags":["tag-global"],"tagLabels":["유럽"],"time":"n시간 전"},
+    {"id":"11자리영상ID","channel":"채널명","title":"글로벌경제 영상","tags":["tag-global","tag-market"],"tagLabels":["AI","글로벌"],"time":"어제"}
   ],
   "market": [
-    {"id":"유튜브영상ID","channel":"채널명","title":"시장분석 영상제목","tags":["tag-market"],"tagLabels":["주식"],"time":"n시간 전"},
-    {"id":"유튜브영상ID","channel":"채널명","title":"시장분석 영상제목","tags":["tag-market"],"tagLabels":["환율"],"time":"n시간 전"},
-    {"id":"유튜브영상ID","channel":"채널명","title":"시장분석 영상제목","tags":["tag-market"],"tagLabels":["원자재"],"time":"n시간 전"}
+    {"id":"11자리영상ID","channel":"채널명","title":"시장분석 영상","tags":["tag-market"],"tagLabels":["주식"],"time":"n시간 전"},
+    {"id":"11자리영상ID","channel":"채널명","title":"시장분석 영상","tags":["tag-market"],"tagLabels":["환율"],"time":"n시간 전"},
+    {"id":"11자리영상ID","channel":"채널명","title":"시장분석 영상","tags":["tag-market"],"tagLabels":["원자재"],"time":"n시간 전"}
   ],
   "study": [
-    {"id":"유튜브영상ID","channel":"채널명","title":"경제개념 설명 영상","tags":["tag-beginner"],"tagLabels":["입문"],"time":"3일 전"},
-    {"id":"유튜브영상ID","channel":"채널명","title":"경제개념 설명 영상","tags":["tag-beginner"],"tagLabels":["입문","금리"],"time":"1주 전"},
-    {"id":"유튜브영상ID","channel":"채널명","title":"경제개념 설명 영상","tags":["tag-beginner"],"tagLabels":["입문","환율"],"time":"1주 전"}
+    {"id":"11자리영상ID","channel":"채널명","title":"경제개념 강의","tags":["tag-beginner"],"tagLabels":["입문"],"time":"3일 전"},
+    {"id":"11자리영상ID","channel":"채널명","title":"경제개념 강의","tags":["tag-beginner"],"tagLabels":["입문","금리"],"time":"1주 전"},
+    {"id":"11자리영상ID","channel":"채널명","title":"경제개념 강의","tags":["tag-beginner"],"tagLabels":["입문","환율"],"time":"1주 전"}
   ]
 }
 
 JSON만 출력.`);
 
-    setCache(CACHE_KEY_VIDEOS, result);
+    setCache('econ_videos', result);
     applyVideos(result);
-  } catch(e) {
-    // 실패 시 기존 하드코딩 영상 유지
-  }
+  } catch(e) { /* 실패 시 하드코딩 유지 */ }
 }
 
 function applyVideos(data) {
@@ -1617,15 +1766,82 @@ function applyVideos(data) {
   if (data.study)    buildVideos(data.study,    'studyVideos');
 }
 
-// ===================== INIT =====================
+// ===================== PWA 설치 =====================
+let deferredPrompt = null;
+
+// Android/크롬: 설치 프롬프트 이벤트 캐치
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const btn = document.getElementById('installBtn');
+  if (btn) btn.style.display = 'flex';
+});
+
+// 설치 완료 후 버튼 숨기기
+window.addEventListener('appinstalled', () => {
+  const btn = document.getElementById('installBtn');
+  if (btn) btn.style.display = 'none';
+  deferredPrompt = null;
+});
+
+function triggerInstall() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
+  document.getElementById('installBtn').style.display = 'none';
+}
+
+// iOS Safari 감지 → 배너 표시 (한 번만)
+function checkIosBanner() {
+  const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isInStandalone = window.navigator.standalone;
+  const dismissed = localStorage.getItem('ios_banner_dismissed');
+  if (isIos && !isInStandalone && !dismissed) {
+    const banner = document.getElementById('iosBanner');
+    if (banner) banner.style.display = 'flex';
+  }
+}
+
+function dismissIosBanner() {
+  localStorage.setItem('ios_banner_dismissed', '1');
+  const banner = document.getElementById('iosBanner');
+  if (banner) banner.style.display = 'none';
+}
+
+// Service Worker 등록 (오프라인 캐시)
+if ('serviceWorker' in navigator) {
+  const swCode = `
+const CACHE = 'econschool-v1';
+const ASSETS = [location.href];
+self.addEventListener('install', e => {
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
+  self.skipWaiting();
+});
+self.addEventListener('activate', e => {
+  e.waitUntil(caches.keys().then(keys =>
+    Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+  ));
+  self.clients.claim();
+});
+self.addEventListener('fetch', e => {
+  if (e.request.method !== 'GET') return;
+  e.respondWith(
+    fetch(e.request).catch(() => caches.match(e.request))
+  );
+});
+  `;
+  const swBlob = new Blob([swCode], { type: 'application/javascript' });
+  const swUrl = URL.createObjectURL(swBlob);
+  navigator.serviceWorker.register(swUrl).catch(() => {});
+}
+
+
 function init() {
-  // 시장 데이터 즉시 전부 표시 (폴백값)
   MARKET_CARDS = MARKET_DATA.slice(0, 8);
   buildTicker();
   buildMarketCards(MARKET_CARDS, 'marketSummary');
   buildFullMarket();
 
-  // 기존 하드코딩 콘텐츠 즉시 표시
   buildVideos(VIDEOS.featured, 'featuredVideos');
   buildNews(NEWS.home, 'homeNews');
   buildVideos(VIDEOS.korea, 'koreaVideos');
@@ -1638,15 +1854,14 @@ function init() {
   buildConcepts();
   buildVideos(VIDEOS.study, 'studyVideos');
 
-  // 날짜·시간 시계 시작
   updateHeaderClock();
   setInterval(updateHeaderClock, 1000);
 
-  // 백그라운드: 시장 데이터 실시간 갱신
+  checkIosBanner();
+
   fetchMarketData();
   setInterval(fetchMarketData, 5 * 60 * 1000);
 
-  // 백그라운드: 뉴스·영상 하루 1회 자동 업데이트
   fetchAndUpdateNews();
   fetchAndUpdateVideos();
 }
