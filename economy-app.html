@@ -825,7 +825,7 @@
   </div>
   <div class="header-right">
     <div style="text-align:right;line-height:1.6;margin-right:8px;">
-      <div style="font-size:10px;color:var(--text2);letter-spacing:.5px;font-weight:600;">v2.7.0</div>
+      <div style="font-size:10px;color:var(--text2);letter-spacing:.5px;font-weight:600;">v2.8.0</div>
       <div id="headerDateTime" style="font-size:10px;color:var(--text2);white-space:nowrap;"></div>
     </div>
     <button id="installBtn" onclick="triggerInstall()">
@@ -1019,23 +1019,22 @@ const MARKET_SYMBOLS = [
 
 // 2026년 3월 기준 실제값 (앱 시작 시 즉시 표시)
 const FALLBACK_DATA = [
-  // 2026년 3월 19일 확인값
-  // 코스피: 네이버 사진 직접 확인 / 환율: Investing.com / 미국·유럽: Google Finance·TradingEconomics
-  { name: "코스피",        val: "5,829.49",  chg: "-1.61%", up: false },
-  { name: "코스닥",        val: "1,150.21",  chg: "-0.17%", up: false },
-  { name: "USD/KRW",      val: "₩1,490",    chg: "+0.27%", up: true  },  // 오늘 범위 1,486~1,495
-  { name: "EUR/KRW",      val: "₩1,752",    chg: "+0.30%", up: true  },  // EUR/USD 1.175 × 1,490
-  { name: "EUR/USD",      val: "1.1757",    chg: "+0.06%", up: true  },  // Google Finance
-  { name: "S&P 500",      val: "6,817.28",  chg: "+0.31%", up: true  },  // Google Finance 3/19
-  { name: "나스닥",        val: "22,810.10", chg: "+0.50%", up: true  },  // Google Finance 3/19
+  // 2026년 3월 20일 확인값 (Investing.com · TradingEconomics · Google Finance)
+  { name: "코스피",        val: "5,790.00",  chg: "-2.10%", up: false },  // 3/19 5790선 마감
+  { name: "코스닥",        val: "1,142.00",  chg: "-1.40%", up: false },  // 3/19 1140선
+  { name: "USD/KRW",      val: "₩1,505",    chg: "+1.27%", up: true  },  // 3/18 1,506 / 1,500 돌파
+  { name: "EUR/KRW",      val: "₩1,769",    chg: "+1.10%", up: true  },  // EUR/USD 1.175 × 1,505
+  { name: "EUR/USD",      val: "1.1757",    chg: "+0.06%", up: true  },
+  { name: "S&P 500",      val: "6,817.28",  chg: "+0.31%", up: true  },
+  { name: "나스닥",        val: "22,810.10", chg: "+0.50%", up: true  },
   { name: "닛케이225",     val: "35,617.56", chg: "-0.93%", up: false },
   { name: "상하이종합",    val: "3,383.10",  chg: "-0.24%", up: false },
   { name: "항셍",          val: "23,905.82", chg: "-0.87%", up: false },
   { name: "DAX(독일)",     val: "23,564.00", chg: "+0.57%", up: true  },
   { name: "FTSE100(영국)", val: "8,617.00",  chg: "+0.44%", up: true  },
-  { name: "WTI유가",       val: "$57.70",    chg: "+0.49%", up: true  },  // Investing.com
-  { name: "금",            val: "$4,878",    chg: "-2.60%", up: false },  // Investing.com (4,877.79)
-  { name: "은",            val: "$77.12",    chg: "-3.50%", up: false },  // Investing.com
+  { name: "WTI유가",       val: "$57.70",    chg: "+0.49%", up: true  },
+  { name: "금",            val: "$4,838",    chg: "-3.37%", up: false },  // 3/18 TradingEconomics
+  { name: "은",            val: "$77.12",    chg: "-3.50%", up: false },
   { name: "채권10년",      val: "4.67%",     chg: "+0.05%", up: true  },
   { name: "BTC",           val: "$82,100",   chg: "-1.80%", up: false },
 ];
@@ -1776,9 +1775,20 @@ async function claudeFetch(prompt) {
 }
 
 // ===================== 시장 데이터 (날짜 캐시 + 프록시 순차 시도) =====================
-async function fetchMarketData() {
-  const cached = getCached('econ_market');
-  if (cached) { applyMarketDataFromCache(cached); return; }
+async function fetchMarketData(forceRefresh = false) {
+  // 시장 데이터: 1시간 캐시 (날짜+시간 기준)
+  const hourKey = (() => {
+    const d = new Date();
+    const pad = n => String(n).padStart(2,'0');
+    return `econ_market_${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}${pad(d.getHours())}`;
+  })();
+
+  if (!forceRefresh) {
+    try {
+      const cached = JSON.parse(localStorage.getItem(hourKey) || 'null');
+      if (cached?.type === 'quotes') { applyMarketData(cached.data); return; }
+    } catch(e) {}
+  }
 
   const symbols = MARKET_SYMBOLS.map(s => s.symbol).join(',');
   const baseUrl = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbols}&fields=regularMarketPrice,regularMarketChangePercent`;
@@ -1790,23 +1800,28 @@ async function fetchMarketData() {
   ];
   for (const proxyUrl of proxies) {
     try {
-      const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(7000) });
+      const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(6000) });
       if (!res.ok) continue;
       const json = await res.json();
       const quotes = json?.quoteResponse?.result || [];
       if (quotes.length > 0) {
-        setCache('econ_market', { type: 'quotes', data: quotes });
+        // 구 캐시 정리 후 새 캐시 저장
+        try {
+          Object.keys(localStorage).filter(k => k.startsWith('econ_market_')).forEach(k => {
+            if (k !== hourKey) localStorage.removeItem(k);
+          });
+          localStorage.setItem(hourKey, JSON.stringify({ type: 'quotes', data: quotes }));
+        } catch(e) {}
         applyMarketData(quotes);
         return;
       }
     } catch(e) { continue; }
   }
+  // 모든 프록시 실패 → 폴백 표시
   updateMarketUI('참고값');
 }
-function applyMarketDataFromCache(cached) {
-  if (cached?.type === 'quotes') applyMarketData(cached.data);
-  else updateMarketUI('참고값');
-}
+
+
 function applyMarketData(quotes) {
   MARKET_DATA = MARKET_SYMBOLS.map(s => {
     const q = quotes.find(q => q.symbol === s.symbol);
@@ -2221,12 +2236,13 @@ function scrollToSection(id) {
 async function manualRefresh() {
   const btn = document.getElementById('refreshBtn');
   if (btn) btn.style.opacity = '0.4';
+  // 시장 캐시 전체 삭제
   try {
     Object.keys(localStorage)
-      .filter(k => k.startsWith('econ_market') || k.startsWith('econ_news'))
+      .filter(k => k.startsWith('econ_'))
       .forEach(k => localStorage.removeItem(k));
   } catch(e) {}
-  await fetchMarketData();
+  await fetchMarketData(true);  // 강제 새로고침
   await fetchAndUpdateNews();
   if (btn) btn.style.opacity = '1';
 }
@@ -2302,7 +2318,7 @@ self.addEventListener('fetch', e => {
 
 
 // ===================== INIT =====================
-const APP_VERSION = '2.7.0';
+const APP_VERSION = '2.8.0';
 
 function init() {
   const savedVer = localStorage.getItem('econ_app_version');
