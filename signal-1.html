@@ -48,6 +48,13 @@ input::placeholder{color:var(--text3)}
 /* ── 앱 레이아웃 ── */
 .app{display:flex;flex-direction:column;height:100dvh;overflow:hidden}
 
+/* PC 화면 최대 너비 제한 */
+@media(min-width:768px){
+  .hdr,.refresh-bar,.ios-banner,.apikey-bar,.ticker-wrap{max-width:720px;margin-left:auto;margin-right:auto;width:100%}
+  .page{max-width:720px;margin-left:auto;margin-right:auto;}
+  body{background:var(--bg)}
+}
+
 /* ── 헤더 ── */
 .hdr{
   height:52px;display:flex;align-items:center;padding:0 14px;gap:10px;
@@ -111,18 +118,24 @@ input::placeholder{color:var(--text3)}
 
 /* ── 티커 ── */
 .ticker{
-  height:24px;background:rgba(212,168,67,0.03);
+  height:30px;background:rgba(212,168,67,0.04);
   border-bottom:1px solid var(--border2);
   overflow:hidden;display:flex;align-items:center;flex-shrink:0}
 .ttrack{display:flex;white-space:nowrap;will-change:transform}
-.titem{display:inline-flex;align-items:center;gap:4px;
-  padding:0 14px;border-right:1px solid var(--border2);font-size:10px}
+.titem{display:inline-flex;align-items:center;gap:5px;
+  padding:0 16px;border-right:1px solid var(--border2);font-size:10px}
 
 /* ── 페이지 ── */
 .page{flex:1;display:none;flex-direction:column;overflow:hidden}
 .page.active{display:flex}
 .list-scroll{flex:1;overflow-y:auto;padding:8px 8px 24px;
   -webkit-overflow-scrolling:touch}
+
+@media(min-width:768px){
+  .list-scroll{padding:8px 0 24px}
+  .list-scroll > *{max-width:700px;margin-left:auto;margin-right:auto}
+  #homeList,#searchList{padding:0 0 24px}
+}
 
 /* ══════════════════════════════════════════
    STOCK CARD — 이코노미 앱 데이터 카드
@@ -2202,9 +2215,9 @@ function initTicker(){
   if(!tr)return;
   const items=[...TDATA,...TDATA,...TDATA];
   tr.innerHTML=items.map(t=>`<span class="titem">
-    <span style="font-size:9px;color:#3A5878;font-weight:600;letter-spacing:.5px">${t.n}</span>
-    <span style="font-size:10px;font-family:monospace;font-weight:700;color:var(--text2);margin:0 3px">${t.v}</span>
-    <span style="font-size:9px;font-family:monospace;font-weight:700;color:${t.up?"var(--green)":"var(--red)"}">${t.c}</span>
+    <span style="font-size:10px;color:var(--gold);font-weight:800;letter-spacing:.3px">${t.n}</span>
+    <span style="font-size:11px;font-family:'Bebas Neue',monospace;font-weight:700;color:var(--text);margin:0 3px">${t.v}</span>
+    <span style="font-size:10px;font-family:'Space Grotesk',monospace;font-weight:700;color:${t.up?"#58A6FF":"var(--red)"}">${t.c}</span>
   </span>`).join("");
   let x=0;const tot=tr.scrollWidth/3;
   setInterval(()=>{x+=0.4;if(x>=tot)x=0;tr.style.transform=`translateX(-${x}px)`;},14);
