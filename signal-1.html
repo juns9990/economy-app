@@ -125,7 +125,8 @@ input::placeholder{color:var(--text3)}
 .page{flex:1;display:none;flex-direction:column;overflow:hidden}
 .page.active{display:flex}
 .list-scroll{flex:1;overflow-y:auto;padding:8px 8px 24px;
-  -webkit-overflow-scrolling:touch}
+  -webkit-overflow-scrolling:touch;
+  display:flex;flex-direction:column;align-items:center}
 
 
 
@@ -138,6 +139,7 @@ input::placeholder{color:var(--text3)}
   border-radius:var(--r12);
   padding:12px 13px;margin-bottom:6px;
   cursor:pointer;transition:all .15s ease;
+  max-width:800px;width:100%;margin-left:auto;margin-right:auto;
   position:relative;overflow:hidden}
 .scard::before{
   content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
@@ -443,6 +445,14 @@ input::placeholder{color:var(--text3)}
 
   <!-- HOME PAGE -->
   <div class="page active" id="pageHome">
+    <!-- 홈 상단 검색창 -->
+    <div style="padding:10px 12px 4px;flex-shrink:0">
+      <div class="sbox" style="cursor:pointer" onclick="switchPage('search');setTimeout(()=>document.getElementById('searchInput')?.focus(),100)">
+        <span style="color:var(--text3);font-size:15px">🔍</span>
+        <span style="color:var(--text3);font-size:13px;flex:1">종목명·코드·섹터 검색</span>
+        <span style="font-size:10px;color:var(--text3);background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:2px 7px">탐색</span>
+      </div>
+    </div>
     <div class="list-scroll" id="homeList"></div>
     <div class="disc">
       <span style="font-size:14px;flex-shrink:0">⚠️</span>
