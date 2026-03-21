@@ -385,6 +385,25 @@ input::placeholder{color:var(--text3)}
 .apikey-btn{background:var(--gold-bg);border:1px solid var(--gold-br);
   border-radius:6px;color:var(--gold);padding:5px 10px;
   cursor:pointer;font-size:11px;font-weight:700;white-space:nowrap}
+
+/* ── 업데이트 토스트 ── */
+.update-toast{
+  position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(120px);
+  background:linear-gradient(135deg,#161B22,#1C2128);
+  border:1px solid var(--gold-br);border-radius:16px;
+  padding:14px 18px;min-width:280px;max-width:340px;
+  box-shadow:0 8px 32px rgba(0,0,0,.6),0 0 0 1px rgba(212,168,67,.1);
+  z-index:9999;transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .3s;
+  opacity:0;pointer-events:none}
+.update-toast.show{transform:translateX(-50%) translateY(0);opacity:1;pointer-events:auto}
+.update-toast-title{font-size:13px;font-weight:900;color:var(--gold);margin-bottom:6px;
+  display:flex;align-items:center;gap:8px}
+.update-toast-body{font-size:11px;color:var(--text2);line-height:1.8;margin-bottom:12px}
+.update-toast-btns{display:flex;gap:8px}
+.update-toast-btn{flex:1;padding:8px 0;border-radius:8px;font-size:11px;font-weight:800;
+  cursor:pointer;border:none;transition:all .15s}
+.update-toast-btn.primary{background:linear-gradient(135deg,var(--gold),#E8C96A);color:#07080F}
+.update-toast-btn.secondary{background:var(--bg3);color:var(--text3);border:1px solid var(--border)}
 </style>
 </head>
 <body>
@@ -3637,7 +3656,59 @@ function getApiKey(){
   return cachedApiKey;
 }
 
-document.addEventListener("DOMContentLoaded",()=>{initTicker();render();checkIOS();loadApiKey();setTimeout(autoRefreshPrices,600);});
+
+// ── 업데이트 토스트 ─────────────────────────────────────────
+const CURRENT_VER = 'v3.2';
+const VER_KEY = 'sig_last_ver';
+
+const UPDATE_NOTES = {
+  'v3.2': '✅ 경량 종목 Yahoo 데이터 직접 조회\n✅ 가격 갱신바 색상 개선\n✅ 티커 금액·이름 색상 추가\n✅ PC 화면 레이아웃 최적화',
+  'v3.1': '✅ 전일종가 자동갱신 안정화\n✅ 상세화면 AI 분석 버튼 추가\n✅ DB 종목 전일종가 업데이트',
+  'v3.0': '✅ GitHub Dark UI 전면 리디자인\n✅ 가격 오류 32개 수정',
+};
+
+function checkUpdate(){
+  try{
+    const last = localStorage.getItem(VER_KEY)||'';
+    if(last === CURRENT_VER) return; // 이미 본 버전
+    const body = document.getElementById('updateToastBody');
+    const notes = UPDATE_NOTES[CURRENT_VER]||'새 버전이 배포되었습니다.';
+    if(body) body.innerHTML = notes.split('\n').join('<br>');
+    localStorage.setItem(VER_KEY, CURRENT_VER);
+    setTimeout(()=>{
+      const t=document.getElementById('updateToast');
+      if(t) t.classList.add('show');
+    }, 1200); // 앱 로드 후 1.2초 뒤 표시
+  }catch(_){}
+}
+
+function closeUpdateToast(){
+  const t=document.getElementById('updateToast');
+  if(t){t.classList.remove('show');}
+}
+
+document.addEventListener("DOMContentLoaded",()=>{initTicker();render();checkIOS();loadApiKey();checkUpdate();setTimeout(autoRefreshPrices,600);});
 </script>
+
+<!-- 업데이트 토스트 -->
+<div class="update-toast" id="updateToast">
+  <div class="update-toast-title">
+    <span style="font-size:18px">🎉</span>
+    <span>업데이트 완료!</span>
+    <span style="margin-left:auto;font-size:10px;background:var(--gold);color:#07080F;
+      border-radius:4px;padding:1px 7px">v3.2</span>
+  </div>
+  <div class="update-toast-body" id="updateToastBody">
+    새로운 기능이 추가되었습니다.
+  </div>
+  <div class="update-toast-btns">
+    <button class="update-toast-btn primary" onclick="showVersionLog();closeUpdateToast()">
+      📋 변경 내용 보기
+    </button>
+    <button class="update-toast-btn secondary" onclick="closeUpdateToast()">
+      닫기
+    </button>
+  </div>
+</div>
 </body>
 </hhh
