@@ -404,10 +404,11 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 16px 18px;
+      padding: 14px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 8px;
       transition: all 0.2s;
       position: relative;
       overflow: hidden;
@@ -426,30 +427,35 @@
       background: var(--surface2);
     }
 
-    .market-card-left { flex: 1; }
+    .market-card-left { flex: 1; min-width: 0; }
 
     .market-name {
       font-family: 'Noto Sans KR', sans-serif;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 400;
       color: var(--text2);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .market-card-right { text-align: right; }
+    .market-card-right { text-align: right; flex-shrink: 0; }
 
     .market-val {
       font-family: 'DM Mono', monospace;
-      font-size: 20px;
+      font-size: 17px;
       font-weight: 400;
       color: var(--text);
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
     }
 
     .market-chg {
       font-family: 'DM Mono', monospace;
-      font-size: 13px;
-      margin-top: 4px;
+      font-size: 12px;
+      margin-top: 3px;
       font-weight: 400;
+      white-space: nowrap;
     }
 
     .market-chg.up { color: var(--green); }
@@ -1473,7 +1479,8 @@ function buildTicker() {
       <span class="chg ${m.up ? 'up' : 'dn'}">${m.chg}</span>
     </div>
   `).join('');
-  document.getElementById('tickerTrack').innerHTML = items;
+  const tt = document.getElementById('tickerTrack');
+  if (tt) tt.innerHTML = items;
 }
 
 function buildMarketCards(data, containerId) {
@@ -1642,23 +1649,30 @@ function buildFullMarket() {
   let html = '';
   sections.forEach(s => {
     if (s.items.length === 0) return;
-    html += `<div class="section-header" style="margin-bottom:12px"><div class="section-title" style="font-size:15px">${s.title}</div></div>`;
+    html += `<div class="market-section-title">${s.title}</div>`;
     html += `<div class="market-grid" style="margin-bottom:20px">`;
     html += s.items.map(m => `
       <div class="market-card">
-        <div class="market-name">${m.name}</div>
-        <div class="market-val">${m.val}</div>
-        <div class="market-chg ${m.up ? 'up' : 'dn'}">${m.up ? '▲' : '▼'} ${m.chg}</div>
+        <div class="market-card-left">
+          <div class="market-name">${m.name}</div>
+          <div class="market-chg ${m.up ? 'up' : 'dn'}">${m.up ? '▲' : '▼'} ${m.chg}</div>
+        </div>
+        <div class="market-card-right">
+          <div class="market-val">${m.val}</div>
+        </div>
       </div>`).join('');
     html += `</div>`;
   });
-  document.getElementById('fullMarket').innerHTML = html;
+  const fm = document.getElementById('fullMarket');
+  if (fm) fm.innerHTML = html;
 }
 
 let currentCategory = 'all';
 
 function buildCategoryBtns() {
-  document.getElementById('conceptCategoryBtns').innerHTML = CONCEPT_CATEGORIES.map(cat => `
+  const el = document.getElementById('conceptCategoryBtns');
+  if (!el) return;
+  el.innerHTML = CONCEPT_CATEGORIES.map(cat => `
     <button class="cat-btn ${cat.id === 'all' ? 'active' : ''}" id="catBtn-${cat.id}"
       onclick="filterConcepts('${cat.id}')">${cat.label}</button>
   `).join('');
@@ -1739,9 +1753,9 @@ function switchTab(name) {
   });
   document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
   document.getElementById(`tab-${name}`).classList.add('active');
-  if (name === 'help') buildHelpFaq();
+  if (name === 'help')  buildHelpFaq();
+  if (name === 'study') { buildCategoryBtns(); buildConcepts(); }
   if (name === 'news') {
-    // 뉴스 탭 열 때마다 폴백 카드 즉시 표시 후 실시간 로드
     buildFallbackCards(NEWS_FALLBACK.korea,  'koreaNews');
     buildFallbackCards(NEWS_FALLBACK.global, 'globalNews');
     buildFallbackCards(NEWS_FALLBACK.market, 'marketNews');
@@ -2400,7 +2414,7 @@ self.addEventListener('fetch', e => {
 
 
 // ===================== INIT =====================
-const APP_VERSION = '3.4.0';
+const APP_VERSION = '3.6.0';
 
 function buildHelpFaq() {
   const el = document.getElementById('helpFaq');
