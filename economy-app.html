@@ -458,7 +458,7 @@
     /* ── NEWS MEDIA GRID ── */
     .news-media-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 10px;
       margin-bottom: 8px;
     }
@@ -473,7 +473,7 @@
     }
 
     .news-media-card:hover {
-      border-color: rgba(201,168,76,0.25);
+      border-color: rgba(201,168,76,0.3);
       background: var(--surface2);
     }
 
@@ -482,14 +482,15 @@
       font-size: 11px;
       color: var(--gold);
       letter-spacing: 0.5px;
-      margin-bottom: 7px;
+      margin-bottom: 8px;
       text-transform: uppercase;
+      font-weight: 700;
     }
 
     .nmc-title {
       font-size: 13px;
       font-weight: 400;
-      color: var(--text);
+      color: var(--gold2);
       line-height: 1.5;
       margin-bottom: 7px;
       display: -webkit-box;
@@ -722,45 +723,64 @@
     }
 
     /* ── CHANNEL LIST ── */
-    .ch-row {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 15px 0;
-      border-bottom: 1px solid var(--border);
-      cursor: pointer;
-      transition: all 0.15s;
+    /* ── CHANNEL CARDS ── */
+    .ch-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
     }
 
-    .ch-row:hover {
-      background: var(--surface2);
-      border-radius: 8px;
-      padding-left: 12px;
-      padding-right: 12px;
+    .ch-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
     }
+
+    .ch-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .ch-card:hover {
+      border-color: rgba(201,168,76,0.3);
+      background: var(--surface2);
+    }
+
+    .ch-card:hover::before { opacity: 1; }
 
     .ch-initial {
-      width: 44px;
-      height: 44px;
+      width: 40px;
+      height: 40px;
       border-radius: 10px;
-      background: var(--surface2);
-      border: 1px solid var(--border2);
+      background: var(--gold-dim);
+      border: 1px solid rgba(201,168,76,0.2);
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: 'DM Mono', monospace;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 400;
       color: var(--gold);
       flex-shrink: 0;
       letter-spacing: 1px;
     }
 
-    .ch-info { flex: 1; min-width: 0; }
-    .ch-name { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
-    .ch-desc { font-size: 12px; color: var(--text2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .ch-tags { display: flex; gap: 4px; flex-wrap: wrap; flex-shrink: 0; }
-    .ch-arrow { color: var(--text3); font-size: 18px; flex-shrink: 0; }
+    .ch-name { font-size: 14px; font-weight: 700; color: var(--text); }
+    .ch-desc { font-size: 11px; color: var(--text2); line-height: 1.5; }
+    .ch-tag  { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gold); background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.2); padding: 2px 8px; border-radius: 20px; display: inline-block; }
 
     /* ── SCROLLBAR ── */
     ::-webkit-scrollbar { width: 4px; height: 4px; }
@@ -774,15 +794,15 @@
       .market-chg  { font-size: 11px; }
       .news-media-grid { grid-template-columns: repeat(2, 1fr); }
       .concept-grid { grid-template-columns: repeat(2, 1fr); }
-      .tab  { padding: 9px 10px; font-size: 12px; }
+      .ch-grid { grid-template-columns: repeat(2, 1fr); }
+      .tab  { padding: 9px 8px; font-size: 11px; }
       .section-title { font-size: 22px; }
       .news-title { font-size: 14px; }
-      .ch-name { font-size: 14px; }
+      .ch-name { font-size: 13px; }
     }
 
     @media (max-width: 380px) {
-      .market-val { font-size: 18px; }
-      .market-val  { font-size: 14px; }
+      .market-val { font-size: 14px; }
     }
 
     /* ── LOADING ROW ── */
@@ -1595,16 +1615,13 @@ function buildChannelList() {
   Object.entries(ALL_CHANNELS).forEach(([section, channels]) => {
     const el = document.getElementById('chList-' + section);
     if (!el) return;
-    el.innerHTML = channels.map(ch => `
-      <div class="channel-item" onclick="window.open('${ch.url}','_blank')">
+    el.innerHTML = `<div class="ch-grid">${channels.map(ch => `
+      <div class="ch-card" onclick="window.open('${ch.url}','_blank')">
         <div class="ch-initial">${ch.name.slice(0,2).toUpperCase()}</div>
-        <div class="ch-body">
-          <div class="ch-name">${ch.name}</div>
-          <div class="ch-desc">${ch.desc}</div>
-        </div>
-        <div class="ch-tags">${ch.tags.map(t=>`<span class="ch-tag">${t}</span>`).join('')}</div>
-        <div class="ch-arrow">›</div>
-      </div>`).join('');
+        <div class="ch-name">${ch.name}</div>
+        <div class="ch-desc">${ch.desc}</div>
+        <div>${ch.tags.map(t=>`<span class="ch-tag">${t}</span>`).join('')}</div>
+      </div>`).join('')}</div>`;
   });
 }
 
@@ -2058,8 +2075,8 @@ function buildFallbackCards(sources, containerId) {
   el.innerHTML = sources.map(s => `
     <div class="news-media-card" onclick="window.open('${s.url}','_blank')">
       <div class="nmc-source">${s.name}</div>
-      <div class="nmc-title" style="color:var(--gold);">최신 뉴스 보기 →</div>
-      <div class="nmc-time">[링크] ${s.url.replace('https://','').split('/')[0]}</div>
+      <div class="nmc-title">최신 뉴스 보기 →</div>
+      <div class="nmc-time">${s.url.replace('https://','').split('/')[0]}</div>
     </div>`).join('');
 }
 
@@ -2376,7 +2393,7 @@ self.addEventListener('fetch', e => {
 
 
 // ===================== INIT =====================
-const APP_VERSION = '3.2.0';
+const APP_VERSION = '3.3.0';
 
 function buildHelpFaq() {
   const el = document.getElementById('helpFaq');
