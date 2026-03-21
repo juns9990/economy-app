@@ -950,6 +950,25 @@
     <div id="fullMarket"></div>
   </div>
 
+  <!-- STUDY -->
+  <div id="tab-study" class="tab-content">
+    <div class="section-header">
+      <div class="section-title">경제 용어 사전</div>
+      <div class="section-sub">검색으로 경제 용어를 빠르게 찾아보세요</div>
+    </div>
+    <div style="position:relative;margin-bottom:16px;">
+      <input id="conceptSearch" type="text" placeholder="GDP, 금리, 인플레이션, PER, 환율..."
+        oninput="searchConcepts(this.value)"
+        onfocus="this.style.borderColor='var(--gold)'"
+        onblur="this.style.borderColor='var(--border)'">
+      <svg style="position:absolute;left:14px;top:50%;transform:translateY(-50%);pointer-events:none;" width="14" height="14" viewBox="0 0 24 24" fill="var(--text3)"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <span id="conceptSearchCount" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);"></span>
+    </div>
+    <div id="conceptCategoryBtns" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;"></div>
+    <div id="conceptGrid" style="display:flex;flex-direction:column;gap:8px;"></div>
+    <div class="concept-detail" id="conceptDetail"></div>
+  </div>
+
   <!-- HELP -->
   <div id="tab-help" class="tab-content">
     <div class="section-header">
@@ -1461,7 +1480,178 @@ const CONCEPTS = [
     detail:{title:"신용등급이란?",body:`<p>3대 신용평가사: S&P, 무디스, 피치<br>AAA(최고) → AA → A → BBB(투자등급 최하) → BB↓(투기등급/정크)</p><div class="example">💡 한국 국가 신용등급: S&P AA, 무디스 Aa2 — 선진국 수준의 최고 등급권. 신용등급 하락 시 국채 금리 급등.</div>`}},
   { icon:"💡", title:"AI 경제 혁명", category:"macro", desc:"인공지능이 생산성·노동시장·산업 구조를 근본적으로 바꾸는 변화", color:"blue", level:"초급", levelClass:"tag-global",
     detail:{title:"AI 경제 혁명이란?",body:`<p>골드만삭스: AI가 향후 10년 글로벌 GDP를 7%(약 7조 달러) 끌어올릴 것으로 전망.<br>반도체·클라우드·전력 인프라 수요 폭증.</p><div class="example">💡 2023~2026년 엔비디아 시가총액이 1조 달러 → 3조 달러를 돌파. AI 수혜주 열풍으로 '매그니피센트7' 주가 급등.</div>`}},
+
+  // ===== 거시경제 추가 =====
+  { icon:"📌", title:"잠재GDP (Potential GDP)", category:"macro", desc:"한 나라가 완전고용 상태에서 생산할 수 있는 최대 GDP", color:"green", level:"고급", levelClass:"tag-beginner",
+    detail:{title:"잠재GDP란?",body:`<p>실제GDP와 잠재GDP의 차이를 <strong>GDP갭</strong>이라 합니다.<br>GDP갭 > 0: 경기 과열(인플레이션 위험)<br>GDP갭 < 0: 경기 침체(실업 증가)</p><div class="example">💡 코로나19 직후 실제GDP가 잠재GDP를 크게 밑돌아 대규모 재정 지원 근거가 됐습니다.</div>`}},
+  { icon:"🌐", title:"세계화 (Globalization)", category:"macro", desc:"국가 간 무역·투자·인력·정보의 이동이 자유로워지는 현상", color:"blue", level:"초급", levelClass:"tag-global",
+    detail:{title:"세계화란?",body:`<p>1990년대 이후 급속 진행. WTO 출범, 인터넷 보급이 핵심 동인.<br>최근 보호무역·리쇼어링·디커플링으로 '탈세계화' 흐름도 등장.</p><div class="example">💡 한국 수출 의존도 GDP의 약 40% — 세계화가 없었다면 삼성전자·현대차의 글로벌 성장은 불가능했습니다.</div>`}},
+  { icon:"🔀", title:"디커플링 (Decoupling)", category:"macro", desc:"두 경제권이 서로 분리되는 현상. 특히 미-중 경제 분리를 지칭", color:"red", level:"중급", levelClass:"tag-global",
+    detail:{title:"디커플링이란?",body:`<p>미국-중국의 기술·공급망 분리가 핵심 사례.<br>반도체·AI·전기차 등 첨단기술 분야에서 '진영 나누기' 가속.</p><div class="example">💡 미국의 대중국 반도체 수출 규제(2022~)로 삼성·하이닉스의 중국 공장 운영에 제동이 걸렸습니다.</div>`}},
+  { icon:"🏭", title:"리쇼어링 (Reshoring)", category:"macro", desc:"해외로 나간 공장을 자국으로 되가져오는 현상", color:"blue", level:"중급", levelClass:"tag-global",
+    detail:{title:"리쇼어링이란?",body:`<p>미국 IRA(인플레이션감축법), CHIPS법으로 대규모 리쇼어링 정책 시행.<br>인건비보다 공급망 안보·보조금이 더 중요해진 시대.</p><div class="example">💡 TSMC·삼성이 미국 애리조나·텍사스에 반도체 공장 건설. 미국 정부 보조금 수십조 원 지원.</div>`}},
+  { icon:"📊", title:"니어쇼어링 (Nearshoring)", category:"macro", desc:"멀리 있는 공장을 지리적으로 가까운 국가로 이전하는 전략", color:"blue", level:"중급", levelClass:"tag-global",
+    detail:{title:"니어쇼어링이란?",body:`<p>미국 기업들이 중국 대신 멕시코·캐나다로 생산 기지 이동.<br>지리적 근접성+USMCA 혜택으로 물류 비용 절감.</p><div class="example">💡 2023년 멕시코가 중국을 제치고 미국의 최대 무역 파트너가 됐습니다.</div>`}},
+  { icon:"💼", title:"긱 이코노미 (Gig Economy)", category:"macro", desc:"정규직 대신 단기 계약·프리랜서 형태의 일자리가 늘어나는 경제", color:"yellow", level:"초급", levelClass:"tag-global",
+    detail:{title:"긱 이코노미란?",body:`<p>우버·쿠팡이츠·크몽 등 플랫폼 기반 단기 노동.<br>유연성 장점 vs 고용 안정성·복지 부재 단점.</p><div class="example">💡 미국 근로자 약 36%가 긱 워커로 추산(2024년). 한국도 배달 라이더 100만 명 시대.</div>`}},
+  { icon:"🌿", title:"ESG 경영", category:"macro", desc:"환경(E)·사회(S)·지배구조(G)를 고려한 지속가능 경영", color:"green", level:"초급", levelClass:"tag-global",
+    detail:{title:"ESG란?",body:`<p>기업의 비재무적 성과 평가 기준.<br>글로벌 기관투자자들이 ESG 미달 기업에 투자 제한 → 자금 조달 비용 상승.</p><div class="example">💡 한국거래소 ESG 공시 의무화 추진. 기업들이 탄소중립·이사회 독립성 개선에 속속 투자.</div>`}},
+  { icon:"🌱", title:"탄소중립 (Carbon Neutrality)", category:"macro", desc:"온실가스 배출량을 0으로 만드는 목표. 2050년까지 달성이 국제 기준", color:"green", level:"초급", levelClass:"tag-global",
+    detail:{title:"탄소중립이란?",body:`<p>배출량을 줄이고, 줄이지 못한 만큼은 탄소 흡수·상쇄로 보완.<br>탄소배출권 거래제(ETS)가 핵심 정책 수단.</p><div class="example">💡 EU는 2026년부터 탄소국경조정세(CBAM) 시행. 탄소 많이 배출하는 나라의 수출품에 세금 부과.</div>`}},
+
+  // ===== 통화·금리 추가 =====
+  { icon:"🎯", title:"테일러 준칙 (Taylor Rule)", category:"monetary", desc:"인플레이션·GDP갭에 따라 적정 금리를 계산하는 공식", color:"blue", level:"고급", levelClass:"tag-global",
+    detail:{title:"테일러 준칙이란?",body:`<p>적정금리 = 2% + 0.5×(인플레이션-2%) + 0.5×GDP갭<br>연준의 금리 결정에 참고 지표로 활용됩니다.</p><div class="example">💡 2022년 테일러 준칙은 금리를 8~9%까지 올려야 한다고 제시. 실제 연준은 5.5%로 타협했습니다.</div>`}},
+  { icon:"💹", title:"달러인덱스 (DXY)", category:"monetary", desc:"6개 주요 통화 대비 달러 강세를 나타내는 지수", color:"blue", level:"중급", levelClass:"tag-global",
+    detail:{title:"달러인덱스란?",body:`<p>유로(57.6%), 엔(13.6%), 파운드(11.9%), 캐나다달러(9.1%), 크로나(4.2%), 스위스프랑(3.6%)으로 구성.<br>DXY 상승 = 달러 강세 = 원자재·신흥국 통화 약세.</p><div class="example">💡 2022년 DXY 114까지 급등 → 원화 1,450원, 엔화 150엔 돌파. 신흥국 외채 위기 우려.</div>`}},
+  { icon:"📉", title:"금리역전 (Yield Curve Inversion)", category:"monetary", desc:"단기금리가 장기금리보다 높아지는 현상. 경기침체 신호로 해석", color:"red", level:"중급", levelClass:"tag-global",
+    detail:{title:"금리역전이란?",body:`<p>정상: 2년물 < 10년물 / 역전: 2년물 > 10년물<br>과거 미국 금리역전 후 평균 18개월 내 경기침체 발생.</p><div class="example">💡 2022년 7월부터 미국 2-10년 금리 역전. 2024년 해소 후 경기침체 우려가 재점화됐습니다.</div>`}},
+  { icon:"🏛️", title:"ECB (유럽중앙은행)", category:"monetary", desc:"유로존 19개국의 통화정책을 담당하는 중앙은행", color:"blue", level:"중급", levelClass:"tag-global",
+    detail:{title:"ECB란?",body:`<p>독일 프랑크푸르트 소재. 유로존 물가 안정(2% 목표)이 핵심 임무.<br>연준과 달리 고용 목표는 명시 없음.</p><div class="example">💡 2022~2023년 ECB도 4%대 금리 인상 단행. 독일 경기침체에도 인플레이션 우선 대응.</div>`}},
+  { icon:"🗾", title:"일본은행 (BOJ)", category:"monetary", desc:"일본의 중앙은행. 마이너스 금리·YCC로 유명한 극단적 완화 정책", color:"blue", level:"중급", levelClass:"tag-global",
+    detail:{title:"일본은행이란?",body:`<p>2016~2024년 마이너스 금리(-0.1%) 유지. YCC(수익률곡선제어)로 10년물 금리 상한선 설정.<br>2024년 마침내 금리 인상 시작 → 엔화 강세 전환.</p><div class="example">💡 일본의 초저금리 정책이 끝나자 글로벌 '엔 캐리 트레이드' 청산 → 2024년 8월 전 세계 주식 폭락.</div>`}},
+  { icon:"🔄", title:"엔 캐리 트레이드 (Yen Carry Trade)", category:"monetary", desc:"저금리 엔화를 빌려 고수익 자산에 투자하는 전략", color:"red", level:"고급", levelClass:"tag-global",
+    detail:{title:"엔 캐리 트레이드란?",body:`<p>0% 금리로 엔화 빌림 → 5% 금리 달러 자산 투자 → 금리차 수익.<br>엔화 강세 시 청산 → 전 세계 자산 동시 매도 → 시장 급락.</p><div class="example">💡 2024년 8월 BOJ 금리 인상 신호 → 엔 캐리 청산 → 코스피 8% 폭락. 역대 최대 단일 낙폭.</div>`}},
+  { icon:"💰", title:"헬리콥터 머니 (Helicopter Money)", category:"monetary", desc:"중앙은행이 재정 적자를 직접 인수해 돈을 공급하는 극단적 정책", color:"red", level:"고급", levelClass:"tag-global",
+    detail:{title:"헬리콥터 머니란?",body:`<p>밀턴 프리드먼이 제안한 개념. 헬기에서 돈을 뿌리듯 직접 배포.<br>QE보다 강한 인플레이션 유발 효과. 통화 신뢰 훼손 위험.</p><div class="example">💡 코로나 재난지원금은 헬리콥터 머니에 가까운 정책. 2021~2022년 인플레이션의 주요 원인 중 하나.</div>`}},
+
+  // ===== 주식·투자 추가 =====
+  { icon:"🧩", title:"자산배분 (Asset Allocation)", category:"stock", desc:"주식·채권·현금·부동산 등 자산을 분산 배치하는 전략", color:"blue", level:"초급", levelClass:"tag-market",
+    detail:{title:"자산배분이란?",body:`<p>노벨경제학상 수상자 마코위츠가 정립한 현대 포트폴리오 이론의 핵심.<br>60/40 포트폴리오: 주식 60% + 채권 40% — 가장 고전적인 배분.</p><div class="example">💡 "계란을 한 바구니에 담지 말라" — 자산배분의 핵심 원칙. 2022년 주식·채권 동반 하락으로 60/40 포트폴리오 도전받음.</div>`}},
+  { icon:"🎲", title:"분산투자 (Diversification)", category:"stock", desc:"여러 자산에 나눠 투자해 위험을 줄이는 전략", color:"green", level:"입문", levelClass:"tag-market",
+    detail:{title:"분산투자란?",body:`<p>상관관계가 낮은 자산들을 조합하면 전체 위험이 줄어듭니다.<br>국가·섹터·자산군 세 가지 차원에서 분산이 필요합니다.</p><div class="example">💡 한국 주식만 투자 vs 한국+미국+신흥국 분산: 2015~2025년 수익률 대비 변동성 비교하면 분산이 우월.</div>`}},
+  { icon:"📈", title:"인덱스 펀드 (Index Fund)", category:"stock", desc:"특정 지수를 그대로 추종하는 저비용 패시브 펀드", color:"green", level:"초급", levelClass:"tag-market",
+    detail:{title:"인덱스 펀드란?",body:`<p>워런 버핏이 "대부분의 투자자에게 가장 좋은 투자"라고 추천.<br>액티브 펀드의 70~80%가 장기적으로 인덱스 펀드에 패배.</p><div class="example">💡 S&P500 인덱스 펀드 연평균 수익률 약 10%. 뱅가드 VOO 운용보수 0.03% — 월 100만 원 30년 투자 시 수수료 절감만 수천만 원.</div>`}},
+  { icon:"⚖️", title:"레버리지 (Leverage)", category:"stock", desc:"빌린 돈으로 투자 규모를 키우는 것. 수익과 손실 모두 증폭", color:"red", level:"중급", levelClass:"tag-market",
+    detail:{title:"레버리지란?",body:`<p>2배 레버리지: 지수 +10% → 수익 +20% / 지수 -10% → 손실 -20%<br>복리 효과 때문에 장기 보유 시 추적 오차 발생.</p><div class="example">💡 TQQQ(나스닥 3배 레버리지): 2020년 코로나 저점부터 1년 만에 +500% / 2022년 금리인상으로 -80% 폭락.</div>`}},
+  { icon:"🛡️", title:"헤지 (Hedge)", category:"stock", desc:"투자 위험을 줄이기 위해 반대 방향 포지션을 취하는 것", color:"blue", level:"중급", levelClass:"tag-market",
+    detail:{title:"헤지란?",body:`<p>달러 약세 위험 헤지: 금 매입<br>주식 하락 위험 헤지: 풋옵션 매입 or 공매도</p><div class="example">💡 항공사는 원유 선물로 유가 급등 위험을 헤지합니다. 제조업체는 환율 선물로 환위험을 헤지.</div>`}},
+  { icon:"🏦", title:"헤지펀드 (Hedge Fund)", category:"stock", desc:"다양한 투자 전략으로 절대수익을 추구하는 사모 펀드", color:"red", level:"중급", levelClass:"tag-global",
+    detail:{title:"헤지펀드란?",body:`<p>일반 투자자 접근 불가(최소 투자금 수억~수십억 원).<br>롱숏, 글로벌매크로, 이벤트드리븐 등 다양한 전략 구사.</p><div class="example">💡 레이 달리오의 브리지워터(세계 최대 헤지펀드), 조지 소로스의 퀀텀펀드(1992년 영국 파운드 공격으로 10억 달러 수익).</div>`}},
+  { icon:"🔢", title:"퀀트 투자 (Quant Investment)", category:"stock", desc:"수학·통계·알고리즘으로 투자 결정을 자동화하는 방식", color:"blue", level:"고급", levelClass:"tag-market",
+    detail:{title:"퀀트 투자란?",body:`<p>데이터·모델 기반으로 감정 배제한 체계적 투자.<br>팩터 투자(가치·모멘텀·퀄리티), 알고리즘 트레이딩 포함.</p><div class="example">💡 르네상스테크놀로지 메달리온 펀드: 1988~2018년 연평균 수익률 66%(수수료 전). 월스트리트 전설의 퀀트 펀드.</div>`}},
+  { icon:"📊", title:"모멘텀 투자 (Momentum)", category:"stock", desc:"오르는 자산은 계속 오르고, 내리는 자산은 계속 내린다는 전략", color:"yellow", level:"중급", levelClass:"tag-market",
+    detail:{title:"모멘텀 투자란?",body:`<p>과거 6~12개월 수익률 상위 종목을 매수하는 전략.<br>행동경제학적 근거: 투자자들의 과잉반응과 과소반응.</p><div class="example">💡 2023년 AI 테마 모멘텀: 엔비디아 +239%, 메타 +194%. 모멘텀이 강할수록 쏠림 후 되돌림도 큽니다.</div>`}},
+  { icon:"💎", title:"가치투자 (Value Investing)", category:"stock", desc:"내재가치 대비 저평가된 주식을 사서 장기 보유하는 전략", color:"green", level:"초급", levelClass:"tag-market",
+    detail:{title:"가치투자란?",body:`<p>벤저민 그레이엄이 창시, 워런 버핏이 집대성.<br>PER·PBR·ROE·현금흐름으로 내재가치 계산 후 안전마진 확보.</p><div class="example">💡 버핏이 코카콜라를 1988년 매수 후 30년 이상 보유. 배당 수익률만 매입가 대비 50% 이상.</div>`}},
+  { icon:"🌐", title:"글로벌 매크로 (Global Macro)", category:"stock", desc:"거시경제 분석으로 환율·금리·원자재·주식 시장 방향에 베팅하는 전략", color:"blue", level:"고급", levelClass:"tag-global",
+    detail:{title:"글로벌 매크로란?",body:`<p>국가 경제·통화정책·지정학을 분석해 큰 방향에 베팅.<br>소로스·드러켄밀러가 대표적인 글로벌 매크로 투자자.</p><div class="example">💡 소로스의 1992년 파운드화 공격: 영국이 ERM(유럽환율메커니즘) 탈퇴할 것을 예측, 단 하루 10억 달러 수익.</div>`}},
+  { icon:"📦", title:"ETN (상장지수증권)", category:"stock", desc:"ETF와 유사하지만 발행사의 신용위험이 있는 부채 증권", color:"yellow", level:"중급", levelClass:"tag-market",
+    detail:{title:"ETN이란?",body:`<p>ETF: 펀드(자산 실물 보유) / ETN: 증권사가 발행하는 채권 형태<br>ETF보다 추적 오차 적지만 발행사 파산 시 원금 손실 위험.</p><div class="example">💡 VIX(공포지수) ETN, 원자재 레버리지 ETN 등 ETF로 만들기 어려운 상품 구현에 활용.</div>`}},
+  { icon:"🔮", title:"VIX (공포지수)", category:"stock", desc:"S&P500 옵션 가격으로 산출한 향후 30일 시장 변동성 예측치", color:"red", level:"중급", levelClass:"tag-global",
+    detail:{title:"VIX란?",body:`<p>VIX 20 이하: 시장 안정 / VIX 30 이상: 공포 / VIX 50+: 패닉<br>주식과 역의 상관관계: 주식 급락 시 VIX 급등.</p><div class="example">💡 코로나 2020년 3월 VIX = 85.47(역대 최고). 2008년 금융위기 때 80.86. 2024년 8월 55까지 급등 후 빠르게 하락.</div>`}},
+  { icon:"📋", title:"IPO (기업공개)", category:"stock", desc:"비상장 기업이 처음으로 주식을 공개 시장에 내놓는 것", color:"green", level:"초급", levelClass:"tag-market",
+    detail:{title:"IPO란?",body:`<p>Initial Public Offering: 기업이 증권거래소에 상장하는 절차.<br>공모가 산정 → 수요예측 → 청약 → 상장 순서로 진행.</p><div class="example">💡 삼성바이오로직스(2016년 공모가 136,000원), 카카오(2021년 공모가 135,000원). IPO 직후 공모주 수익률은 평균적으로 양호하지만 개별 차이 큼.</div>`}},
+  { icon:"🔁", title:"리밸런싱 (Rebalancing)", category:"stock", desc:"시간이 지나 비율이 변한 포트폴리오를 원래 비율로 되돌리는 것", color:"green", level:"초급", levelClass:"tag-market",
+    detail:{title:"리밸런싱이란?",body:`<p>주식 60%+채권 40% → 주식 상승 후 70%+채권 30% → 채권 추가 매수로 60/40 복귀.<br>자동으로 고점 매도·저점 매수 효과.</p><div class="example">💡 연 1~2회 리밸런싱이 일반적. 너무 자주 하면 거래비용·세금 부담. 리밸런싱 없이 방치하면 원래 설계한 위험 수준 이탈.</div>`}},
+  { icon:"💰", title:"달러 평균법 (DCA)", category:"stock", desc:"가격에 관계없이 일정 금액을 정기적으로 투자하는 방법", color:"green", level:"입문", levelClass:"tag-market",
+    detail:{title:"달러 평균법(DCA)이란?",body:`<p>Dollar Cost Averaging: 매달 일정 금액 투자 → 고점엔 적게, 저점엔 많이 매수 자동화.<br>감정적 투자를 배제하는 가장 쉬운 방법.</p><div class="example">💡 매월 30만 원씩 S&P500 ETF 투자 10년 = 원금 3,600만 원. 연 10% 수익 가정 시 약 6,200만 원.</div>`}},
+
+  // ===== 경제지표 추가 =====
+  { icon:"📊", title:"CPI (소비자물가지수)", category:"indicator", desc:"가계가 구매하는 상품·서비스 가격 변동을 나타내는 인플레이션 지표", color:"yellow", level:"입문", levelClass:"tag-beginner",
+    detail:{title:"CPI란?",body:`<p>미국 CPI: 매월 BLS(노동통계국) 발표. 식품·에너지 제외 '근원CPI'가 핵심 지표.<br>연준 목표: CPI 2%</p><div class="example">💡 2022년 6월 미국 CPI 9.1%(40년 만에 최고) → 연준 급격한 금리 인상 → 전 세계 긴축 시작.</div>`}},
+  { icon:"🏭", title:"PPI (생산자물가지수)", category:"indicator", desc:"기업이 생산하는 단계의 물가. CPI의 선행지표", color:"yellow", level:"중급", levelClass:"tag-beginner",
+    detail:{title:"PPI란?",body:`<p>Producer Price Index: 도매 단계 물가.<br>PPI 상승 → 기업 비용↑ → 시간차를 두고 CPI 상승.</p><div class="example">💡 2021년 PPI 급등이 2022년 CPI 급등으로 이어짐. PPI를 보면 향후 CPI를 예측할 수 있습니다.</div>`}},
+  { icon:"👥", title:"실업률 (Unemployment Rate)", category:"indicator", desc:"경제활동인구 중 일자리를 찾지 못한 사람의 비율", color:"red", level:"입문", levelClass:"tag-beginner",
+    detail:{title:"실업률이란?",body:`<p>미국 자연실업률: 약 4~5%. 이보다 낮으면 과고용(임금 인플레이션 압력).<br>구직 포기자는 포함하지 않아 '체감 실업률'은 더 높습니다.</p><div class="example">💡 2020년 코로나 → 미국 실업률 14.7%(역대 최고). 이후 역대 최저(3.4%)까지 회복. 연준이 금리 결정 시 가장 중시하는 지표 중 하나.</div>`}},
+  { icon:"📋", title:"NFP (비농업고용지수)", category:"indicator", desc:"미국의 농업 제외 신규 취업자 수. 매월 첫째 금요일 발표", color:"yellow", level:"중급", levelClass:"tag-global",
+    detail:{title:"NFP란?",body:`<p>Non-Farm Payrolls: 미국 경제의 고용 상황을 가장 직접적으로 보여주는 지표.<br>예상치를 크게 벗어나면 주식·채권·달러 동시 급변동.</p><div class="example">💡 NFP가 예상보다 크게 강하면 → 금리 인하 기대 감소 → 주식 하락 / 달러 강세. 발표 직후 5분이 가장 변동성 큽니다.</div>`}},
+  { icon:"🏠", title:"케이스-실러 지수 (Case-Shiller)", category:"indicator", desc:"미국 주요 도시의 주택 가격 변동을 나타내는 지수", color:"blue", level:"중급", levelClass:"tag-global",
+    detail:{title:"케이스-실러 지수란?",body:`<p>20개 대도시 주택 가격을 추적. 2개월 시차를 두고 발표됩니다.<br>주택시장 과열·침체의 선행지표.</p><div class="example">💡 2022년 미국 금리 급등 후 케이스-실러 지수 하락. 하지만 공급 부족으로 하락폭이 제한됐습니다.</div>`}},
+  { icon:"😊", title:"소비자신뢰지수 (CSI)", category:"indicator", desc:"소비자들이 경제를 얼마나 낙관적으로 보는지 측정하는 지표", color:"green", level:"초급", levelClass:"tag-global",
+    detail:{title:"소비자신뢰지수란?",body:`<p>미국: 콘퍼런스보드 발표(매월 마지막 화요일). 1985년=100 기준.<br>소비자신뢰↑ → 소비 증가 → 경기 호전 선행.</p><div class="example">💡 소비가 미국 GDP의 70%를 차지. 소비자심리지수가 떨어지면 경기침체 신호로 해석.</div>`}},
+  { icon:"🏗️", title:"PMI (구매관리자지수)", category:"indicator", desc:"기업 구매담당자들의 경기 체감을 나타내는 지수. 50 이상이면 확장", color:"green", level:"중급", levelClass:"tag-global",
+    detail:{title:"PMI란?",body:`<p>Purchasing Managers Index: 50 초과 = 경기 확장 / 50 미만 = 경기 수축<br>제조업 PMI와 서비스업 PMI로 구분. GDP보다 2~3주 먼저 발표.</p><div class="example">💡 PMI 55 이상이면 강한 확장 국면. 2023년 미국 서비스 PMI는 50 이상을 유지해 경기침체를 막았습니다.</div>`}},
+  { icon:"📉", title:"GDP 디플레이터", category:"indicator", desc:"명목GDP를 실질GDP로 변환하는 물가 지수. 광의의 인플레이션 측정", color:"blue", level:"고급", levelClass:"tag-beginner",
+    detail:{title:"GDP 디플레이터란?",body:`<p>실질GDP = 명목GDP ÷ GDP 디플레이터 × 100<br>CPI보다 더 광범위한 물가 지표. 수입품 가격 변동 제외.</p><div class="example">💡 명목GDP가 5% 성장해도 물가가 5% 올랐다면 실질GDP 성장률은 0%. 진짜 경제 성장을 보려면 실질GDP를 봐야 합니다.</div>`}},
+  { icon:"🔧", title:"ISM 제조업지수", category:"indicator", desc:"미국 제조업 경기를 나타내는 지수. 매월 첫 영업일 발표", color:"blue", level:"중급", levelClass:"tag-global",
+    detail:{title:"ISM 제조업지수란?",body:`<p>Institute for Supply Management 발표. PMI와 유사하게 50 기준.<br>새주문·생산·고용·재고 등 5개 부문 종합.</p><div class="example">💡 2023년 미국 ISM 제조업지수가 18개월 연속 50 미만 → 제조업 침체. 서비스업이 경기를 받쳐줬습니다.</div>`}},
+  { icon:"📈", title:"선행·동행·후행 지수", category:"indicator", desc:"경기를 미리 예측(선행), 현재 파악(동행), 사후 확인(후행)하는 3대 지수", color:"green", level:"중급", levelClass:"tag-beginner",
+    detail:{title:"경기종합지수란?",body:`<p><strong>선행지수</strong>: 주가, 건축허가, 소비자기대 → 3~6개월 선행<br><strong>동행지수</strong>: 산업생산, 고용, 소매판매 → 현재 경기<br><strong>후행지수</strong>: 실업률, 대출잔액 → 경기 확인</p><div class="example">💡 선행지수가 3~4개월 연속 하락하면 경기침체 신호. 2022년 미국 선행지수 22개월 연속 하락했지만 침체는 피했습니다.</div>`}},
+
+  // ===== 경제위기 추가 =====
+  { icon:"💣", title:"서브프라임 모기지 (Subprime)", category:"crisis", desc:"신용등급 낮은 차주에게 무분별하게 빌려준 주택담보대출. 2008년 위기 원인", color:"red", level:"중급", levelClass:"tag-global",
+    detail:{title:"서브프라임이란?",body:`<p>2000년대 미국 금융기관들이 신용 불량자에게도 주택대출 → 부채담보부증권(CDO)으로 포장해 판매.<br>2007년 주택 가격 하락 → 연쇄 부도 → 금융 시스템 붕괴.</p><div class="example">💡 리먼브라더스 2008년 9월 파산(부채 6,130억 달러) → 글로벌 금융위기. 코스피 -55% 폭락. 영화 '빅쇼트'의 실화.</div>`}},
+  { icon:"🦠", title:"코로나 경제 충격 (2020)", category:"crisis", desc:"코로나19 팬데믹으로 인한 역대 최단 경기침체와 역대급 부양책", color:"red", level:"입문", levelClass:"tag-global",
+    detail:{title:"코로나 경제 충격이란?",body:`<p>2020년 2월~4월 단 2개월 만에 경기침체 공식 선언(역대 최단).<br>미국 실업자 2,200만 명 급증. 연준 0% 금리 + 4조 달러 QE.</p><div class="example">💡 2020년 3월 코스피 1,439까지 폭락(-44%). 이후 역대급 반등으로 2021년 3,305 사상 최고치. 개미 투자자 대거 유입.</div>`}},
+  { icon:"💸", title:"2022년 인플레이션 위기", category:"crisis", desc:"코로나 부양책+공급망 붕괴+에너지 위기로 40년 만에 최악의 인플레이션", color:"red", level:"중급", levelClass:"tag-global",
+    detail:{title:"2022년 인플레이션 위기란?",body:`<p>미국 CPI 9.1%(40년 만에 최고) → 연준 역대 최고 속도로 금리 인상(0% → 5.5%).<br>주식·채권·부동산 동반 하락. 60/40 포트폴리오 최악의 해.</p><div class="example">💡 2022년 나스닥 -33%, S&P500 -19%, 채권 -18%. 거의 모든 자산 동시 하락. '주식 60+채권 40' 전략의 최대 위기.</div>`}},
+  { icon:"🏦", title:"뱅크런 (Bank Run)", category:"crisis", desc:"예금자들이 은행 파산을 우려해 일시에 예금을 인출하는 사태", color:"red", level:"초급", levelClass:"tag-global",
+    detail:{title:"뱅크런이란?",body:`<p>1인이 인출 → 소문 확산 → 모두가 인출 → 은행 유동성 부족 → 실제 파산 → 자기실현적 위기.<br>예금자보호제도(한국 5,000만 원)가 뱅크런 예방 수단.</p><div class="example">💡 2023년 SVB(실리콘밸리은행) 뱅크런: SNS로 소문 확산 → 24시간 만에 420억 달러 인출 → 파산. 디지털 시대의 초고속 뱅크런.</div>`}},
+  { icon:"🫧", title:"버블 (Bubble)", category:"crisis", desc:"자산 가격이 내재가치를 크게 초과해 부풀어오른 상태", color:"red", level:"초급", levelClass:"tag-global",
+    detail:{title:"버블이란?",body:`<p>역대 주요 버블: 튤립 버블(1637), 닷컴 버블(2000), 주택 버블(2006), 코인 버블(2017·2021).<br>버블 붕괴 패턴: 급등 → 과열 → 매도 신호 → 패닉 → 폭락.</p><div class="example">💡 닷컴 버블: 나스닥 2000년 5,048 → 2002년 1,114(-78%). 회복까지 15년. 한번 버블 붕괴 후 회복은 매우 오래 걸립니다.</div>`}},
+  { icon:"🇬🇷", title:"그리스 재정위기 (2010)", category:"crisis", desc:"그리스 부채 위기로 유로존 전체로 번진 국가 채무 위기", color:"red", level:"중급", levelClass:"tag-global",
+    detail:{title:"그리스 재정위기란?",body:`<p>GDP의 150% 국가부채 + 분식 회계 발각 → 국채 금리 35% 폭등 → 디폴트 위기.<br>IMF·ECB·EU 트로이카 구제금융 조건: 긴축재정(임금·연금 삭감).</p><div class="example">💡 그리스 GDP가 위기 전 대비 25% 감소. 실업률 27% 최고치. '남유럽 재정위기(PIGS)'로 스페인·이탈리아·포르투갈까지 확산.</div>`}},
+  { icon:"🇰🇷", title:"한국 외환위기 (1997)", category:"crisis", desc:"IMF 구제금융을 받은 한국의 외환 위기. '국가부도의 날'", color:"red", level:"중급", levelClass:"tag-korea",
+    detail:{title:"한국 외환위기란?",body:`<p>태국 바트화 위기(1997.7) → 동남아 전염 → 한국 외환보유액 바닥(39억 달러) → IMF 550억 달러 긴축 구제금융.<br>기업 부도(대우·기아), 실업자 100만 명, 금 모으기 운동.</p><div class="example">💡 환율 800원 → 1,800원 폭등. 주가 폭락. 3년 만에 IMF 졸업했지만 사회적 트라우마는 오래 지속됐습니다.</div>`}},
+
+  // ===== 한국 경제 추가 =====
+  { icon:"🇰🇷", title:"코리아 디스카운트", category:"korea", desc:"한국 주식이 글로벌 대비 저평가받는 현상", color:"red", level:"중급", levelClass:"tag-korea",
+    detail:{title:"코리아 디스카운트란?",body:`<p>원인: 지배구조 불투명, 낮은 주주환원, 북한 리스크, 재벌 구조.<br>코스피 PBR 약 0.9 vs MSCI 선진국 평균 3.0.</p><div class="example">💡 이재명 정부의 '기업 밸류업 프로그램(2024~)': 자사주 소각·배당 확대 유도. 코스피 PBR 1.5배 목표.</div>`}},
+  { icon:"👴", title:"인구 고령화", category:"korea", desc:"출생률 하락+기대수명 증가로 노인 비중이 늘어나는 현상", color:"red", level:"초급", levelClass:"tag-korea",
+    detail:{title:"인구 고령화란?",body:`<p>한국 합계출산율 0.72(2023년, 세계 최저). 2025년 초고령사회 진입(노인 20%).<br>생산가능인구 감소 → 잠재성장률 하락 → 연금·복지 부담 증가.</p><div class="example">💡 한국 국민연금 고갈 예상: 2055년(현행 유지 시). 연금개혁 논의가 시급하지만 정치적으로 매우 어려운 과제.</div>`}},
+  { icon:"📱", title:"반도체 산업", category:"korea", desc:"한국 수출의 20%를 차지하는 핵심 산업. 삼성·SK하이닉스가 세계 1·2위", color:"yellow", level:"초급", levelClass:"tag-korea",
+    detail:{title:"한국 반도체 산업이란?",body:`<p>D램 세계시장 점유율 약 70%(삼성+SK하이닉스). NAND 약 45%.<br>HBM(고대역폭메모리)이 AI 시대 핵심 부품으로 급부상.</p><div class="example">💡 AI 붐으로 HBM 수요 폭증 → 2024년 SK하이닉스 역대 최대 실적. 엔비디아의 HBM 파트너로 부상.</div>`}},
+  { icon:"🏘️", title:"가계부채", category:"korea", desc:"한국 가계의 부채 총액. GDP 대비 100% 이상으로 세계 최고 수준", color:"red", level:"중급", levelClass:"tag-korea",
+    detail:{title:"가계부채란?",body:`<p>한국 가계부채 2,000조 원 이상(GDP 대비 약 100%). OECD 최고 수준.<br>주택담보대출이 대부분. 금리 1% 인상 = 연간 이자 부담 20조 원 증가.</p><div class="example">💡 2022년 금리 3% 급등 → 영끌족 이자 급증 → 부동산 거래 급감. 가계부채가 한국의 금리 인상을 제약하는 구조적 문제.</div>`}},
+  { icon:"🏭", title:"현대자동차그룹", category:"korea", desc:"글로벌 전기차 시장에서 급성장 중인 한국 대표 자동차 기업", color:"blue", level:"초급", levelClass:"tag-korea",
+    detail:{title:"현대차그룹이란?",body:`<p>현대차+기아+제네시스. 2023년 글로벌 판매 3위(730만 대).<br>아이오닉5·EV6 등 전기차로 빠른 전환. 미국 조지아 전기차 공장 건설.</p><div class="example">💡 기아 EV6가 2022년 '세계 올해의 차' 수상. 아이오닉5 북미·유럽서 호평. 테슬라를 위협하는 강자로 성장.</div>`}},
+  { icon:"💵", title:"원화 약세 (환율 상승)", category:"korea", desc:"달러 대비 원화 가치가 떨어지는 것. 수출 유리, 수입 물가 상승", color:"yellow", level:"초급", levelClass:"tag-korea",
+    detail:{title:"원화 약세란?",body:`<p>원/달러 환율 상승 = 원화 약세 = 달러 강세.<br>수출기업 이익↑(같은 달러 수익이 원화로 더 많아짐) / 수입 물가↑(원유·식품 비용 증가).</p><div class="example">💡 환율이 1,200원 → 1,400원으로 오르면: 삼성전자 1달러 수익이 200원 더 늘어남. 반면 원유 수입비용도 동일 비율 증가.</div>`}},
+
+  // ===== 무역·환율 추가 =====
+  { icon:"⚓", title:"환헤지 (FX Hedge)", category:"trade", desc:"환율 변동 위험을 줄이기 위해 선물·옵션으로 미래 환율을 고정하는 것", color:"blue", level:"중급", levelClass:"tag-market",
+    detail:{title:"환헤지란?",body:`<p>3개월 후 달러 수입이 예정된 기업 → 달러 선물 매도로 환율 고정.<br>헤지 비용이 발생하지만 환율 변동 불확실성 제거.</p><div class="example">💡 한국 기업들은 수출 대금의 50~70%를 환헤지. 항공사는 원유 선물로 연료비+달러 결제 이중 헤지.</div>`}},
+  { icon:"🚢", title:"무역수지 (Trade Balance)", category:"trade", desc:"수출액에서 수입액을 뺀 값. 흑자면 경상수지 개선", color:"green", level:"입문", levelClass:"tag-beginner",
+    detail:{title:"무역수지란?",body:`<p>무역수지 흑자 = 수출 > 수입 = 외화 유입 = 원화 강세 압력<br>무역수지 적자 = 수입 > 수출 = 외화 유출 = 원화 약세 압력</p><div class="example">💡 한국 2022년 무역적자 472억 달러(역대 최대). 에너지 수입 급증이 원인. 2023년부터 반도체 수출 회복으로 흑자 전환.</div>`}},
+  { icon:"🌐", title:"경상수지 (Current Account)", category:"trade", desc:"무역수지+서비스수지+소득수지의 합. 국가 대외 경제력의 종합 지표", color:"green", level:"중급", levelClass:"tag-beginner",
+    detail:{title:"경상수지란?",body:`<p>경상수지 흑자: 외국에서 돈이 들어옴 → 외채 없이 투자 가능.<br>한국은 1998년 IMF 이후 경상수지 흑자 기조 유지(연 300~900억 달러).</p><div class="example">💡 일본: 경상수지 흑자국이지만 무역수지 적자(에너지 수입 많음). 서비스·투자소득 수지 흑자가 보완.</div>`}},
+  { icon:"📦", title:"관세 (Tariff)", category:"trade", desc:"수입품에 부과하는 세금. 자국 산업 보호 목적", color:"yellow", level:"입문", levelClass:"tag-beginner",
+    detail:{title:"관세란?",body:`<p>관세↑ → 수입품 가격↑ → 국내 소비자 부담↑ / 국내 산업 보호.<br>보복관세 → 무역전쟁 → 글로벌 교역 위축.</p><div class="example">💡 트럼프 2.0 관세(2025~): 중국 145%, 전 세계 10% 기본관세. 한국 자동차·철강 수출에도 영향. 인플레이션 재발 우려.</div>`}},
+  { icon:"🤝", title:"FTA (자유무역협정)", category:"trade", desc:"두 나라 이상이 관세를 낮추거나 없애는 협정", color:"green", level:"입문", levelClass:"tag-beginner",
+    detail:{title:"FTA란?",body:`<p>Free Trade Agreement: 한국은 59개국과 FTA 체결(2024년). 미국·EU·중국·아세안 포함.<br>FTA 체결 → 수출 확대 but 일부 국내 산업 경쟁 압박.</p><div class="example">💡 한미FTA(2012년 발효) 이후 한국 대미 수출 2배 증가. 자동차·반도체 수혜, 농축산업은 타격.</div>`}},
+  { icon:"🚫", title:"덤핑 (Dumping)", category:"trade", desc:"원가 이하로 수출해 시장을 장악하는 불공정 무역 행위", color:"red", level:"중급", levelClass:"tag-global",
+    detail:{title:"덤핑이란?",body:`<p>자국 내 판매가보다 싸게 수출 → 상대국 산업 타격 → WTO 규정 위반.<br>반덤핑관세(AD)로 대응 가능.</p><div class="example">💡 중국산 태양광 패널 덤핑 → 미국·EU 반덤핑관세 부과. 2024년 중국 전기차에 EU 38% 추가 관세 부과.</div>`}},
+  { icon:"🌊", title:"환율 전쟁 (Currency War)", category:"trade", desc:"각국이 경쟁적으로 자국 통화를 절하해 수출 경쟁력을 높이려는 현상", color:"red", level:"중급", levelClass:"tag-global",
+    detail:{title:"환율 전쟁이란?",body:`<p>자국 통화 약세 → 수출품 가격 경쟁력↑ → 상대국도 통화 절하 → 모두 손해.<br>2010년대 일본 아베노믹스, 2019년 미-중 환율 갈등이 대표 사례.</p><div class="example">💡 일본 엔저 정책 → 한국 수출기업 가격 경쟁력 압박. 한국 정부의 환율 개입(구두 개입 등) 배경.</div>`}},
+  { icon:"📊", title:"PPP (구매력평가)", category:"trade", desc:"같은 상품이 나라마다 같은 가격이어야 한다는 이론. 실질 경제력 비교에 활용", color:"blue", level:"중급", levelClass:"tag-global",
+    detail:{title:"PPP란?",body:`<p>Purchasing Power Parity: 빅맥 하나가 미국에서 5달러, 한국에서 4,500원이면 환율은 900원/달러여야 한다는 이론.<br>실제 환율보다 정확한 국가 간 생활수준 비교 가능.</p><div class="example">💡 GDP PPP 기준: 중국이 이미 미국을 초과. 명목GDP로는 미국이 아직 1위. 이머징 국가 실질 경제력이 더 크게 나옵니다.</div>`}},
+
+  // ===== 세계기관 추가 =====
+  { icon:"🌐", title:"WTO (세계무역기구)", category:"institution", desc:"국제 무역 규칙을 정하고 분쟁을 조정하는 국제기구", color:"blue", level:"초급", levelClass:"tag-global",
+    detail:{title:"WTO란?",body:`<p>World Trade Organization: 1995년 출범. 164개국 회원.<br>분쟁해결기구(DSB)를 통해 무역 분쟁 중재. 최혜국 대우·내국민 대우가 핵심 원칙.</p><div class="example">💡 미-중 무역전쟁으로 WTO의 분쟁해결 기능이 약화됨. 2019년 트럼프가 WTO 상소기구 마비시킴.</div>`}},
+  { icon:"💰", title:"IMF (국제통화기금)", category:"institution", desc:"국가 외환 위기 시 구제금융을 제공하는 국제기구. '마지막 대부자'", color:"blue", level:"초급", levelClass:"tag-global",
+    detail:{title:"IMF란?",body:`<p>International Monetary Fund: 190개국 회원. 긴축 조건부 구제금융 제공.<br>출자 비율에 따라 투표권 배분. 미국이 최대 주주(17.4%).</p><div class="example">💡 한국 1997년 IMF 구제금융 550억 달러. 조건: 기업 구조조정, 노동시장 유연화, 금리 인상. 3년 만에 전액 상환.</div>`}},
+  { icon:"🏦", title:"세계은행 (World Bank)", category:"institution", desc:"개발도상국 개발 지원을 위한 대출·보조금 제공 국제기구", color:"blue", level:"초급", levelClass:"tag-global",
+    detail:{title:"세계은행이란?",body:`<p>IBRD(국제부흥개발은행)와 IDA(국제개발협회)가 핵심 기관.<br>교육·보건·인프라 등 빈곤 감소 프로젝트 자금 지원.</p><div class="example">💡 한국도 1970~90년대 세계은행 차관으로 경부고속도로·산업단지 건설. 이제는 공여국으로 전환.</div>`}},
+  { icon:"🌍", title:"G20 (주요 20개국)", category:"institution", desc:"세계 GDP의 85%를 차지하는 20개국 정상회의체", color:"blue", level:"초급", levelClass:"tag-global",
+    detail:{title:"G20이란?",body:`<p>미국·중국·일본·독일·한국 등 19개국 + EU. 매년 정상회의.<br>글로벌 금융규제, 무역, 기후변화, 디지털세 등 논의.</p><div class="example">💡 2008년 금융위기 후 G20이 G7보다 중요해짐. 2023년 인도 G20 정상회의에서 아프리카연합 합류.</div>`}},
+  { icon:"📊", title:"OECD (경제협력개발기구)", category:"institution", desc:"선진국 38개국의 경제정책 협력 기구. '선진국 클럽'", color:"blue", level:"초급", levelClass:"tag-global",
+    detail:{title:"OECD란?",body:`<p>Organisation for Economic Co-operation and Development: 1961년 설립.<br>한국은 1996년 가입. 통계·정책 연구·권고 역할.</p><div class="example">💡 OECD 국가들의 평균 GDP 대비 사회복지 지출 약 20%. 한국은 12% 수준으로 OECD 최하위권.</div>`}},
+  { icon:"⚡", title:"AIIB (아시아인프라투자은행)", category:"institution", desc:"중국 주도로 설립된 아시아 인프라 개발 지원 국제기구", color:"yellow", level:"중급", levelClass:"tag-global",
+    detail:{title:"AIIB란?",body:`<p>Asian Infrastructure Investment Bank: 2016년 설립. 100개국 이상 회원.<br>중국이 최대 주주(26.6%). 세계은행·ADB의 경쟁 기관으로 미국·일본은 불참.</p><div class="example">💡 중국의 일대일로(BRI) 정책과 연계. 아시아 에너지·교통·통신 인프라에 수천억 달러 투자.</div>`}},
+
+  // ===== 가상자산 추가 =====
+  { icon:"₿", title:"비트코인 (Bitcoin)", category:"crypto", desc:"2009년 사토시 나카모토가 만든 세계 최초의 암호화폐", color:"yellow", level:"입문", levelClass:"tag-global",
+    detail:{title:"비트코인이란?",body:`<p>총 발행량 2,100만 개로 제한. 4년마다 반감기(채굴 보상 반감).<br>디지털 금으로 불림. 기관투자자 ETF 승인(2024년)으로 주류 자산화.</p><div class="example">💡 2024년 1월 비트코인 현물 ETF 미국 승인 → 10개월 만에 운용자산 1,000억 달러 돌파. 최고가 100,000달러 돌파.</div>`}},
+  { icon:"🔷", title:"이더리움 (Ethereum)", category:"crypto", desc:"스마트 계약 기능이 있는 2세대 블록체인. 탈중앙 앱의 기반", color:"blue", level:"중급", levelClass:"tag-global",
+    detail:{title:"이더리움이란?",body:`<p>Vitalik Buterin이 2015년 출시. 스마트 계약으로 DeFi·NFT·DAO 가능.<br>2022년 지분증명(PoS)으로 전환해 에너지 소비 99.9% 감소.</p><div class="example">💡 이더리움 현물 ETF 2024년 승인. 전 세계 DeFi 총예치금(TVL)의 약 60%가 이더리움 기반.</div>`}},
+  { icon:"🔗", title:"블록체인 (Blockchain)", category:"crypto", desc:"거래 내역을 블록으로 연결해 분산 저장하는 기술. 위·변조 불가능", color:"blue", level:"초급", levelClass:"tag-global",
+    detail:{title:"블록체인이란?",body:`<p>모든 거래가 수천 개 노드에 동시 기록 → 중앙 서버 없이 신뢰 가능.<br>퍼블릭(비트코인·이더리움) vs 프라이빗(기업용) 블록체인.</p><div class="example">💡 비자카드의 초당 거래 24,000건 vs 비트코인 7건. 확장성(Scalability) 문제가 블록체인의 가장 큰 도전.</div>`}},
+  { icon:"🏦", title:"DeFi (탈중앙금융)", category:"crypto", desc:"은행·증권사 없이 블록체인으로 금융 서비스를 제공하는 시스템", color:"blue", level:"중급", levelClass:"tag-global",
+    detail:{title:"DeFi란?",body:`<p>Decentralized Finance: 스마트 계약으로 대출·예금·거래를 자동화.<br>Uniswap(탈중앙거래소), Aave(대출), Compound(예금) 등.</p><div class="example">💡 2021년 DeFi 총예치금 2,000억 달러 돌파. 하지만 해킹·스캠·규제 불확실성으로 2022년 급격히 위축.</div>`}},
+  { icon:"🖼️", title:"NFT (대체불가토큰)", category:"crypto", desc:"블록체인으로 디지털 자산의 소유권을 증명하는 토큰", color:"blue", level:"초급", levelClass:"tag-global",
+    detail:{title:"NFT란?",body:`<p>Non-Fungible Token: 각각이 고유해 교환 불가능. 디지털 예술·게임 아이템·콘텐츠 소유권 증명.<br>2021년 열풍 후 2022~2023년 거래량 99% 폭락.</p><div class="example">💡 Beeple 디지털 아트 6,930만 달러 낙찰(2021년), 원숭이 그림 BAYC 최고가 43만 달러. 현재는 대부분 가치 사실상 0에 수렴.</div>`}},
+  { icon:"🌐", title:"Web3", category:"crypto", desc:"블록체인 기반의 탈중앙화된 인터넷. 플랫폼 대신 사용자가 소유", color:"blue", level:"중급", levelClass:"tag-global",
+    detail:{title:"Web3란?",body:`<p>Web1(읽기) → Web2(읽기+쓰기, 플랫폼 지배) → Web3(읽기+쓰기+소유).<br>데이터 주권을 사용자에게. 하지만 사용 편의성·확장성 숙제.</p><div class="example">💡 Web3 대표 프로젝트: 탈중앙 소셜미디어(Farcaster), 탈중앙 저장소(Filecoin), 탈중앙 자율조직(DAO).</div>`}},
+  { icon:"💛", title:"김치프리미엄", category:"crypto", desc:"한국 암호화폐 거래소의 가격이 해외보다 높은 현상", color:"yellow", level:"초급", levelClass:"tag-korea",
+    detail:{title:"김치프리미엄이란?",body:`<p>원화 해외 송금 규제로 차익거래가 어려워 국내 가격이 더 높음.<br>강세장에서 10~30%까지 벌어지기도 함.</p><div class="example">💡 2021년 비트코인 열풍 때 김치프리미엄 최고 20%. 해외에서 BTC 사서 국내 팔면 수익 — 하지만 외환 규제로 쉽지 않습니다.</div>`}},
+  { icon:"💸", title:"스테이블코인 (Stablecoin)", category:"crypto", desc:"달러 등 법정화폐에 가치를 연동해 가격 변동을 최소화한 암호화폐", color:"green", level:"중급", levelClass:"tag-global",
+    detail:{title:"스테이블코인이란?",body:`<p>USDT(테더), USDC(서클) = 달러 연동. 1코인=1달러 유지.<br>탈중앙 금융의 기축통화 역할. 하지만 발행사 신뢰 의존.</p><div class="example">💡 UST(테라) 2022년 디페깅 → 순식간에 0원 붕괴 → 루나 99.9% 폭락. 알고리즘 스테이블코인의 치명적 위험 사례.</div>`}},
 ];
+
+
+
 
 
 
@@ -1696,6 +1886,22 @@ function searchConcepts(query) {
 }
 
 function buildConcepts() {
+  const gridEl = document.getElementById('conceptGrid');
+  const countEl = document.getElementById('conceptSearchCount');
+  if (!gridEl) return;
+
+  // 검색어·카테고리 없으면 빈 화면
+  if (!currentSearchQuery && currentConceptCategory === 'all') {
+    if (countEl) countEl.textContent = `총 ${CONCEPTS.length}개`;
+    gridEl.innerHTML = `
+      <div style="padding:60px 20px;text-align:center;color:var(--text3);">
+        <div style="font-size:40px;margin-bottom:16px;">🔍</div>
+        <div style="font-size:15px;color:var(--text2);margin-bottom:8px;">경제 용어를 검색하거나<br>카테고리를 선택하세요</div>
+        <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);">총 ${CONCEPTS.length}개 용어 수록</div>
+      </div>`;
+    return;
+  }
+
   let filtered = CONCEPTS;
   if (currentConceptCategory !== 'all') {
     filtered = filtered.filter(c => c.category === currentConceptCategory);
@@ -1707,39 +1913,50 @@ function buildConcepts() {
       (c.detail?.body || '').toLowerCase().includes(currentSearchQuery)
     );
   }
-  const countEl = document.getElementById('conceptSearchCount');
+
   if (countEl) countEl.textContent = `${filtered.length}개`;
 
-  const gridEl = document.getElementById('conceptGrid');
-  if (!gridEl) return;
-  gridEl.innerHTML = filtered.length === 0
-    ? `<div style="padding:40px;text-align:center;color:var(--text2);">검색 결과가 없어요 😅<br><small style="margin-top:8px;display:block;">다른 키워드로 검색해보세요</small></div>`
-    : filtered.map(c => {
-        const realIndex = CONCEPTS.indexOf(c);
-        const highlight = (text) => currentSearchQuery
-          ? text.replace(new RegExp(`(${currentSearchQuery})`, 'gi'), '<mark style="background:rgba(240,180,41,.3);color:inherit;border-radius:2px;">$1</mark>')
-          : text;
-        return `
-          <div class="concept-card ${c.color}" onclick="openConcept(${realIndex})">
-            <div class="concept-icon">${c.icon}</div>
-            <div class="concept-title">${highlight(c.title)}</div>
-            <div class="concept-desc">${highlight(c.desc)}</div>
-            <span class="tag ${c.levelClass} concept-level">${c.level}</span>
-          </div>`;
-      }).join('');
+  if (filtered.length === 0) {
+    gridEl.innerHTML = `<div style="padding:40px;text-align:center;color:var(--text2);">검색 결과가 없어요 😅<br><small style="margin-top:8px;display:block;">다른 키워드로 검색해보세요</small></div>`;
+    return;
+  }
+
+  const hl = (text) => currentSearchQuery
+    ? text.replace(new RegExp(`(${currentSearchQuery})`, 'gi'), '<mark style="background:rgba(201,168,76,0.3);color:inherit;border-radius:2px;">$1</mark>')
+    : text;
+
+  gridEl.innerHTML = filtered.map(c => {
+    const realIndex = CONCEPTS.indexOf(c);
+    return `
+      <div onclick="openConcept(${realIndex})" style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;cursor:pointer;transition:all .2s;"
+        onmouseover="this.style.borderColor='rgba(201,168,76,0.3)';this.style.background='var(--surface2)'"
+        onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--surface)'">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+          <span style="font-size:16px;">${c.icon}</span>
+          <span style="font-size:15px;font-weight:700;color:var(--text);">${hl(c.title)}</span>
+          <span style="margin-left:auto;font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);white-space:nowrap;">${c.level}</span>
+        </div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.5;padding-left:26px;">${hl(c.desc)}</div>
+      </div>`;
+  }).join('');
 }
 
 let currentConcept = -1;
 
 function openConcept(i) {
   const detail = document.getElementById('conceptDetail');
+  if (!detail) return;
   if (currentConcept === i) {
     detail.classList.remove('open');
     currentConcept = -1;
     return;
   }
   const c = CONCEPTS[i];
-  detail.innerHTML = `<h3>${c.icon} ${c.detail.title}</h3>${c.detail.body}`;
+  if (!c?.detail) return;
+  detail.innerHTML = `
+    <h3>${c.icon} ${c.detail.title}</h3>
+    <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:1px;margin-bottom:12px;">${c.level} · ${c.category}</div>
+    ${c.detail.body}`;
   detail.classList.add('open');
   currentConcept = i;
   detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -2414,7 +2631,7 @@ self.addEventListener('fetch', e => {
 
 
 // ===================== INIT =====================
-const APP_VERSION = '3.6.0';
+const APP_VERSION = '3.8.0';
 
 function buildHelpFaq() {
   const el = document.getElementById('helpFaq');
