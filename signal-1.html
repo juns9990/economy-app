@@ -445,14 +445,7 @@ input::placeholder{color:var(--text3)}
 
   <!-- HOME PAGE -->
   <div class="page active" id="pageHome">
-    <!-- 홈 상단 검색창 -->
-    <div style="padding:10px 12px 4px;flex-shrink:0">
-      <div class="sbox" style="cursor:pointer" onclick="switchPage('search');setTimeout(()=>document.getElementById('searchInput')?.focus(),100)">
-        <span style="color:var(--text3);font-size:15px">🔍</span>
-        <span style="color:var(--text3);font-size:13px;flex:1">종목명·코드·섹터 검색</span>
-        <span style="font-size:10px;color:var(--text3);background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:2px 7px">탐색</span>
-      </div>
-    </div>
+
     <div class="list-scroll" id="homeList"></div>
     <div class="disc">
       <span style="font-size:14px;flex-shrink:0">⚠️</span>
@@ -2272,6 +2265,14 @@ function cardHTML(s){
     </div>
   </div>
   <div class="sc-sbar"><div class="sc-sbar-f" style="width:${sc}%;background:linear-gradient(90deg,${v.c}30,${v.c}90)"></div></div>
+  ${curPage==="search"?`<div style="padding:0 13px 10px;display:flex;justify-content:flex-end">
+    <button onclick="event.stopPropagation();aiSearch('${s.n}(${s.id})',this)"
+      style="background:rgba(212,168,67,0.08);border:1px solid rgba(212,168,67,0.2);
+      border-radius:7px;color:var(--gold);padding:6px 14px;cursor:pointer;
+      font-size:11px;font-weight:800;transition:all .15s"
+      onmouseenter="this.style.background='rgba(212,168,67,0.18)'"
+      onmouseleave="this.style.background='rgba(212,168,67,0.08)'">✨ AI 분석</button>
+  </div>`:""}
 </div>`;
 }
 
