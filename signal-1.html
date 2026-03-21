@@ -75,27 +75,38 @@ input::placeholder{color:var(--text3)}
   background:var(--gold-bg);border:1px solid var(--gold-br);
   color:var(--gold);border-radius:5px;padding:2px 7px;flex-shrink:0}
 .ver-btn{
-  font-size:9px;color:var(--text3);
-  background:var(--bg3);border:1px solid var(--border);
-  border-radius:5px;padding:3px 8px;cursor:pointer;
-  transition:color .15s;flex-shrink:0;white-space:nowrap}
+  font-size:10px;color:var(--gold);
+  background:var(--gold-bg);border:1px solid var(--gold-br);
+  border-radius:6px;padding:4px 10px;cursor:pointer;
+  font-weight:700;letter-spacing:.3px;
+  transition:all .15s;flex-shrink:0;white-space:nowrap}
 .ver-btn:hover{color:var(--gold)}
 
 /* ── 가격 갱신 상태 바 ── */
 .refresh-bar{
-  height:28px;display:flex;align-items:center;padding:0 12px;gap:8px;
-  background:var(--bg);border-bottom:1px solid var(--border2);
-  font-size:10px;flex-shrink:0;overflow:hidden}
+  height:40px;display:flex;align-items:center;padding:0 14px;gap:10px;
+  background:linear-gradient(90deg,rgba(63,185,80,0.12),rgba(13,17,23,0.98));
+  border-bottom:1px solid rgba(63,185,80,0.25);
+  font-size:12px;flex-shrink:0;overflow:hidden;
+  transition:background .4s,border-color .4s}
+.refresh-bar.loading{
+  background:linear-gradient(90deg,rgba(212,168,67,0.12),rgba(13,17,23,0.98));
+  border-bottom:1px solid rgba(212,168,67,0.25)}
+.refresh-bar.fail{
+  background:linear-gradient(90deg,rgba(248,81,73,0.12),rgba(13,17,23,0.98));
+  border-bottom:1px solid rgba(248,81,73,0.25)}
 .refresh-dot{
-  width:6px;height:6px;border-radius:50%;
+  width:8px;height:8px;border-radius:50%;
   background:var(--text3);flex-shrink:0;transition:background .3s}
+.refresh-dot.live{background:var(--green);
+  box-shadow:0 0 8px rgba(63,185,80,.8);185,80,.7);n:background .3s}
 .refresh-dot.live{background:var(--green);
   box-shadow:0 0 5px rgba(63,185,80,.6);animation:pulse 1.5s infinite}
 .refresh-dot.loading{background:var(--amber);animation:pulse .8s infinite}
 .refresh-dot.fail{background:var(--red)}
-#refreshStatus{color:var(--text2);flex:1}
+#refreshStatus{color:var(--text2);flex:1;font-weight:600}
 .refresh-prog{
-  font-size:9px;color:var(--text3);
+  font-size:11px;color:var(--text3);
   font-family:'Space Grotesk',monospace}
 
 /* ── 티커 ── */
@@ -374,16 +385,16 @@ input::placeholder{color:var(--text3)}
       </div>
       <span class="hdr-badge">AI 투자분석</span>
     </div>
-    <button class="ver-btn" id="verStamp" onclick="showVersionLog()">v3.0 · 3/13</button>
+    <button class="ver-btn" id="verStamp" onclick="showVersionLog()">v3.2 · 3/21</button>
     <button onclick="showHelp()" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:rgba(212,168,67,.6);padding:7px 10px;cursor:pointer;font-size:15px;line-height:1;transition:all .15s">❓</button>
     <button id="instBtn" onclick="installApp()" style="background:var(--gold-bg);border:1px solid var(--gold-br);border-radius:7px;color:var(--gold);padding:6px 11px;cursor:pointer;font-size:11px;font-weight:700;letter-spacing:.3px;display:none">＋ 홈 추가</button>
   </div>
   <!-- 실시간 가격 갱신 상태 바 -->
-  <div class="refresh-bar">
+  <div class="refresh-bar" id="rfBar">
     <div class="refresh-dot" id="rfDot"></div>
     <span id="refreshStatus" style="color:var(--text3)">가격 로드 중...</span>
     <span class="refresh-prog" id="rfProg"></span>
-    <button onclick="manualRefresh()" style="font-size:9px;background:transparent;border:1px solid var(--border);border-radius:4px;color:var(--text3);padding:2px 7px;cursor:pointer;transition:all .15s" id="rfManBtn">↻ 갱신</button>
+    <button onclick="manualRefresh()" style="font-size:11px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text2);padding:4px 10px;cursor:pointer;font-weight:600;transition:all .15s;white-space:nowrap" id="rfManBtn">↻ 갱신</button>
   </div>
   <div class="ticker"><div class="ttrack" id="ttrack"></div></div>
 
@@ -397,8 +408,8 @@ input::placeholder{color:var(--text3)}
   </div>
 
   
-  <!-- API 키 설정 바 -->
-  <div id="apikeyBar" class="apikey-bar">
+  <!-- API 키 설정 바 (숨김 - JS로만 표시) -->
+  <div id="apikeyBar" class="apikey-bar" style="display:none">
     <span style="color:var(--red);font-size:13px">🔑</span>
     <span style="color:var(--text2);flex-shrink:0">AI 분석용 API 키</span>
     <input id="apikeyInp" class="apikey-inp" type="password"
@@ -498,75 +509,88 @@ input::placeholder{color:var(--text3)}
       <span class="modal-t">📋 업데이트 로그</span>
       <button onclick="document.getElementById('verModal').classList.remove('open')" style="background:var(--bg3);border:1px solid var(--border2);border-radius:7px;color:var(--text3);padding:6px 10px;cursor:pointer;font-size:16px">×</button>
     </div>
-    <div style="font-size:11px;color:var(--gold);font-weight:800;letter-spacing:1px;margin-bottom:10px">현재: v3.0 · 2026.03.11 최종</div>
+    <div style="font-size:11px;color:var(--gold);font-weight:800;letter-spacing:1px;margin-bottom:12px">현재: v3.2 · 2026.03.21 최신</div>
 
-    <div style="background:rgba(212,168,67,0.06);border:1px solid rgba(212,168,67,0.2);border-radius:12px;padding:12px;margin-bottom:10px">
-      <div style="font-size:12px;font-weight:900;color:var(--gold);margin-bottom:6px">v2.5 — 2026.03.12</div>
-      <div style="font-size:11px;color:var(--text2);line-height:1.9">
+    <!-- v3.2 최신 -->
+    <div style="background:rgba(212,168,67,0.08);border:1.5px solid rgba(212,168,67,0.4);border-radius:12px;padding:14px;margin-bottom:10px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <span style="font-size:12px;font-weight:900;color:var(--gold)">v3.2</span>
+        <span style="font-size:9px;background:var(--gold);color:#07080F;border-radius:4px;padding:1px 6px;font-weight:800">최신</span>
+        <span style="font-size:10px;color:var(--text3);margin-left:auto">2026.03.21</span>
+      </div>
+      <div style="font-size:11px;color:var(--text2);line-height:2.0">
+        ✅ 경량 종목 Yahoo Finance 직접 조회 (API 키 불필요)<br>
+        ✅ 가격갱신 바 — 상태별 색상 (초록/골드/빨강)<br>
+        ✅ API 키 입력바 기본 숨김 (필요시만 표시)<br>
+        ✅ 버전 버튼 골드 색상으로 강조<br>
+        ✅ 갱신 버튼 가시성 개선
+      </div>
+    </div>
+
+    <!-- v3.1 -->
+    <div style="background:rgba(212,168,67,0.04);border:1px solid rgba(212,168,67,0.2);border-radius:12px;padding:12px;margin-bottom:10px">
+      <div style="display:flex;align-items:center;margin-bottom:6px">
+        <span style="font-size:12px;font-weight:900;color:var(--gold)">v3.1</span>
+        <span style="font-size:10px;color:var(--text3);margin-left:auto">2026.03.21</span>
+      </div>
+      <div style="font-size:11px;color:var(--text2);line-height:2.0">
+        ✅ 전일종가 자동갱신 → Yahoo Finance 직접 호출 (CORS 해결)<br>
+        ✅ 상세화면 개요탭 AI 분석 버튼 추가<br>
+        ✅ DB 100개 종목 3/20 전일종가 전면 업데이트<br>
+        ✅ 부채비율 "금융업" 오표시 수정 (섹터 기반 체크)<br>
+        ✅ null 에러 전면 수정
+      </div>
+    </div>
+
+    <!-- v3.0 -->
+    <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:12px;margin-bottom:10px">
+      <div style="display:flex;align-items:center;margin-bottom:6px">
+        <span style="font-size:12px;font-weight:900;color:var(--text)">v3.0</span>
+        <span style="font-size:10px;color:var(--text3);margin-left:auto">2026.03.13</span>
+      </div>
+      <div style="font-size:11px;color:var(--text2);line-height:2.0">
+        ✅ GitHub Dark UI 전면 리디자인<br>
+        ✅ Yahoo Finance 자동 가격 갱신 시스템<br>
+        ✅ 가격 오류 32개 수정 (SK스퀘어·레인보우로보틱스 등)<br>
+        ✅ 상단 가격 갱신 상태 바 추가
+      </div>
+    </div>
+
+    <!-- v2.5 -->
+    <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:12px;margin-bottom:10px">
+      <div style="display:flex;align-items:center;margin-bottom:6px">
+        <span style="font-size:12px;font-weight:900;color:var(--text)">v2.5</span>
+        <span style="font-size:10px;color:var(--text3);margin-left:auto">2026.03.12</span>
+      </div>
+      <div style="font-size:11px;color:var(--text2);line-height:2.0">
         ✅ 재무지표 전면 재교정 (FY2024 실적 기반 100개 종목)<br>
-        ✅ None 깨진 패턴 29개 정리 (per/pbr/roe 오류 수정)<br>
-        ✅ 금융주 부채비율 "-" 처리 (은행 BIS비율 별도 측정)<br>
-        ✅ ind 점수 전면 재계산 (섹터 특성 반영)<br>
-        ✅ AI JSON 파싱 one-shot 전략 적용 (에러 방지)
+        ✅ per/pbr/roe 오류 29개 수정<br>
+        ✅ AI JSON 파싱 one-shot 전략 적용
       </div>
     </div>
 
+    <!-- v2.0~2.4 합산 -->
     <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:12px;margin-bottom:10px">
-      <div style="font-size:12px;font-weight:900;color:var(--text);margin-bottom:6px">v2.4 — 2026.03.11 19:00</div>
-      <div style="font-size:11px;color:var(--text2);line-height:1.9">
-        ✅ AI 분석 속도 대폭 개선 (프롬프트 최적화, max_tokens 400 단축)<br>
-        ✅ 실시간 가격 3병렬 조회 (Promise.all, 기존 순차→동시)<br>
-        ✅ 검색 200ms debounce 적용<br>
-        ✅ 전종목 592개 정적 내장 DB (KRX 동적로드 CORS 오류 해결)<br>
-        ✅ 주요 종목 주가·시총 데이터 전면 재검증<br>
-        ✅ aiSearching 잠금 버그 수정 (분석 실패 시 재시도 가능)<br>
-        ✅ 버전 로그 추가
+      <div style="display:flex;align-items:center;margin-bottom:6px">
+        <span style="font-size:12px;font-weight:900;color:var(--text)">v2.0 ~ v2.4</span>
+        <span style="font-size:10px;color:var(--text3);margin-left:auto">2026.03.10 ~ 11</span>
       </div>
-    </div>
-
-    <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:12px;margin-bottom:10px">
-      <div style="font-size:12px;font-weight:900;color:var(--text);margin-bottom:6px">v2.3 — 2026.03.11 14:00</div>
-      <div style="font-size:11px;color:var(--text2);line-height:1.9">
-        • 100개 종목 verify 데이터 전부 1956~2026 역사 기반으로 교체<br>
-        • 검색 결과 없음 UI 골드 테두리 카드로 강조<br>
-        • DB_LITE 추가 (KRX 전종목 경량 카드)
-      </div>
-    </div>
-
-    <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:12px;margin-bottom:10px">
-      <div style="font-size:12px;font-weight:900;color:var(--text);margin-bottom:6px">v2.2 — 2026.03.11 10:00</div>
-      <div style="font-size:11px;color:var(--text2);line-height:1.9">
-        • 판정모델 40년→70년(1956~2026) 전체 역사 확장<br>
-        • PBR 평균기준 1.1배→0.95배 하향 조정<br>
-        • 도움말 모달 70년 사이클 타임라인 추가<br>
-        • DB 주가 3/13 기준 31개 전면 교정
-      </div>
-    </div>
-
-    <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:12px;margin-bottom:10px">
-      <div style="font-size:12px;font-weight:900;color:var(--text);margin-bottom:6px">v2.1 — 2026.03.11 06:00</div>
-      <div style="font-size:11px;color:var(--text2);line-height:1.9">
-        • 실시간 버튼 CORS 프록시 3단계 구조<br>
-        • AI 검색 후 자동 실시간 가격 호출<br>
-        • 홈화면 관심종목 + 오늘 주목할 10종목 추가
-      </div>
-    </div>
-
-    <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:12px">
-      <div style="font-size:12px;font-weight:900;color:var(--text);margin-bottom:6px">v2.0 — 2026.03.10</div>
-      <div style="font-size:11px;color:var(--text2);line-height:1.9">
-        • 한국주식 전용 앱 리디자인 (골드 테마)<br>
-        • 종목 DB 100개 구성<br>
-        • AI 실시간 분석 (Claude API 연동)<br>
-        • PWA 홈화면 추가 지원
+      <div style="font-size:11px;color:var(--text2);line-height:2.0">
+        ✅ 한국주식 전용 앱 (미국주식·코인 제거)<br>
+        ✅ 종목 DB 100개 + KRX 전종목 592개 경량 DB<br>
+        ✅ AI 실시간 분석 (Claude API 연동)<br>
+        ✅ 판정모델 70년(1956~2026) 역사 확장<br>
+        ✅ PWA 홈화면 추가 · 관심종목 · 실시간 버튼
       </div>
     </div>
 
     <div style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.06);font-size:10px;color:var(--text3);text-align:center">
-      GitHub: juns9990/economy-app · signal-1.html
+      MADE BY JUNS · github.com/juns9990/economy-app
     </div>
   </div>
 </div>
+
+
 
 <!-- Help Modal -->
 <div class="modal-bg" id="helpModal" onclick="if(event.target===this)this.classList.remove('open')">
@@ -680,7 +704,7 @@ const DB = [
 
 // ━━━ 반도체·IT하드웨어 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"005930",n:"삼성전자",s:"반도체",m:"K",
- p:192000,c:2.13,prev:188000,w52h:223000,w52l:94500,
+ p:190350,c:3.73,prev:183500,w52h:223000,w52l:94500,
  cap:"1,143조",per:14.2,pbr:1.48,roe:12.4,debt:28,
  t:["반도체","HBM","AI"],
  ind:{pbr:52,per:54,roe:62,momentum:82,growth:88,sentiment:80,safety:88},
@@ -691,7 +715,7 @@ const DB = [
  verify:{pbr_hist:"코스피 70년 역사 PBR 평균 0.95배. 1997 IMF 최저 0.35배 대비 현 1.42배는 건전 밸류에이션 구간.",per_hist:"장기 PER 밴드 8~15배. 현 12.8배 하단 매수 구간.",backtest:"2008 PBR 0.7배 구간 매수→3년 +180%."}},
 
 {id:"000660",n:"SK하이닉스",s:"반도체",m:"K",
- p:970000,c:-0.41,prev:974000,w52h:1117000,w52l:162700,
+ p:1013000,c:-0.59,prev:1019000,w52h:1099000,w52l:162700,
  cap:"691조",per:16.45,pbr:5.56,roe:32.4,debt:38,
  t:["반도체","HBM","AI독점"],
  ind:{pbr:38,per:74,roe:82,momentum:82,growth:88,sentiment:80,safety:76},
@@ -702,7 +726,7 @@ const DB = [
  verify:{roe_check:"ROE 31% = 코스피 상위 5%. 1956~2026 전체 ROE>25% 구간 3년 수익률 평균 +142%.",per_hist:"PER 8.9배. 메모리 사이클 적정 밴드 7~12배 내.",backtest:"2020 코로나 저점 대비 +340%."}},
 
 {id:"005935",n:"삼성전자우",s:"반도체",m:"K",
- p:104000,c:2.0,prev:102000,w52h:130000,w52l:54000,
+ p:104000,c:2.97,prev:101000,w52h:130000,w52l:54000,
  cap:"6.2조",per:"-",pbr:0.92,roe:9.2,debt:28,
  t:["반도체","우선주","배당"],
  ind:{pbr:66,per:"-",roe:62,momentum:82,growth:88,sentiment:80,safety:88},
@@ -736,7 +760,7 @@ const DB = [
 
 // ━━━ 자동차·부품 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"005380",n:"현대차",s:"자동차",m:"K",
- p:527700,c:4.7,prev:504000,w52h:620000,w52l:260000,
+ p:527700,c:10.23,prev:478700,w52h:620000,w52l:260000,
  cap:"112조",per:5.8,pbr:0.72,roe:13.8,debt:142,
  t:["자동차","EV","저PER"],
  ind:{pbr:78,per:82,roe:72,momentum:65,growth:62,sentiment:62,safety:48},
@@ -747,7 +771,7 @@ const DB = [
  verify:{pbr_hist:"PBR 0.72배. 1980~2026 자동차 역사 평균 0.9배 대비 저평가. 1997 IMF 시 0.25배 최저 기록.",backtest:"PBR<0.8배 코스피 대비 초과수익 +23%p."}},
 
 {id:"000270",n:"기아",s:"자동차",m:"K",
- p:161800,c:4.4,prev:155000,w52h:210000,w52l:78000,
+ p:161800,c:5.2,prev:153800,w52h:210000,w52l:78000,
  cap:"65조",per:4.6,pbr:0.72,roe:15.2,debt:132,
  t:["자동차","EV","가치주"],
  ind:{pbr:78,per:88,roe:72,momentum:65,growth:62,sentiment:62,safety:48},
@@ -781,7 +805,7 @@ const DB = [
 
 // ━━━ 방산·항공우주 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"012450",n:"한화에어로스페이스",s:"방산",m:"K",
- p:1262000,c:-4.7,prev:1324000,w52h:1500000,w52l:580000,
+ p:1325000,c:10.42,prev:1200000,w52h:1500000,w52l:580000,
  cap:"109조",per:22.8,pbr:5.12,roe:22.4,debt:85,
  t:["방산","K방산","NATO"],
  ind:{pbr:26,per:32,roe:82,momentum:80,growth:85,sentiment:75,safety:62},
@@ -815,7 +839,7 @@ const DB = [
 
 // ━━━ 조선·중공업 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"329180",n:"HD현대중공업",s:"조선",m:"K",
- p:637000,c:1.24,prev:629000,w52h:710000,w52l:210000,
+ p:637000,c:1.27,prev:629000,w52h:710000,w52l:210000,
  cap:"42조",per:18.4,pbr:4.12,roe:23.8,debt:102,
  t:["조선","LNG","방산"],
  ind:{pbr:26,per:54,roe:82,momentum:76,growth:82,sentiment:72,safety:48},
@@ -849,7 +873,7 @@ const DB = [
 
 // ━━━ 철강·소재 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"005490",n:"POSCO홀딩스",s:"철강",m:"K",
- p:330000,c:-4.6,prev:346000,w52h:427500,w52l:230000,
+ p:330000,c:-4.62,prev:346000,w52h:427500,w52l:230000,
  cap:"29조",per:48.2,pbr:0.5,roe:2.4,debt:68,
  t:["철강","리튬","배터리소재"],
  ind:{pbr:88,per:66,roe:34,momentum:45,growth:42,sentiment:48,safety:62},
@@ -894,7 +918,7 @@ const DB = [
  verify:{pbr_hist:"PBR 0.22배 = 코스피 역대 최저 수준. 1956년 창립 70년 공기업. 1956~2026 — 전기요금 동결·인상 사이클 반복. 1997 IMF 이후 요금 현실화 때마다 주가 반등. 현재 흑자 전환 진행 중.",backtest:"한전 PBR 저점 후 흑자 전환 시 +120%."}},
 
 {id:"096770",n:"SK이노베이션",s:"에너지/배터리",m:"K",
- p:168000,c:1.8,prev:165000,w52h:200000,w52l:110000,
+ p:168000,c:1.82,prev:165000,w52h:200000,w52l:110000,
  cap:"15.5조",per:8.8,pbr:0.62,roe:7.2,debt:68,
  t:["배터리","정유","SK온"],
  ind:{pbr:78,per:74,roe:48,momentum:55,growth:52,sentiment:52,safety:62},
@@ -984,7 +1008,7 @@ const DB = [
 
 // ━━━ IT플랫폼·통신 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"035420",n:"NAVER",s:"IT플랫폼",m:"K",
- p:230000,c:2.2,prev:225000,w52h:280000,w52l:160000,
+ p:230000,c:2.22,prev:225000,w52h:280000,w52l:160000,
  cap:"38조",per:28.4,pbr:1.72,roe:6.2,debt:28,
  t:["플랫폼","AI","광고"],
  ind:{pbr:52,per:32,roe:48,momentum:55,growth:58,sentiment:52,safety:88},
@@ -1029,7 +1053,7 @@ const DB = [
 
 // ━━━ 바이오·제약 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"207940",n:"삼성바이오로직스",s:"바이오",m:"K",
- p:1900000,c:3.8,prev:1830000,w52h:2200000,w52l:800000,
+ p:1900000,c:3.83,prev:1830000,w52h:2200000,w52l:800000,
  cap:"240조",per:52.4,pbr:6.8,roe:12.4,debt:45,
  t:["바이오","CDMO","성장주"],
  ind:{pbr:18,per:22,roe:72,momentum:60,growth:65,sentiment:58,safety:76},
@@ -1085,7 +1109,7 @@ const DB = [
 
 // ━━━ 2차전지 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {id:"373220",n:"LG에너지솔루션",s:"2차전지",m:"K",
- p:364500,c:1.3,prev:360000,w52h:510000,w52l:178000,
+ p:364500,c:1.25,prev:360000,w52h:510000,w52l:178000,
  cap:"85조",per:"-",pbr:2.12,roe:"-",debt:72,
  t:["배터리","EV","IRA"],
  ind:{pbr:38,per:22,roe:48,momentum:35,growth:40,sentiment:35,safety:62},
@@ -2315,168 +2339,157 @@ async function fetchLitePrices(ids){
 
 // 종목코드로 AI 분석 실행 (DB_LITE 카드 클릭 시)
 async function aiSearchById(id, name, sector, market) {
-  const el=document.getElementById("searchList");
-  if(el) el.innerHTML=`
-    <div style="text-align:center;padding:50px 20px">
-      <div style="font-size:36px;margin-bottom:14px">⏳</div>
-      <div style="color:var(--gold);font-weight:900;font-size:15px;margin-bottom:6px">${name}</div>
-      <div style="color:var(--text3);font-size:11px">데이터 조회 중... (5~10초 소요)</div>
-    </div>`;
+  const el = document.getElementById("searchList");
+  if(!el) return;
+  const sfx = market==="K" ? ".KS" : ".KQ";
 
-  const sfx=market==="K"?".KS":".KQ";
+  // ── 로딩 표시 ──────────────────────────────────────────────
+  el.innerHTML=`<div style="text-align:center;padding:50px 20px">
+    <div style="font-size:36px;margin-bottom:14px">📡</div>
+    <div style="color:var(--gold);font-weight:900;font-size:15px;margin-bottom:8px">${name}</div>
+    <div style="color:var(--text3);font-size:11px;line-height:1.8">
+      실시간 데이터 조회 중...<br>
+      <span style="font-size:10px;opacity:.5">(Yahoo Finance)</span>
+    </div>
+  </div>`;
+
   let p=0,chg=0,prev=0,w52h=0,w52l=0,cap="-";
   let per="-",pbr="-",roe="-",debt="-";
+  let dataOk = false;
 
-  // ── ① Yahoo Finance — 가격+52주+시총 ─────────────────────
-  try{
-    const r=await fetch(
-      `https://query2.finance.yahoo.com/v8/finance/chart/${id}${sfx}?interval=1d&range=5d`,
-      {signal:AbortSignal.timeout(9000)});
-    if(r.ok){
-      const d=await r.json();
-      const m=d?.chart?.result?.[0]?.meta;
-      if(m&&m.regularMarketPrice>0){
-        p    =Math.round(m.regularMarketPrice);
-        prev =Math.round(m.chartPreviousClose||m.previousClose||p);
-        chg  =prev>0?Math.round((p-prev)/prev*1000)/10:0;
-        w52h =Math.round(m.fiftyTwoWeekHigh||p*1.4);
-        w52l =Math.round(m.fiftyTwoWeekLow||p*0.7);
-        const mc=m.marketCap;
-        if(mc) cap=mc>=1e12?(mc/1e12).toFixed(1)+"조":Math.round(mc/1e8)+"억";
-      }
-    }
-  }catch(_){}
+  // ── Yahoo Finance — query1 → query2 순서로 시도 ─────────────
+  // v7 quote: 가격·시총·PER·PBR (CORS 없음, 브라우저 직접 호출)
+  for(const host of ["query1","query2"]){
+    try{
+      const r = await fetch(
+        `https://${host}.finance.yahoo.com/v7/finance/quote?symbols=${id}${sfx}`+
+        `&fields=regularMarketPrice,regularMarketPreviousClose,`+
+        `regularMarketChangePercent,fiftyTwoWeekHigh,fiftyTwoWeekLow,`+
+        `marketCap,trailingPE,priceToBook,trailingAnnualDividendRate`,
+        {signal:AbortSignal.timeout(8000), headers:{"Accept":"application/json"}}
+      );
+      if(!r.ok) continue;
+      const d = await r.json();
+      const item = d?.quoteResponse?.result?.[0];
+      if(!item) continue;
+      p    = Math.round(item.regularMarketPrice||0);
+      prev = Math.round(item.regularMarketPreviousClose||p);
+      chg  = Math.round((item.regularMarketChangePercent||0)*10)/10;
+      w52h = Math.round(item.fiftyTwoWeekHigh||p*1.35);
+      w52l = Math.round(item.fiftyTwoWeekLow ||p*0.65);
+      const mc = item.marketCap||0;
+      if(mc) cap = mc>=1e12?(mc/1e12).toFixed(1)+"조":Math.round(mc/1e8)+"억";
+      const pe = item.trailingPE||0;
+      const pb = item.priceToBook||0;
+      if(pe>0&&pe<9999) per = Math.round(pe*10)/10;
+      if(pb>0&&pb<999)  pbr = Math.round(pb*100)/100;
+      if(p>0){ dataOk=true; break; }
+    }catch(_){}
+  }
 
-  // ── ② Yahoo Finance quoteSummary — PER·PBR·ROE·부채 ──────
-  try{
-    const r=await fetch(
-      `https://query2.finance.yahoo.com/v10/finance/quoteSummary/${id}${sfx}`+
-      `?modules=financialData,summaryDetail,defaultKeyStatistics`,
-      {signal:AbortSignal.timeout(9000)});
-    if(r.ok){
-      const d=await r.json();
-      const fd=d?.quoteSummary?.result?.[0]?.financialData||{};
-      const sd=d?.quoteSummary?.result?.[0]?.summaryDetail||{};
-      const ks=d?.quoteSummary?.result?.[0]?.defaultKeyStatistics||{};
-      const pe=sd.trailingPE?.raw||sd.forwardPE?.raw||ks.forwardPE?.raw||0;
-      if(pe>0&&pe<9999) per=Math.round(pe*10)/10;
-      const pb=ks.priceToBook?.raw||0;
-      if(pb>0&&pb<999) pbr=Math.round(pb*100)/100;
-      const rr=fd.returnOnEquity?.raw||0;
-      if(rr!==0) roe=Math.round(rr*1000)/10;
-      const dr=fd.debtToEquity?.raw||0;
-      if(dr>0) debt=Math.round(dr*10)/10;
-    }
-  }catch(_){}
-
-  // ── ③ 네이버 API — Yahoo 실패시 가격 fallback ─────────────
-  if(p<100){
-    const naverUrl=`https://m.stock.naver.com/api/stock/${id}/basic`;
-    for(const base of [
-      `https://api.allorigins.win/raw?url=`,
-      `https://corsproxy.io/?`
-    ]){
+  // ── quoteSummary — ROE·부채비율 추가 조회 ──────────────────
+  if(p>0){
+    for(const host of ["query1","query2"]){
       try{
-        const r=await fetch(base+encodeURIComponent(naverUrl),
-          {signal:AbortSignal.timeout(9000)});
+        const r = await fetch(
+          `https://${host}.finance.yahoo.com/v10/finance/quoteSummary/${id}${sfx}`+
+          `?modules=financialData,defaultKeyStatistics`,
+          {signal:AbortSignal.timeout(8000), headers:{"Accept":"application/json"}}
+        );
         if(!r.ok) continue;
-        const raw=await r.text();
-        const d=JSON.parse(raw);
-        // closePrice 다양한 경로 시도
-        const cp=d.closePrice
-          ||d.stockItemTotal?.closePrice
-          ||d.dealPrice
-          ||d.currentPrice
-          ||'0';
-        const pp=parseInt(String(cp).replace(/[^0-9]/g,'')||'0');
-        if(pp<10) continue;
-        p=pp;
-        const diff=parseFloat(String(d.compareToPreviousClosePrice||'0').replace(/[^0-9.\-]/g,''))||0;
-        prev=Math.round(p-diff); if(prev<1) prev=p;
-        chg=parseFloat(String(d.fluctuationsRatio||d.changeRate||'0').replace(/[^0-9.\-]/g,''))||0;
-        const mc=parseInt(String(d.marketValue||d.stockItemTotal?.marketValue||'0').replace(/[^0-9]/g,''));
-        if(mc>0) cap=mc>=1e12?(mc/1e12).toFixed(1)+"조":Math.round(mc/1e8)+"억";
-        // 네이버 PER/PBR (Yahoo 못 가져왔을 때)
+        const d = await r.json();
+        const fd = d?.quoteSummary?.result?.[0]?.financialData||{};
+        const ks = d?.quoteSummary?.result?.[0]?.defaultKeyStatistics||{};
+        const rr = fd.returnOnEquity?.raw||0;
+        if(rr!==0) roe = Math.round(rr*1000)/10;
+        const dr = fd.debtToEquity?.raw||0;
+        if(dr>0)   debt = Math.round(dr*10)/10;
+        // PER/PBR 보완
         if(per==="-"){
-          const pn=parseFloat(String(d.per||d.priceEarningsRatio||'').replace(/[^0-9.]/g,''));
-          if(!isNaN(pn)&&pn>0&&pn<9999) per=Math.round(pn*10)/10;
+          const pe2=(ks.forwardPE?.raw||0);
+          if(pe2>0&&pe2<9999) per=Math.round(pe2*10)/10;
         }
         if(pbr==="-"){
-          const bn=parseFloat(String(d.pbr||d.priceBookValueRatio||'').replace(/[^0-9.]/g,''));
-          if(!isNaN(bn)&&bn>0&&bn<999) pbr=Math.round(bn*100)/100;
+          const pb2=(ks.priceToBook?.raw||0);
+          if(pb2>0&&pb2<999) pbr=Math.round(pb2*100)/100;
         }
         break;
       }catch(_){}
     }
   }
 
-  // ── ④ 네이버 integration API — 52주 + 추가지표 ───────────
+  // ── 52주 보정 ────────────────────────────────────────────────
   if(p>0){
-    try{
-      const r=await fetch(
-        `https://api.allorigins.win/raw?url=`+
-        encodeURIComponent(`https://m.stock.naver.com/api/stock/${id}/integration`),
-        {signal:AbortSignal.timeout(7000)});
-      if(r.ok){
-        const d2=JSON.parse(await r.text());
-        const infos=d2.totalInfos||d2.stockInfos||[];
-        for(const x of infos){
-          const lbl=String(x.key||x.label||'');
-          const val=String(x.value||'').replace(/,/g,'');
-          if(lbl.includes('52주최고')||lbl.includes('년최고')){
-            const hh=parseInt(val); if(hh>0) w52h=hh;
-          }
-          if(lbl.includes('52주최저')||lbl.includes('년최저')){
-            const ll=parseInt(val); if(ll>0) w52l=ll;
-          }
-          if(roe==="-"&&(lbl.includes('ROE')||lbl.includes('자기자본이익'))){
-            const rr=parseFloat(val.replace(/[^0-9.\-]/g,'')); if(!isNaN(rr)) roe=rr;
-          }
-          if(debt==="-"&&lbl.includes('부채비율')){
-            const dr=parseFloat(val); if(!isNaN(dr)&&dr>0) debt=Math.round(dr*10)/10;
-          }
-        }
-      }
-    }catch(_){}
+    if(w52h<p) w52h=Math.round(p*1.3);
+    if(w52l<1||w52l>p) w52l=Math.round(p*0.7);
   }
 
-  // 52주 보정
-  if(p>0){
-    if(w52h<p) w52h=Math.round(p*1.35);
-    if(w52l<1||w52l>p) w52l=Math.round(p*0.65);
+  // ── 데이터 조회 실패 → 안내 카드 ───────────────────────────
+  if(!dataOk || p<100){
+    const mBadge = market==="K"
+      ?`<span style="font-size:9px;background:rgba(59,130,246,0.15);color:#60A5FA;border:1px solid rgba(59,130,246,0.3);border-radius:4px;padding:1px 5px">KOSPI</span>`
+      :`<span style="font-size:9px;background:rgba(139,92,246,0.15);color:#A78BFA;border:1px solid rgba(139,92,246,0.3);border-radius:4px;padding:1px 5px">KOSDAQ</span>`;
+    el.innerHTML=`
+    <div style="margin:4px 2px;border-radius:16px;background:var(--bg2);border:1px solid var(--border);overflow:hidden">
+      <div style="padding:18px;border-bottom:1px solid var(--border2)">
+        <div style="font-size:18px;font-weight:900;color:var(--text);margin-bottom:4px">${name} ${mBadge}</div>
+        <div style="font-size:11px;color:var(--text3)">${id} · ${sector}</div>
+      </div>
+      <div style="padding:16px 18px">
+        <div style="font-size:12px;color:var(--text2);line-height:1.8;margin-bottom:14px">
+          📡 데이터 조회 실패. 네이버/다음 증권에서 직접 확인하세요.
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <a href="https://finance.naver.com/item/main.naver?code=${id}" target="_blank"
+            style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;text-decoration:none">
+            <span style="font-size:18px">📊</span>
+            <div>
+              <div style="font-size:12px;font-weight:700;color:var(--text)">네이버 증권</div>
+              <div style="font-size:10px;color:var(--text3)">현재가·재무지표·차트</div>
+            </div>
+            <span style="margin-left:auto;color:var(--text3)">→</span>
+          </a>
+          <a href="https://finance.daum.net/quotes/A${id}" target="_blank"
+            style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;text-decoration:none">
+            <span style="font-size:18px">📈</span>
+            <div>
+              <div style="font-size:12px;font-weight:700;color:var(--text)">다음 증권</div>
+              <div style="font-size:10px;color:var(--text3)">종목 상세 정보</div>
+            </div>
+            <span style="margin-left:auto;color:var(--text3)">→</span>
+          </a>
+        </div>
+      </div>
+    </div>`;
+    return;
   }
 
-  LITE_PRICE_CACHE[id]={p,c:chg};
+  // ── ind 점수 추론 ────────────────────────────────────────────
+  const pos52 = w52h>w52l?Math.round((p-w52l)/(w52h-w52l)*100):50;
+  const perSc  = typeof per ==="number"?(per<8?88:per<15?72:per<25?56:per<40?40:24):50;
+  const pbrSc  = typeof pbr ==="number"?(pbr<.5?90:pbr<1?76:pbr<2?60:pbr<4?44:28):50;
+  const roeSc  = typeof roe ==="number"?(roe>25?88:roe>15?74:roe>8?60:roe>3?44:28):50;
+  const dbtSc  = typeof debt==="number"?(debt<50?85:debt<100?70:debt<200?52:debt<400?36:22):55;
+  const momSc  = pos52>80?34:pos52>60?54:pos52>40?65:pos52>20?74:82;
+  const ind    = {pbr:pbrSc,per:perSc,roe:roeSc,momentum:momSc,growth:50,sentiment:55,safety:dbtSc};
 
-  // ── ind 점수 추론 ──────────────────────────────────────────
-  const pos52=(w52h>w52l&&p>0)?Math.round((p-w52l)/(w52h-w52l)*100):50;
-  const perScore=typeof per==="number"?(per<8?88:per<15?72:per<25?56:per<40?40:24):50;
-  const pbrScore=typeof pbr==="number"?(pbr<0.5?90:pbr<1?76:pbr<2?60:pbr<4?44:28):50;
-  const roeScore=typeof roe==="number"?(roe>25?88:roe>15?74:roe>8?60:roe>3?44:28):50;
-  const debtScore=typeof debt==="number"?(debt<50?85:debt<100?70:debt<200?52:debt<400?36:22):55;
-  const momScore=pos52>80?34:pos52>60?54:pos52>40?65:pos52>20?74:82;
-  const ind={pbr:pbrScore,per:perScore,roe:roeScore,
-             momentum:momScore,growth:50,sentiment:55,safety:debtScore};
-
-  // ── stock 객체 생성 ────────────────────────────────────────
-  const dataOk=p>0;
-  const stock={
-    id,n:name,s:sector,m:market,
-    p,c:chg,prev:prev||p,w52h,w52l,cap,
-    per,pbr,roe,debt,
-    t:[sector],ind,
-    sum:dataOk
-      ?`${name}(${id}) · ${sector} · ${market==="K"?"KOSPI":"KOSDAQ"}. 실시간 데이터 기반 분석. 시가총액 ${cap}.`
-      :`${name}(${id}) · ${sector} · ${market==="K"?"KOSPI":"KOSDAQ"}. 데이터 조회 실패 — AI 분석으로 상세 정보를 확인하세요.`,
-    bull:dataOk?"실시간 재무 데이터 기반. AI 분석으로 심층 분석 가능.":"API 조회 실패. AI 분석 버튼으로 상세 분석을 받으세요.",
-    bear:dataOk?"일부 지표 미확인 시 AI 분석으로 보완하세요.":"네트워크 오류 또는 상장폐지 가능성 확인 필요.",
-    tH:w52h,tM:p||Math.round((w52h+w52l)/2),tL:w52l,
-    verify:{note:"Yahoo Finance + 네이버 실시간 데이터"}
+  // ── stock 객체 → DB에 추가 → 상세화면 열기 ─────────────────
+  const stock = {
+    id, n:name, s:sector, m:market,
+    p, c:chg, prev:prev||p, w52h, w52l, cap,
+    per, pbr, roe, debt,
+    t:[sector], ind,
+    sum:`${name}(${id}) · ${sector} · ${market==="K"?"KOSPI":"KOSDAQ"}. 시가총액 ${cap}. Yahoo Finance 실시간 데이터.`,
+    bull:`현재 52주 범위 ${pos52}% 위치. ${typeof per==="number"?`PER ${per}배.`:""}`,
+    bear:`일부 재무 데이터 미확인. AI 분석 버튼으로 심층 분석 가능.`,
+    tH:w52h, tM:Math.round((w52h+w52l)/2), tL:w52l,
+    verify:{note:"Yahoo Finance 실시간 자동 조회"}
   };
 
-  const existIdx=DB.findIndex(x=>x.id===id);
-  if(existIdx>=0) DB[existIdx]=stock; else DB.push(stock);
-  liveP=p>0?p:null;
+  LITE_PRICE_CACHE[id] = {p, c:chg};
+  const ei = DB.findIndex(x=>x.id===id);
+  if(ei>=0) DB[ei]=stock; else DB.push(stock);
+  liveP = p;
   openDetail(id);
 }
 
@@ -2969,6 +2982,54 @@ function clearSearch(){
 }
 
 function gEl(id){return document.getElementById(id);}
+
+// 상세화면 개요탭에서 AI 분석 실행
+async function runDetailAI(){
+  const s = curStock;
+  if(!s) return;
+  const btn = document.getElementById("aiAnalBtn");
+  const st  = document.getElementById("aiAnalStatus");
+  const ak  = getApiKey();
+
+  if(!ak){
+    if(st){
+      st.style.color="var(--red)";
+      st.innerHTML='🔑 상단 <b style="color:var(--gold)">API 키</b>를 입력해야 AI 분석이 가능합니다';
+    }
+    const bar=document.getElementById("apikeyBar");
+    if(bar){
+      bar.style.display="";
+      bar.style.background="rgba(248,81,73,0.18)";
+      bar.style.border="1px solid rgba(248,81,73,0.6)";
+      setTimeout(()=>{bar.style.background="";bar.style.border="";},2000);
+    }
+    return;
+  }
+
+  if(btn){btn.disabled=true;btn.textContent="⏳ 분석 중...";}
+  if(st){st.style.color="var(--gold)";st.textContent="AI가 데이터 분석 중...";}
+
+  // 현재 stock 데이터를 priceHint로 넘겨서 AI가 정확하게 분석
+  const liveData = {
+    p: liveP||s.p, c: s.c, prev: s.prev,
+    w52h: s.w52h, w52l: s.w52l, cap: s.cap
+  };
+  const priceHint = `[실시간데이터] 현재가=${liveData.p}원 등락=${liveData.c}% `+
+    `52주고=${liveData.w52h}원 52주저=${liveData.w52l}원 시총=${liveData.cap} `+
+    `PER=${s.per} PBR=${s.pbr} ROE=${s.roe} 부채비율=${s.debt} — `+
+    `이 값을 그대로 사용할 것`;
+
+  // 탭을 AI 결과가 표시되는 시나리오 탭으로 이동
+  setDTab("sc");
+  await aiSearch(
+    `${s.n}(${s.id}) 종목코드=${s.id} 섹터=${s.s} ${priceHint}`,
+    null, liveData
+  );
+
+  if(btn){btn.disabled=false;btn.textContent="✨ AI 투자 분석 시작";}
+  if(st){st.textContent="";}
+}
+
 function openDetail(id){
   const s=DB.find(x=>x.id===id);if(!s)return;
   curStock=s;liveP=null;curDTab="ov";
@@ -3147,6 +3208,14 @@ function renderDBody(){
         <span style="font-size:11px;color:var(--text3);letter-spacing:.3px">목표 상단까지</span>
         <span style="font-size:17px;font-weight:400;font-family:'Bebas Neue',monospace;color:var(--green);letter-spacing:.5px">+${((s.tH/cur-1)*100).toFixed(1)}%</span>
       </div>
+    </div>
+    <div class="cbox">
+      <div class="cbox-t">✨ AI 심층 분석</div>
+      <button id="aiAnalBtn" onclick="runDetailAI()"
+        style="width:100%;padding:14px;background:linear-gradient(135deg,var(--gold),#E8C96A,var(--gold));border:none;border-radius:12px;color:#07080F;font-size:14px;font-weight:900;cursor:pointer;box-shadow:0 4px 18px rgba(212,168,67,0.3);margin-bottom:8px">
+        ✨ AI 투자 분석 시작
+      </button>
+      <div id="aiAnalStatus" style="font-size:11px;color:var(--gold);text-align:center;min-height:16px"></div>
     </div>`;
 
   } else if(curDTab==="rd"){
@@ -3421,9 +3490,17 @@ function rfUI(dot, msg, prog){
   const d=document.getElementById("rfDot");
   const s=document.getElementById("refreshStatus");
   const p=document.getElementById("rfProg");
-  if(d){d.className="refresh-dot"+(dot?" "+dot:"");} 
-  if(s)s.textContent=msg||"";
-  if(p)p.textContent=prog||"";
+  const bar=document.getElementById("rfBar");
+  if(d){d.className="refresh-dot"+(dot?" "+dot:"");}
+  if(s){
+    s.textContent=msg||"";
+    s.style.color = dot==="live"?"var(--green)":dot==="fail"?"var(--red)":dot==="loading"?"var(--gold)":"var(--text2)";
+    s.style.fontWeight = dot==="live"?"700":"600";
+  }
+  if(p){p.textContent=prog||""; p.style.color=dot==="live"?"rgba(63,185,80,.6)":"var(--text3)";}
+  if(bar){
+    bar.className="refresh-bar"+(dot==="loading"?" loading":dot==="fail"?" fail":"");
+  }
 }
 
 async function autoRefreshPrices(){
@@ -3444,63 +3521,46 @@ async function autoRefreshPrices(){
   rfUI("loading","전일종가 갱신 중...");
   const prices={};
   const stocks=DB.map(s=>({id:s.id,m:s.m}));
-  const BATCH=5;
+  const BATCH=8;
   let done=0,ok=0;
-
-  // 네이버 API로 1종목씩 조회 (전일종가 기준)
-  async function fetchNaver(id){
-    const proxies=[
-      `https://corsproxy.io/?https://m.stock.naver.com/api/stock/${id}/basic`,
-      `https://api.allorigins.win/raw?url=https://m.stock.naver.com/api/stock/${id}/basic`
-    ];
-    for(const url of proxies){
-      try{
-        const r=await fetch(url,{signal:AbortSignal.timeout(7000)});
-        if(!r.ok) continue;
-        const d=await r.json();
-        // 네이버 API 응답 파싱
-        const closePrice = d.closePrice||d.stockItemTotal?.closePrice;
-        const prevPrice  = d.compareToPreviousClosePrice||0;
-        const ratio      = d.fluctuationsRatio||0;
-        if(!closePrice || closePrice<100) continue;
-        const p    = Math.round(parseFloat(String(closePrice).replace(/,/g,'')));
-        const prev = Math.round(p - parseFloat(String(prevPrice).replace(/,/g,'')));
-        const chg  = Math.round(parseFloat(String(ratio).replace(/,/g,''))*10)/10;
-        // 52주는 integration API
-        let w52h=0,w52l=0;
-        try{
-          const r2=await fetch(
-            `https://corsproxy.io/?https://m.stock.naver.com/api/stock/${id}/integration`,
-            {signal:AbortSignal.timeout(5000)});
-          if(r2.ok){
-            const d2=await r2.json();
-            w52h=Math.round(parseFloat(String(d2.totalInfos?.find(x=>x.key==='52주최고')?.value||'0').replace(/,/g,'')))||0;
-            w52l=Math.round(parseFloat(String(d2.totalInfos?.find(x=>x.key==='52주최저')?.value||'0').replace(/,/g,'')))||0;
-          }
-        }catch(_){}
-        return {p, c:chg, prev:prev>0?prev:p, w52h:w52h||Math.round(p*1.3), w52l:w52l||Math.round(p*0.7)};
-      }catch(_){}
-    }
-    return null;
-  }
 
   for(let i=0;i<stocks.length;i+=BATCH){
     const batch=stocks.slice(i,i+BATCH);
-    await Promise.all(batch.map(async({id})=>{
-      const d=await fetchNaver(id);
-      if(d){prices[id]=d;ok++;}
-      done++;
-    }));
+    // Yahoo Finance v7 quote — CORS 없음, 브라우저 직접 호출 가능
+    const symbols=batch.map(({id,m})=>id+(m==="K"?".KS":".KQ")).join(",");
+    try{
+      const r=await fetch(
+        `https://query2.finance.yahoo.com/v7/finance/quote?symbols=${symbols}&fields=regularMarketPrice,regularMarketPreviousClose,regularMarketChangePercent,fiftyTwoWeekHigh,fiftyTwoWeekLow`,
+        {signal:AbortSignal.timeout(10000)}
+      );
+      if(r.ok){
+        const d=await r.json();
+        for(const item of d?.quoteResponse?.result||[]){
+          const code=item.symbol?.replace(/\.(KS|KQ)$/,"");
+          if(!code) continue;
+          const p   =Math.round(item.regularMarketPreviousClose||0); // 전일종가
+          const curr=Math.round(item.regularMarketPrice||0);          // 당일 현재가
+          if(p<100&&curr<100) continue;
+          const base=p>100?p:curr;
+          const chg =Math.round((item.regularMarketChangePercent||0)*10)/10;
+          const w52h=Math.round(item.fiftyTwoWeekHigh||base*1.3);
+          const w52l=Math.round(item.fiftyTwoWeekLow ||base*0.7);
+          prices[code]={p:base,c:chg,prev:base,w52h,w52l};
+          ok++;
+        }
+      }
+    }catch(_){}
+    done+=batch.length;
     rfUI("loading",`전일종가 갱신 중... ${done}/${stocks.length}`,`${ok}개 수신`);
     applyPrices(prices);
-    await new Promise(r=>setTimeout(r,200));
+    await new Promise(r=>setTimeout(r,150));
   }
 
   try{sessionStorage.setItem(RF_KEY,JSON.stringify({ts:Date.now(),prices}));}catch(_){}
   if(ok>0){
-    rfUI("live",`✓ 전일종가 ${ok}개 갱신 완료 (네이버)`,`15분 캐시`);
+    rfUI("live",`✓ 전일종가 ${ok}개 갱신 완료`,`15분 캐시`);
   }else{
-    rfUI("fail","가격 갱신 실패 — DB 기본값 표시","새로고침 버튼으로 재시도");
+    rfUI("fail","가격 갱신 실패 — DB 기본값 표시","↻ 갱신 버튼으로 재시도");
   }
   setTimeout(()=>{
     rfUI(ok>0?"live":"","전일종가",ok>0?`${ok}종목 갱신됨`:"오프라인");
@@ -3537,10 +3597,11 @@ function loadApiKey(){
   const bar = document.getElementById('apikeyBar');
   const inp = document.getElementById('apikeyInp');
   if(!bar||!inp) return;
+  // 바는 항상 숨김 — API 키 필요시에만 JS로 표시
+  bar.style.display='none';
   if(cachedApiKey){
     inp.value = '••••••••' + cachedApiKey.slice(-6);
     bar.className = 'apikey-bar ok';
-    bar.querySelector('span').textContent = '✅';
   }
 }
 
@@ -3553,7 +3614,7 @@ function saveApiKey(){
   try{ localStorage.setItem(AKEY_STORE, v); cachedApiKey = v; }catch(_){}
   inp.value = '••••••••' + v.slice(-6);
   const bar = document.getElementById('apikeyBar');
-  if(bar){ bar.className='apikey-bar ok'; bar.querySelector('span').textContent='✅'; }
+  if(bar){ bar.className='apikey-bar ok'; bar.style.display='none'; }
   alert('✅ API 키 저장 완료!\nAI 분석 기능을 사용할 수 있습니다.');
 }
 
