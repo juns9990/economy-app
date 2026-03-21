@@ -125,8 +125,7 @@ input::placeholder{color:var(--text3)}
 .page{flex:1;display:none;flex-direction:column;overflow:hidden}
 .page.active{display:flex}
 .list-scroll{flex:1;overflow-y:auto;padding:8px 8px 24px;
-  -webkit-overflow-scrolling:touch;
-  display:flex;flex-direction:column;align-items:center}
+  -webkit-overflow-scrolling:touch}
 
 
 
@@ -139,7 +138,6 @@ input::placeholder{color:var(--text3)}
   border-radius:var(--r12);
   padding:12px 13px;margin-bottom:6px;
   cursor:pointer;transition:all .15s ease;
-  max-width:800px;width:100%;margin-left:auto;margin-right:auto;
   position:relative;overflow:hidden}
 .scard::before{
   content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
@@ -412,6 +410,12 @@ input::placeholder{color:var(--text3)}
       <span class="hdr-badge">AI 투자분석</span>
     </div>
     <button class="ver-btn" id="verStamp" onclick="showVersionLog()">v3.2 · 3/21</button>
+    <button onclick="openSearchModal()"
+      style="background:var(--gold-bg);border:1px solid var(--gold-br);border-radius:8px;
+      color:var(--gold);padding:6px 12px;cursor:pointer;font-size:12px;font-weight:800;
+      display:flex;align-items:center;gap:5px;flex-shrink:0">
+      🔍 종목 검색
+    </button>
     <button onclick="showHelp()" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:rgba(212,168,67,.6);padding:7px 10px;cursor:pointer;font-size:15px;line-height:1;transition:all .15s">❓</button>
     <button id="instBtn" onclick="installApp()" style="background:var(--gold-bg);border:1px solid var(--gold-br);border-radius:7px;color:var(--gold);padding:6px 11px;cursor:pointer;font-size:11px;font-weight:700;letter-spacing:.3px;display:none">＋ 홈 추가</button>
   </div>
@@ -453,16 +457,25 @@ input::placeholder{color:var(--text3)}
     </div>
   </div>
 
-  <!-- SEARCH PAGE -->
-  <div class="page" id="pageSearch">
-    <div style="padding:12px 12px 6px;flex-shrink:0">
-      <div class="sbox">
+  <!-- SEARCH MODAL (fullscreen) -->
+  <div id="searchModal" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:300;
+    flex-direction:column;overflow:hidden">
+    <!-- 모달 헤더 -->
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;
+      background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0">
+      <div class="sbox" style="flex:1">
         <span style="color:var(--text3);font-size:16px">🔍</span>
-        <input type="text" id="searchInput" placeholder="종목명·코드·섹터 검색">
+        <input type="text" id="searchInput" placeholder="종목명·코드·섹터 검색" autofocus>
         <button id="clrBtn" onclick="clearSearch()" style="display:none;background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer">×</button>
       </div>
+      <button onclick="closeSearchModal()"
+        style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;
+        color:var(--text2);padding:8px 12px;cursor:pointer;font-size:13px;font-weight:700;flex-shrink:0">
+        닫기
+      </button>
     </div>
-    <div class="stabs">
+    <!-- 섹터 탭 -->
+    <div class="stabs" style="flex-shrink:0">
       <button class="stab active" onclick="setSTab('all')">전체</button>
       <button class="stab" onclick="setSTab('kospi')">코스피</button>
       <button class="stab" onclick="setSTab('kosdaq')">코스닥</button>
@@ -478,21 +491,12 @@ input::placeholder{color:var(--text3)}
       <button class="stab" onclick="setSTab('로봇')">로봇</button>
       <button class="stab" onclick="setSTab('엔터')">엔터</button>
     </div>
-    <div style="padding:4px 14px 0;flex-shrink:0">
+    <div style="padding:4px 14px 2px;flex-shrink:0">
       <span id="resCnt" style="font-size:10px;color:var(--text3);letter-spacing:.3px"></span>
     </div>
     <div class="list-scroll" id="searchList"></div>
   </div>
 
-  <!-- Bottom nav -->
-  <div class="bnav">
-    <button class="bnav-btn active" id="navHome" onclick="switchPage('home')">
-      <span class="bnav-icon">⭐</span>관심
-    </button>
-    <button class="bnav-btn" id="navSearch" onclick="switchPage('search')">
-      <span class="bnav-icon">🔍</span>탐색
-    </button>
-  </div>
 </div>
 
 <!-- Detail view -->
@@ -2992,12 +2996,31 @@ async function aiSearch(query, btn, preFetchedPrice=null){
   }finally{aiSearching=false;}
 }
 
+
+// ── 검색 모달 ────────────────────────────────────────────────
+function openSearchModal(){
+  const m = document.getElementById("searchModal");
+  if(!m) return;
+  m.style.display = "flex";
+  curPage = "search";
+  renderSearch();
+  setTimeout(()=>document.getElementById("searchInput")?.focus(), 100);
+}
+
+function closeSearchModal(){
+  const m = document.getElementById("searchModal");
+  if(m) m.style.display = "none";
+  curPage = "home";
+}
 function switchPage(p){
   curPage=p;
-  ["home","search"].forEach(x=>{
-    document.getElementById("page"+x[0].toUpperCase()+x.slice(1)).classList.toggle("active",x===p);
-    document.getElementById("nav"+x[0].toUpperCase()+x.slice(1)).classList.toggle("active",x===p);
-  });
+  // home 페이지만 존재 (search는 모달)
+  const ph = document.getElementById("pageHome");
+  if(ph) ph.classList.add("active");
+  if(p==="search"){ openSearchModal(); return; }
+  if(p==="home") closeSearchModal();
+  const nh=document.getElementById("navHome");
+  if(nh) nh.classList.add("active");
   if(p==="search")renderSearch();
 }
 
