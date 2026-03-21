@@ -1740,6 +1740,13 @@ function switchTab(name) {
   document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
   document.getElementById(`tab-${name}`).classList.add('active');
   if (name === 'help') buildHelpFaq();
+  if (name === 'news') {
+    // 뉴스 탭 열 때마다 폴백 카드 즉시 표시 후 실시간 로드
+    buildFallbackCards(NEWS_FALLBACK.korea,  'koreaNews');
+    buildFallbackCards(NEWS_FALLBACK.global, 'globalNews');
+    buildFallbackCards(NEWS_FALLBACK.market, 'marketNews');
+    fetchAndUpdateNews();
+  }
 }
 
 // ===================== VIDEO MODAL =====================
@@ -2393,7 +2400,7 @@ self.addEventListener('fetch', e => {
 
 
 // ===================== INIT =====================
-const APP_VERSION = '3.3.0';
+const APP_VERSION = '3.4.0';
 
 function buildHelpFaq() {
   const el = document.getElementById('helpFaq');
@@ -2456,7 +2463,6 @@ function init() {
   // 백그라운드 자동 업데이트
   fetchMarketData();
   setInterval(fetchMarketData, 5 * 60 * 1000);
-  fetchAndUpdateNews();
 }
 
 init();
