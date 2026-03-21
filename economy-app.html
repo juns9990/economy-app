@@ -843,7 +843,7 @@
     </div>
     <div class="logo-text">
       <div class="logo-title">이코노미 스쿨</div>
-      <div class="logo-sub">ECONOMY SCHOOL &nbsp;·&nbsp; <span id="appVerLabel">v3.0.0</span></div>
+      <div class="logo-sub">ECONOMY SCHOOL &nbsp;·&nbsp; <span id="appVerLabel">v3.1.0</span></div>
     </div>
   </div>
   <div class="header-right">
@@ -887,9 +887,9 @@
   <!-- TABS -->
   <div class="tabs">
     <button class="tab tab-home active" onclick="switchTab('home')">🏠 홈</button>
+    <button class="tab tab-market" onclick="switchTab('market')">📈 시장</button>
     <button class="tab tab-videos" onclick="switchTab('videos')">📺 채널</button>
     <button class="tab tab-news"   onclick="switchTab('news')">📰 뉴스</button>
-    <button class="tab tab-market" onclick="switchTab('market')">📈 시장</button>
     <button class="tab tab-study"  onclick="switchTab('study')">📚 학습</button>
   </div>
 
@@ -993,14 +993,14 @@ const MARKET_SYMBOLS = [
 
 // 2026년 3월 기준 실제값 (앱 시작 시 즉시 표시)
 const FALLBACK_DATA = [
-  // 2026년 3월 20일 확인값 (Investing.com · TradingEconomics · Google Finance)
-  { name: "코스피",        val: "5,790.00",  chg: "-2.10%", up: false },  // 3/19 5790선 마감
-  { name: "코스닥",        val: "1,142.00",  chg: "-1.40%", up: false },  // 3/19 1140선
-  { name: "USD/KRW",      val: "₩1,505",    chg: "+1.27%", up: true  },  // 3/18 1,506 / 1,500 돌파
-  { name: "EUR/KRW",      val: "₩1,769",    chg: "+1.10%", up: true  },  // EUR/USD 1.175 × 1,505
+  // 2026년 3월 20일 확인값 (TradingEconomics · Investing.com · 한국경제)
+  { name: "코스피",        val: "5,781.20",  chg: "+0.31%", up: true  },  // 3/20 마감 (한경·Investing)
+  { name: "코스닥",        val: "1,153.12",  chg: "+0.87%", up: true  },  // 3/20 마감 (Investing)
+  { name: "USD/KRW",      val: "₩1,501",    chg: "+1.19%", up: true  },  // 3/19 1,501 (Investing)
+  { name: "EUR/KRW",      val: "₩1,764",    chg: "+0.90%", up: true  },  // EUR/USD 1.175 × 1,501
   { name: "EUR/USD",      val: "1.1757",    chg: "+0.06%", up: true  },
-  { name: "S&P 500",      val: "6,817.28",  chg: "+0.31%", up: true  },
-  { name: "나스닥",        val: "22,810.10", chg: "+0.50%", up: true  },
+  { name: "S&P 500",      val: "6,624.70",  chg: "-1.36%", up: false },  // 3/18 마감 (한경)
+  { name: "나스닥",        val: "22,345.81", chg: "-0.59%", up: false },  // 3/20 토스증권
   { name: "닛케이225",     val: "35,617.56", chg: "-0.93%", up: false },
   { name: "상하이종합",    val: "3,383.10",  chg: "-0.24%", up: false },
   { name: "항셍",          val: "23,905.82", chg: "-0.87%", up: false },
@@ -1748,8 +1748,9 @@ async function claudeFetch(prompt) {
 }
 
 // ===================== 시장 데이터 (날짜 캐시 + 프록시 순차 시도) =====================
+const WORKER_URL = 'https://bitter-dew-9ed3.juns-f40.workers.dev';
+
 async function fetchMarketData(forceRefresh = false) {
-  // 시장 데이터: 1시간 캐시 (날짜+시간 기준)
   const hourKey = (() => {
     const d = new Date();
     const pad = n => String(n).padStart(2,'0');
@@ -1759,48 +1760,53 @@ async function fetchMarketData(forceRefresh = false) {
   if (!forceRefresh) {
     try {
       const cached = JSON.parse(localStorage.getItem(hourKey) || 'null');
-      if (cached?.type === 'quotes') { applyMarketData(cached.data); return; }
+      if (cached?.type === 'worker') { applyWorkerData(cached.data); return; }
     } catch(e) {}
   }
 
-  const symbols = MARKET_SYMBOLS.map(s => s.symbol).join(',');
-  const baseUrl = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbols}&fields=regularMarketPrice,regularMarketChangePercent`;
-  const proxies = [
-    `https://api.allorigins.win/raw?url=${encodeURIComponent(baseUrl)}`,
-    `https://corsproxy.io/?${encodeURIComponent(baseUrl)}`,
-    `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(baseUrl)}`,
-    `https://thingproxy.freeboard.io/fetch/${encodeURIComponent(baseUrl)}`,
-  ];
-  for (const proxyUrl of proxies) {
-    try {
-      const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(6000) });
-      if (!res.ok) continue;
-      const json = await res.json();
-      const quotes = json?.quoteResponse?.result || [];
-      if (quotes.length > 0) {
-        // 구 캐시 정리 후 새 캐시 저장
-        try {
-          Object.keys(localStorage).filter(k => k.startsWith('econ_market_')).forEach(k => {
-            if (k !== hourKey) localStorage.removeItem(k);
-          });
-          localStorage.setItem(hourKey, JSON.stringify({ type: 'quotes', data: quotes }));
-        } catch(e) {}
-        applyMarketData(quotes);
-        return;
+  // Cloudflare Worker로 각 심볼 병렬 요청
+  const results = await Promise.allSettled(
+    MARKET_SYMBOLS.map(s =>
+      fetch(`${WORKER_URL}/?type=market&s=${encodeURIComponent(s.symbol)}`, { signal: AbortSignal.timeout(8000) })
+        .then(r => r.json())
+        .then(json => ({ symbol: s.symbol, json }))
+    )
+  );
+
+  const data = {};
+  for (const r of results) {
+    if (r.status === 'fulfilled') {
+      const { symbol, json } = r.value;
+      const meta = json?.chart?.result?.[0]?.meta;
+      if (meta?.regularMarketPrice) {
+        data[symbol] = {
+          price: meta.regularMarketPrice,
+          prev:  meta.chartPreviousClose || meta.previousClose || meta.regularMarketPrice,
+        };
       }
-    } catch(e) { continue; }
+    }
   }
-  // 모든 프록시 실패 → 폴백 표시
-  updateMarketUI('참고값');
+
+  if (Object.keys(data).length > 0) {
+    try {
+      Object.keys(localStorage).filter(k => k.startsWith('econ_market_')).forEach(k => {
+        if (k !== hourKey) localStorage.removeItem(k);
+      });
+      localStorage.setItem(hourKey, JSON.stringify({ type: 'worker', data }));
+    } catch(e) {}
+    applyWorkerData(data);
+  } else {
+    updateMarketUI('참고값');
+  }
 }
 
-
-function applyMarketData(quotes) {
+function applyWorkerData(data) {
   MARKET_DATA = MARKET_SYMBOLS.map(s => {
-    const q = quotes.find(q => q.symbol === s.symbol);
-    if (!q) return FALLBACK_DATA.find(f => f.name === s.name) || { name: s.name, val: '—', chg: '—', up: true };
-    const price = q.regularMarketPrice;
-    const chgPct = q.regularMarketChangePercent;
+    const d = data[s.symbol];
+    if (!d) return FALLBACK_DATA.find(f => f.name === s.name) || { name: s.name, val: '—', chg: '—', up: true };
+    const price = d.price;
+    const prev  = d.prev || price;
+    const chgPct = prev ? ((price - prev) / prev) * 100 : 0;
     const up = chgPct >= 0;
     const valStr = s.prefix + (s.decimals === 0
       ? Math.round(price).toLocaleString()
@@ -2010,11 +2016,13 @@ function buildFallbackCards(sources, containerId) {
 }
 
 async function fetchGoogleNews(q, hl='ko') {
-  const url = `https://news.google.com/rss/search?q=${encodeURIComponent(q)}&hl=${hl}&gl=KR&ceid=KR:${hl}`;
-  const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
-  const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(4000) });
+  const res = await fetch(
+    `${WORKER_URL}/?type=news&q=${encodeURIComponent(q)}`,
+    { signal: AbortSignal.timeout(6000) }
+  );
   if (!res.ok) throw new Error('gnews fail');
-  const text = await res.text();
+  const json = await res.json();
+  const text = json.rss || '';
   const parser = new DOMParser();
   const xml = parser.parseFromString(text, 'application/xml');
   return [...xml.querySelectorAll('item')].slice(0,5).map((item,i) => {
@@ -2320,7 +2328,7 @@ self.addEventListener('fetch', e => {
 
 
 // ===================== INIT =====================
-const APP_VERSION = '3.0.0';
+const APP_VERSION = '3.1.0';
 
 function init() {
   // 버전 라벨 자동 반영
