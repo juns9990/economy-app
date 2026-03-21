@@ -2235,9 +2235,9 @@ function initTicker(){
   if(!tr)return;
   const items=[...TDATA,...TDATA,...TDATA];
   tr.innerHTML=items.map(t=>`<span class="titem">
-    <span style="font-size:11px;color:var(--gold);font-weight:800;letter-spacing:.5px;white-space:nowrap">${t.n}</span>
-    <span style="font-size:13px;font-family:'Bebas Neue',sans-serif;font-weight:700;color:#E6EDF3;margin:0 4px;letter-spacing:.5px;white-space:nowrap">${t.v}</span>
-    <span style="font-size:11px;font-family:'Space Grotesk',sans-serif;font-weight:800;color:${t.up?"#58A6FF":"#F85149"};white-space:nowrap">${t.c}</span>
+    <span style="font-size:10px;color:var(--gold);font-weight:700;letter-spacing:.4px">${t.n}</span>
+    <span style="font-size:12px;font-family:ui-monospace,'SF Mono','Consolas',monospace;font-weight:700;color:#E6EDF3;margin:0 3px;letter-spacing:0">${t.v}</span>
+    <span style="font-size:11px;font-family:ui-monospace,'SF Mono','Consolas',monospace;font-weight:800;color:${t.up?"#58A6FF":"#F85149"}">${t.c}</span>
   </span>`).join("");
   let x=0;const tot=tr.scrollWidth/3;
   setInterval(()=>{x+=0.25;if(x>=tot)x=0;tr.style.transform=`translateX(-${x}px)`;},16);
