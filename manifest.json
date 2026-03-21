@@ -1,0 +1,26 @@
+{
+  "name": "이코노미 스쿨",
+  "short_name": "이코노미스쿨",
+  "description": "실시간 경제 지수, 뉴스, 학습 앱",
+  "start_url": "./economy-app.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#08080c",
+  "theme_color": "#c9a84c",
+  "orientation": "portrait",
+  "lang": "ko",
+  "icons": [
+    {
+      "src": "icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
