@@ -135,7 +135,7 @@ input::placeholder{color:var(--text3)}
 
 .sc-row1{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
 .sc-left{flex:1;min-width:0}
-.sc-right{flex-shrink:0;text-align:right;min-width:90px}
+.sc-right{flex-shrink:0;text-align:right}
 
 /* 종목명 행 */
 .sc-nm-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:2px}
@@ -426,8 +426,38 @@ input::placeholder{color:var(--text3)}
     <div class="list-scroll" id="searchList"></div>
   </div>
 
+
   <!-- SEARCH MODAL -->
-  <div id="searchModal" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:300;flex-direction:column;overflow:hidden;align-items:center"><div style="width:100%;max-width:720px;display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0"><div class="sbox" style="flex:1"><span style="color:var(--text3);font-size:16px">🔍</span><input type="text" id="searchInput" placeholder="종목명·코드·섹터 검색"><button id="clrBtn" onclick="clearSearch()" style="display:none;background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer">×</button></div><button onclick="closeSearchModal()" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text2);padding:8px 12px;cursor:pointer;font-size:13px;font-weight:700;flex-shrink:0">닫기</button></div><div class="stabs" style="width:100%;max-width:720px;flex-shrink:0"><button class="stab active" onclick="setSTab('all')">전체</button><button class="stab" onclick="setSTab('kospi')">코스피</button><button class="stab" onclick="setSTab('kosdaq')">코스닥</button><button class="stab" onclick="setSTab('buy')">매수적합</button><button class="stab" onclick="setSTab('반도체')">반도체</button><button class="stab" onclick="setSTab('자동차')">자동차</button><button class="stab" onclick="setSTab('방산')">방산</button><button class="stab" onclick="setSTab('바이오')">바이오</button><button class="stab" onclick="setSTab('금융')">금융</button><button class="stab" onclick="setSTab('2차전지')">2차전지</button><button class="stab" onclick="setSTab('게임')">게임</button><button class="stab" onclick="setSTab('조선')">조선</button><button class="stab" onclick="setSTab('로봇')">로봇</button><button class="stab" onclick="setSTab('엔터')">엔터</button></div><div style="padding:4px 14px 2px;width:100%;max-width:720px;flex-shrink:0"><span id="resCnt" style="font-size:10px;color:var(--text3)"></span></div><div class="list-scroll" id="searchList" style="width:100%;max-width:720px"></div></div>
+  <div id="searchModal" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:300;flex-direction:column;overflow:hidden;align-items:center">
+    <div style="width:100%;max-width:720px;display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0">
+      <div class="sbox" style="flex:1">
+        <span style="color:var(--text3);font-size:16px">🔍</span>
+        <input type="text" id="searchInput" placeholder="종목명·코드·섹터 검색">
+        <button id="clrBtn" onclick="clearSearch()" style="display:none;background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer">×</button>
+      </div>
+      <button onclick="closeSearchModal()" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text2);padding:8px 12px;cursor:pointer;font-size:13px;font-weight:700;flex-shrink:0">닫기</button>
+    </div>
+    <div class="stabs" style="width:100%;max-width:720px;flex-shrink:0">
+      <button class="stab active" onclick="setSTab('all')">전체</button>
+      <button class="stab" onclick="setSTab('kospi')">코스피</button>
+      <button class="stab" onclick="setSTab('kosdaq')">코스닥</button>
+      <button class="stab" onclick="setSTab('buy')">매수적합</button>
+      <button class="stab" onclick="setSTab('반도체')">반도체</button>
+      <button class="stab" onclick="setSTab('자동차')">자동차</button>
+      <button class="stab" onclick="setSTab('방산')">방산</button>
+      <button class="stab" onclick="setSTab('바이오')">바이오</button>
+      <button class="stab" onclick="setSTab('금융')">금융</button>
+      <button class="stab" onclick="setSTab('2차전지')">2차전지</button>
+      <button class="stab" onclick="setSTab('게임')">게임</button>
+      <button class="stab" onclick="setSTab('조선')">조선</button>
+      <button class="stab" onclick="setSTab('로봇')">로봇</button>
+      <button class="stab" onclick="setSTab('엔터')">엔터</button>
+    </div>
+    <div style="padding:4px 14px 2px;width:100%;max-width:720px;flex-shrink:0">
+      <span id="resCnt" style="font-size:10px;color:var(--text3)"></span>
+    </div>
+    <div class="list-scroll" id="searchList" style="width:100%;max-width:720px"></div>
+  </div>
 
   <!-- Bottom nav -->
   <div class="bnav">
@@ -2167,6 +2197,7 @@ function initTicker(){
   let x=0;const tot=tr.scrollWidth/3;
   setInterval(()=>{x+=0.4;if(x>=tot)x=0;tr.style.transform=`translateX(-${x}px)`;},14);
 }
+
 function cardHTML(s){
   const v=gV(s.ind), sc=gS(s.ind), up=(s.c||0)>=0;
   const mCls=s.m==="K"?"K":"Q", ml=s.m==="K"?"KOSPI":"KOSDAQ";
@@ -2197,6 +2228,8 @@ function cardHTML(s){
   <div class="sc-sbar"><div class="sc-sbar-f" style="width:${sc}%;background:linear-gradient(90deg,${v.c}30,${v.c}90)"></div></div>
 </div>`;
 }
+
+
 function render(){
   renderHome();renderSearch();
   // watchlist label now handled in renderHome
@@ -2225,8 +2258,61 @@ function renderHome(){
 }
 
 // 경량 종목(DB_LITE) 카드 HTML — 클릭 시 AI 즉시 분석
+function liteCardHTML(s){
+  const mBadge = s.m==='K'
+    ? `<span style="font-size:9px;background:rgba(59,130,246,0.15);color:#60A5FA;border:1px solid rgba(59,130,246,0.3);border-radius:4px;padding:1px 5px">KOSPI</span>`
+    : `<span style="font-size:9px;background:rgba(139,92,246,0.15);color:#A78BFA;border:1px solid rgba(139,92,246,0.3);border-radius:4px;padding:1px 5px">KOSDAQ</span>`;
+  return `<div onclick="aiSearchByIdClaude('${s.id}','${s.n.replace(/'/g,"\\'")}','${s.s}','${s.m}')"
+    style="margin:5px 2px;padding:14px 16px;background:var(--bg3);border:1px solid var(--border2);border-radius:14px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;transition:background .15s"
+    onmouseenter="this.style.background='rgba(212,168,67,0.08)'" onmouseleave="this.style.background='rgba(255,255,255,0.04)'">
+    <div>
+      <div style="font-size:14px;font-weight:800;color:var(--text);margin-bottom:3px">${s.n}</div>
+      <div style="font-size:11px;color:#4A6080">${s.id} · ${s.s} &nbsp;${mBadge}</div>
+    </div>
+    <div style="font-size:11px;color:var(--gold);font-weight:700;white-space:nowrap;opacity:.8">✨ AI 분석</div>
+  </div>`;
+}
+
+// 종목코드로 AI 분석 실행 (DB_LITE 카드 클릭 시)
+async function aiSearchById(id, name, sector, market) {
+  if(getApiKey()){ await aiSearchByIdClaude(id, name, sector, market); return; }
+  const el = document.getElementById("searchList");
+  if(!el) return;
+  const mb = market==="K"
+    ? `<span style="font-size:9px;background:rgba(59,130,246,.15);color:#60A5FA;border:1px solid rgba(59,130,246,.3);border-radius:4px;padding:2px 6px">KOSPI</span>`
+    : `<span style="font-size:9px;background:rgba(139,92,246,.15);color:#A78BFA;border:1px solid rgba(139,92,246,.3);border-radius:4px;padding:2px 6px">KOSDAQ</span>`;
+  el.innerHTML=`
+  <div style="margin:8px;border-radius:14px;background:var(--bg2);border:1px solid var(--border);overflow:hidden">
+    <div style="padding:16px 18px;border-bottom:1px solid var(--border2)">
+      <div style="font-size:18px;font-weight:900;color:var(--text)">${name} ${mb}</div>
+      <div style="font-size:11px;color:var(--text3)">${id} · ${sector}</div>
+    </div>
+    <div style="padding:14px 18px;border-bottom:1px solid var(--border2)">
+      <div style="font-size:12px;color:var(--text2);margin-bottom:12px">
+        🤖 <b style="color:var(--gold)">Claude AI</b>로 실시간 분석이 가능합니다.
+      </div>
+      <button onclick="aiSearchByIdClaude('${id}','${name.replace(/'/g,"\'")}','${sector}','${market}')"
+        style="width:100%;padding:12px;background:linear-gradient(135deg,var(--gold),#E8C96A);border:none;border-radius:10px;color:#07080F;font-size:13px;font-weight:900;cursor:pointer">
+        🤖 Claude AI로 분석하기
+      </button>
+    </div>
+    <div style="padding:10px 18px;display:flex;gap:8px">
+      <a href="https://finance.naver.com/item/main.naver?code=${id}" target="_blank"
+        style="flex:1;display:flex;align-items:center;gap:8px;padding:10px;background:var(--bg3);border:1px solid var(--border);border-radius:9px;text-decoration:none">
+        <span>📊</span><div style="font-size:11px;font-weight:700;color:var(--text)">네이버</div>
+        <span style="margin-left:auto;color:var(--text3)">→</span>
+      </a>
+      <a href="https://finance.daum.net/quotes/A${id}" target="_blank"
+        style="flex:1;display:flex;align-items:center;gap:8px;padding:10px;background:var(--bg3);border:1px solid var(--border);border-radius:9px;text-decoration:none">
+        <span>📈</span><div style="font-size:11px;font-weight:700;color:var(--text)">다음</div>
+        <span style="margin-left:auto;color:var(--text3)">→</span>
+      </a>
+    </div>
+  </div>`;
+}
 
 function renderSearch(){
+  const el=document.getElementById("searchList");
   const q=document.getElementById("searchInput").value.toLowerCase().trim();
 
   // ── DB 100개 (풀 데이터) ──
@@ -2393,6 +2479,7 @@ async function aiSearch(query, btn, preFetchedPrice=null){
       throw new Error("API "+res.status+(err.error?.message?": "+err.error.message:""));
     }
     const d = await res.json();
+    const raw = (d.content||[]).filter(x=>x.type==="text").map(x=>x.text).join("").trim();
     if(!raw) throw new Error("AI 응답 없음");
 
     const jsonStr = extractJSON(raw);
@@ -2443,6 +2530,7 @@ async function aiSearch(query, btn, preFetchedPrice=null){
       try{
         const lp=await fetchLivePrice(stock.id,stock.m);
         if(lp&&lp>100){
+          const s=DB.find(x=>x.id===stock.id); if(s) s.p=lp;
           if(curStock?.id===stock.id){
             liveP=lp;
             const dv=document.getElementById("dpval"); if(dv) dv.textContent=fW(lp);
@@ -2464,9 +2552,6 @@ async function aiSearch(query, btn, preFetchedPrice=null){
 function switchPage(p){
   if(p==="search"){ openSearchModal(); return; }
   curPage="home";
-  const ph=document.getElementById("pageHome"); if(ph) ph.classList.add("active");
-  const nh=document.getElementById("navHome"); if(nh) nh.classList.add("active");
-  const ns=document.getElementById("navSearch"); if(ns) ns.classList.remove("active");
 }
 
 function setSTab(t){
@@ -2485,7 +2570,9 @@ function clearSearch(){
 }
 
 function openDetail(id){
+  const s=DB.find(x=>x.id===id);if(!s)return;
   curStock=s;liveP=null;curDTab="ov";
+  const v=gV(s.ind),sc=gS(s.ind),up=s.c>=0;
   document.getElementById("dname").textContent=s.n;
   document.getElementById("dcode").textContent=`${s.id} · ${s.m==="K"?"KOSPI":"KOSDAQ"} · ${s.s}`;
   document.getElementById("dpval").textContent=fW(s.p);
@@ -2499,20 +2586,26 @@ function openDetail(id){
   document.getElementById("sbox2").style.border="1px solid "+v.c+"25";
   document.getElementById("dtags").innerHTML=(s.t||[]).map(t=>`<span style="font-size:9px;color:rgba(212,168,67,0.75);background:rgba(212,168,67,0.08);border:1px solid rgba(212,168,67,0.2);border-radius:5px;padding:2px 8px;letter-spacing:.5px">${t}</span>`).join("");
   document.getElementById("livebadge").style.display="none";
+  const dstar=document.getElementById("dstar");
   if(dstar){dstar.textContent=isW(id)?"⭐":"☆";dstar.style.color=isW(id)?"var(--gold)":"#3F5268";}
   document.querySelectorAll(".dtab").forEach((b,i)=>b.classList.toggle("active",i===0));
   renderDBody();
   document.getElementById("dview").classList.add("open");
 }
+
 function closeDetail(){document.getElementById("dview").classList.remove("open");}
 
 function setDTab(t){
   curDTab=t;
+  const tabs=["ov","rd","sc","vf"];
   document.querySelectorAll(".dtab").forEach((b,i)=>b.classList.toggle("active",tabs[i]===t));
   renderDBody();
 }
 
 function renderDBody(){
+  const s=curStock;if(!s)return;
+  const el=document.getElementById("dbody");
+  const v=gV(s.ind),sc=gS(s.ind);
 
   if(curDTab==="ov"){
     const cur=liveP||s.p;
@@ -2799,6 +2892,7 @@ async function fetchStockData(code, market){
       "https://query2.finance.yahoo.com/v8/finance/chart/"+code+sfx+"?interval=1d&range=5d",
       {signal:AbortSignal.timeout(7000)}
     );
+    const d = await r.json();
     const m = d?.chart?.result?.[0]?.meta;
     if(m && m.regularMarketPrice > 100){
       const p = Math.round(m.regularMarketPrice);
@@ -2827,8 +2921,15 @@ async function fetchStockData(code, market){
   ]){
     try{
       const url = "https://m.stock.naver.com/api/stock/"+code+"/basic";
+      const r = await fetch(proxy+encodeURIComponent(url), {signal:AbortSignal.timeout(6000)});
+      const raw = await r.json();
+      const d = proxy.includes("allorigins") ? JSON.parse(raw.contents||"{}") : raw;
+      const p = parseInt((d.closePrice||"").toString().replace(/[^0-9]/g,""));
       if(p > 100){
+        const prev = parseInt((d.compareToPreviousClosePrice||"0").toString().replace(/[^0-9-]/g,""));
+        const chg  = parseFloat(d.fluctuationsRatio||"0");
         const mv   = d.marketValue;
+        let cap = "-";
         if(mv){
           const n=parseInt(mv.toString().replace(/[^0-9]/g,""));
           if(n>=1000000000000) cap=(n/1000000000000).toFixed(1)+"조";
@@ -2847,6 +2948,7 @@ async function refreshPrice(){
   if(refreshing||!curStock)return;
   refreshing=true;
   const btn=document.getElementById("rfbtn");
+  const badge=document.getElementById("livebadge");
   btn.disabled=true; btn.textContent="조회 중...";
   badge.style.color=""; badge.style.display="none";
 
@@ -2903,6 +3005,9 @@ const RF_KEY = "sig_rf_v3";
 const RF_TTL = 15 * 60 * 1000; // 15분
 
 function rfUI(dot, msg, prog){
+  const d=document.getElementById("rfDot");
+  const s=document.getElementById("refreshStatus");
+  const p=document.getElementById("rfProg");
   if(d){d.className="refresh-dot"+(dot?" "+dot:"");} 
   if(s)s.textContent=msg||"";
   if(p)p.textContent=prog||"";
@@ -2911,7 +3016,9 @@ function rfUI(dot, msg, prog){
 async function autoRefreshPrices(){
   // 캐시 확인
   try{
+    const raw=sessionStorage.getItem(RF_KEY);
     if(raw){
+      const d=JSON.parse(raw);
       if(Date.now()-d.ts < RF_TTL){
         applyPrices(d.prices);
         const min=Math.round((RF_TTL-(Date.now()-d.ts))/60000);
@@ -2923,6 +3030,7 @@ async function autoRefreshPrices(){
 
   rfUI("loading","가격 갱신 중...");
   const prices={};
+  const stocks=DB.map(s=>({id:s.id,m:s.m}));
   const BATCH=6;
   let done=0,ok=0;
 
@@ -2930,10 +3038,19 @@ async function autoRefreshPrices(){
     const batch=stocks.slice(i,i+BATCH);
     await Promise.all(batch.map(async({id,m})=>{
       try{
+        const sfx=m==="Q"?".KQ":".KS";
+        const url=`https://query2.finance.yahoo.com/v8/finance/chart/${id}${sfx}?interval=1d&range=2d`;
+        const r=await fetch(url,{signal:AbortSignal.timeout(6000)});
         if(!r.ok)return;
+        const d=await r.json();
         const meta=d?.chart?.result?.[0]?.meta;
         if(!meta||!meta.regularMarketPrice)return;
+        const p=Math.round(meta.regularMarketPrice);
         if(p<100)return;
+        const prev=Math.round(meta.chartPreviousClose||meta.previousClose||p);
+        const chg=prev>0?Math.round((p-prev)/prev*1000)/10:0;
+        const w52h=Math.round(meta.fiftyTwoWeekHigh||p*1.4);
+        const w52l=Math.round(meta.fiftyTwoWeekLow||p*0.7);
         prices[id]={p,c:chg,prev,w52h,w52l};
         ok++;
       }catch(_){}
@@ -2960,148 +3077,7 @@ async function autoRefreshPrices(){
 function applyPrices(prices){
   let changed=false;
   DB.forEach(s=>{
-    if(d&&d.p>0){
-      s.p=d.p; s.c=d.c; s.prev=d.prev;
-      if(d.w52h>s.w52h)s.w52h=d.w52h;
-      if(d.w52l>0&&d.w52l<s.w52l)s.w52l=d.w52l;
-      changed=true;
-    }
-  });
-  if(changed){renderHome();renderSearch();}
-}
-
-function manualRefresh(){
-  try{sessionStorage.removeItem(RF_KEY);}catch(_){}
-  autoRefreshPrices();
-}
-
-
-
-
-function liteCardHTML(s){
-  const mBadge = s.m==='K'
-    ? `<span style="font-size:9px;background:rgba(59,130,246,0.15);color:#60A5FA;border:1px solid rgba(59,130,246,0.3);border-radius:4px;padding:1px 5px">KOSPI</span>`
-    : `<span style="font-size:9px;background:rgba(139,92,246,0.15);color:#A78BFA;border:1px solid rgba(139,92,246,0.3);border-radius:4px;padding:1px 5px">KOSDAQ</span>`;
-  return `<div onclick="aiSearchById('${s.id}','${s.n.replace(/'/g,"\\'")}','${s.s}','${s.m}')"
-    style="margin:5px 2px;padding:14px 16px;background:var(--bg3);border:1px solid var(--border2);border-radius:14px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;transition:background .15s"
-    onmouseenter="this.style.background='rgba(212,168,67,0.08)'" onmouseleave="this.style.background='rgba(255,255,255,0.04)'">
-    <div>
-      <div style="font-size:14px;font-weight:800;color:var(--text);margin-bottom:3px">${s.n}</div>
-      <div style="font-size:11px;color:#4A6080">${s.id} · ${s.s} &nbsp;${mBadge}</div>
-    </div>
-    <div style="font-size:11px;color:var(--gold);font-weight:700;white-space:nowrap;opacity:.8">✨ AI 분석</div>
-  </div>`;
-}
-
-// 종목코드로 AI 분석 실행 (DB_LITE 카드 클릭 시)
-async function aiSearchById(id, name, sector, market) {
-  if(getApiKey()){ await aiSearchByIdClaude(id, name, sector, market); return; }
-  const el=document.getElementById("searchList"); if(!el) return;
-  const mb=market==="K"?`<span style="font-size:9px;background:rgba(59,130,246,.15);color:#60A5FA;border:1px solid rgba(59,130,246,.3);border-radius:4px;padding:2px 6px">KOSPI</span>`:`<span style="font-size:9px;background:rgba(139,92,246,.15);color:#A78BFA;border:1px solid rgba(139,92,246,.3);border-radius:4px;padding:2px 6px">KOSDAQ</span>`;
-  el.innerHTML=`<div style="margin:8px;border-radius:14px;background:var(--bg2);border:1px solid var(--border);overflow:hidden"><div style="padding:16px 18px;border-bottom:1px solid var(--border2)"><div style="font-size:18px;font-weight:900;color:var(--text)">${name} ${mb}</div><div style="font-size:11px;color:var(--text3)">${id} · ${sector}</div></div><div style="padding:14px 18px;border-bottom:1px solid var(--border2)"><div style="font-size:12px;color:var(--text2);margin-bottom:12px">🤖 <b style="color:var(--gold)">Claude AI</b>로 실시간 분석이 가능합니다.</div><button onclick="aiSearchByIdClaude('${id}','${name.replace(/'/g,"\'")}','${sector}','${market}')" style="width:100%;padding:12px;background:linear-gradient(135deg,var(--gold),#E8C96A);border:none;border-radius:10px;color:#07080F;font-size:13px;font-weight:900;cursor:pointer">🤖 Claude AI로 분석하기</button></div><div style="padding:10px 18px;display:flex;gap:8px"><a href="https://finance.naver.com/item/main.naver?code=${id}" target="_blank" style="flex:1;display:flex;align-items:center;gap:8px;padding:10px;background:var(--bg3);border:1px solid var(--border);border-radius:9px;text-decoration:none"><span>📊</span><div style="font-size:11px;font-weight:700;color:var(--text)">네이버</div><span style="margin-left:auto">→</span></a><a href="https://finance.daum.net/quotes/A${id}" target="_blank" style="flex:1;display:flex;align-items:center;gap:8px;padding:10px;background:var(--bg3);border:1px solid var(--border);border-radius:9px;text-decoration:none"><span>📈</span><div style="font-size:11px;font-weight:700;color:var(--text)">다음</div><span style="margin-left:auto">→</span></a></div></div>`;
-}
-
-async function refreshPrice(){
-  if(refreshing||!curStock)return;
-  refreshing=true;
-  btn.disabled=true; btn.textContent="조회 중...";
-  badge.style.color=""; badge.style.display="none";
-
-  if(price){
-    liveP=price;
-    // 52주 범위도 실시간 업데이트
-    if(sd.w52h>0) curStock._liveW52h=sd.w52h;
-    if(sd.w52l>0) curStock._liveW52l=sd.w52l;
-    document.getElementById("dpval").textContent=fW(price);
-    if(sd.c!==undefined){const up=sd.c>=0;chgEl.style.color=up?"var(--green)":"var(--red)";chgEl.textContent=(up?"▲":"▼")+Math.abs(sd.c).toFixed(2)+"%";}
-    badge.style.display="block";
-    badge.textContent="✓ 실시간 ("+sd.src+"): "+fW(price)+" · "+new Date().toLocaleTimeString("ko-KR");
-    if(curDTab==="ov")renderDBody();
-  }else{
-    badge.style.display="block";
-    badge.style.color="var(--red)";
-    badge.textContent="⚠ 조회 실패 — 장 마감 시간이거나 네트워크를 확인하세요";
-    setTimeout(()=>{badge.style.display="none"; badge.style.color="";},5000);
-  }
-  btn.disabled=false; btn.textContent="🔄 실시간";
-  refreshing=false;
-}
-
-function showHelp(){document.getElementById("helpModal").classList.add("open");}
-function showVersionLog(){document.getElementById("verModal").classList.add("open");}
-
-window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;document.getElementById("instBtn").style.display="block";});
-function installApp(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;document.getElementById("instBtn").style.display="none";});}}
-function checkIOS(){const ios=/iphone|ipad|ipod/i.test(navigator.userAgent)&&!window.MSStream;if(ios&&!window.navigator.standalone)document.getElementById("iosBanner").style.display="flex";}
-
-// ── 검색 debounce (타이핑할 때마다 재렌더 방지) ──
-document.getElementById("searchInput").addEventListener("input",function(){
-  document.getElementById("clrBtn").style.display=this.value?"block":"none";
-  clearTimeout(_searchTimer);
-  _searchTimer=setTimeout(renderSearch,200); // 200ms debounce
-});
-
-document.getElementById("dview").addEventListener("touchstart",e=>startX=e.touches[0].clientX,{passive:true});
-document.getElementById("dview").addEventListener("touchend",e=>{if(e.changedTouches[0].clientX-startX>80)closeDetail();},{passive:true});
-
-
-// ══════════════════════════════════════════════════════════
-//  AUTO PRICE REFRESH — Yahoo Finance 실시간 자동 갱신
-//  앱 로드 시 자동 실행 → 틀린 정적 가격을 항상 보정
-//  캐시: sessionStorage (15분 유효)
-// ══════════════════════════════════════════════════════════
-
-function rfUI(dot, msg, prog){
-  if(d){d.className="refresh-dot"+(dot?" "+dot:"");} 
-  if(s)s.textContent=msg||"";
-  if(p)p.textContent=prog||"";
-}
-
-async function autoRefreshPrices(){
-  // 캐시 확인
-  try{
-    if(raw){
-      if(Date.now()-d.ts < RF_TTL){
-        applyPrices(d.prices);
-        rfUI("live","✓ 실시간 가격 적용됨",`캐시 ${min}분 남음`);
-        return;
-      }
-    }
-  }catch(_){}
-
-  rfUI("loading","가격 갱신 중...");
-
-  for(let i=0;i<stocks.length;i+=BATCH){
-    await Promise.all(batch.map(async({id,m})=>{
-      try{
-        if(!r.ok)return;
-        if(!meta||!meta.regularMarketPrice)return;
-        if(p<100)return;
-        prices[id]={p,c:chg,prev,w52h,w52l};
-        ok++;
-      }catch(_){}
-      done++;
-    }));
-    rfUI("loading",`가격 갱신 중... ${done}/${stocks.length}종목`,`${ok}개 수신`);
-    applyPrices(prices);
-    await new Promise(r=>setTimeout(r,150));
-  }
-
-  // 결과 저장
-  try{sessionStorage.setItem(RF_KEY,JSON.stringify({ts:Date.now(),prices}));}catch(_){}
-  
-  if(ok>0){
-    rfUI("live",`✓ 실시간 가격 ${ok}개 갱신 완료 (Yahoo Finance)`,`${done}종목 처리`);
-  }else{
-    rfUI("fail","가격 갱신 실패 — 정적 데이터 표시 중","API 연결 오류");
-  }
-  setTimeout(()=>{
-    rfUI(ok>0?"live":"","실시간",ok>0?`${ok}개 실시간 · 15분 캐시`:"오프라인");
-  },4000);
-}
-
-function applyPrices(prices){
-  DB.forEach(s=>{
+    const d=prices[s.id];
     if(d&&d.p>0){
       s.p=d.p; s.c=d.c; s.prev=d.prev;
       if(d.w52h>s.w52h)s.w52h=d.w52h;
@@ -3120,51 +3096,81 @@ function manualRefresh(){
 
 
 function showApiKeySetting(){
-  const key=prompt("Anthropic API 키 입력\n현재: "+cur+"\n(sk-ant- 로 시작)");
-  if(!key) return; const t=key.trim();
-  if(!t.startsWith("sk-ant-")){alert("❌ sk-ant- 로 시작해야 합니다");return;}
-  try{localStorage.setItem(AKEY_STORE,t);cachedApiKey=t;}catch(_){cachedApiKey=t;}
+  const cur = cachedApiKey ? "저장됨: ••••"+cachedApiKey.slice(-6) : "없음";
+  const key = prompt("Anthropic API 키 입력\n현재: "+cur+"\n\n(sk-ant- 로 시작하는 키)");
+  if(!key) return;
+  const trimmed = key.trim();
+  if(!trimmed.startsWith("sk-ant-")){ alert("❌ sk-ant- 로 시작해야 합니다"); return; }
+  try{ localStorage.setItem(AKEY_STORE, trimmed); cachedApiKey = trimmed; }catch(_){ cachedApiKey = trimmed; }
   alert("✅ API 키 저장 완료!");
 }
-async function aiSearchByIdClaude(id,name,sector,market){
-  const el=document.getElementById("searchList"); if(!el) return;
-  let ak=getApiKey();
+async function aiSearchByIdClaude(id, name, sector, market){
+  const el = document.getElementById("searchList");
+  if(!el) return;
+  let ak = getApiKey();
   if(!ak){
-    const key=prompt("Anthropic API 키를 입력하세요\n(sk-ant- 로 시작)");
-    if(!key) return; const t=key.trim();
-    if(!t.startsWith("sk-ant-")){alert("❌ 올바른 형식이 아닙니다");return;}
-    try{localStorage.setItem(AKEY_STORE,t);cachedApiKey=t;ak=t;}catch(_){ak=t;}
+    const key = prompt("Anthropic API 키를 입력하세요\n(sk-ant- 로 시작하는 키)");
+    if(!key) return;
+    const trimmed = key.trim();
+    if(!trimmed.startsWith("sk-ant-")){ alert("❌ 올바른 형식이 아닙니다"); return; }
+    try{ localStorage.setItem(AKEY_STORE, trimmed); cachedApiKey = trimmed; ak = trimmed; }catch(_){ ak = trimmed; }
   }
-  el.innerHTML=`<div style="text-align:center;padding:50px 20px"><div style="font-size:40px;margin-bottom:14px">🤖</div><div style="color:var(--gold);font-weight:900;font-size:15px;margin-bottom:8px">${name}</div><div style="color:var(--text3);font-size:12px">Claude AI 분석 중...</div><div id="claudeStatus" style="margin-top:12px;font-size:11px;color:var(--gold)">API 연결 중...</div></div>`;
-  const ss=msg=>{const s=document.getElementById("claudeStatus");if(s)s.textContent=msg;};
+  el.innerHTML=`<div style="text-align:center;padding:50px 20px">
+    <div style="font-size:40px;margin-bottom:14px">🤖</div>
+    <div style="color:var(--gold);font-weight:900;font-size:15px;margin-bottom:8px">${name}</div>
+    <div style="color:var(--text3);font-size:12px">Claude AI 분석 중... (10~20초)</div>
+    <div id="claudeStatus" style="margin-top:12px;font-size:11px;color:var(--gold)">API 연결 중...</div>
+  </div>`;
+  const setStatus = msg => { const st=document.getElementById("claudeStatus"); if(st) st.textContent=msg; };
   try{
-    ss("⏳ 요청 중...");
-    const EX='{"id":"005930","n":"삼성전자","s":"반도체","m":"K","p":192000,"c":2.1,"prev":188000,"w52h":223000,"w52l":94500,"cap":"1143조","per":14.2,"pbr":1.48,"roe":12.4,"debt":28,"t":["반도체"],"ind":{"pbr":52,"per":54,"roe":62,"momentum":82,"growth":88,"sentiment":80,"safety":88},"sum":"FY2024 영업이익 32.7조.","bull":"HBM4 납품","bear":"수율 열위","tH":223000,"tM":180000,"tL":94500,"verify":{"note":"Claude AI"}}';
-    if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error("API "+res.status+(e.error?.message?": "+e.error.message:""));}
-    ss("⏳ 처리 중...");
-    const j2=extractJSON(raw); if(!j2) throw new Error("JSON 추출 실패");
-    let stk=JSON.parse(j2);
-    stk.id=id;stk.n=name;stk.s=sector;stk.m=market;
+    setStatus("⏳ 요청 중...");
+    const EX = '{"id":"005930","n":"삼성전자","s":"반도체","m":"K","p":192000,"c":2.1,"prev":188000,"w52h":223000,"w52l":94500,"cap":"1143조","per":14.2,"pbr":1.48,"roe":12.4,"debt":28,"t":["반도체"],"ind":{"pbr":52,"per":54,"roe":62,"momentum":82,"growth":88,"sentiment":80,"safety":88},"sum":"FY2024 영업이익 32.7조.","bull":"HBM4 납품","bear":"수율 열위","tH":223000,"tM":180000,"tL":94500,"verify":{"note":"Claude AI"}}';
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method:"POST",
+      headers:{"Content-Type":"application/json","x-api-key":ak,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+      body: JSON.stringify({model:"claude-haiku-4-5-20251001",max_tokens:1000,
+        system:"Output ONLY valid compact JSON on one line. No markdown. Start { end }.",
+        messages:[{role:"user",content:"삼성전자(005930) 분석"},{role:"assistant",content:EX},
+          {role:"user",content:`${name}(${id}) ${market==="K"?"KOSPI":"KOSDAQ"} 섹터:${sector}. 2026년 3월 실제 주가·재무. id="${id}" n="${name}" s="${sector}" m="${market}" 고정. 위 JSON 형식만.`}]})
+    });
+    if(!res.ok){ const err=await res.json().catch(()=>({})); throw new Error("API "+res.status+(err.error?.message?": "+err.error.message:"")); }
+    setStatus("⏳ 처리 중...");
+    const data = await res.json();
+    const raw = (data.content||[]).filter(x=>x.type==="text").map(x=>x.text).join("").trim();
+    const jsonStr = extractJSON(raw);
+    if(!jsonStr) throw new Error("JSON 추출 실패");
+    let stk = JSON.parse(jsonStr);
+    stk.id=id; stk.n=name; stk.s=sector; stk.m=market;
     if(!stk.ind) stk.ind={};
     ["pbr","per","roe","momentum","growth","sentiment","safety"].forEach(k=>{stk.ind[k]=Math.min(100,Math.max(0,Math.round(Number(stk.ind[k])||50)));});
     if(!stk.t||!stk.t.length) stk.t=[sector];
     if(!stk.verify) stk.verify={note:"Claude AI 실시간 분석"};
     LITE_PRICE_CACHE[id]={p:stk.p||0,c:stk.c||0};
+    const ei=DB.findIndex(x=>x.id===id); if(ei>=0)DB[ei]=stk;else DB.push(stk);
     liveP=stk.p||null; closeSearchModal(); openDetail(id);
-  }catch(err){
-    el.innerHTML=`<div style="margin:8px;border-radius:14px;background:var(--bg2);border:1px solid rgba(248,81,73,.3);padding:16px"><div style="font-size:13px;font-weight:900;color:var(--red);margin-bottom:8px">❌ 조회 실패</div><div style="font-size:11px;color:var(--text2);background:var(--bg3);border-radius:8px;padding:10px;margin-bottom:12px">${err.message}</div><button onclick="aiSearchByIdClaude('${id}','${name.replace(/'/g,"\'")}','${sector}','${market}')" style="width:100%;padding:11px;background:linear-gradient(135deg,var(--gold),#E8C96A);border:none;border-radius:9px;color:#07080F;font-size:12px;font-weight:900;cursor:pointer">🔄 다시 시도</button></div>`;
+  } catch(err){
+    el.innerHTML=`<div style="margin:8px;border-radius:14px;background:var(--bg2);border:1px solid rgba(248,81,73,.3);padding:16px">
+      <div style="font-size:13px;font-weight:900;color:var(--red);margin-bottom:8px">❌ 조회 실패</div>
+      <div style="font-size:11px;color:var(--text2);background:var(--bg3);border-radius:8px;padding:10px;margin-bottom:12px">${err.message}</div>
+      <button onclick="aiSearchByIdClaude('${id}','${name.replace(/'/g,"\'")}','${sector}','${market}')"
+        style="width:100%;padding:11px;background:linear-gradient(135deg,var(--gold),#E8C96A);border:none;border-radius:9px;color:#07080F;font-size:12px;font-weight:900;cursor:pointer">🔄 다시 시도</button>
+    </div>`;
   }
 }
 function openSearchModal(){
-  const m=document.getElementById("searchModal"); if(!m) return;
-  m.style.display="flex"; curPage="search"; renderSearch();
-  setTimeout(()=>document.getElementById("searchInput")?.focus(),100);
+  const m = document.getElementById("searchModal");
+  if(!m) return;
+  m.style.display = "flex";
+  curPage = "search";
+  renderSearch();
+  setTimeout(()=>{ const inp=document.getElementById("searchInput"); if(inp) inp.focus(); }, 100);
 }
 function closeSearchModal(){
+  const m = document.getElementById("searchModal");
+  if(m) m.style.display = "none";
+  curPage = "home";
 }
-
 document.addEventListener("DOMContentLoaded",()=>{initTicker();render();checkIOS();setTimeout(autoRefreshPrices,600);});
-
 </script>
 </body>
 </html>
