@@ -118,12 +118,13 @@ input::placeholder{color:var(--text3)}
 
 /* ── 티커 ── */
 .ticker{
-  height:30px;background:rgba(212,168,67,0.04);
+  height:34px;background:rgba(212,168,67,0.04);
   border-bottom:1px solid var(--border2);
   overflow:hidden;display:flex;align-items:center;flex-shrink:0}
-.ttrack{display:flex;white-space:nowrap;will-change:transform}
+.ttrack{display:flex;white-space:nowrap;will-change:transform;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 .titem{display:inline-flex;align-items:center;gap:5px;
-  padding:0 16px;border-right:1px solid var(--border2);font-size:10px}
+  padding:0 18px;border-right:1px solid rgba(255,255,255,0.06)}order-right:1px solid var(--border2);font-size:10px}
 
 /* ── 페이지 ── */
 .page{flex:1;display:none;flex-direction:column;overflow:hidden}
@@ -2234,12 +2235,12 @@ function initTicker(){
   if(!tr)return;
   const items=[...TDATA,...TDATA,...TDATA];
   tr.innerHTML=items.map(t=>`<span class="titem">
-    <span style="font-size:10px;color:var(--gold);font-weight:800;letter-spacing:.3px">${t.n}</span>
-    <span style="font-size:11px;font-family:'Bebas Neue',monospace;font-weight:700;color:var(--text);margin:0 3px">${t.v}</span>
-    <span style="font-size:10px;font-family:'Space Grotesk',monospace;font-weight:700;color:${t.up?"#58A6FF":"var(--red)"}">${t.c}</span>
+    <span style="font-size:11px;color:var(--gold);font-weight:800;letter-spacing:.5px;white-space:nowrap">${t.n}</span>
+    <span style="font-size:13px;font-family:'Bebas Neue',sans-serif;font-weight:700;color:#E6EDF3;margin:0 4px;letter-spacing:.5px;white-space:nowrap">${t.v}</span>
+    <span style="font-size:11px;font-family:'Space Grotesk',sans-serif;font-weight:800;color:${t.up?"#58A6FF":"#F85149"};white-space:nowrap">${t.c}</span>
   </span>`).join("");
   let x=0;const tot=tr.scrollWidth/3;
-  setInterval(()=>{x+=0.4;if(x>=tot)x=0;tr.style.transform=`translateX(-${x}px)`;},14);
+  setInterval(()=>{x+=0.25;if(x>=tot)x=0;tr.style.transform=`translateX(-${x}px)`;},16);
 }
 
 function cardHTML(s){
