@@ -37,7 +37,7 @@
   --r12:     12px;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;background:var(--bg);color:var(--text);
+html,body{height:100%;background:var(--bg);color:var(--text);display:flex;justify-content:center;
   font-family:"Nanum Gothic",-apple-system,BlinkMacSystemFont,sans-serif;
   overscroll-behavior:none;-webkit-font-smoothing:antialiased}
 ::-webkit-scrollbar{width:3px;height:3px}
@@ -46,7 +46,9 @@ button,input{font-family:inherit;outline:none}
 input::placeholder{color:var(--text3)}
 
 /* ── 앱 레이아웃 ── */
-.app{display:flex;flex-direction:column;height:100dvh;overflow:hidden}
+.app{display:flex;flex-direction:column;height:100dvh;overflow:hidden;
+  max-width:900px;margin:0 auto;width:100%;position:relative}
+body::before{content:"";position:fixed;inset:0;background:var(--bg);z-index:-1}
 
 
 
@@ -409,7 +411,7 @@ input::placeholder{color:var(--text3)}
       </div>
       <span class="hdr-badge">AI 투자분석</span>
     </div>
-    <button class="ver-btn" id="verStamp" onclick="showVersionLog()">v3.2 · 3/21</button>
+    <button class="ver-btn" id="verStamp" onclick="showVersionLog()">v3.5 · 3/21</button>
     <button onclick="openSearchModal()"
       style="background:var(--gold-bg);border:1px solid var(--gold-br);border-radius:8px;
       color:var(--gold);padding:6px 12px;cursor:pointer;font-size:12px;font-weight:800;
@@ -540,12 +542,12 @@ input::placeholder{color:var(--text3)}
       <span class="modal-t">📋 업데이트 로그</span>
       <button onclick="document.getElementById('verModal').classList.remove('open')" style="background:var(--bg3);border:1px solid var(--border2);border-radius:7px;color:var(--text3);padding:6px 10px;cursor:pointer;font-size:16px">×</button>
     </div>
-    <div style="font-size:11px;color:var(--gold);font-weight:800;letter-spacing:1px;margin-bottom:12px">현재: v3.2 · 2026.03.21 최신</div>
+    <div style="font-size:11px;color:var(--gold);font-weight:800;letter-spacing:1px;margin-bottom:12px">현재: v3.5 · 2026.03.21 최신</div>
 
     <!-- v3.2 최신 -->
     <div style="background:rgba(212,168,67,0.08);border:1.5px solid rgba(212,168,67,0.4);border-radius:12px;padding:14px;margin-bottom:10px">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-        <span style="font-size:12px;font-weight:900;color:var(--gold)">v3.2</span>
+        <span style="font-size:12px;font-weight:900;color:var(--gold)">v3.5</span>
         <span style="font-size:9px;background:var(--gold);color:#07080F;border-radius:4px;padding:1px 6px;font-weight:800">최신</span>
         <span style="font-size:10px;color:var(--text3);margin-left:auto">2026.03.21</span>
       </div>
@@ -2877,18 +2879,24 @@ async function aiSearch(query, btn, preFetchedPrice=null){
     if(s){
       showLocalAnalysis(s, preFetchedPrice);
     } else {
-      const el2=document.getElementById("aiResult")||document.getElementById("searchList");
-      if(el2) el2.innerHTML=`<div style="margin:8px 2px;padding:20px;background:var(--bg2);border:1px solid rgba(248,81,73,0.3);border-radius:14px;text-align:center">
-        <div style="font-size:28px;margin-bottom:10px">🔑</div>
-        <div style="font-size:13px;font-weight:800;color:var(--text);margin-bottom:6px">AI 분석 사용 불가</div>
-        <div style="font-size:11px;color:var(--text2);line-height:1.8;margin-bottom:14px">
-          AI 분석을 사용하려면 Anthropic API 키가 필요합니다.<br>
-          상단의 🔑 버튼에서 키를 입력해주세요.
-        </div>
-        <a href="https://console.anthropic.com" target="_blank"
-          style="display:inline-block;padding:9px 18px;background:var(--gold-bg);border:1px solid var(--gold-br);border-radius:8px;color:var(--gold);font-size:11px;font-weight:700;text-decoration:none">
-          📌 API 키 발급받기 →
-        </a>
+      // DB_LITE 종목 → Yahoo Finance로 데이터 조회 후 상세화면
+      const codeMatch = query.match(/\((\d{6})\)/);
+      if(codeMatch){
+        const code = codeMatch[1];
+        const liteStock = (typeof DB_LITE_RAW!=="undefined"?DB_LITE_RAW:[]).find(x=>x.id===code);
+        const sName = query.replace(/\(\d{6}\)/,"").trim();
+        const sSector = liteStock?.s||"기타";
+        const sMarket = liteStock?.m||"K";
+        if(btn){btn.disabled=false;btn.textContent="✨ AI 분석";}
+        aiSearchById(code, sName, sSector, sMarket);
+        return;
+      }
+      // 코드 없는 경우
+      const el2=document.getElementById("searchList");
+      if(el2) el2.innerHTML=`<div style="padding:30px 16px;text-align:center">
+        <div style="font-size:28px;margin-bottom:10px">📡</div>
+        <div style="font-size:13px;font-weight:800;color:var(--text);margin-bottom:8px">종목을 찾을 수 없습니다</div>
+        <div style="font-size:11px;color:var(--text2)">정확한 종목명이나 코드로 검색해주세요.</div>
       </div>`;
     }
     return;
@@ -3684,10 +3692,11 @@ function getApiKey(){
 
 
 // ── 업데이트 토스트 ─────────────────────────────────────────
-const CURRENT_VER = 'v3.2';
+const CURRENT_VER = 'v3.5';
 const VER_KEY = 'sig_last_ver';
 
 const UPDATE_NOTES = {
+  'v3.5': '✅ 레이아웃 900px 중앙정렬\n✅ 검색 전체화면 모달\n✅ 헤더 종목 검색 버튼\n✅ 경량 종목 AI버튼 Yahoo 연결\n✅ 가격갱신 바 색상',
   'v3.2': '✅ 경량 종목 Yahoo 데이터 직접 조회\n✅ 가격 갱신바 색상 개선\n✅ 티커 금액·이름 색상 추가\n✅ PC 화면 레이아웃 최적화',
   'v3.1': '✅ 전일종가 자동갱신 안정화\n✅ 상세화면 AI 분석 버튼 추가\n✅ DB 종목 전일종가 업데이트',
   'v3.0': '✅ GitHub Dark UI 전면 리디자인\n✅ 가격 오류 32개 수정',
