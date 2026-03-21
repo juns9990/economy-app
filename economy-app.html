@@ -327,6 +327,7 @@
     .tab-news   { --tc: #4aab74; --tg: linear-gradient(135deg, #082018, #0e3022); --tb: #1e6040; }
     .tab-market { --tc: #c96060; --tg: linear-gradient(135deg, #2a0c0c, #3d1414); --tb: #8b2020; }
     .tab-study  { --tc: #9b6bd4; --tg: linear-gradient(135deg, #1a0e2e, #261444); --tb: #5a2a90; }
+    .tab-help   { --tc: #60c8d4; --tg: linear-gradient(135deg, #0a1e20, #102830); --tb: #1a6070; }
 
     .tab:hover:not(.active) {
       color: var(--tc);
@@ -868,6 +869,7 @@
     <button class="tab tab-videos" onclick="switchTab('videos')">📺 채널</button>
     <button class="tab tab-news"   onclick="switchTab('news')">📰 뉴스</button>
     <button class="tab tab-study"  onclick="switchTab('study')">📚 학습</button>
+    <button class="tab tab-help"   onclick="switchTab('help')">❓ 도움말</button>
   </div>
 
   <!-- HOME -->
@@ -922,27 +924,93 @@
     <div id="fullMarket"></div>
   </div>
 
-  <!-- STUDY -->
-  <div id="tab-study" class="tab-content">
+  <!-- HELP -->
+  <div id="tab-help" class="tab-content">
     <div class="section-header">
-      <div class="section-title">경제 백과사전</div>
-      <div class="section-sub">138개 경제 용어 수록</div>
+      <div class="section-title">사용 설명서</div>
+      <div class="section-sub">이코노미 스쿨 완벽 가이드</div>
     </div>
-    <div style="position:relative;margin-bottom:16px;">
-      <input id="conceptSearch" type="text" placeholder="GDP, 금리, 인플레이션, PER..."
-        oninput="searchConcepts(this.value)"
-        onfocus="this.style.borderColor='var(--gold)'"
-        onblur="this.style.borderColor='var(--border)'">
-      <svg style="position:absolute;left:14px;top:50%;transform:translateY(-50%);pointer-events:none;" width="14" height="14" viewBox="0 0 24 24" fill="var(--text3)"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-      <span id="conceptSearchCount" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);"></span>
+
+    <!-- 앱 주소 공유 -->
+    <div style="background:linear-gradient(135deg,rgba(201,168,76,0.08),rgba(201,168,76,0.03));border:1px solid rgba(201,168,76,0.2);border-radius:10px;padding:20px;margin-bottom:24px;">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--gold);margin-bottom:10px;">📌 앱 주소</div>
+      <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold2);word-break:break-all;margin-bottom:12px;">https://juns9990.github.io/economy-app/economy-app.html</div>
+      <button onclick="navigator.clipboard.writeText('https://juns9990.github.io/economy-app/economy-app.html').then(()=>{this.textContent='✅ 복사됨!';setTimeout(()=>this.textContent='🔗 링크 복사',2000)})" style="background:linear-gradient(135deg,var(--gold),#a07830);color:#000;border:none;border-radius:6px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;">🔗 링크 복사</button>
     </div>
-    <div id="conceptCategoryBtns" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;"></div>
-    <div class="concept-grid" id="conceptGrid"></div>
-    <div class="concept-detail" id="conceptDetail"></div>
+
+    <!-- 메뉴 안내 -->
+    <div style="margin-bottom:28px;">
+      <div class="sub-section-label">📱 메뉴 안내</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:12px;">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;display:flex;gap:14px;align-items:flex-start;">
+          <span style="font-size:20px;flex-shrink:0;">🏠</span>
+          <div><div style="font-size:14px;font-weight:700;color:#f0c040;margin-bottom:4px;">홈</div><div style="font-size:12px;color:var(--text2);line-height:1.6;">코스피·코스닥·환율·S&P 500 등 8개 핵심 지수를 실시간으로 확인해요.</div></div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;display:flex;gap:14px;align-items:flex-start;">
+          <span style="font-size:20px;flex-shrink:0;">📈</span>
+          <div><div style="font-size:14px;font-weight:700;color:#ff6060;margin-bottom:4px;">시장</div><div style="font-size:12px;color:var(--text2);line-height:1.6;">한국·미국·아시아·유럽·원자재·가상자산 17개 지수 전체를 볼 수 있어요.</div></div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;display:flex;gap:14px;align-items:flex-start;">
+          <span style="font-size:20px;flex-shrink:0;">📺</span>
+          <div><div style="font-size:14px;font-weight:700;color:#4d9fff;margin-bottom:4px;">채널</div><div style="font-size:12px;color:var(--text2);line-height:1.6;">경제 유튜브 채널 28개 모음. 클릭하면 YouTube에서 바로 시청해요.</div></div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;display:flex;gap:14px;align-items:flex-start;">
+          <span style="font-size:20px;flex-shrink:0;">📰</span>
+          <div><div style="font-size:14px;font-weight:700;color:#3ecf7a;margin-bottom:4px;">뉴스</div><div style="font-size:12px;color:var(--text2);line-height:1.6;">한국·글로벌·시장 뉴스를 한 곳에서. 언론사 카드 클릭 시 바로 이동해요.</div></div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;display:flex;gap:14px;align-items:flex-start;">
+          <span style="font-size:20px;flex-shrink:0;">📚</span>
+          <div><div style="font-size:14px;font-weight:700;color:#b06aff;margin-bottom:4px;">학습</div><div style="font-size:12px;color:var(--text2);line-height:1.6;">경제 용어 138개 백과사전. 검색·카테고리 필터·클릭으로 상세 설명을 봐요.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 앱 설치 -->
+    <div style="margin-bottom:28px;">
+      <div class="sub-section-label">📲 앱 설치 방법</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:12px;">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;">
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px;">🤖 Android (Chrome)</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.8;">상단 <span style="color:var(--gold)">+ 설치</span> 버튼 클릭<br>또는 Chrome 메뉴(⋮) → <span style="color:var(--gold)">"홈 화면에 추가"</span></div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;">
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px;">🍎 iPhone (Safari)</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.8;">Safari에서 접속 → 하단 <span style="color:var(--gold)">공유(□↑)</span> 탭 → <span style="color:var(--gold)">"홈 화면에 추가"</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div>
+      <div class="sub-section-label">❓ 자주 묻는 질문</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px;" id="helpFaq"></div>
+    </div>
   </div>
 
 </div>
 
+
+<!-- FOOTER -->
+<footer style="background:var(--surface);border-top:1px solid var(--border);padding:28px 20px;text-align:center;position:relative;z-index:1;">
+  <div style="max-width:900px;margin:0 auto;">
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px;">
+      <div style="width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,var(--gold),#a07830);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 18L8 12L12 15L16 8L20 6" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span style="font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--gold);letter-spacing:1px;">이코노미 스쿨</span>
+    </div>
+    <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:1px;margin-bottom:8px;">MADE BY JUNS · 2026</div>
+    <div style="font-size:12px;color:var(--text3);line-height:1.8;">
+      실시간 시장 데이터 · 경제 뉴스 · 학습 백과사전<br>
+      <span style="color:var(--text3);font-family:'DM Mono',monospace;font-size:10px;">v<span id="footerVer"></span></span>
+    </div>
+    <div style="margin-top:14px;display:flex;justify-content:center;gap:16px;flex-wrap:wrap;">
+      <a href="https://juns9990.github.io/economy-app/economy-app.html" style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);text-decoration:none;letter-spacing:1px;" target="_blank">앱 바로가기 →</a>
+      <span style="color:var(--border2);">|</span>
+      <a href="https://juns9990.github.io/economy-app/manual.html" style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);text-decoration:none;letter-spacing:1px;" target="_blank">사용 설명서 →</a>
+    </div>
+  </div>
+</footer>
 
 <script>
 // ===================== DATA =====================
@@ -1611,7 +1679,9 @@ function buildConcepts() {
   const countEl = document.getElementById('conceptSearchCount');
   if (countEl) countEl.textContent = `${filtered.length}개`;
 
-  document.getElementById('conceptGrid').innerHTML = filtered.length === 0
+  const gridEl = document.getElementById('conceptGrid');
+  if (!gridEl) return;
+  gridEl.innerHTML = filtered.length === 0
     ? `<div style="padding:40px;text-align:center;color:var(--text2);">검색 결과가 없어요 😅<br><small style="margin-top:8px;display:block;">다른 키워드로 검색해보세요</small></div>`
     : filtered.map(c => {
         const realIndex = CONCEPTS.indexOf(c);
@@ -1646,12 +1716,13 @@ function openConcept(i) {
 
 // ===================== TABS =====================
 function switchTab(name) {
-  const tabNames = ['home','videos','news','market','study'];
+  const tabNames = ['home','market','videos','news','study','help'];
   document.querySelectorAll('.tab').forEach((t, i) => {
     t.classList.toggle('active', tabNames[i] === name);
   });
   document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
   document.getElementById(`tab-${name}`).classList.add('active');
+  if (name === 'help') buildHelpFaq();
 }
 
 // ===================== VIDEO MODAL =====================
@@ -2305,12 +2376,35 @@ self.addEventListener('fetch', e => {
 
 
 // ===================== INIT =====================
-const APP_VERSION = '3.1.0';
+const APP_VERSION = '3.2.0';
+
+function buildHelpFaq() {
+  const el = document.getElementById('helpFaq');
+  if (!el) return;
+  const faqs = [
+    { q: '데이터가 실시간인가요?', a: '네! Cloudflare Worker를 통해 실시간으로 가져와요. 1시간마다 자동 갱신되며 ↻ 버튼으로 즉시 새로고침할 수 있어요.' },
+    { q: '무료인가요?', a: '완전 무료예요! 광고도 없고 회원가입도 필요 없어요.' },
+    { q: '데이터가 "참고값"으로 나와요.', a: '실시간 로딩 실패 시 나와요. ↻ 버튼을 눌러 새로고침하거나 잠시 후 다시 시도해보세요.' },
+    { q: '닛케이225가 너무 높게 나와요.', a: '닛케이225는 엔화(¥) 기준이라 숫자가 크게 보여요. 정상이에요!' },
+    { q: '인터넷 없이 사용할 수 있나요?', a: '홈 화면 설치 후 기본 화면은 오프라인에서도 가능해요. 단 실시간 데이터는 인터넷이 필요해요.' },
+  ];
+  el.innerHTML = faqs.map(f => `
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;">
+      <div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block';this.querySelector('span').textContent=this.nextElementSibling.style.display==='block'?'－':'＋'"
+        style="padding:14px 16px;font-size:13px;font-weight:700;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
+        ${f.q}<span style="color:var(--gold);font-family:'DM Mono',monospace;">＋</span>
+      </div>
+      <div style="display:none;padding:0 16px 14px;font-size:12px;color:var(--text2);line-height:1.8;">${f.a}</div>
+    </div>
+  `).join('');
+}
 
 function init() {
   // 버전 라벨 자동 반영
   const verEl = document.getElementById('appVerLabel');
   if (verEl) verEl.textContent = 'v' + APP_VERSION;
+  const fVerEl = document.getElementById('footerVer');
+  if (fVerEl) fVerEl.textContent = APP_VERSION;
 
   const savedVer = localStorage.getItem('econ_app_version');
   if (savedVer !== APP_VERSION) {
