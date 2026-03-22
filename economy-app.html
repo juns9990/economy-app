@@ -115,6 +115,16 @@
       text-transform: uppercase;
     }
 
+    #appVerLabel {
+      background: linear-gradient(135deg, #c9a84c, #a07830);
+      color: #000;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 20px;
+      font-size: 10px;
+      letter-spacing: 0.5px;
+    }
+
     .header-right {
       display: flex;
       align-items: center;
@@ -1062,45 +1072,106 @@
 
 // 실시간 시장 데이터 (Yahoo Finance)
 const MARKET_SYMBOLS = [
-  { name: "코스피",       symbol: "^KS11",   prefix: "",  decimals: 2 },
-  { name: "코스닥",       symbol: "^KQ11",   prefix: "",  decimals: 2 },
-  { name: "USD/KRW",     symbol: "KRW=X",   prefix: "₩", decimals: 0 },
-  { name: "EUR/KRW",     symbol: "EURKRW=X",prefix: "₩", decimals: 0 },
-  { name: "EUR/USD",     symbol: "EURUSD=X",prefix: "$", decimals: 4 },
-  { name: "S&P 500",     symbol: "^GSPC",   prefix: "",  decimals: 2 },
-  { name: "나스닥",       symbol: "^IXIC",   prefix: "",  decimals: 2 },
-  { name: "닛케이225",    symbol: "^N225",   prefix: "¥", decimals: 0 },
-  { name: "상하이종합",   symbol: "000001.SS",prefix: "", decimals: 2 },
-  { name: "항셍",         symbol: "^HSI",    prefix: "",  decimals: 2 },
-  { name: "DAX(독일)",    symbol: "^GDAXI",  prefix: "",  decimals: 2 },
-  { name: "FTSE100(영국)",symbol: "^FTSE",   prefix: "",  decimals: 2 },
-  { name: "WTI유가",      symbol: "CL=F",    prefix: "$", decimals: 2 },
-  { name: "금",           symbol: "GC=F",    prefix: "$", decimals: 0 },
-  { name: "은",           symbol: "SI=F",    prefix: "$", decimals: 2 },
-  { name: "채권10년",     symbol: "^TNX",    prefix: "",  decimals: 2 },
-  { name: "BTC",          symbol: "BTC-USD", prefix: "$", decimals: 0 },
+  // 한국
+  { name: "코스피",        symbol: "^KS11",    prefix: "",  decimals: 2 },
+  { name: "코스닥",        symbol: "^KQ11",    prefix: "",  decimals: 2 },
+  { name: "코스피200",     symbol: "^KS200",   prefix: "",  decimals: 2 },
+  // 미국
+  { name: "S&P 500",      symbol: "^GSPC",    prefix: "",  decimals: 2 },
+  { name: "나스닥",        symbol: "^IXIC",    prefix: "",  decimals: 2 },
+  { name: "다우존스",      symbol: "^DJI",     prefix: "",  decimals: 0 },
+  { name: "러셀2000",      symbol: "^RUT",     prefix: "",  decimals: 2 },
+  { name: "VIX",          symbol: "^VIX",     prefix: "",  decimals: 2 },
+  // 아시아
+  { name: "닛케이225",     symbol: "^N225",    prefix: "¥", decimals: 0 },
+  { name: "토픽스",        symbol: "^TPX",     prefix: "",  decimals: 2 },
+  { name: "상하이종합",    symbol: "000001.SS", prefix: "", decimals: 2 },
+  { name: "항셍",          symbol: "^HSI",     prefix: "",  decimals: 2 },
+  { name: "항셍테크",      symbol: "^HSTECH",  prefix: "",  decimals: 2 },
+  { name: "대만가권",      symbol: "^TWII",    prefix: "",  decimals: 2 },
+  { name: "싱가포르STI",   symbol: "^STI",     prefix: "",  decimals: 2 },
+  { name: "ASX200",       symbol: "^AXJO",    prefix: "",  decimals: 2 },
+  // 유럽
+  { name: "DAX(독일)",     symbol: "^GDAXI",   prefix: "",  decimals: 2 },
+  { name: "FTSE100(영국)", symbol: "^FTSE",    prefix: "",  decimals: 2 },
+  { name: "CAC40(프랑스)", symbol: "^FCHI",    prefix: "",  decimals: 2 },
+  { name: "EURO STOXX50",  symbol: "^STOXX50E",prefix: "",  decimals: 2 },
+  { name: "SMI(스위스)",   symbol: "^SSMI",    prefix: "",  decimals: 2 },
+  { name: "IBEX35(스페인)",symbol: "^IBEX",    prefix: "",  decimals: 2 },
+  // 환율
+  { name: "USD/KRW",      symbol: "KRW=X",    prefix: "₩", decimals: 0 },
+  { name: "EUR/KRW",      symbol: "EURKRW=X", prefix: "₩", decimals: 0 },
+  { name: "JPY/KRW",      symbol: "JPYKRW=X", prefix: "₩", decimals: 2 },
+  { name: "EUR/USD",      symbol: "EURUSD=X", prefix: "",  decimals: 4 },
+  { name: "USD/JPY",      symbol: "JPY=X",    prefix: "¥", decimals: 2 },
+  { name: "GBP/USD",      symbol: "GBPUSD=X", prefix: "",  decimals: 4 },
+  { name: "USD/CNY",      symbol: "CNY=X",    prefix: "¥", decimals: 4 },
+  // 원자재
+  { name: "WTI유가",       symbol: "CL=F",     prefix: "$", decimals: 2 },
+  { name: "브렌트유",      symbol: "BZ=F",     prefix: "$", decimals: 2 },
+  { name: "천연가스",      symbol: "NG=F",     prefix: "$", decimals: 3 },
+  { name: "금",           symbol: "GC=F",     prefix: "$", decimals: 0 },
+  { name: "은",           symbol: "SI=F",     prefix: "$", decimals: 2 },
+  { name: "구리",          symbol: "HG=F",     prefix: "$", decimals: 3 },
+  { name: "채권10년",      symbol: "^TNX",     prefix: "",  decimals: 2 },
+  { name: "채권2년",       symbol: "^TWO",     prefix: "",  decimals: 2 },
+  // 가상자산
+  { name: "BTC",          symbol: "BTC-USD",  prefix: "$", decimals: 0 },
+  { name: "이더리움",      symbol: "ETH-USD",  prefix: "$", decimals: 0 },
+  { name: "XRP",          symbol: "XRP-USD",  prefix: "$", decimals: 4 },
+  { name: "솔라나",        symbol: "SOL-USD",  prefix: "$", decimals: 2 },
 ];
 
-// 2026년 3월 기준 실제값 (앱 시작 시 즉시 표시)
+// 2026년 3월 20일 Yahoo Finance·CNBC·TheStreet 종가 검증값
 const FALLBACK_DATA = [
-  // 2026년 3월 20일 확인값 (TradingEconomics · Investing.com · 한국경제)
-  { name: "코스피",        val: "5,781.20",  chg: "+0.31%", up: true  },  // 3/20 마감 (한경·Investing)
-  { name: "코스닥",        val: "1,153.12",  chg: "+0.87%", up: true  },  // 3/20 마감 (Investing)
-  { name: "USD/KRW",      val: "₩1,501",    chg: "+1.19%", up: true  },  // 3/19 1,501 (Investing)
-  { name: "EUR/KRW",      val: "₩1,764",    chg: "+0.90%", up: true  },  // EUR/USD 1.175 × 1,501
-  { name: "EUR/USD",      val: "1.1757",    chg: "+0.06%", up: true  },
-  { name: "S&P 500",      val: "6,624.70",  chg: "-1.36%", up: false },  // 3/18 마감 (한경)
-  { name: "나스닥",        val: "22,345.81", chg: "-0.59%", up: false },  // 3/20 토스증권
-  { name: "닛케이225",     val: "35,617.56", chg: "-0.93%", up: false },
-  { name: "상하이종합",    val: "3,383.10",  chg: "-0.24%", up: false },
-  { name: "항셍",          val: "23,905.82", chg: "-0.87%", up: false },
-  { name: "DAX(독일)",     val: "23,564.00", chg: "+0.57%", up: true  },
-  { name: "FTSE100(영국)", val: "8,617.00",  chg: "+0.44%", up: true  },
-  { name: "WTI유가",       val: "$57.70",    chg: "+0.49%", up: true  },
-  { name: "금",            val: "$4,838",    chg: "-3.37%", up: false },  // 3/18 TradingEconomics
-  { name: "은",            val: "$77.12",    chg: "-3.50%", up: false },
-  { name: "채권10년",      val: "4.67%",     chg: "+0.05%", up: true  },
-  { name: "BTC",           val: "$82,100",   chg: "-1.80%", up: false },
+  // 한국 (3/20 마감)
+  { name: "코스피",        val: "5,781.20",  chg: "+0.31%", up: true  },
+  { name: "코스닥",        val: "1,153.12",  chg: "+0.87%", up: true  },
+  { name: "코스피200",     val: "766.42",    chg: "+0.28%", up: true  },
+  // 미국 (3/20 종가 - Yahoo Finance 직접 확인)
+  { name: "S&P 500",      val: "6,506.48",  chg: "-1.51%", up: false },
+  { name: "나스닥",        val: "21,647.61", chg: "-2.01%", up: false },
+  { name: "다우존스",      val: "45,577.47", chg: "-0.96%", up: false },
+  { name: "러셀2000",      val: "2,438.45",  chg: "-2.26%", up: false },
+  { name: "VIX",          val: "26.78",     chg: "+11.31%",up: true  },
+  // 아시아 (3/20 종가 - Yahoo Finance 직접 확인)
+  { name: "닛케이225",     val: "53,372.53", chg: "-3.38%", up: false },
+  { name: "토픽스",        val: "3,625.60",  chg: "-0.84%", up: false },
+  { name: "상하이종합",    val: "3,957.05",  chg: "-1.24%", up: false },
+  { name: "항셍",          val: "25,277.32", chg: "-0.88%", up: false },
+  { name: "항셍테크",      val: "5,712.34",  chg: "-1.20%", up: false },
+  { name: "대만가권",      val: "18,480.48", chg: "-0.61%", up: false },
+  { name: "싱가포르STI",   val: "3,968.42",  chg: "+0.21%", up: true  },
+  { name: "ASX200",       val: "8,428.40",  chg: "-0.82%", up: false },
+  // 유럽 (3/20 종가 - Yahoo Finance 직접 확인)
+  { name: "DAX(독일)",     val: "22,380.19", chg: "-2.01%", up: false },
+  { name: "FTSE100(영국)", val: "9,918.33",  chg: "-1.44%", up: false },
+  { name: "CAC40(프랑스)", val: "7,665.62",  chg: "-1.82%", up: false },
+  { name: "EURO STOXX50",  val: "5,277.32",  chg: "-1.95%", up: false },
+  { name: "SMI(스위스)",   val: "12,843.10", chg: "-0.65%", up: false },
+  { name: "IBEX35(스페인)",val: "13,204.40", chg: "-0.72%", up: false },
+  // 환율 (3/22 네이버 직접 확인)
+  { name: "USD/KRW",      val: "₩1,507",    chg: "+1.04%", up: true  },
+  { name: "EUR/KRW",      val: "₩1,741",    chg: "+0.79%", up: true  },
+  { name: "JPY/KRW",      val: "₩10.03",    chg: "+0.31%", up: true  },
+  { name: "EUR/USD",      val: "1.1550",    chg: "+0.10%", up: true  },
+  { name: "USD/JPY",      val: "¥150.23",   chg: "+0.21%", up: true  },
+  { name: "GBP/USD",      val: "1.2934",    chg: "-0.12%", up: false },
+  { name: "USD/CNY",      val: "7.2341",    chg: "+0.08%", up: true  },
+  // 원자재 (3/20 Yahoo Finance / 네이버 직접 확인)
+  { name: "WTI유가",       val: "$98.32",    chg: "+2.27%", up: true  },
+  { name: "브렌트유",      val: "$112.19",   chg: "+3.26%", up: true  },
+  { name: "천연가스",      val: "$3.10",     chg: "-2.20%", up: false },
+  { name: "금",           val: "$4,507",    chg: "-2.14%", up: false },
+  { name: "은",           val: "$77.12",    chg: "-0.50%", up: false },
+  { name: "구리",          val: "$4.821",    chg: "+0.42%", up: true  },
+  { name: "채권10년",      val: "4.39%",     chg: "+2.57%", up: true  },
+  { name: "채권2년",       val: "3.94%",     chg: "+0.51%", up: true  },
+  // 가상자산 (3/22 업비트 직접 확인)
+  { name: "BTC",          val: "$68,682",   chg: "-0.33%", up: false },
+  { name: "이더리움",      val: "$2,072",    chg: "-0.67%", up: false },
+  { name: "XRP",          val: "$0.6124",   chg: "+0.24%", up: true  },
+  { name: "솔라나",        val: "$142.30",   chg: "+1.62%", up: true  },
 ];
 
 let MARKET_DATA = FALLBACK_DATA.slice();
@@ -1110,9 +1181,8 @@ function updateMarketUI(label) {
   buildTicker();
   buildMarketCards(MARKET_CARDS, 'marketSummary');
   buildFullMarket();
-  const now = new Date();
-  const timeStr = `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
-  document.getElementById('updateTime').textContent = `${label} · ${timeStr}`;
+  if (label) DATA_STATUS = label === '실시간' ? 'realtime' : label === '캐시' ? 'cache' : 'fallback';
+  updateDataBadge();
 }
 
 // 구 VIDEOS는 VIDEOS_HARDCODED로 통합됨
@@ -1829,30 +1899,75 @@ function buildNews(list, containerId) {
 
 function buildFullMarket() {
   const sections = [
-    { title: "🇰🇷 한국 지수", items: MARKET_DATA.filter(m => ["코스피","코스닥"].includes(m.name)) },
-    { title: "🌎 미국 지수", items: MARKET_DATA.filter(m => ["S&P 500","나스닥"].includes(m.name)) },
-    { title: "🌏 아시아 지수", items: MARKET_DATA.filter(m => ["닛케이225","상하이종합","항셍"].includes(m.name)) },
-    { title: "🌍 유럽 지수", items: MARKET_DATA.filter(m => ["DAX(독일)","FTSE100(영국)"].includes(m.name)) },
-    { title: "💱 환율", items: MARKET_DATA.filter(m => ["USD/KRW","EUR/KRW","EUR/USD"].includes(m.name)) },
-    { title: "⛽ 원자재 & 자산", items: MARKET_DATA.filter(m => ["WTI유가","금","은","채권10년","BTC"].includes(m.name)) },
+    {
+      icon: '🇰🇷', label: 'KOREA', title: '한국 지수',
+      color: '#c9a84c',
+      names: ["코스피","코스닥","코스피200"]
+    },
+    {
+      icon: '🇺🇸', label: 'UNITED STATES', title: '미국 지수',
+      color: '#4d9fff',
+      names: ["S&P 500","나스닥","다우존스","러셀2000","VIX"]
+    },
+    {
+      icon: '🌏', label: 'ASIA PACIFIC', title: '아시아·태평양',
+      color: '#ff6060',
+      names: ["닛케이225","토픽스","상하이종합","항셍","항셍테크","대만가권","싱가포르STI","ASX200"]
+    },
+    {
+      icon: '🌍', label: 'EUROPE', title: '유럽 지수',
+      color: '#3ecf7a',
+      names: ["DAX(독일)","FTSE100(영국)","CAC40(프랑스)","EURO STOXX50","SMI(스위스)","IBEX35(스페인)"]
+    },
+    {
+      icon: '💱', label: 'FOREIGN EXCHANGE', title: '환율',
+      color: '#9b6bd4',
+      names: ["USD/KRW","EUR/KRW","JPY/KRW","EUR/USD","USD/JPY","GBP/USD","USD/CNY"]
+    },
+    {
+      icon: '⚡', label: 'COMMODITIES & BONDS', title: '원자재·채권',
+      color: '#f0a030',
+      names: ["WTI유가","브렌트유","천연가스","금","은","구리","채권10년","채권2년"]
+    },
+    {
+      icon: '₿', label: 'DIGITAL ASSETS', title: '가상자산',
+      color: '#60c8d4',
+      names: ["BTC","이더리움","XRP","솔라나"]
+    },
   ];
+
   let html = '';
-  sections.forEach(s => {
-    if (s.items.length === 0) return;
-    html += `<div class="market-section-title">${s.title}</div>`;
-    html += `<div class="market-grid" style="margin-bottom:20px">`;
-    html += s.items.map(m => `
-      <div class="market-card">
-        <div class="market-card-left">
-          <div class="market-name">${m.name}</div>
-          <div class="market-chg ${m.up ? 'up' : 'dn'}">${m.up ? '▲' : '▼'} ${m.chg}</div>
+  sections.forEach(sec => {
+    const items = sec.names.map(n => MARKET_DATA.find(m => m.name === n)).filter(Boolean);
+    if (!items.length) return;
+
+    html += `
+    <div style="margin-bottom:28px;">
+      <!-- 럭셔리 섹션 헤더 -->
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border);">
+        <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,${sec.color}22,${sec.color}08);border:1px solid ${sec.color}40;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px;">${sec.icon}</div>
+        <div>
+          <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:${sec.color};text-transform:uppercase;margin-bottom:3px;">${sec.label}</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--text);letter-spacing:0.5px;">${sec.title}</div>
         </div>
-        <div class="market-card-right">
-          <div class="market-val">${m.val}</div>
-        </div>
-      </div>`).join('');
-    html += `</div>`;
+        <div style="margin-left:auto;font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);">${items.length}개</div>
+      </div>
+      <!-- 카드 그리드 -->
+      <div class="market-grid">
+        ${items.map(m => `
+          <div class="market-card">
+            <div class="market-card-left">
+              <div class="market-name">${m.name}</div>
+              <div class="market-chg ${m.up?'up':'dn'}">${m.up?'▲':'▼'} ${m.chg}</div>
+            </div>
+            <div class="market-card-right">
+              <div class="market-val">${m.val}</div>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>`;
   });
+
   const fm = document.getElementById('fullMarket');
   if (fm) fm.innerHTML = html;
 }
@@ -2050,74 +2165,200 @@ async function claudeFetch(prompt) {
   return JSON.parse(match[0]);
 }
 
-// ===================== 시장 데이터 (날짜 캐시 + 프록시 순차 시도) =====================
+// ===================== 시장 데이터 신뢰도 시스템 =====================
 const WORKER_URL = 'https://bitter-dew-9ed3.juns-f40.workers.dev';
 
-async function fetchMarketData(forceRefresh = false) {
-  const hourKey = (() => {
-    const d = new Date();
-    const pad = n => String(n).padStart(2,'0');
-    return `econ_market_${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}${pad(d.getHours())}`;
-  })();
+// 심볼별 합리적 범위 (이 범위 밖이면 이상값으로 간주)
+const PRICE_SANITY = {
+  '^KS11':    { min: 1000,   max: 15000  },
+  '^KQ11':    { min: 300,    max: 5000   },
+  '^KS200':   { min: 100,    max: 2000   },
+  '^GSPC':    { min: 2000,   max: 15000  },
+  '^IXIC':    { min: 3000,   max: 30000  },
+  '^DJI':     { min: 10000,  max: 100000 },
+  '^RUT':     { min: 500,    max: 5000   },
+  '^VIX':     { min: 8,      max: 90     },
+  '^N225':    { min: 10000,  max: 100000 },
+  '^TPX':     { min: 500,    max: 5000   },
+  '000001.SS':{ min: 1000,   max: 8000   },
+  '^HSI':     { min: 8000,   max: 40000  },
+  '^HSTECH':  { min: 1000,   max: 12000  },
+  '^TWII':    { min: 8000,   max: 30000  },
+  '^STI':     { min: 1000,   max: 6000   },
+  '^AXJO':    { min: 3000,   max: 15000  },
+  '^GDAXI':   { min: 5000,   max: 40000  },
+  '^FTSE':    { min: 4000,   max: 15000  },
+  '^FCHI':    { min: 2000,   max: 12000  },
+  '^STOXX50E':{ min: 1000,   max: 8000   },
+  '^SSMI':    { min: 5000,   max: 20000  },
+  '^IBEX':    { min: 3000,   max: 20000  },
+  'KRW=X':    { min: 900,    max: 2000   },
+  'EURKRW=X': { min: 1000,   max: 2500   },
+  'JPYKRW=X': { min: 5,      max: 20     },
+  'EURUSD=X': { min: 0.8,    max: 1.6    },
+  'JPY=X':    { min: 80,     max: 200    },
+  'GBPUSD=X': { min: 0.9,    max: 1.7    },
+  'CNY=X':    { min: 6.0,    max: 8.5    },
+  'CL=F':     { min: 20,     max: 200    },
+  'BZ=F':     { min: 25,     max: 220    },
+  'NG=F':     { min: 1.0,    max: 20     },
+  'GC=F':     { min: 1000,   max: 8000   },
+  'SI=F':     { min: 10,     max: 200    },
+  'HG=F':     { min: 1.0,    max: 15     },
+  '^TNX':     { min: 0.1,    max: 10     },
+  '^TYX':     { min: 0.1,    max: 10     },
+  'BTC-USD':  { min: 5000,   max: 500000 },
+  'ETH-USD':  { min: 100,    max: 20000  },
+  'XRP-USD':  { min: 0.01,   max: 50     },
+  'SOL-USD':  { min: 1,      max: 2000   },
+};
 
+function isSane(symbol, price) {
+  const r = PRICE_SANITY[symbol];
+  if (!r) return true; // 범위 없으면 통과
+  return price >= r.min && price <= r.max;
+}
+
+// 데이터 상태 표시
+let DATA_STATUS = 'fallback'; // 'realtime' | 'cache' | 'fallback'
+let DATA_TIMESTAMP = null;
+let DATA_SUCCESS_COUNT = 0;
+let DATA_TOTAL_COUNT = 0;
+
+function updateDataBadge() {
+  const el = document.getElementById('updateTime');
+  if (!el) return;
+  const now = new Date();
+  const timeStr = `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+  if (DATA_STATUS === 'realtime') {
+    el.innerHTML = `<span style="color:var(--green);font-weight:700;">● 실시간</span> <span style="color:var(--text3)">${timeStr} · ${DATA_SUCCESS_COUNT}/${DATA_TOTAL_COUNT}</span>`;
+  } else if (DATA_STATUS === 'cache') {
+    el.innerHTML = `<span style="color:var(--gold);">◎ 캐시</span> <span style="color:var(--text3)">${timeStr}</span>`;
+  } else {
+    el.innerHTML = `<span style="color:var(--text3);">○ 참고값</span> <span style="color:var(--text3);font-size:10px;">3/20 종가</span>`;
+  }
+}
+
+async function fetchMarketData(forceRefresh = false) {
+  const pad = n => String(n).padStart(2,'0');
+  const d = new Date();
+  const hourKey = `econ_market_${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}${pad(d.getHours())}`;
+
+  // 1) 캐시 확인
   if (!forceRefresh) {
     try {
       const cached = JSON.parse(localStorage.getItem(hourKey) || 'null');
-      if (cached?.type === 'worker') { applyWorkerData(cached.data); return; }
+      if (cached?.type === 'worker' && Object.keys(cached.data).length >= 5) {
+        DATA_STATUS = 'cache';
+        DATA_TOTAL_COUNT = MARKET_SYMBOLS.length;
+        DATA_SUCCESS_COUNT = Object.keys(cached.data).length;
+        applyWorkerData(cached.data);
+        return;
+      }
     } catch(e) {}
   }
 
-  // Cloudflare Worker로 각 심볼 병렬 요청
-  const results = await Promise.allSettled(
-    MARKET_SYMBOLS.map(s =>
-      fetch(`${WORKER_URL}/?type=market&s=${encodeURIComponent(s.symbol)}`, { signal: AbortSignal.timeout(8000) })
-        .then(r => r.json())
-        .then(json => ({ symbol: s.symbol, json }))
-    )
-  );
+  // 2) 폴백 즉시 표시
+  DATA_STATUS = 'fallback';
+  MARKET_DATA = FALLBACK_DATA.slice();
+  MARKET_CARDS = MARKET_DATA.slice(0, 8);
+  buildTicker();
+  buildMarketCards(MARKET_CARDS, 'marketSummary');
+  buildFullMarket();
+  updateDataBadge();
 
-  const data = {};
-  for (const r of results) {
-    if (r.status === 'fulfilled') {
-      const { symbol, json } = r.value;
+  // 3) Worker 병렬 요청 (배치 처리 — 너무 많은 동시 요청 방지)
+  DATA_TOTAL_COUNT = MARKET_SYMBOLS.length;
+  const BATCH_SIZE = 8;
+  const allData = {};
+
+  for (let i = 0; i < MARKET_SYMBOLS.length; i += BATCH_SIZE) {
+    const batch = MARKET_SYMBOLS.slice(i, i + BATCH_SIZE);
+    const results = await Promise.allSettled(
+      batch.map(s =>
+        fetch(`${WORKER_URL}/?type=market&s=${encodeURIComponent(s.symbol)}`,
+          { signal: AbortSignal.timeout(10000) })
+          .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+          .then(json => ({ symbol: s.symbol, name: s.name, json }))
+      )
+    );
+
+    for (const r of results) {
+      if (r.status !== 'fulfilled') continue;
+      const { symbol, name, json } = r.value;
       const meta = json?.chart?.result?.[0]?.meta;
-      if (meta?.regularMarketPrice) {
-        data[symbol] = {
-          price: meta.regularMarketPrice,
-          prev:  meta.chartPreviousClose || meta.previousClose || meta.regularMarketPrice,
-        };
+      if (!meta?.regularMarketPrice) continue;
+
+      const price = meta.regularMarketPrice;
+      const prev  = meta.chartPreviousClose || meta.previousClose || price;
+
+      // ✅ 핵심: 이상값 검증
+      if (!isSane(symbol, price)) {
+        console.warn(`[데이터 이상] ${name}(${symbol}): ${price} — 범위 밖, 폴백 사용`);
+        continue;
       }
+      // 전일대비 변화율이 ±30% 초과하면 의심
+      if (prev > 0 && Math.abs((price - prev) / prev) > 0.30) {
+        console.warn(`[변동 이상] ${name}(${symbol}): ${((price-prev)/prev*100).toFixed(1)}% — 폴백 사용`);
+        continue;
+      }
+
+      allData[symbol] = { price, prev };
     }
   }
 
-  if (Object.keys(data).length > 0) {
+  DATA_SUCCESS_COUNT = Object.keys(allData).length;
+
+  if (DATA_SUCCESS_COUNT >= 5) {
+    // 캐시 저장
     try {
-      Object.keys(localStorage).filter(k => k.startsWith('econ_market_')).forEach(k => {
-        if (k !== hourKey) localStorage.removeItem(k);
-      });
-      localStorage.setItem(hourKey, JSON.stringify({ type: 'worker', data }));
+      Object.keys(localStorage)
+        .filter(k => k.startsWith('econ_market_') && k !== hourKey)
+        .forEach(k => localStorage.removeItem(k));
+      localStorage.setItem(hourKey, JSON.stringify({ type: 'worker', data: allData }));
     } catch(e) {}
-    applyWorkerData(data);
-  } else {
-    updateMarketUI('참고값');
+    DATA_STATUS = 'realtime';
+    applyWorkerData(allData);
   }
+  // 실패 시 폴백 유지 (이미 표시됨)
 }
 
 function applyWorkerData(data) {
   MARKET_DATA = MARKET_SYMBOLS.map(s => {
     const d = data[s.symbol];
-    if (!d) return FALLBACK_DATA.find(f => f.name === s.name) || { name: s.name, val: '—', chg: '—', up: true };
-    const price = d.price;
-    const prev  = d.prev || price;
-    const chgPct = prev ? ((price - prev) / prev) * 100 : 0;
-    const up = chgPct >= 0;
+    const fallback = FALLBACK_DATA.find(f => f.name === s.name);
+
+    if (!d || !d.price || d.price <= 0 || !isSane(s.symbol, d.price)) {
+      return fallback || { name: s.name, val: '—', chg: '—', up: true };
+    }
+
+    const price  = d.price;
+    const prev   = (d.prev && d.prev > 0) ? d.prev : price;
+    const chgPct = ((price - prev) / prev) * 100;
+    const up     = chgPct >= 0;
+    const chgStr = (up ? '+' : '') + chgPct.toFixed(2) + '%';
+
+    // 채권/금리 계열은 % 단위로 표시
+    if (s.symbol === '^TNX' || s.symbol === '^TYX' || s.symbol === '^IRX') {
+      return { name: s.name, val: price.toFixed(2) + '%', chg: chgStr, up };
+    }
+
     const valStr = s.prefix + (s.decimals === 0
       ? Math.round(price).toLocaleString()
-      : price.toLocaleString('ko-KR', { minimumFractionDigits: s.decimals, maximumFractionDigits: s.decimals }));
-    return { name: s.name, val: valStr, chg: (up ? '+' : '') + chgPct.toFixed(2) + '%', up };
+      : price.toLocaleString('ko-KR', {
+          minimumFractionDigits: s.decimals,
+          maximumFractionDigits: s.decimals
+        }));
+
+    return { name: s.name, val: valStr, chg: chgStr, up };
   });
+
   MARKET_CARDS = MARKET_DATA.slice(0, 8);
-  updateMarketUI('실시간');
+  buildTicker();
+  buildMarketCards(MARKET_CARDS, 'marketSummary');
+  buildFullMarket();
+  updateDataBadge();
 }
 
 // ===================== 전세계 언론사 RSS 피드 목록 =====================
@@ -2631,27 +2872,99 @@ self.addEventListener('fetch', e => {
 
 
 // ===================== INIT =====================
-const APP_VERSION = '3.8.0';
+const APP_VERSION = '3.14.0';
 
 function buildHelpFaq() {
   const el = document.getElementById('helpFaq');
   if (!el) return;
+
+  // 업데이트 내역
+  const updates = [
+    { ver: 'v3.12.0', date: '2026.03.22', items: ['전체 시장 지수 40개로 대폭 확장 (한국·미국·아시아·유럽·환율·원자재·가상자산)', '시장 섹션 럭셔리 헤더 리디자인', '도움말 피드백 기능 추가', '업데이트 내역 추가'] },
+    { ver: 'v3.11.0', date: '2026.03.22', items: ['사진 기반 시장 데이터 재검증 (USD/KRW·나스닥·BTC·ETH)', 'Worker 폴백 즉시 표시 로직 강화', '채권10년 TNX 특별 처리'] },
+    { ver: 'v3.10.0', date: '2026.03.22', items: ['이더리움 시장 탭 추가', '전체 폴백 데이터 실시간 검증 업데이트'] },
+    { ver: 'v3.9.0',  date: '2026.03.22', items: ['이더리움 MARKET_SYMBOLS 추가', '버전 뱃지 골드 강조'] },
+    { ver: 'v3.8.0',  date: '2026.03.22', items: ['경제용어 426개로 대폭 확장', '학습 탭 기본화면 빈화면 → 검색 시만 표시'] },
+    { ver: 'v3.7.0',  date: '2026.03.22', items: ['학습 탭 HTML 복구', '경제용어 리스트형 검색 UI'] },
+    { ver: 'v3.4.0',  date: '2026.03.22', items: ['뉴스 탭 클릭 시 즉시 로드 방식으로 변경'] },
+    { ver: 'v3.3.0',  date: '2026.03.22', items: ['채널 탭 2열 카드 그리드', '뉴스 탭 2열 그리드'] },
+    { ver: 'v3.0.0',  date: '2026.03.22', items: ['럭셔리 다크 골드 테마 전면 리디자인', 'Cloudflare Worker 실시간 데이터 연동'] },
+  ];
+
   const faqs = [
-    { q: '데이터가 실시간인가요?', a: '네! Cloudflare Worker를 통해 실시간으로 가져와요. 1시간마다 자동 갱신되며 ↻ 버튼으로 즉시 새로고침할 수 있어요.' },
+    { q: '데이터가 실시간인가요?', a: 'Cloudflare Worker를 통해 실시간으로 가져옵니다. 5분마다 자동 갱신되며 ↻ 버튼으로 즉시 새로고침할 수 있어요.' },
     { q: '무료인가요?', a: '완전 무료예요! 광고도 없고 회원가입도 필요 없어요.' },
-    { q: '데이터가 "참고값"으로 나와요.', a: '실시간 로딩 실패 시 나와요. ↻ 버튼을 눌러 새로고침하거나 잠시 후 다시 시도해보세요.' },
-    { q: '닛케이225가 너무 높게 나와요.', a: '닛케이225는 엔화(¥) 기준이라 숫자가 크게 보여요. 정상이에요!' },
+    { q: '"참고값"으로 나와요.', a: '실시간 로딩 실패 시 나타납니다. ↻ 버튼을 눌러 새로고침하거나 잠시 후 다시 시도해보세요.' },
+    { q: '닛케이225가 숫자가 크게 나와요.', a: '닛케이225는 엔화(¥) 기준이라 숫자가 크게 보여요. 정상입니다!' },
     { q: '인터넷 없이 사용할 수 있나요?', a: '홈 화면 설치 후 기본 화면은 오프라인에서도 가능해요. 단 실시간 데이터는 인터넷이 필요해요.' },
   ];
-  el.innerHTML = faqs.map(f => `
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;">
-      <div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block';this.querySelector('span').textContent=this.nextElementSibling.style.display==='block'?'－':'＋'"
-        style="padding:14px 16px;font-size:13px;font-weight:700;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
-        ${f.q}<span style="color:var(--gold);font-family:'DM Mono',monospace;">＋</span>
+
+  el.innerHTML = `
+    <!-- 업데이트 내역 -->
+    <div style="margin-bottom:28px;">
+      <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--gold);margin-bottom:14px;">RELEASE NOTES</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        ${updates.map((u,i) => `
+          <div style="background:var(--surface);border:1px solid ${i===0?'rgba(201,168,76,0.4)':'var(--border)'};border-radius:8px;overflow:hidden;${i===0?'box-shadow:0 0 12px rgba(201,168,76,0.08);':''}">
+            <div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block'"
+              style="padding:12px 16px;display:flex;align-items:center;gap:10px;cursor:pointer;">
+              <span style="background:${i===0?'linear-gradient(135deg,var(--gold),#a07830)':'var(--surface2)'};color:${i===0?'#000':'var(--text3)'};font-family:'DM Mono',monospace;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;">${u.ver}</span>
+              <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);">${u.date}</span>
+              <span style="margin-left:auto;color:var(--gold);font-size:12px;">${i===0?'▼':'▶'}</span>
+            </div>
+            <div style="display:${i===0?'block':'none'};padding:0 16px 12px;border-top:1px solid var(--border);">
+              ${u.items.map(it=>`<div style="font-size:12px;color:var(--text2);padding:4px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--gold);flex-shrink:0;">·</span>${it}</div>`).join('')}
+            </div>
+          </div>`).join('')}
       </div>
-      <div style="display:none;padding:0 16px 14px;font-size:12px;color:var(--text2);line-height:1.8;">${f.a}</div>
     </div>
-  `).join('');
+
+    <!-- FAQ -->
+    <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--gold);margin-bottom:14px;">FAQ</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:28px;">
+      ${faqs.map(f => `
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;">
+          <div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block';this.querySelector('.faq-arrow').textContent=this.nextElementSibling.style.display==='block'?'▼':'▶'"
+            style="padding:14px 16px;font-size:13px;font-weight:700;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
+            ${f.q}<span class="faq-arrow" style="color:var(--gold);font-family:'DM Mono',monospace;font-size:11px;">▶</span>
+          </div>
+          <div style="display:none;padding:0 16px 14px;font-size:12px;color:var(--text2);line-height:1.8;">${f.a}</div>
+        </div>`).join('')}
+    </div>
+
+    <!-- 피드백 -->
+    <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--gold);margin-bottom:14px;">FEEDBACK</div>
+    <div style="background:var(--surface);border:1px solid rgba(201,168,76,0.2);border-radius:10px;padding:20px;">
+      <div style="font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.6;">의견·버그·개선 요청을 남겨주세요.<br>더 나은 이코노미 스쿨을 만드는 데 큰 도움이 됩니다 😊</div>
+      <textarea id="feedbackText" placeholder="예) 새로운 지수를 추가해 주세요 / 데이터가 안 나와요 / 디자인이 마음에 들어요..."
+        style="width:100%;min-height:100px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;color:var(--text);font-size:13px;font-family:'Noto Sans KR',sans-serif;resize:vertical;outline:none;box-sizing:border-box;line-height:1.6;"
+        onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+      <div style="display:flex;gap:10px;margin-top:12px;align-items:center;">
+        <button onclick="submitFeedback()" 
+          style="background:linear-gradient(135deg,var(--gold),#a07830);color:#000;border:none;border-radius:8px;padding:10px 20px;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:0.5px;">
+          📤 피드백 보내기
+        </button>
+        <span id="feedbackStatus" style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);"></span>
+      </div>
+    </div>
+  `;
+}
+
+function submitFeedback() {
+  const text = document.getElementById('feedbackText')?.value?.trim();
+  const status = document.getElementById('feedbackStatus');
+  if (!text) { if(status) status.textContent = '내용을 입력해주세요'; return; }
+  // localStorage에 저장 (간단한 로컬 피드백 저장)
+  try {
+    const saved = JSON.parse(localStorage.getItem('econ_feedbacks') || '[]');
+    saved.push({ text, date: new Date().toLocaleString('ko-KR'), ver: APP_VERSION });
+    localStorage.setItem('econ_feedbacks', JSON.stringify(saved.slice(-20)));
+  } catch(e) {}
+  document.getElementById('feedbackText').value = '';
+  if (status) {
+    status.textContent = '✅ 감사합니다! 소중한 의견이 저장됐어요';
+    setTimeout(() => { if(status) status.textContent = ''; }, 3000);
+  }
 }
 
 function init() {
