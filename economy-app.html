@@ -940,7 +940,7 @@
     <button class="tab tab-videos" onclick="switchTab('videos')">▶ 채널</button>
     <button class="tab tab-news"   onclick="switchTab('news')">≡ 뉴스</button>
     <button class="tab tab-study"  onclick="switchTab('study')">◎ 학습</button>
-    <button class="tab tab-help"   onclick="switchTab('help')">◇ 도움말</button>
+    <button class="tab tab-help"   onclick="switchTab('help')">⊕ 도움말</button>
   </div>
 
   <!-- HOME -->
@@ -1033,24 +1033,28 @@
       <div class="sub-section-label">📱 메뉴 안내</div>
       <div style="display:flex;flex-direction:column;gap:10px;margin-top:12px;">
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;display:flex;gap:14px;align-items:flex-start;">
-          <span style="font-size:20px;flex-shrink:0;">🏠</span>
-          <div><div style="font-size:14px;font-weight:700;color:#f0c040;margin-bottom:4px;">홈</div><div style="font-size:12px;color:var(--text2);line-height:1.6;">코스피·코스닥·환율·S&P 500 등 8개 핵심 지수를 실시간으로 확인해요.</div></div>
+          <span style="font-size:22px;flex-shrink:0;font-family:'DM Mono',monospace;color:#d4a843;line-height:1.2;">◈</span>
+          <div><div style="font-size:14px;font-weight:700;color:#d4a843;margin-bottom:4px;">홈</div><div style="font-size:12px;color:var(--text2);line-height:1.6;">코스피·코스닥·환율·S&P 500 등 핵심 지수를 실시간으로 확인해요.</div></div>
         </div>
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;display:flex;gap:14px;align-items:flex-start;">
-          <span style="font-size:20px;flex-shrink:0;">📈</span>
-          <div><div style="font-size:14px;font-weight:700;color:#ff6060;margin-bottom:4px;">시장</div><div style="font-size:12px;color:var(--text2);line-height:1.6;">한국·미국·아시아·유럽·원자재·가상자산 17개 지수 전체를 볼 수 있어요.</div></div>
+          <span style="font-size:22px;flex-shrink:0;font-family:'DM Mono',monospace;color:#c96060;line-height:1.2;">◉</span>
+          <div><div style="font-size:14px;font-weight:700;color:#c96060;margin-bottom:4px;">시장</div><div style="font-size:12px;color:var(--text2);line-height:1.6;">한국·미국·아시아·유럽·환율·원자재·가상자산 42개 지수 전체를 볼 수 있어요.</div></div>
         </div>
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;display:flex;gap:14px;align-items:flex-start;">
-          <span style="font-size:20px;flex-shrink:0;">📺</span>
-          <div><div style="font-size:14px;font-weight:700;color:#4d9fff;margin-bottom:4px;">채널</div><div style="font-size:12px;color:var(--text2);line-height:1.6;">경제 유튜브 채널 28개 모음. 클릭하면 YouTube에서 바로 시청해요.</div></div>
+          <span style="font-size:22px;flex-shrink:0;font-family:'DM Mono',monospace;color:#5b9bd5;line-height:1.2;">▶</span>
+          <div><div style="font-size:14px;font-weight:700;color:#5b9bd5;margin-bottom:4px;">채널</div><div style="font-size:12px;color:var(--text2);line-height:1.6;">경제 유튜브 채널 28개 모음. 클릭하면 YouTube에서 바로 시청해요.</div></div>
         </div>
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;display:flex;gap:14px;align-items:flex-start;">
-          <span style="font-size:20px;flex-shrink:0;">📰</span>
-          <div><div style="font-size:14px;font-weight:700;color:#3ecf7a;margin-bottom:4px;">뉴스</div><div style="font-size:12px;color:var(--text2);line-height:1.6;">한국·글로벌·시장 뉴스를 한 곳에서. 언론사 카드 클릭 시 바로 이동해요.</div></div>
+          <span style="font-size:22px;flex-shrink:0;font-family:'DM Mono',monospace;color:#4aab74;line-height:1.2;">≡</span>
+          <div><div style="font-size:14px;font-weight:700;color:#4aab74;margin-bottom:4px;">뉴스</div><div style="font-size:12px;color:var(--text2);line-height:1.6;">한국·글로벌·시장 뉴스를 한 곳에서. 언론사 카드 클릭 시 바로 이동해요.</div></div>
         </div>
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;display:flex;gap:14px;align-items:flex-start;">
-          <span style="font-size:20px;flex-shrink:0;">📚</span>
-          <div><div style="font-size:14px;font-weight:700;color:#b06aff;margin-bottom:4px;">학습</div><div style="font-size:12px;color:var(--text2);line-height:1.6;">경제 용어 138개 백과사전. 검색·카테고리 필터·클릭으로 상세 설명을 봐요.</div></div>
+          <span style="font-size:22px;flex-shrink:0;font-family:'DM Mono',monospace;color:#9b6bd4;line-height:1.2;">◎</span>
+          <div><div style="font-size:14px;font-weight:700;color:#9b6bd4;margin-bottom:4px;">학습</div><div id="helpConceptCount" style="font-size:12px;color:var(--text2);line-height:1.6;">경제 용어 백과사전. 검색·카테고리 필터·클릭으로 상세 설명을 봐요.</div></div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;display:flex;gap:14px;align-items:flex-start;">
+          <span style="font-size:22px;flex-shrink:0;font-family:'DM Mono',monospace;color:#60c8d4;line-height:1.2;">⊕</span>
+          <div><div style="font-size:14px;font-weight:700;color:#60c8d4;margin-bottom:4px;">도움말</div><div style="font-size:12px;color:var(--text2);line-height:1.6;">앱 소개·사용법·자주 묻는 질문·릴리즈 노트를 확인해요.</div></div>
         </div>
       </div>
     </div>
@@ -3112,19 +3116,25 @@ self.addEventListener('fetch', e => {
 
 
 // ===================== INIT =====================
-const APP_VERSION = '3.15.1';
+const APP_VERSION = '3.15.3';
 
 function buildHelpFaq() {
   const el = document.getElementById('helpFaq');
   if (!el) return;
 
-  // 업데이트 내역
+  // 학습 용어 수 동적 표시
+  const countEl = document.getElementById('helpConceptCount');
+  if (countEl) countEl.textContent = `경제 용어 ${CONCEPTS.length}개 백과사전. 검색·카테고리 필터·클릭으로 상세 설명을 봐요.`;
   const updates = [
-    { ver: 'v3.12.0', date: '2026.03.22', items: ['전체 시장 지수 40개로 대폭 확장 (한국·미국·아시아·유럽·환율·원자재·가상자산)', '시장 섹션 럭셔리 헤더 리디자인', '도움말 피드백 기능 추가', '업데이트 내역 추가'] },
-    { ver: 'v3.11.0', date: '2026.03.22', items: ['사진 기반 시장 데이터 재검증 (USD/KRW·나스닥·BTC·ETH)', 'Worker 폴백 즉시 표시 로직 강화', '채권10년 TNX 특별 처리'] },
+    { ver: 'v3.15.1', date: '2026.03.22', items: ['시장 카드 반응형 개선 — clamp()로 스마트폰 화면 크기에 따라 글자 자동 조절', '400px·340px 이하 추가 미디어 쿼리 적용'] },
+    { ver: 'v3.15.0', date: '2026.03.22', items: ['경제용어사전 285개 → 325개로 확장', 'JS 파싱 오류 완전 수정 — 화면에 정확한 용어 수 표시'] },
+    { ver: 'v3.14.0', date: '2026.03.22', items: ['PRICE_SANITY 이상값 검증 시스템 추가', '배치처리(8개씩) 도입', '데이터 신뢰도 표시 (실시간/캐시/참고값)'] },
+    { ver: 'v3.13.0', date: '2026.03.22', items: ['전체 FALLBACK_DATA Yahoo Finance 기준으로 재검증 수정'] },
+    { ver: 'v3.12.0', date: '2026.03.22', items: ['전체 시장 지수 42개로 대폭 확장 (한국·미국·아시아·유럽·환율·원자재·가상자산)', '시장 섹션 럭셔리 헤더 리디자인', '도움말 피드백 기능 추가', '업데이트 내역 추가'] },
+    { ver: 'v3.11.0', date: '2026.03.22', items: ['시장 데이터 재검증', 'Worker 폴백 즉시 표시 로직 강화', '채권10년 TNX 특별 처리'] },
     { ver: 'v3.10.0', date: '2026.03.22', items: ['이더리움 시장 탭 추가', '전체 폴백 데이터 실시간 검증 업데이트'] },
     { ver: 'v3.9.0',  date: '2026.03.22', items: ['이더리움 MARKET_SYMBOLS 추가', '버전 뱃지 골드 강조'] },
-    { ver: 'v3.8.0',  date: '2026.03.22', items: ['경제용어 426개로 대폭 확장', '학습 탭 기본화면 빈화면 → 검색 시만 표시'] },
+    { ver: 'v3.8.0',  date: '2026.03.22', items: ['경제용어 대폭 확장', '학습 탭 기본화면 빈화면 → 검색 시만 표시'] },
     { ver: 'v3.7.0',  date: '2026.03.22', items: ['학습 탭 HTML 복구', '경제용어 리스트형 검색 UI'] },
     { ver: 'v3.4.0',  date: '2026.03.22', items: ['뉴스 탭 클릭 시 즉시 로드 방식으로 변경'] },
     { ver: 'v3.3.0',  date: '2026.03.22', items: ['채널 탭 2열 카드 그리드', '뉴스 탭 2열 그리드'] },
