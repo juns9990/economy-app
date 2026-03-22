@@ -258,20 +258,34 @@
     }
 
     .ticker-item {
-      padding: 0 20px;
+      padding: 0 22px;
       font-family: 'DM Mono', monospace;
       font-size: 12px;
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 8px;
       border-right: 1px solid var(--border);
     }
 
-    .ticker-name { color: var(--text3); letter-spacing: 0.5px; }
-    .ticker-val  { color: var(--text); font-weight: 400; }
-    .ticker-chg  { font-size: 11px; }
-    .ticker-chg.up { color: var(--green); }
-    .ticker-chg.dn { color: var(--red); }
+    .ticker-name {
+      color: var(--gold);
+      letter-spacing: 0.5px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .ticker-val {
+      color: #f0f0f0;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.3px;
+    }
+    .ticker-chg {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+    .ticker-chg.up { color: #4d9fff; }
+    .ticker-chg.dn { color: #ff5252; }
 
     @keyframes ticker {
       from { transform: translateX(0); }
@@ -440,13 +454,14 @@
     .market-card-left { flex: 1; min-width: 0; }
 
     .market-name {
-      font-family: 'Noto Sans KR', sans-serif;
+      font-family: 'DM Mono', monospace;
       font-size: 13px;
-      font-weight: 400;
-      color: var(--text2);
+      font-weight: 700;
+      color: #c8d6e5;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      letter-spacing: 0.5px;
     }
 
     .market-card-right { text-align: right; flex-shrink: 0; }
@@ -1734,11 +1749,10 @@ let currentSearchQuery = '';
 function buildTicker() {
   const items = [...MARKET_DATA, ...MARKET_DATA].map(m => `
     <div class="ticker-item">
-      <span class="name">${m.name}</span>
-      <span class="val">${m.val}</span>
-      <span class="chg ${m.up ? 'up' : 'dn'}">${m.chg}</span>
-    </div>
-  `).join('');
+      <span class="ticker-name">${m.name}</span>
+      <span class="ticker-val">${m.val}</span>
+      <span class="ticker-chg ${m.up ? 'up' : 'dn'}">${m.up ? '▲' : '▼'} ${m.chg}</span>
+    </div>`).join('');
   const tt = document.getElementById('tickerTrack');
   if (tt) tt.innerHTML = items;
 }
