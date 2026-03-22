@@ -431,14 +431,15 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 14px 14px;
+      padding: 12px 10px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
+      gap: 4px;
       transition: all 0.2s;
       position: relative;
       overflow: hidden;
+      min-width: 0;
     }
 
     .market-card::before {
@@ -454,33 +455,36 @@
       background: var(--surface2);
     }
 
-    .market-card-left { flex: 1; min-width: 0; }
+    .market-card-left { flex: 1; min-width: 0; overflow: hidden; }
 
     .market-name {
       font-family: 'DM Mono', monospace;
-      font-size: 13px;
+      font-size: clamp(10px, 2.5vw, 13px);
       font-weight: 700;
       color: #e8edf2;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
+      max-width: 100%;
     }
 
-    .market-card-right { text-align: right; flex-shrink: 0; }
+    .market-card-right { text-align: right; flex-shrink: 0; max-width: 55%; }
 
     .market-val {
       font-family: 'DM Mono', monospace;
-      font-size: 17px;
+      font-size: clamp(11px, 3vw, 17px);
       font-weight: 600;
       color: #ffffff;
       letter-spacing: 0.3px;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .market-chg {
       font-family: 'DM Mono', monospace;
-      font-size: 12px;
+      font-size: clamp(9px, 2vw, 12px);
       margin-top: 3px;
       font-weight: 700;
       white-space: nowrap;
@@ -823,9 +827,12 @@
 
     /* ── MOBILE ── */
     @media (max-width: 600px) {
-      .market-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
-      .market-val  { font-size: 13px; }
-      .market-chg  { font-size: 11px; }
+      .market-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+      .market-card { padding: 10px 8px; gap: 3px; }
+      .market-name { font-size: clamp(9px, 2.8vw, 12px); letter-spacing: 0; }
+      .market-val  { font-size: clamp(11px, 3.2vw, 14px); }
+      .market-chg  { font-size: clamp(9px, 2vw, 11px); }
+      .market-card-right { max-width: 52%; }
       .news-media-grid { grid-template-columns: repeat(2, 1fr); }
       .concept-grid { grid-template-columns: repeat(2, 1fr); }
       .ch-grid { grid-template-columns: repeat(2, 1fr); }
@@ -835,8 +842,18 @@
       .ch-name { font-size: 13px; }
     }
 
-    @media (max-width: 380px) {
-      .market-val { font-size: 14px; }
+    @media (max-width: 400px) {
+      .market-grid { gap: 5px; }
+      .market-card { padding: 9px 7px; }
+      .market-name { font-size: clamp(8px, 2.5vw, 11px); }
+      .market-val  { font-size: clamp(10px, 3vw, 13px); }
+      .market-chg  { font-size: 9px; }
+    }
+
+    @media (max-width: 340px) {
+      .market-grid { grid-template-columns: 1fr; }
+      .market-name { font-size: 12px; }
+      .market-val  { font-size: 14px; }
     }
 
     /* ── LOADING ROW ── */
@@ -3095,7 +3112,7 @@ self.addEventListener('fetch', e => {
 
 
 // ===================== INIT =====================
-const APP_VERSION = '3.15.0';
+const APP_VERSION = '3.15.1';
 
 function buildHelpFaq() {
   const el = document.getElementById('helpFaq');
