@@ -477,8 +477,23 @@
     }
 
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(6px); }
+      from { opacity: 0; transform: translateY(8px); }
       to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to   { opacity: 0; }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to   { transform: translateY(0); }
     }
 
     /* ── SECTION HEADER ── */
@@ -2431,14 +2446,14 @@ function buildCalendar() {
 
 // ===================== 팟캐스트 다이얼 (홈 위젯) =====================
 const HOME_PODCASTS = [
-  { name: '손에 잡히는 경제',  freq: '88.1', url: 'https://podbbang.com/channels/8282' },
-  { name: '삼프로TV 팟캐스트', freq: '89.4', url: 'https://www.youtube.com/results?search_query=' + encodeURIComponent('삼프로TV 팟캐스트') },
-  { name: '신과 함께',         freq: '90.7', url: 'https://podbbang.com/channels/1773499' },
-  { name: '최준영 박사의 지구본', freq: '92.0', url: 'https://www.youtube.com/results?search_query=' + encodeURIComponent('최준영 박사 지구본') },
-  { name: 'K-이코노미스트',    freq: '93.3', url: 'https://www.youtube.com/results?search_query=' + encodeURIComponent('K 이코노미스트 팟캐스트') },
-  { name: '세이노의 경제',     freq: '94.6', url: 'https://www.youtube.com/results?search_query=' + encodeURIComponent('세이노 경제 팟캐스트') },
-  { name: '신사임당',          freq: '95.9', url: 'https://www.youtube.com/results?search_query=' + encodeURIComponent('신사임당 경제 팟캐스트') },
-  { name: '채부심',            freq: '97.2', url: 'https://www.youtube.com/results?search_query=' + encodeURIComponent('채부심 팟캐스트 경제') },
+  { name: '손에 잡히는 경제',   freq: '88.1', query: '손에 잡히는 경제 이진우' },
+  { name: '삼프로TV 팟캐스트',  freq: '89.4', query: '삼프로TV 경제의 신과 함께' },
+  { name: '신과 함께',          freq: '90.7', query: '신과 함께 경제 팟캐스트' },
+  { name: '최준영 박사의 지구본', freq: '92.0', query: '최준영 박사 지구본 연구소' },
+  { name: 'K-이코노미스트',     freq: '93.3', query: 'K 이코노미스트 팟캐스트' },
+  { name: '세이노의 경제',      freq: '94.6', query: '세이노 경제' },
+  { name: '신사임당',           freq: '95.9', query: '신사임당 경제' },
+  { name: '채부심',             freq: '97.2', query: '채부심 팟캐스트' },
 ];
 
 let currentPodcastIdx = 0;
@@ -2463,7 +2478,115 @@ function switchPodcast(direction) {
 
 function openCurrentPodcast() {
   const p = HOME_PODCASTS[currentPodcastIdx];
-  window.open(p.url, '_blank');
+  showPodcastPlayer(p);
+}
+
+// 앱 선택 모달 표시
+function showPodcastPlayer(podcast) {
+  const q = encodeURIComponent(podcast.query);
+
+  // 기존 모달 제거
+  const existing = document.getElementById('podcastPlayerModal');
+  if (existing) existing.remove();
+
+  const modal = document.createElement('div');
+  modal.id = 'podcastPlayerModal';
+  modal.style.cssText = `
+    position: fixed; inset: 0; z-index: 9999;
+    background: rgba(0,0,0,0.75); backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex; align-items: flex-end; justify-content: center;
+    animation: fadeIn 0.2s ease-out;
+  `;
+
+  modal.innerHTML = `
+    <div style="background: #fff; border-radius: 20px 20px 0 0; width: 100%; max-width: 500px; padding: 24px 20px calc(24px + env(safe-area-inset-bottom)); box-shadow: 0 -8px 32px rgba(0,0,0,0.3); animation: slideUp 0.3s ease-out;">
+      <div style="width: 40px; height: 4px; background: #ddd; border-radius: 2px; margin: 0 auto 20px;"></div>
+
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+        <div style="width:48px;height:48px;border-radius:50%;background:radial-gradient(circle at 30% 30%, #3a2f10, #1a1508);border:2px solid #c9a84c;display:flex;align-items:center;justify-content:center;">
+          <div style="width:6px;height:6px;border-radius:50%;background:#c9a84c;box-shadow:0 0 8px #c9a84c;"></div>
+        </div>
+        <div style="flex:1;">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;color:#c9a84c;letter-spacing:1px;font-weight:700;">📻 ${podcast.freq} MHz</div>
+          <div style="font-size:16px;font-weight:700;color:#1a1a22;margin-top:2px;">${podcast.name}</div>
+        </div>
+      </div>
+
+      <div style="font-size:12px;color:#888;margin-bottom:12px;padding:10px 14px;background:#f8f6f2;border-radius:8px;line-height:1.5;">
+        💡 앱으로 열면 <strong>화면 잠겨도 재생</strong>돼요<br>(출퇴근·운전 중 OK)
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <!-- YouTube Music -->
+        <a href="https://music.youtube.com/search?q=${q}" target="_blank" style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:#fff;border:1px solid #e8e4dd;border-radius:12px;text-decoration:none;transition:all 0.2s;" onmouseover="this.style.borderColor='#ff0000'" onmouseout="this.style.borderColor='#e8e4dd'">
+          <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#ff0000,#cc0000);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M8.625 4.5a3.375 3.375 0 00-3.375 3.375v8.25a3.375 3.375 0 003.375 3.375h6.75a3.375 3.375 0 003.375-3.375v-8.25A3.375 3.375 0 0015.375 4.5h-6.75zM10.5 9.75l4.5 2.25-4.5 2.25v-4.5z"/></svg>
+          </div>
+          <div style="flex:1;">
+            <div style="font-size:14px;font-weight:700;color:#1a1a22;">YouTube Music</div>
+            <div style="font-size:11px;color:#888;margin-top:1px;">백그라운드 재생 · 화면 꺼도 OK</div>
+          </div>
+          <div style="color:#c9a84c;font-size:18px;">→</div>
+        </a>
+
+        <!-- Spotify -->
+        <a href="https://open.spotify.com/search/${q}" target="_blank" style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:#fff;border:1px solid #e8e4dd;border-radius:12px;text-decoration:none;transition:all 0.2s;" onmouseover="this.style.borderColor='#1DB954'" onmouseout="this.style.borderColor='#e8e4dd'">
+          <div style="width:40px;height:40px;border-radius:10px;background:#1DB954;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.59 14.42c-.2.33-.62.43-.95.23-2.6-1.59-5.87-1.95-9.72-1.07-.38.09-.76-.15-.84-.53-.09-.38.15-.76.53-.84 4.21-.96 7.84-.55 10.75 1.25.33.2.43.62.23.96zm1.22-2.73c-.25.41-.78.54-1.19.29-2.98-1.83-7.52-2.36-11.04-1.29-.46.14-.95-.12-1.09-.58-.14-.46.12-.95.58-1.09 4.02-1.22 9.03-.63 12.45 1.47.41.25.54.78.29 1.2zm.11-2.84c-3.57-2.12-9.47-2.32-12.88-1.28-.55.17-1.14-.14-1.31-.69-.17-.55.14-1.14.69-1.31 3.91-1.19 10.43-.96 14.54 1.48.5.29.66.93.37 1.43-.3.5-.93.66-1.41.37z"/></svg>
+          </div>
+          <div style="flex:1;">
+            <div style="font-size:14px;font-weight:700;color:#1a1a22;">Spotify</div>
+            <div style="font-size:11px;color:#888;margin-top:1px;">팟캐스트 전용 · 백그라운드 재생</div>
+          </div>
+          <div style="color:#c9a84c;font-size:18px;">→</div>
+        </a>
+
+        <!-- 팟빵 -->
+        <a href="https://www.podbbang.com/search?keyword=${q}" target="_blank" style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:#fff;border:1px solid #e8e4dd;border-radius:12px;text-decoration:none;transition:all 0.2s;" onmouseover="this.style.borderColor='#f59e0b'" onmouseout="this.style.borderColor='#e8e4dd'">
+          <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#f59e0b,#d97706);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px;">
+            📻
+          </div>
+          <div style="flex:1;">
+            <div style="font-size:14px;font-weight:700;color:#1a1a22;">팟빵</div>
+            <div style="font-size:11px;color:#888;margin-top:1px;">한국 팟캐스트 전문</div>
+          </div>
+          <div style="color:#c9a84c;font-size:18px;">→</div>
+        </a>
+
+        <!-- YouTube -->
+        <a href="https://www.youtube.com/results?search_query=${q}" target="_blank" style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:#fff;border:1px solid #e8e4dd;border-radius:12px;text-decoration:none;transition:all 0.2s;" onmouseover="this.style.borderColor='#ff0000'" onmouseout="this.style.borderColor='#e8e4dd'">
+          <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#ff0000,#cc0000);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </div>
+          <div style="flex:1;">
+            <div style="font-size:14px;font-weight:700;color:#1a1a22;">YouTube</div>
+            <div style="font-size:11px;color:#888;margin-top:1px;">영상으로 보기</div>
+          </div>
+          <div style="color:#c9a84c;font-size:18px;">→</div>
+        </a>
+      </div>
+
+      <button onclick="closePodcastModal()" style="width:100%;margin-top:16px;padding:14px;background:#f0ede8;border:none;border-radius:12px;font-size:14px;font-weight:600;color:#555;cursor:pointer;font-family:'Noto Sans KR',sans-serif;">
+        닫기
+      </button>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  // 배경 클릭 시 닫기
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closePodcastModal();
+  });
+}
+
+function closePodcastModal() {
+  const modal = document.getElementById('podcastPlayerModal');
+  if (modal) {
+    modal.style.animation = 'fadeOut 0.2s ease-out';
+    setTimeout(() => modal.remove(), 200);
+  }
 }
 
 function buildChannelList() {
@@ -3550,7 +3673,7 @@ self.addEventListener('fetch', e => {
 
 
 // ===================== INIT =====================
-const APP_VERSION = '3.20.1';
+const APP_VERSION = '3.21.0';
 
 function buildHelpFaq() {
   const el = document.getElementById('helpFaq');
@@ -3560,6 +3683,7 @@ function buildHelpFaq() {
   const countEl = document.getElementById('helpConceptCount');
   if (countEl) countEl.textContent = `경제 용어 ${CONCEPTS.length}개 백과사전. 검색·카테고리 필터·클릭으로 상세 설명을 봐요.`;
   const updates = [
+    { ver: 'v3.21.0', date: '2026.03.28', items: ['🎧 팟캐스트 앱 선택 모달 추가 — 플레이 누르면 YouTube Music·Spotify·팟빵·YouTube 중 선택', '📱 백그라운드 재생 가능 — 화면 잠겨도 소리 계속 재생 (전용 앱으로 연결)', '바텀 시트 모달 애니메이션 (slideUp)', '출퇴근·운전 중 사용 최적화'] },
     { ver: 'v3.20.1', date: '2026.03.28', items: ['📊 티커 다크 스트립으로 변경 — 지수 값이 선명하게 보이도록 개선', '🕐 상단 헤더에 실시간 시계 + 요일 추가 (예: 16:30:45 · 04.23 (목))', '티커 텍스트 폰트 크기 up (11px → 13px), 색상 대비 강화'] },
     { ver: 'v3.20.0', date: '2026.03.28', items: ['🎨 밝은 테마 전면 전환 (#fafaf6 크림 배경) — 시그널 프로와 완전 통일', '📱 하단 네비게이션 도입 — 상단 탭 → 진짜 앱처럼 하단 고정 네비', '🏠📊📺📰📚⊕ 이모지 아이콘 + 한글 라벨 조합', '카드 그림자·호버 업 애니메이션 추가 (프리미엄 느낌)', '텍스트 색상 전면 재조정 (#1a1a22 기본 텍스트)'] },
     { ver: 'v3.19.0', date: '2026.03.28', items: ['🎨 시그널 프로와 디자인 통일 — 네이비 베이스 (#06080f·#0c1120·#111827)', '✨ Orbitron 폰트 도입 — 로고 서브타이틀·MARKET 라벨·버전 뱃지·섹션 서브', '🌌 앰비언트 라디얼 그라디언트 배경 추가 (골드+블루)', '⚡ 헤더 상단 골드 그라디언트 라인 추가', 'JetBrains Mono 폰트 추가 (터미널 느낌 강화)'] },
