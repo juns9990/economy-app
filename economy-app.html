@@ -215,6 +215,34 @@
 
     #refreshBtn:hover { border-color: var(--gold); color: var(--gold); }
 
+    .header-clock {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text2);
+      letter-spacing: 0.5px;
+      line-height: 1.3;
+      white-space: nowrap;
+      padding: 0 4px;
+      border-left: 1px solid var(--border);
+      padding-left: 10px;
+    }
+    .header-clock .hc-time {
+      color: var(--text);
+      font-weight: 700;
+      font-size: 12px;
+    }
+    .header-clock .hc-date {
+      color: var(--text3);
+      font-size: 9px;
+      letter-spacing: 0.8px;
+    }
+    @media (max-width: 480px) {
+      .header-clock { font-size: 10px; padding-left: 6px; }
+      .header-clock .hc-time { font-size: 11px; }
+      .header-clock .hc-date { font-size: 8px; }
+    }
+
     .live-badge {
       font-family: 'DM Mono', monospace;
       font-size: 10px;
@@ -258,15 +286,16 @@
       cursor: pointer;
     }
 
-    /* ── TICKER ── */
+    /* ── TICKER — 다크 스트립 (강조) ── */
     .ticker-wrap {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      height: 38px;
+      background: linear-gradient(90deg, #1a1a22, #0f1018);
+      border-bottom: 2px solid var(--gold);
+      height: 40px;
       display: flex;
       align-items: center;
       overflow: hidden;
       position: relative;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
     .ticker-label {
@@ -298,13 +327,11 @@
     }
 
     .ticker-item {
-      padding: 0 22px;
-      font-family: 'DM Mono', monospace;
-      font-size: 12px;
       display: flex;
       align-items: center;
       gap: 8px;
-      border-right: 1px solid var(--border);
+      padding: 0 20px;
+      border-right: 1px solid rgba(255,255,255,0.08);
     }
 
     .ticker-name {
@@ -312,20 +339,23 @@
       letter-spacing: 0.5px;
       font-size: 11px;
       font-weight: 700;
+      font-family: 'DM Mono', monospace;
     }
     .ticker-val {
-      color: #f0f0f0;
+      color: #ffffff;
       font-weight: 700;
-      font-size: 12px;
+      font-size: 13px;
       letter-spacing: 0.3px;
+      font-family: 'DM Mono', monospace;
     }
     .ticker-chg {
       font-size: 11px;
       font-weight: 700;
       letter-spacing: 0.3px;
+      font-family: 'DM Mono', monospace;
     }
-    .ticker-chg.up { color: #4d9fff; }
-    .ticker-chg.dn { color: #ff5252; }
+    .ticker-chg.up { color: #ff6b7e; }
+    .ticker-chg.dn { color: #6ba4ff; }
 
     @keyframes ticker {
       from { transform: translateX(0); }
@@ -990,6 +1020,7 @@
     <button id="refreshBtn" onclick="manualRefresh()" title="새로고침">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
     </button>
+    <div id="headerClock" class="header-clock"></div>
     <div class="live-badge">● LIVE</div>
   </div>
 </header>
@@ -2757,13 +2788,14 @@ function openChannelVideo(channelId, channelName) {
 
 // ===================== 날짜·시간 표시 =====================
 function updateHeaderClock() {
-  const el = document.getElementById('headerDateTime');
+  const el = document.getElementById('headerClock');
   if (!el) return;
   const now = new Date();
   const pad = n => String(n).padStart(2, '0');
-  const dateStr = `${now.getFullYear()}.${pad(now.getMonth()+1)}.${pad(now.getDate())}`;
+  const days = ['일', '월', '화', '수', '목', '금', '토'];
   const timeStr = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-  el.textContent = `${dateStr} ${timeStr}`;
+  const dateStr = `${pad(now.getMonth()+1)}.${pad(now.getDate())} (${days[now.getDay()]})`;
+  el.innerHTML = `<div class="hc-time">${timeStr}</div><div class="hc-date">${dateStr}</div>`;
 }
 
 // ===================== 캐시 (날짜 기반 — 날짜 바뀌면 자동 무효화) =====================
@@ -3518,7 +3550,7 @@ self.addEventListener('fetch', e => {
 
 
 // ===================== INIT =====================
-const APP_VERSION = '3.20.0';
+const APP_VERSION = '3.20.1';
 
 function buildHelpFaq() {
   const el = document.getElementById('helpFaq');
@@ -3528,6 +3560,7 @@ function buildHelpFaq() {
   const countEl = document.getElementById('helpConceptCount');
   if (countEl) countEl.textContent = `경제 용어 ${CONCEPTS.length}개 백과사전. 검색·카테고리 필터·클릭으로 상세 설명을 봐요.`;
   const updates = [
+    { ver: 'v3.20.1', date: '2026.03.28', items: ['📊 티커 다크 스트립으로 변경 — 지수 값이 선명하게 보이도록 개선', '🕐 상단 헤더에 실시간 시계 + 요일 추가 (예: 16:30:45 · 04.23 (목))', '티커 텍스트 폰트 크기 up (11px → 13px), 색상 대비 강화'] },
     { ver: 'v3.20.0', date: '2026.03.28', items: ['🎨 밝은 테마 전면 전환 (#fafaf6 크림 배경) — 시그널 프로와 완전 통일', '📱 하단 네비게이션 도입 — 상단 탭 → 진짜 앱처럼 하단 고정 네비', '🏠📊📺📰📚⊕ 이모지 아이콘 + 한글 라벨 조합', '카드 그림자·호버 업 애니메이션 추가 (프리미엄 느낌)', '텍스트 색상 전면 재조정 (#1a1a22 기본 텍스트)'] },
     { ver: 'v3.19.0', date: '2026.03.28', items: ['🎨 시그널 프로와 디자인 통일 — 네이비 베이스 (#06080f·#0c1120·#111827)', '✨ Orbitron 폰트 도입 — 로고 서브타이틀·MARKET 라벨·버전 뱃지·섹션 서브', '🌌 앰비언트 라디얼 그라디언트 배경 추가 (골드+블루)', '⚡ 헤더 상단 골드 그라디언트 라인 추가', 'JetBrains Mono 폰트 추가 (터미널 느낌 강화)'] },
     { ver: 'v3.18.3', date: '2026.03.28', items: ['📻 홈 탭에 팟캐스트 라디오 다이얼 위젯 추가 — 주파수 변경 방식으로 8개 팟캐스트 빠르게 전환', '컴팩트한 한 줄 디자인 · ‹ › 버튼으로 이전/다음 · 다이얼 바늘 회전 애니메이션'] },
