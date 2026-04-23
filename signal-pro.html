@@ -449,8 +449,9 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
 @media(max-width:480px){
   .main{padding:8px;padding-bottom:80px}
   
-  /* 그리드 1열 or 2열 */
-  .g4,.g3,.g2{grid-template-columns:1fr;gap:8px}
+  /* 그리드 — 대시보드 지수는 2열 유지, 나머지 1열 */
+  .g4{grid-template-columns:repeat(2,1fr);gap:8px}
+  .g3,.g2{grid-template-columns:1fr;gap:8px}
   .g7{grid-template-columns:1fr;gap:8px}
   .pf-sum{grid-template-columns:repeat(2,1fr);gap:6px}
   
@@ -594,7 +595,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
       <svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
     </div>
     <div class="logo-t">INVESTMENT<br>SIGNAL</div>
-    <div class="logo-s">PRO · v3.3.1</div>
+    <div class="logo-s">PRO · v3.3.2</div>
   </div>
   <ul class="nav-list">
     <li class="nav-item"><button class="nav-btn active" data-page="dashboard" onclick="go('dashboard')">
@@ -1093,42 +1094,55 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
   <div class="card mb16">
     <div class="sec-title">🔑 Groq AI 키 설정</div>
     
-    <!-- 키 설정 완료 상태 -->
+    <!-- 키 있을 때: 마스킹 표시 -->
     <div id="key-view-mode" style="display:none">
-      <div style="background:rgba(15,124,82,0.08);border:1px solid rgba(15,124,82,0.3);border-radius:10px;padding:16px;margin-bottom:12px">
-        <div class="fb">
-          <div>
-            <div style="font-size:13px;color:var(--green);font-weight:700;margin-bottom:4px">● AI 활성화 완료</div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--t1)" id="key-masked">--</div>
-          </div>
-          <div class="flex g8">
-            <button class="btn btn-out" onclick="editKey()" style="font-size:12px;padding:7px 12px">✏️ 변경</button>
-            <button class="btn btn-red" onclick="removeKey()" style="font-size:12px;padding:7px 12px">🗑️</button>
-          </div>
+      <div style="background:rgba(15,124,82,0.08);border:1px solid rgba(15,124,82,0.3);border-radius:10px;padding:14px">
+        <div style="font-size:12px;color:var(--green);font-weight:700;margin-bottom:6px">● AI 활성화 완료</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--t1);margin-bottom:10px;word-break:break-all" id="key-masked">--</div>
+        <div class="flex g8">
+          <button class="btn btn-out" onclick="editKey()" style="flex:1;font-size:12px;padding:8px">✏️ 변경</button>
+          <button class="btn btn-red" onclick="removeKey()" style="flex:1;font-size:12px;padding:8px">🗑️ 삭제</button>
         </div>
       </div>
-      <div class="xs tm" style="line-height:1.7">
+      <div class="xs tm" style="line-height:1.7;margin-top:10px">
         🔒 키는 이 기기(브라우저)에만 저장되어 영구 보관됩니다.<br>
-        💾 앱을 다시 열어도 재입력 필요 없음.<br>
-        ⚠️ 브라우저 캐시 초기화시 삭제될 수 있으니 키 원본을 따로 보관해두세요.
+        💾 앱을 다시 열어도 재입력 필요 없음.
       </div>
     </div>
     
-    <!-- 키 입력 상태 -->
-    <div id="key-edit-mode">
+    <!-- 키 없을 때: 버튼으로 입력창 열기 -->
+    <div id="key-empty-mode">
+      <div style="background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.3);border-radius:10px;padding:14px;text-align:center">
+        <div style="font-size:28px;margin-bottom:8px">🔑</div>
+        <div style="font-size:13px;color:var(--t1);font-weight:700;margin-bottom:4px">AI 키 미등록</div>
+        <div style="font-size:12px;color:var(--t3);margin-bottom:12px;line-height:1.6">
+          AI 심층분석, 그룹채팅, 글로벌 브리핑<br>기능을 사용하려면 키 등록이 필요합니다
+        </div>
+        <button class="btn btn-gold" onclick="editKey()" style="font-size:13px;padding:10px 24px">
+          🔑 API 키 등록하기
+        </button>
+      </div>
+    </div>
+    
+    <!-- 키 입력 모드 -->
+    <div id="key-edit-mode" style="display:none">
       <div class="fg">
         <label>GROQ API KEY</label>
         <input type="password" class="inp" id="set-groq-key" placeholder="gsk_..." autocomplete="off">
       </div>
       <div class="flex g8 mt12">
-        <button class="btn btn-gold" onclick="saveKey()" style="flex:1">💾 저장하기</button>
-        <button class="btn btn-out" onclick="cancelEditKey()" id="btn-cancel-key" style="display:none">취소</button>
+        <button class="btn btn-gold" onclick="saveKey()" style="flex:1">💾 저장</button>
+        <button class="btn btn-out" onclick="cancelEditKey()">취소</button>
       </div>
       <div id="set-groq-status" class="xs mono" style="margin-top:10px"></div>
-      <div class="xs tm" style="margin-top:14px;line-height:1.7">
-        💡 무료 키 발급: <a href="https://console.groq.com/keys" target="_blank" style="color:var(--navy);font-weight:700">console.groq.com/keys</a><br>
-        🚀 Llama 3.3 70B 모델 사용 — 무료 / 초고속<br>
-        🔒 키는 브라우저에만 저장 (외부 전송 X)
+      <div class="xs tm" style="margin-top:14px;line-height:1.7;padding:12px;background:rgba(0,0,0,0.03);border-radius:8px">
+        💡 <b>무료 키 발급 방법:</b><br>
+        1. <a href="https://console.groq.com/keys" target="_blank" style="color:var(--navy);font-weight:700">console.groq.com/keys</a> 접속<br>
+        2. Google 로그인 → Create API Key<br>
+        3. 생성된 gsk_... 키 복사 → 붙여넣기<br>
+        <br>
+        🚀 Llama 3.3 70B 사용 — 완전 무료, 초고속<br>
+        🔒 키는 본인 브라우저에만 저장 (외부 전송 X)
       </div>
     </div>
   </div>
@@ -1171,21 +1185,19 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
 
 <script>
 // ===================== CONFIG =====================
-const APP_VERSION = '3.3.1';
+const APP_VERSION = '3.3.2';
 const RELEASE_NOTES = [{
-  version:'3.3.1', date:'2026-04-23',
+  version:'3.3.2', date:'2026-04-23',
   changes:[
-    '📱 모바일 레이아웃 전면 재설계 — 5단계 Breakpoint 체계 확립',
-    '📐 스마트폰 글자/카드/간격 공격적 축소 — PC 느낌 완전 제거',
-    '📱 초소형 폰 (380px 이하) 별도 대응 — 갤럭시 S8/SE 등',
-    '🗂️ 글로벌 브리핑 모바일: 태블릿 3열, 폰 2열 자동 전환',
-    '💬 채팅 말풍선/아바타 모바일 크기 조정',
-    '📖 사용설명서 모바일 가독성 개선',
-    '🔧 설정 페이지 마스킹 키 모바일 줄바꿈 처리',
+    '📱 대시보드 지수(KOSPI/KOSDAQ/USD/공포탐욕) 스마트폰 2열 유지',
+    '🔑 API 키 UI 개선 — 미등록시 큰 버튼으로 안내',
+    '🔒 키 입력창은 "등록하기" 버튼 눌러야 펼쳐짐',
+    '💡 키 발급 가이드를 박스 형태로 시각화',
+    '🎨 3단계 키 상태 (등록완료/미등록/입력중) 명확히 구분',
   ]
 },{
-  version:'3.3.0', date:'2026-04-23',
-  changes:['종목 검색 대소문자/별칭 지원','DB 40개+ 확장']
+  version:'3.3.1', date:'2026-04-23',
+  changes:['모바일 레이아웃 5단계 Breakpoint 재설계']
 }];
 
 // 종목 검색 헬퍼 — 대소문자 무관, 공백/특수문자 무시, 별칭 지원
@@ -2700,31 +2712,28 @@ function renderSetNotes() {
   refreshKeyDisplay();
 }
 
-// 키 화면 모드 전환
+// 키 화면 모드 전환 (3가지 모드: view / empty / edit)
 function refreshKeyDisplay() {
   const key = getGroqKey();
   const viewMode = document.getElementById('key-view-mode');
+  const emptyMode = document.getElementById('key-empty-mode');
   const editMode = document.getElementById('key-edit-mode');
-  if(!viewMode || !editMode) return;
+  if(!viewMode || !emptyMode || !editMode) return;
   
   if(key) {
     // 키 있음 → 마스킹 표시
     viewMode.style.display = 'block';
+    emptyMode.style.display = 'none';
     editMode.style.display = 'none';
     const masked = document.getElementById('key-masked');
     if(masked) {
       masked.textContent = `${key.substring(0,7)}${'•'.repeat(8)}${key.substring(key.length-4)}`;
     }
   } else {
-    // 키 없음 → 입력창 표시
+    // 키 없음 → 등록 버튼 표시
     viewMode.style.display = 'none';
-    editMode.style.display = 'block';
-    const inp = document.getElementById('set-groq-key');
-    if(inp) inp.value = '';
-    const btnCancel = document.getElementById('btn-cancel-key');
-    if(btnCancel) btnCancel.style.display = 'none';
-    const stat = document.getElementById('set-groq-status');
-    if(stat) stat.innerHTML = '<span style="color:var(--t3)">키 미설정 — AI 기능 사용 불가</span>';
+    emptyMode.style.display = 'block';
+    editMode.style.display = 'none';
   }
 }
 
@@ -2748,20 +2757,19 @@ function saveKey() {
 
 function editKey() {
   const viewMode = document.getElementById('key-view-mode');
+  const emptyMode = document.getElementById('key-empty-mode');
   const editMode = document.getElementById('key-edit-mode');
-  const btnCancel = document.getElementById('btn-cancel-key');
   if(viewMode) viewMode.style.display = 'none';
+  if(emptyMode) emptyMode.style.display = 'none';
   if(editMode) editMode.style.display = 'block';
-  if(btnCancel) btnCancel.style.display = 'inline-flex';
   const inp = document.getElementById('set-groq-key');
   if(inp) { inp.value = ''; inp.focus(); }
+  const stat = document.getElementById('set-groq-status');
+  if(stat) stat.innerHTML = '';
 }
 
 function cancelEditKey() {
-  // 기존 키가 있으면 view 모드로 돌아감
-  if(getGroqKey()) {
-    refreshKeyDisplay();
-  }
+  refreshKeyDisplay();
 }
 
 function removeKey() {
