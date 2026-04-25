@@ -58,7 +58,8 @@ html{overflow-x:hidden}
 .dot-live{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e;display:inline-block;animation:pulse 2s infinite;margin-right:5px}
 
 /* MAIN */
-.main{margin-left:var(--sw);flex:1;padding:36px;min-height:100vh}
+.main{margin-left:var(--sw);flex:1;padding:36px;min-height:100vh;max-width:calc(100vw - var(--sw));box-sizing:border-box}
+.main-inner{max-width:1280px;margin:0 auto;width:100%}
 .page{display:none}.page.active{display:block;animation:fadeIn .28s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
@@ -327,9 +328,10 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
 .rnote:last-child{border-bottom:none}
 
 @media(min-width:1400px){
-  .main{max-width:1400px;margin-left:var(--sw);padding:40px}
+  .main{padding:40px 60px}
 }
 @media(min-width:1920px){
+  .main{padding:50px 80px}
   .page-title{font-size:24px}
   .mval{font-size:28px}
 }
@@ -343,8 +345,8 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
 @media(max-width:768px){
   .sidebar{display:none}
   .mob-nav{display:block;padding:4px 0}
-  .mob-btn{padding:5px 6px;font-size:10px;gap:2px}
-  .mob-btn svg{width:20px;height:20px}
+  .mob-btn{padding:4px 2px;font-size:9px;gap:2px}
+  .mob-btn svg{width:17px;height:17px}
   .main{margin-left:0;padding:10px;padding-bottom:80px}
   
   /* 그리드 압축 */
@@ -471,42 +473,47 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
    ============================================ */
 @media(max-width:480px){
   .main{padding:8px;padding-bottom:80px}
+  .main-inner{max-width:100%}
   
   /* 그리드 — 대시보드 지수는 2열 유지, 나머지 1열 */
-  .g4{grid-template-columns:repeat(2,1fr);gap:8px}
+  .g4{grid-template-columns:repeat(2,1fr);gap:7px}
   .g3,.g2{grid-template-columns:1fr;gap:8px}
   .g7{grid-template-columns:1fr;gap:8px}
   .pf-sum{grid-template-columns:repeat(2,1fr);gap:6px}
   
+  /* 대시보드 지수 강제 2열 */
+  #dash-indices{grid-template-columns:repeat(2,1fr)!important;gap:6px}
+  
   /* 카드 극축소 */
-  .card{padding:12px;border-radius:10px;margin-bottom:10px!important}
-  .mcard{padding:11px;border-radius:10px}
-  .mlabel{font-size:9px;margin-bottom:4px}
-  .mval{font-size:15px}
-  .mchg{font-size:10px}
+  .card{padding:11px!important;border-radius:10px;margin-bottom:10px!important}
+  .mcard{padding:9px;border-radius:8px}
+  .mlabel{font-size:9px;margin-bottom:3px;letter-spacing:.3px}
+  .mval{font-size:14px;line-height:1.1}
+  .mchg{font-size:9px;margin-top:1px}
   
   /* 페이지 헤더 */
-  .page-title{font-size:14px;letter-spacing:.8px;margin-bottom:2px}
-  .page-sub{font-size:11px;margin-bottom:12px}
-  .sec-title{font-size:10px;letter-spacing:.5px;margin-bottom:7px}
+  .page-title{font-size:13px;letter-spacing:.6px;margin-bottom:2px}
+  .page-sub{font-size:10px;margin-bottom:10px}
+  .sec-title{font-size:10px;letter-spacing:.3px;margin-bottom:6px}
   
   /* 시그널 점수 */
-  .sig-score{font-size:38px}
-  .sig-meter{padding:14px}
+  .sig-score{font-size:36px}
+  .sig-meter{padding:12px}
   
-  /* 글로벌 브리핑 — 2열로 */
-  .brief-grid{grid-template-columns:repeat(2,1fr);gap:6px}
-  .brief-idx{padding:8px 6px;border-radius:8px}
-  .brief-lbl{font-size:9px;margin-bottom:3px}
-  .brief-val{font-size:12px;line-height:1.1}
-  .brief-chg{font-size:9px;margin-top:2px}
-  #brief-ai-body{font-size:12px;padding:12px!important;line-height:1.6;min-height:80px!important;border-radius:10px!important}
-  #brief-date{font-size:10px}
-  #brief-refresh{font-size:10px;padding:4px 8px}
+  /* 글로벌 브리핑 — 2열, 더 작게 */
+  .brief-grid{grid-template-columns:repeat(2,1fr)!important;gap:5px}
+  .brief-idx{padding:7px 5px;border-radius:7px}
+  .brief-lbl{font-size:8px;margin-bottom:2px;letter-spacing:0}
+  .brief-val{font-size:11px;line-height:1.05}
+  .brief-chg{font-size:8px;margin-top:1px}
+  #brief-ai-body{font-size:11px!important;padding:10px!important;line-height:1.55!important;min-height:70px!important;border-radius:8px!important}
+  #brief-date{font-size:9px}
+  #brief-refresh{font-size:9px;padding:3px 7px}
+  #briefing-card{padding:11px!important}
   
   /* 포트폴리오 */
-  .pf-stat{padding:10px}
-  .pf-label{font-size:9px}
+  .pf-stat{padding:9px}
+  .pf-label{font-size:9px;margin-bottom:3px}
   .pf-val{font-size:13px}
   
   /* 지표 */
@@ -620,7 +627,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
       <svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
     </div>
     <div class="logo-t">INVESTMENT<br>SIGNAL</div>
-    <div class="logo-s">PRO · v3.4.1</div>
+    <div class="logo-s">PRO · v3.5.0</div>
   </div>
   <ul class="nav-list">
     <li class="nav-item"><button class="nav-btn active" data-page="dashboard" onclick="go('dashboard')">
@@ -632,6 +639,12 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
     <li class="nav-item"><button class="nav-btn" data-page="portfolio" onclick="go('portfolio')">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
       포트폴리오</button></li>
+    <li class="nav-item"><button class="nav-btn" data-page="compare" onclick="go('compare')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="3" x2="3" y2="21"/><line x1="3" y1="21" x2="21" y2="21"/><rect x="6" y="10" width="3" height="8"/><rect x="11" y="6" width="3" height="12"/><rect x="16" y="13" width="3" height="5"/></svg>
+      종목 비교 <span style="background:var(--gold);color:#fff;font-size:9px;padding:1px 5px;border-radius:5px;margin-left:4px;font-weight:800">PRO</span></button></li>
+    <li class="nav-item"><button class="nav-btn" data-page="predict" onclick="go('predict')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6M12 16v6M2 12h6M16 12h6"/><circle cx="12" cy="12" r="4"/></svg>
+      AI 예측 <span style="background:var(--gold);color:#fff;font-size:9px;padding:1px 5px;border-radius:5px;margin-left:4px;font-weight:800">PRO</span></button></li>
     <li class="nav-item"><button class="nav-btn" data-page="personality" onclick="go('personality')">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
       성향 분석</button></li>
@@ -653,26 +666,30 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
   <div class="mob-inner">
     <button class="mob-btn active" data-page="dashboard" onclick="go('dashboard')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-      <span>대시보드</span></button>
+      <span>홈</span></button>
     <button class="mob-btn" data-page="signal" onclick="go('signal')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
       <span>시그널</span></button>
+    <button class="mob-btn" data-page="compare" onclick="go('compare')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="3" x2="3" y2="21"/><line x1="3" y1="21" x2="21" y2="21"/><rect x="6" y="10" width="3" height="8"/><rect x="11" y="6" width="3" height="12"/></svg>
+      <span>비교</span></button>
+    <button class="mob-btn" data-page="predict" onclick="go('predict')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>
+      <span>예측</span></button>
     <button class="mob-btn" data-page="portfolio" onclick="go('portfolio')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
       <span>포트폴리오</span></button>
-    <button class="mob-btn" data-page="personality" onclick="go('personality')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l7.78-7.78a5.5 5.5 0 0 0 0-7.78z"/></svg>
-      <span>성향</span></button>
     <button class="mob-btn" data-page="consult" onclick="go('consult')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      <span>AI상담</span></button>
+      <span>상담</span></button>
     <button class="mob-btn" data-page="settings" onclick="go('settings')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v6M12 17v6M4 12H1M23 12h-3"/></svg>
       <span>설정</span></button>
   </div>
 </nav>
 
 <main class="main">
+<div class="main-inner">
 
 <!-- ====== DASHBOARD ====== -->
 <div id="page-dashboard" class="page active">
@@ -917,6 +934,53 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
       "분석 실행" 버튼으로 시작하세요.
     </div>
   </div>
+</div>
+
+<!-- ====== COMPARE (종목 비교 PRO) ====== -->
+<div id="page-compare" class="page">
+  <div class="page-title">📊 종목 비교 분석 <span style="background:var(--gold);color:#fff;font-size:11px;padding:3px 9px;border-radius:7px;margin-left:8px;font-weight:800;letter-spacing:.5px">PRO</span></div>
+  <div class="page-sub">최대 3개 종목을 나란히 비교 · AI가 종합 평가</div>
+  
+  <div class="card mb16">
+    <div class="sec-title mb12">비교할 종목 선택 (최소 2개)</div>
+    <div class="g3" style="gap:10px">
+      <div style="position:relative">
+        <label>종목 1</label>
+        <input type="text" class="inp cmp-inp" id="cmp-inp-0" placeholder="종목명/코드" oninput="cmpSearch(0,this.value)" autocomplete="off">
+        <div class="srch-results hidden" id="cmp-res-0"></div>
+      </div>
+      <div style="position:relative">
+        <label>종목 2</label>
+        <input type="text" class="inp cmp-inp" id="cmp-inp-1" placeholder="종목명/코드" oninput="cmpSearch(1,this.value)" autocomplete="off">
+        <div class="srch-results hidden" id="cmp-res-1"></div>
+      </div>
+      <div style="position:relative">
+        <label>종목 3 (선택)</label>
+        <input type="text" class="inp cmp-inp" id="cmp-inp-2" placeholder="종목명/코드" oninput="cmpSearch(2,this.value)" autocomplete="off">
+        <div class="srch-results hidden" id="cmp-res-2"></div>
+      </div>
+    </div>
+    <button class="btn btn-gold mt12" style="width:100%" onclick="runCompare()">⚡ 비교 분석 시작</button>
+  </div>
+  
+  <div id="cmp-result"></div>
+</div>
+
+<!-- ====== PREDICT (AI 예측 PRO) ====== -->
+<div id="page-predict" class="page">
+  <div class="page-title">🔮 AI 미래 예측 <span style="background:var(--gold);color:#fff;font-size:11px;padding:3px 9px;border-radius:7px;margin-left:8px;font-weight:800;letter-spacing:.5px">PRO</span></div>
+  <div class="page-sub">차트 패턴 + 지표 분석 → 1주/1개월/3개월 시나리오 + 상승확률</div>
+  
+  <div class="card mb16">
+    <div class="sec-title mb12">예측할 종목</div>
+    <div style="position:relative">
+      <input type="text" class="inp" id="pred-inp" placeholder="종목명 입력 (예: 삼성전자, 005930)" oninput="predSearch(this.value)" autocomplete="off">
+      <div class="srch-results hidden" id="pred-res"></div>
+    </div>
+    <button class="btn btn-gold mt12" style="width:100%" onclick="runPredict()">🔮 AI 예측 실행</button>
+  </div>
+  
+  <div id="pred-result"></div>
 </div>
 
 <!-- ====== PERSONALITY ====== -->
@@ -1201,6 +1265,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
   <div class="card"><div class="sec-title">MADE BY</div><div style="font-family:'Orbitron',monospace;font-size:18px;color:var(--navy);font-weight:900">JUNS</div></div>
 </div>
 
+</div>
 </main>
 
 <!-- TRADE MODAL -->
@@ -1228,20 +1293,24 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
 
 <script>
 // ===================== CONFIG =====================
-const APP_VERSION = '3.4.1';
+const APP_VERSION = '3.5.0';
 const RELEASE_NOTES = [{
-  version:'3.4.1', date:'2026-04-23',
+  version:'3.5.0', date:'2026-04-23',
   changes:[
-    '🔥 AI 상담 실시간 시세 자동 주입 — "삼성전자 어때?" 입력시 현재가 219,000원 자동 반영',
-    '🎯 메시지 내 종목명 자동 감지 (한글/영문/별칭/대소문자 무관)',
-    '⚠️ AI에게 "옛날 가격 사용 금지" 강제 규칙 추가',
-    '📅 오늘 날짜 자동 컨텍스트 주입',
-    '💹 시세 조회 진행 표시 (사용자에게 "조회 중" 안내)',
-    '🧹 refreshDash 잔재 코드 정리',
+    '🆕 PRO: 종목 비교 분석 — 최대 3종목 나란히 비교 (PER/RSI/추세/AI점수)',
+    '🆕 PRO: AI 미래 예측 — 1주/1개월/3개월 시나리오 + 상승확률 게이지',
+    '📐 PC 중앙정렬 레이아웃 (.main-inner 1280px)',
+    '📱 모바일 대시보드 추가 축소 (글자 8~14px, 카드 padding 7~11px)',
+    '🧭 모바일 네비 7개 메뉴 (홈/시그널/비교/예측/포트폴리오/상담/설정)',
+    '🌟 사이드바 PRO 배지 추가',
+    '🔝 페이지 전환시 자동 상단 스크롤',
   ]
 },{
+  version:'3.4.1', date:'2026-04-23',
+  changes:['AI 상담 실시간 시세 자동 주입','종목명 자동 감지']
+},{
   version:'3.4.0', date:'2026-04-23',
-  changes:['PRO 기능 2개 (매매일지/뉴스분석)','캔들 차트','성향 추천 종목']
+  changes:['PRO: AI 매매일지 + AI 뉴스분석','캔들 차트','성향 추천']
 }];
 
 // 종목 검색 헬퍼 — 대소문자 무관, 공백/특수문자 무시, 별칭 지원
@@ -1400,7 +1469,8 @@ function go(page) {
   if(page==='personality') initPersonality();
   if(page==='settings') renderSetNotes();
   if(page==='consult') initConsult();
-  if(page==='manual') renderManual();
+  // 페이지 상단으로 스크롤
+  window.scrollTo({top:0, behavior:'smooth'});
 }
 
 // ===================== API =====================
@@ -2710,6 +2780,299 @@ ${tradeList}
   }
   btn.disabled = false;
   btn.textContent = '🔄 다시 분석';
+}
+
+// ===== 📊 종목 비교 분석 (PRO) =====
+const CMP_PICKED = [null, null, null]; // 선택된 3개 종목
+
+function cmpSearch(slot, val) {
+  const el = document.getElementById(`cmp-res-${slot}`);
+  if(!val){el.classList.add('hidden');return;}
+  const m = stockMatch(val).slice(0,6);
+  if(!m.length){el.classList.add('hidden');return;}
+  el.classList.remove('hidden');
+  el.innerHTML = m.map(s=>`<div class="srch-item" onclick="cmpPick(${slot},'${s.code}','${s.name.replace(/'/g,'&apos;')}')"><span>${s.name}</span><span class="mono xs tm">${s.code}</span></div>`).join('');
+}
+
+function cmpPick(slot, code, name) {
+  CMP_PICKED[slot] = {code, name};
+  document.getElementById(`cmp-inp-${slot}`).value = name;
+  document.getElementById(`cmp-res-${slot}`).classList.add('hidden');
+}
+
+async function runCompare() {
+  const picked = CMP_PICKED.filter(p=>p);
+  if(picked.length < 2) {
+    alert('최소 2개 종목을 선택해주세요.');
+    return;
+  }
+  
+  const out = document.getElementById('cmp-result');
+  out.innerHTML = `<div class="card"><div class="loading"><div class="spinner"></div>실시간 시세 + 지표 수집 중...</div></div>`;
+  
+  // 각 종목 데이터 수집
+  const stocksData = await Promise.all(picked.map(async p => {
+    const cur = await fetchStock(p.code);
+    const hist = await fetchHist(p.code, '6mo');
+    if(!cur || !hist || hist.closes.length < 20) {
+      return {...p, error: true};
+    }
+    const inds = calcInds(hist.closes, hist.volumes, '6mo');
+    const overall = Math.round(inds.reduce((s,i)=>s+i.score,0) / inds.length);
+    const change6m = ((hist.closes[hist.closes.length-1] / hist.closes[0]) - 1) * 100;
+    return {
+      ...p,
+      price: cur.price,
+      pct: cur.pct,
+      change6m,
+      overall,
+      rsi: inds.find(i=>i.name.includes('RSI'))?.val || '-',
+      trend: inds.find(i=>i.name.includes('추세'))?.sig || '-',
+    };
+  }));
+  
+  // 비교 테이블 생성
+  const validStocks = stocksData.filter(s=>!s.error);
+  if(validStocks.length < 2) {
+    out.innerHTML = `<div class="card" style="color:var(--red)">⚠️ 일부 종목 데이터 조회 실패. 다른 종목으로 시도해주세요.</div>`;
+    return;
+  }
+  
+  // 점수별 색상
+  const scoreColor = (s) => s>=60?'var(--green)':s>=40?'var(--gold)':'var(--red)';
+  const scoreText = (s) => s>=60?'매수':s>=40?'중립':'매도';
+  
+  let tableHtml = `
+    <div class="card mb16">
+      <div class="sec-title mb12">📊 비교 결과</div>
+      <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse">
+        <thead><tr style="border-bottom:2px solid var(--brl)">
+          <th style="text-align:left;padding:10px;font-size:12px;color:var(--t2)">항목</th>
+          ${validStocks.map(s=>`<th style="text-align:center;padding:10px;font-size:13px;color:var(--navy)">${s.name}</th>`).join('')}
+        </tr></thead>
+        <tbody>
+          <tr><td style="padding:10px;font-size:12px;color:var(--t2)">현재가</td>
+            ${validStocks.map(s=>`<td style="text-align:center;padding:10px;font-family:'JetBrains Mono';font-weight:700">${Math.round(s.price).toLocaleString()}원</td>`).join('')}
+          </tr>
+          <tr style="background:rgba(0,0,0,0.02)"><td style="padding:10px;font-size:12px;color:var(--t2)">당일 등락</td>
+            ${validStocks.map(s=>`<td style="text-align:center;padding:10px;font-family:'JetBrains Mono';color:${s.pct>=0?'var(--green)':'var(--red)'}">${s.pct>=0?'+':''}${s.pct.toFixed(2)}%</td>`).join('')}
+          </tr>
+          <tr><td style="padding:10px;font-size:12px;color:var(--t2)">6개월 수익률</td>
+            ${validStocks.map(s=>`<td style="text-align:center;padding:10px;font-family:'JetBrains Mono';color:${s.change6m>=0?'var(--green)':'var(--red)'}">${s.change6m>=0?'+':''}${s.change6m.toFixed(1)}%</td>`).join('')}
+          </tr>
+          <tr style="background:rgba(0,0,0,0.02)"><td style="padding:10px;font-size:12px;color:var(--t2)">RSI</td>
+            ${validStocks.map(s=>`<td style="text-align:center;padding:10px;font-family:'JetBrains Mono'">${s.rsi}</td>`).join('')}
+          </tr>
+          <tr><td style="padding:10px;font-size:12px;color:var(--t2)">추세</td>
+            ${validStocks.map(s=>`<td style="text-align:center;padding:10px;font-size:12px">${s.trend}</td>`).join('')}
+          </tr>
+          <tr style="background:rgba(0,0,0,0.02);border-top:2px solid var(--brl)"><td style="padding:12px;font-weight:700;color:var(--navy)">AI 종합점수</td>
+            ${validStocks.map(s=>`<td style="text-align:center;padding:12px"><div style="font-size:22px;font-weight:900;color:${scoreColor(s.overall)};font-family:'JetBrains Mono'">${s.overall}</div><div style="font-size:11px;color:${scoreColor(s.overall)};font-weight:700">${scoreText(s.overall)}</div></td>`).join('')}
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+    <div class="card card-g">
+      <div class="sec-title mb12">🤖 AI 종합 비교 분석</div>
+      <div id="cmp-ai-out" style="background:var(--bg3);border:1px solid var(--brl);border-radius:10px;padding:18px;font-size:14px;line-height:1.8;white-space:pre-wrap;color:var(--t2)">
+        <div class="loading"><div class="spinner"></div>AI가 비교 분석 중...</div>
+      </div>
+    </div>
+  `;
+  out.innerHTML = tableHtml;
+  
+  // AI 비교 분석
+  const stocksDesc = validStocks.map(s => 
+    `${s.name}(${s.code}): 현재 ${Math.round(s.price).toLocaleString()}원, 당일 ${s.pct>=0?'+':''}${s.pct.toFixed(2)}%, 6개월 ${s.change6m>=0?'+':''}${s.change6m.toFixed(1)}%, AI점수 ${s.overall}/100`
+  ).join('\n');
+  
+  const prompt = `당신은 한국 주식시장 비교 분석 전문가입니다. 아래 종목들을 비교 분석하세요.
+
+[비교 대상 종목]
+${stocksDesc}
+
+다음 구조로 답변하세요 (전체 700자 이내):
+
+【종목별 핵심 강점】
+각 종목의 가장 큰 매력 포인트 1-2가지씩
+
+【리스크 비교】
+어느 종목이 더 안정적이고, 어느 종목이 변동성이 큰지
+
+【투자 스타일별 추천】
+- 안정 추구형: 어느 종목 추천?
+- 성장 추구형: 어느 종목 추천?
+- 공격적 투자: 어느 종목 추천?
+
+【최종 결론】
+지금 시점에서 가장 유망한 종목 1개와 그 이유 (한 줄)
+
+⚠️ 객관적이고 중립적으로. 추측이나 단정 금지.`;
+  
+  try {
+    const result = await callAI(prompt, 1500);
+    document.getElementById('cmp-ai-out').textContent = result;
+    document.getElementById('cmp-ai-out').style.color = 'var(--t1)';
+  } catch(e) {
+    document.getElementById('cmp-ai-out').innerHTML = `❌ AI 분석 실패: ${e.message}`;
+  }
+}
+
+// ===== 🔮 AI 미래 예측 (PRO) =====
+let PRED_PICKED = null;
+
+function predSearch(val) {
+  const el = document.getElementById('pred-res');
+  if(!val){el.classList.add('hidden');return;}
+  const m = stockMatch(val).slice(0,8);
+  if(!m.length){el.classList.add('hidden');return;}
+  el.classList.remove('hidden');
+  el.innerHTML = m.map(s=>`<div class="srch-item" onclick="predPick('${s.code}','${s.name.replace(/'/g,'&apos;')}')"><span>${s.name}</span><span class="mono xs tm">${s.code}</span></div>`).join('');
+}
+
+function predPick(code, name) {
+  PRED_PICKED = {code, name};
+  document.getElementById('pred-inp').value = name;
+  document.getElementById('pred-res').classList.add('hidden');
+}
+
+async function runPredict() {
+  const v = document.getElementById('pred-inp').value.trim();
+  if(!PRED_PICKED && v) {
+    const m = stockFind(v);
+    PRED_PICKED = m || {code:/^\d{6}$/.test(v)?v+'.KS':v, name:v};
+  }
+  if(!PRED_PICKED) { alert('종목을 선택하세요'); return; }
+  
+  const out = document.getElementById('pred-result');
+  out.innerHTML = `<div class="card"><div class="loading"><div class="spinner"></div>10년 데이터 수집 → AI 패턴 분석 중...</div></div>`;
+  
+  const cur = await fetchStock(PRED_PICKED.code);
+  const hist = await fetchHist(PRED_PICKED.code, '1y');
+  if(!cur || !hist || hist.closes.length < 30) {
+    out.innerHTML = `<div class="card" style="color:var(--red)">⚠️ 데이터 조회 실패. 다른 종목으로 시도해주세요.</div>`;
+    return;
+  }
+  
+  const inds = calcInds(hist.closes, hist.volumes, '1y');
+  const overall = Math.round(inds.reduce((s,i)=>s+i.score,0) / inds.length);
+  
+  // 상승/하락 통계
+  const closes = hist.closes;
+  const change1m = closes.length >= 20 ? ((closes[closes.length-1]/closes[closes.length-20])-1)*100 : 0;
+  const change3m = closes.length >= 60 ? ((closes[closes.length-1]/closes[closes.length-60])-1)*100 : 0;
+  const change6m = closes.length >= 120 ? ((closes[closes.length-1]/closes[closes.length-120])-1)*100 : 0;
+  const max = Math.max(...closes);
+  const min = Math.min(...closes);
+  const fromHigh = ((cur.price/max)-1)*100;
+  
+  // 변동성 (표준편차)
+  const returns = [];
+  for(let i=1;i<closes.length;i++) returns.push((closes[i]/closes[i-1])-1);
+  const meanR = returns.reduce((a,b)=>a+b,0)/returns.length;
+  const stdR = Math.sqrt(returns.reduce((s,r)=>s+(r-meanR)**2,0)/returns.length);
+  const volatility = (stdR * Math.sqrt(252) * 100).toFixed(1);
+  
+  // 상승확률 (간단 휴리스틱)
+  let upProb = 50;
+  if(overall >= 60) upProb += 15;
+  else if(overall <= 40) upProb -= 15;
+  if(change1m > 5) upProb += 8;
+  if(change1m < -5) upProb -= 8;
+  if(fromHigh < -20) upProb += 5; // 고점 대비 하락
+  if(fromHigh > -5) upProb -= 5; // 고점 부근
+  upProb = Math.max(15, Math.min(85, upProb));
+  
+  const probColor = upProb>=65?'var(--green)':upProb>=45?'var(--gold)':'var(--red)';
+  const probLabel = upProb>=65?'상승 우세':upProb>=45?'중립':'하락 우세';
+  
+  out.innerHTML = `
+    <div class="card mb16">
+      <div class="fb mb16">
+        <div>
+          <div style="font-size:18px;font-weight:900;color:var(--navy)">${PRED_PICKED.name}</div>
+          <div class="xs mono tm">${PRED_PICKED.code} · 현재 ${Math.round(cur.price).toLocaleString()}원</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:42px;font-weight:900;color:${probColor};font-family:'JetBrains Mono';line-height:1">${upProb}%</div>
+          <div style="font-size:12px;color:${probColor};font-weight:700">📈 1개월 상승확률</div>
+        </div>
+      </div>
+      <div style="background:linear-gradient(90deg,var(--red) 0%,var(--gold) 50%,var(--green) 100%);height:6px;border-radius:3px;position:relative;margin-bottom:8px">
+        <div style="position:absolute;left:${upProb}%;top:-3px;width:12px;height:12px;background:#fff;border:2px solid ${probColor};border-radius:50%;transform:translateX(-50%)"></div>
+      </div>
+      <div class="fb xs mono tm"><span>하락 (0%)</span><span>중립 (50%)</span><span>상승 (100%)</span></div>
+    </div>
+    
+    <div class="g3 mb16" style="gap:10px">
+      <div class="card" style="padding:14px">
+        <div class="xs tm">최근 1개월 변동</div>
+        <div style="font-size:18px;font-weight:900;font-family:'JetBrains Mono';color:${change1m>=0?'var(--green)':'var(--red)'}">${change1m>=0?'+':''}${change1m.toFixed(1)}%</div>
+      </div>
+      <div class="card" style="padding:14px">
+        <div class="xs tm">최근 6개월 변동</div>
+        <div style="font-size:18px;font-weight:900;font-family:'JetBrains Mono';color:${change6m>=0?'var(--green)':'var(--red)'}">${change6m>=0?'+':''}${change6m.toFixed(1)}%</div>
+      </div>
+      <div class="card" style="padding:14px">
+        <div class="xs tm">연환산 변동성</div>
+        <div style="font-size:18px;font-weight:900;font-family:'JetBrains Mono';color:var(--navy)">${volatility}%</div>
+      </div>
+    </div>
+    
+    <div class="card card-g">
+      <div class="sec-title mb12">🔮 AI 시나리오 예측</div>
+      <div id="pred-ai-out" style="background:var(--bg3);border:1px solid var(--brl);border-radius:10px;padding:18px;font-size:14px;line-height:1.8;white-space:pre-wrap;color:var(--t2)">
+        <div class="loading"><div class="spinner"></div>AI가 시나리오 작성 중...</div>
+      </div>
+    </div>
+  `;
+  
+  const prompt = `당신은 25년 경력의 시니어 주식 애널리스트입니다. 아래 종목의 미래 시나리오를 분석하세요.
+
+[종목 정보]
+${PRED_PICKED.name} (${PRED_PICKED.code})
+- 현재가: ${Math.round(cur.price).toLocaleString()}원 (당일 ${cur.pct>=0?'+':''}${cur.pct.toFixed(2)}%)
+- 1개월 변동: ${change1m.toFixed(1)}% / 3개월: ${change3m.toFixed(1)}% / 6개월: ${change6m.toFixed(1)}%
+- 1년 최고/최저: ${Math.round(max).toLocaleString()} / ${Math.round(min).toLocaleString()}원
+- 고점 대비: ${fromHigh.toFixed(1)}%
+- 연환산 변동성: ${volatility}%
+- AI 종합점수: ${overall}/100
+- 시스템 산출 1개월 상승확률: ${upProb}%
+
+다음 구조로 답변하세요 (전체 800자 이내):
+
+【📊 현재 상황 진단】
+한 줄 요약 + 핵심 기술적 신호
+
+【🟢 낙관 시나리오 (상승)】
+- 1주 후 예상가 범위: XX만원 ~ XX만원
+- 1개월 후: XX만원 ~ XX만원  
+- 3개월 후: XX만원 ~ XX만원
+- 트리거: 어떤 조건이 충족되면 상승할지
+
+【⚪ 중립 시나리오 (보합)】
+- 1개월 후 예상 박스권: XX만원 ~ XX만원
+- 핵심 지지선/저항선
+
+【🔴 비관 시나리오 (하락)】
+- 1주 후: XX만원 ~ XX만원
+- 1개월 후: XX만원 ~ XX만원
+- 손절 라인 추천: XX만원
+
+【🎯 종합 판단】
+3가지 시나리오 중 가장 유력한 것 + 한 줄 코멘트
+
+⚠️ 반드시 위 [현재가] 기준으로 가격 계산. 추측 금지. 본인 학습 데이터의 옛날 가격 절대 사용 금지.`;
+  
+  try {
+    const result = await callAI(prompt, 2000);
+    document.getElementById('pred-ai-out').textContent = result;
+    document.getElementById('pred-ai-out').style.color = 'var(--t1)';
+  } catch(e) {
+    document.getElementById('pred-ai-out').innerHTML = `❌ AI 예측 실패: ${e.message}`;
+  }
 }
 
 function getHoldings() {
