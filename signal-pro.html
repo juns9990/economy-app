@@ -3043,7 +3043,9 @@ async function callAI(prompt, maxTokens = 2000) {
    - "PER 14.2배 (AI 추정 - 정확한 값은 DART 공시 확인)" ✅
    - "PER 14.2배입니다" ❌ (출처 없음)`;
   
+  // 1차 시도: Groq 직접 호출 (PC에서 빠름)
   let r;
+  let directFailed = false;
   try {
     r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
@@ -3063,11 +3065,33 @@ async function callAI(prompt, maxTokens = 2000) {
       })
     });
   } catch(netErr) {
-    // 네트워크 차단 / CORS / 오프라인
-    if(netErr.message.includes('Failed to fetch') || netErr.message.includes('NetworkError')) {
-      throw new Error('🌐 네트워크 연결 실패\n• WiFi/모바일 데이터 확인\n• VPN/방화벽 해제\n• 일부 통신사가 Groq 차단할 수 있음');
+    // 네트워크 차단됨 (모바일/통신사) → Worker 우회 시도
+    directFailed = true;
+  }
+  
+  // 2차 시도 (자동 fallback): Cloudflare Worker 경유
+  if(directFailed || (r && (r.status === 0 || !r.status))) {
+    try {
+      r = await fetch(`${CF_WORKER}/ai`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-groq-key': key,
+        },
+        body: JSON.stringify({
+          model: 'llama-3.3-70b-versatile',
+          messages: [
+            {role: 'system', content: systemMsg},
+            {role: 'user', content: prompt}
+          ],
+          max_tokens: Math.min(maxTokens, 8000),
+          temperature: 0.3,
+          top_p: 0.9,
+        })
+      });
+    } catch(workerErr) {
+      throw new Error('🌐 네트워크 연결 실패\n• 직접 연결 + Worker 둘다 실패\n• WiFi/모바일 데이터 확인 후 재시도');
     }
-    throw new Error(`연결 오류: ${netErr.message}`);
   }
   
   let d;
