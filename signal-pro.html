@@ -651,7 +651,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
       <svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
     </div>
     <div class="logo-t">INVESTMENT<br>SIGNAL</div>
-    <div class="logo-s">PRO · v3.7.2</div>
+    <div class="logo-s">PRO · v3.7.3</div>
   </div>
   <ul class="nav-list">
     <li class="nav-item"><button class="nav-btn active" data-page="dashboard" onclick="go('dashboard')">
@@ -1356,22 +1356,23 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
 
 <script>
 // ===================== CONFIG =====================
-const APP_VERSION = '3.7.2';
+const APP_VERSION = '3.7.3';
 const RELEASE_NOTES = [{
-  version:'3.7.2', date:'2026-04-26',
+  version:'3.7.3', date:'2026-04-26',
   changes:[
-    '🐛 HERO 카드 라벨 버그 수정 — 모든 종목이 수익일 때 "최대 손실"이 잘못 표시되던 문제',
-    '✅ 동적 라벨: 진짜 손실(음수)일 때만 "⚠️ 최대 손실" 표시',
-    '📊 모두 수익이면 "최저 수익" 라벨로 변경 (정확한 의미)',
-    '🥲 모두 손실이면 "최저 손실" 라벨 (덜 잃은 종목)',
-    '🔢 종목 1개일 때 워스트 표시 안 함 ("종목 1개"로 표시)',
+    '🐛 모바일 AI 호출 실패 진단 강화 — 진짜 원인 파악 가능',
+    '🧹 API 키 자동 정리 — 보이지 않는 공백/줄바꿈 자동 제거 (모바일 붙여넣기 대응)',
+    '🌐 네트워크 차단/CORS 별도 처리 — "Failed to fetch" 명확한 안내',
+    '⚡ HTTP 401/403/429/502 별 다른 메시지 표시',
+    '🔍 키 형식 검증 강화 — 첫 5자 미리보기로 디버깅',
+    '💡 통신사 차단 가능성 안내 추가',
   ]
 },{
-  version:'3.7.1', date:'2026-04-26',
-  changes:['손익 추이 그래프','연간 목표 수익률 게이지']
+  version:'3.7.2', date:'2026-04-26',
+  changes:['HERO 카드 라벨 버그 수정','모두 수익시 "최저 수익" 표시']
 },{
-  version:'3.7.0', date:'2026-04-23',
-  changes:['HERO 자산 카드','AI 신뢰성 강제']
+  version:'3.7.1', date:'2026-04-26',
+  changes:['손익 추이 그래프','연간 목표 게이지']
 }];
 
 // 종목 검색 헬퍼 — 대소문자 무관, 공백/특수문자 무시, 별칭 지원
@@ -2946,11 +2947,16 @@ function drawCandleChart(data) {
 const GROQ_API_KEY_STORAGE = 'isp_groq_key';
 
 function getGroqKey() {
-  return localStorage.getItem(GROQ_API_KEY_STORAGE) || '';
+  // 보이지 않는 공백/줄바꿈/제어문자 자동 제거 (모바일 붙여넣기 대응)
+  const raw = localStorage.getItem(GROQ_API_KEY_STORAGE) || '';
+  // 모든 공백, 개행, 탭, 보이지 않는 유니코드 문자 제거
+  return raw.replace(/[\s\u200B-\u200D\uFEFF\u00A0]+/g, '').trim();
 }
 
 function setGroqKey(v) {
-  localStorage.setItem(GROQ_API_KEY_STORAGE, v.trim());
+  // 저장 시점에서도 정리
+  const cleaned = String(v||'').replace(/[\s\u200B-\u200D\uFEFF\u00A0]+/g, '').trim();
+  localStorage.setItem(GROQ_API_KEY_STORAGE, cleaned);
 }
 
 // 한글 깨짐 방지 후처리
@@ -3035,38 +3041,68 @@ async function callAI(prompt, maxTokens = 2000) {
    - "PER 14.2배 (AI 추정 - 정확한 값은 DART 공시 확인)" ✅
    - "PER 14.2배입니다" ❌ (출처 없음)`;
   
-  const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${key}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      model: 'llama-3.3-70b-versatile',
-      messages: [
-        {role: 'system', content: systemMsg},
-        {role: 'user', content: prompt}
-      ],
-      max_tokens: Math.min(maxTokens, 8000),
-      temperature: 0.3, // 0.7 → 0.3: 더 안정적이고 일관된 한국어
-      top_p: 0.9,
-    })
-  });
+  let r;
+  try {
+    r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${key}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        messages: [
+          {role: 'system', content: systemMsg},
+          {role: 'user', content: prompt}
+        ],
+        max_tokens: Math.min(maxTokens, 8000),
+        temperature: 0.3,
+        top_p: 0.9,
+      })
+    });
+  } catch(netErr) {
+    // 네트워크 차단 / CORS / 오프라인
+    if(netErr.message.includes('Failed to fetch') || netErr.message.includes('NetworkError')) {
+      throw new Error('🌐 네트워크 연결 실패\n• WiFi/모바일 데이터 확인\n• VPN/방화벽 해제\n• 일부 통신사가 Groq 차단할 수 있음');
+    }
+    throw new Error(`연결 오류: ${netErr.message}`);
+  }
   
-  const d = await r.json();
+  let d;
+  try {
+    d = await r.json();
+  } catch(parseErr) {
+    // JSON 파싱 실패 = 네트워크 / CORS 문제
+    throw new Error(`네트워크 응답 오류 (HTTP ${r.status}). 인터넷 연결 확인 후 재시도하세요.`);
+  }
+  
   if(!r.ok || d.error) {
     const msg = d.error?.message || `HTTP ${r.status}`;
-    if(msg.includes('Invalid API Key') || r.status === 401) {
-      throw new Error('Groq API 키가 잘못되었습니다. 설정에서 확인해주세요.');
+    const code = d.error?.code || '';
+    
+    // 더 정확한 에러 분류
+    if(r.status === 401 || msg.includes('Invalid API Key') || msg.includes('invalid_api_key') || code === 'invalid_api_key') {
+      // 키 형식 검사 (앞 5자만 확인)
+      const k = key.substring(0, 5);
+      throw new Error(`Groq API 키가 잘못되었습니다.\n키 시작: "${k}..." (gsk_ 로 시작해야 정상)\n설정 → 키 변경하기 → 다시 입력`);
+    }
+    if(r.status === 403) {
+      throw new Error('이 API 키는 권한이 없습니다. console.groq.com 에서 새 키 발급 필요.');
     }
     if(r.status === 429 || msg.includes('rate_limit')) {
-      throw new Error('잠시 후 다시 시도하세요 (무료 한도: 분당 30회)');
+      throw new Error('⏰ 분당 30회 한도 초과. 30~60초 후 재시도하세요.');
     }
-    throw new Error(msg);
+    if(r.status === 503 || r.status === 502) {
+      throw new Error('Groq 서버 일시 장애. 잠시 후 재시도하세요.');
+    }
+    if(r.status === 0 || !r.status) {
+      throw new Error('🌐 네트워크 차단됨. WiFi/모바일 데이터 확인 또는 VPN 해제 후 재시도.');
+    }
+    // 실제 에러 메시지 표시 (디버깅용)
+    throw new Error(`AI 호출 실패: ${msg}`);
   }
   
   const rawText = d.choices?.[0]?.message?.content || '결과 없음';
-  // 후처리로 깨진 글자 자동 보정
   return fixKoreanText(rawText);
 }
 
