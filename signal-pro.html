@@ -651,7 +651,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
       <svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
     </div>
     <div class="logo-t">INVESTMENT<br>SIGNAL</div>
-    <div class="logo-s">PRO · v3.7.3</div>
+    <div class="logo-s">PRO · v3.7.4</div>
   </div>
   <ul class="nav-list">
     <li class="nav-item"><button class="nav-btn active" data-page="dashboard" onclick="go('dashboard')">
@@ -1275,9 +1275,11 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
         🔒 키는 이 기기(브라우저)에만 저장되어 영구 보관됩니다.<br>
         💾 앱을 다시 열어도 재입력 필요 없음.
       </div>
-      <div style="margin-top:14px;text-align:right">
+      <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center">
+        <button onclick="diagnoseKey()" style="background:none;border:1px solid var(--brl);color:var(--navy);font-size:11px;cursor:pointer;padding:5px 11px;border-radius:6px;font-weight:700">🔍 키 진단 실행</button>
         <button onclick="removeKey()" style="background:none;border:none;color:var(--t3);font-size:11px;cursor:pointer;text-decoration:underline">키 삭제 (고급)</button>
       </div>
+      <pre id="key-diag-out" style="margin-top:10px;font-size:10px;line-height:1.5;color:var(--t2);white-space:pre-wrap;word-break:break-all;font-family:'JetBrains Mono',monospace;max-height:400px;overflow-y:auto"></pre>
     </div>
     
     <!-- 키 없을 때: 버튼으로 입력창 열기 -->
@@ -1356,23 +1358,23 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
 
 <script>
 // ===================== CONFIG =====================
-const APP_VERSION = '3.7.3';
+const APP_VERSION = '3.7.4';
 const RELEASE_NOTES = [{
-  version:'3.7.3', date:'2026-04-26',
+  version:'3.7.4', date:'2026-04-26',
   changes:[
-    '🐛 모바일 AI 호출 실패 진단 강화 — 진짜 원인 파악 가능',
-    '🧹 API 키 자동 정리 — 보이지 않는 공백/줄바꿈 자동 제거 (모바일 붙여넣기 대응)',
-    '🌐 네트워크 차단/CORS 별도 처리 — "Failed to fetch" 명확한 안내',
-    '⚡ HTTP 401/403/429/502 별 다른 메시지 표시',
-    '🔍 키 형식 검증 강화 — 첫 5자 미리보기로 디버깅',
-    '💡 통신사 차단 가능성 안내 추가',
+    '🔍 키 진단 도구 추가 — 설정에서 "🔍 키 진단 실행" 버튼',
+    '📋 진단 리포트: 키 길이/시작끝/숨겨진 문자/Groq 응답 코드 표시',
+    '🌐 Groq API 직접 테스트 호출로 진짜 원인 파악',
+    '📱 디바이스 정보 자동 표시 (UA, 온라인 상태)',
+    '✅ 키 길이 검증 강화 (30~200자 범위 체크)',
+    '🧹 저장시 보이지 않는 유니코드 자동 제거 강화',
   ]
 },{
-  version:'3.7.2', date:'2026-04-26',
-  changes:['HERO 카드 라벨 버그 수정','모두 수익시 "최저 수익" 표시']
+  version:'3.7.3', date:'2026-04-26',
+  changes:['모바일 AI 호출 진단 강화','네트워크 차단/CORS 별도 처리']
 },{
-  version:'3.7.1', date:'2026-04-26',
-  changes:['손익 추이 그래프','연간 목표 게이지']
+  version:'3.7.2', date:'2026-04-26',
+  changes:['HERO 카드 라벨 버그 수정']
 }];
 
 // 종목 검색 헬퍼 — 대소문자 무관, 공백/특수문자 무시, 별칭 지원
@@ -4496,7 +4498,10 @@ function saveKey() {
   const inp = document.getElementById('set-groq-key');
   const stat = document.getElementById('set-groq-status');
   if(!inp) return;
-  const v = inp.value.trim();
+  const raw = inp.value;
+  // 보이지 않는 문자 제거
+  const v = raw.replace(/[\s\u200B-\u200D\uFEFF\u00A0]+/g, '').trim();
+  
   if(!v) {
     if(stat) stat.innerHTML = '<span style="color:var(--red)">⚠️ 키를 입력해주세요.</span>';
     return;
@@ -4505,9 +4510,87 @@ function saveKey() {
     if(stat) stat.innerHTML = '<span style="color:var(--red)">⚠️ Groq 키는 gsk_ 로 시작해야 합니다.</span>';
     return;
   }
+  // 길이 검증 (Groq 키는 보통 56자)
+  if(v.length < 30) {
+    if(stat) stat.innerHTML = `<span style="color:var(--red)">⚠️ 키가 너무 짧습니다 (${v.length}자). 정상 키는 50자 이상.</span>`;
+    return;
+  }
+  if(v.length > 200) {
+    if(stat) stat.innerHTML = `<span style="color:var(--red)">⚠️ 키가 너무 깁니다 (${v.length}자). 다시 복사해주세요.</span>`;
+    return;
+  }
   setGroqKey(v);
-  if(stat) stat.innerHTML = '<span style="color:var(--green)">✅ 저장 완료!</span>';
-  setTimeout(()=>refreshKeyDisplay(), 400);
+  if(stat) stat.innerHTML = `<span style="color:var(--green)">✅ 저장 완료! (${v.length}자)</span>`;
+  setTimeout(()=>refreshKeyDisplay(), 600);
+}
+
+// 🔍 키 진단 - 실제 저장된 값 확인 + 테스트 호출
+async function diagnoseKey() {
+  const out = document.getElementById('key-diag-out');
+  if(!out) return;
+  
+  const stored = localStorage.getItem(GROQ_API_KEY_STORAGE) || '';
+  const cleaned = getGroqKey();
+  
+  let report = `📋 키 진단 리포트\n\n`;
+  report += `📦 저장된 원본 길이: ${stored.length}자\n`;
+  report += `🧹 정리 후 길이: ${cleaned.length}자\n`;
+  report += `🔤 시작 문자: "${cleaned.substring(0,4)}"\n`;
+  report += `🔚 끝 문자: "${cleaned.substring(cleaned.length-4)}"\n`;
+  
+  // 의심스러운 문자 검사
+  const suspects = [];
+  for(let i=0;i<stored.length;i++){
+    const code = stored.charCodeAt(i);
+    if(code < 32 || code === 127 || (code >= 0x2000 && code <= 0x200F) || code === 0xFEFF || code === 0x00A0) {
+      suspects.push(`pos${i}:U+${code.toString(16).toUpperCase().padStart(4,'0')}`);
+    }
+  }
+  report += `🚨 보이지 않는 문자: ${suspects.length>0 ? suspects.slice(0,5).join(', ') : '없음 ✅'}\n`;
+  
+  if(stored.length !== cleaned.length) {
+    report += `⚠️ 정리 전후 길이 다름! 보이지 않는 문자 있었음.\n`;
+  }
+  
+  // 실제 Groq 호출 테스트
+  out.textContent = report + '\n🌐 Groq API 테스트 중... (5초)';
+  
+  try {
+    const testRes = await fetch('https://api.groq.com/openai/v1/models', {
+      method: 'GET',
+      headers: { 'Authorization': `Bearer ${cleaned}` }
+    });
+    
+    report += `\n🌐 Groq API 응답: HTTP ${testRes.status}\n`;
+    
+    if(testRes.status === 200) {
+      report += `✅ 키 정상! Groq에 등록된 유효한 키.\n`;
+      report += `→ AI 분석 실패시 다른 원인 (Rate limit/CORS/네트워크).\n`;
+    } else if(testRes.status === 401) {
+      const errData = await testRes.json().catch(()=>({}));
+      report += `❌ 키 무효 (Groq 거부).\n`;
+      report += `Groq 응답: ${JSON.stringify(errData).substring(0,200)}\n\n`;
+      report += `→ 해결: console.groq.com/keys 에서 새 키 발급`;
+    } else if(testRes.status === 429) {
+      report += `⏰ Rate limit. 1분 후 재시도.\n`;
+    } else if(testRes.status === 0 || !testRes.status) {
+      report += `🚫 네트워크/CORS 차단됨.\n`;
+    } else {
+      report += `🤔 예상 못한 응답. Groq 서버 상태 확인 필요.\n`;
+    }
+  } catch(e) {
+    report += `\n❌ 테스트 실패: ${e.message}\n`;
+    if(e.message.includes('Failed to fetch')) {
+      report += `→ 네트워크 연결 또는 CORS 문제.`;
+    }
+  }
+  
+  // 디바이스 정보
+  report += `\n\n📱 환경 정보:\n`;
+  report += `User Agent: ${navigator.userAgent.substring(0,80)}...\n`;
+  report += `Online: ${navigator.onLine ? '✅' : '❌'}\n`;
+  
+  out.textContent = report;
 }
 
 function editKey() {
