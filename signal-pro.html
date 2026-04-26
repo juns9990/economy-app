@@ -11,8 +11,9 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Signal PRO">
 <meta name="mobile-web-app-capable" content="yes">
-<link rel="apple-touch-icon" href="./signal-icon.svg">
-<link rel="icon" type="image/svg+xml" href="./signal-icon.svg">
+<link rel="apple-touch-icon" href="./signal-icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./signal-icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="./signal-icon-512.png">
 <link rel="manifest" href="./signal-manifest.json">
 <title>INVESTMENT SIGNAL PRO</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -651,7 +652,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
       <svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
     </div>
     <div class="logo-t">INVESTMENT<br>SIGNAL</div>
-    <div class="logo-s">PRO · v3.7.5</div>
+    <div class="logo-s">PRO · v3.7.6</div>
   </div>
   <ul class="nav-list">
     <li class="nav-item"><button class="nav-btn active" data-page="dashboard" onclick="go('dashboard')">
@@ -1358,17 +1359,19 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
 
 <script>
 // ===================== CONFIG =====================
-const APP_VERSION = '3.7.5';
+const APP_VERSION = '3.7.6';
 const RELEASE_NOTES = [{
-  version:'3.7.5', date:'2026-04-26',
+  version:'3.7.6', date:'2026-04-26',
   changes:[
-    '📲 PWA 설치 가능 — Vela 패턴 적용 (외부 manifest/sw/icon 파일)',
-    '🔧 inline data URL manifest → 외부 signal-manifest.json (Chrome 정식 인식)',
-    '⚙️ Service Worker 등록 — 오프라인 캐싱 + 데스크톱 PWA 설치 가능',
-    '🎨 외부 signal-icon.svg — 차트 라인 아이콘 (홈화면/앱설치 표시)',
-    '🏠 index.html 추가 — 루트 접속시 signal-pro.html로 자동 이동',
-    '🛡️ SW 캐시 정책 — Groq/Yahoo/Worker는 캐시 안 함 (실시간 데이터 보장)',
+    '🔧 PWA 설치 버튼 활성화 — Chrome 인식 조건 충족',
+    '🖼️ PNG 아이콘 추가 (192x192 + 512x512) — Chrome PWA 필수',
+    '🎯 SVG → PNG 교체 (Chrome은 SVG만으로는 PWA 인식 X)',
+    '✨ maskable 아이콘 분리 — 안드로이드 동그란 아이콘 자동 적응',
+    '📦 캐시 버전 v3.7.6 — 새 아이콘 자동 갱신',
   ]
+},{
+  version:'3.7.5', date:'2026-04-26',
+  changes:['외부 PWA 자산 (manifest/sw/icon)','SW 등록 추가']
 },{
   version:'3.7.4', date:'2026-04-26',
   changes:[
@@ -4696,3 +4699,4 @@ if ('serviceWorker' in navigator) {
 </script>
 </body>
 </html>
+
