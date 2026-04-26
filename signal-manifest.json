@@ -1,0 +1,21 @@
+{
+  "name": "INVESTMENT SIGNAL PRO",
+  "short_name": "SIGNAL PRO",
+  "description": "검증된 데이터로 분석하는 AI 투자 동료. 실시간 시그널, 종목 비교, AI 예측, 펀더멘털 분석.",
+  "start_url": "./signal-pro.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f7f5f0",
+  "theme_color": "#1a2540",
+  "lang": "ko",
+  "categories": ["finance", "business", "productivity"],
+  "icons": [
+    {
+      "src": "./signal-icon.svg",
+      "sizes": "192x192 512x512 any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
