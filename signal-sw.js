@@ -1,9 +1,10 @@
-// INVESTMENT SIGNAL PRO - Service Worker v1
-const CACHE = 'signal-pro-v3.7.5';
+// INVESTMENT SIGNAL PRO - Service Worker v2
+const CACHE = 'signal-pro-v3.7.6';
 const ASSETS = [
   './signal-pro.html',
   './signal-manifest.json',
-  './signal-icon.svg',
+  './signal-icon-192.png',
+  './signal-icon-512.png',
 ];
 
 self.addEventListener('install', e => {
@@ -24,10 +25,10 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
-  // Yahoo Finance / Groq API 는 캐시하지 않음 (실시간 데이터)
+  // 실시간 데이터 API는 캐시하지 않음
   const url = e.request.url;
-  if (url.includes('groq.com') || url.includes('yahoo') || url.includes('workers.dev')) {
-    return; // 그냥 네트워크 통과
+  if (url.includes('groq.com') || url.includes('yahoo') || url.includes('workers.dev') || url.includes('finance.yahoo')) {
+    return;
   }
   // 그 외는 네트워크 우선, 실패시 캐시
   e.respondWith(
