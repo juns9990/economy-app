@@ -1116,7 +1116,7 @@
     </div>
 
     <!-- SIGNAL PRO 배너 -->
-    <a href="https://juns9990.github.io/economy-app/signal-1.html" target="_blank" style="display:block;margin-top:20px;text-decoration:none;">
+    <a href="https://juns9990.github.io/economy-app/signal-pro.html" target="_blank" style="display:block;margin-top:20px;text-decoration:none;">
       <div style="background:linear-gradient(135deg, #1A2744 0%, #0f1830 100%);border:1px solid rgba(201,168,76,0.4);border-radius:12px;padding:20px;position:relative;overflow:hidden;box-shadow:0 4px 12px rgba(26,39,68,0.15);">
         <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg, transparent, var(--gold), transparent);"></div>
         <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;">
@@ -1232,7 +1232,7 @@
     </div>
 
     <!-- SIGNAL PRO 프리미엄 배너 -->
-    <a href="https://juns9990.github.io/economy-app/signal-1.html" target="_blank" style="display:block;text-decoration:none;margin-bottom:24px;">
+    <a href="https://juns9990.github.io/economy-app/signal-pro.html" target="_blank" style="display:block;text-decoration:none;margin-bottom:24px;">
       <div style="background:linear-gradient(135deg, #0a0a12 0%, #1a1a24 50%, #2a1f08 100%);border:1px solid rgba(201,168,76,0.4);border-radius:14px;padding:24px;position:relative;overflow:hidden;">
         <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg, transparent, var(--gold), transparent);"></div>
         <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:3px;margin-bottom:8px;">◈ SIGNAL PRO</div>
@@ -3565,7 +3565,7 @@ self.addEventListener('fetch', e => {
 
 
 // ===================== INIT =====================
-const APP_VERSION = '3.26.1';
+const APP_VERSION = '3.26.2';
 
 function buildHelpFaq() {
   const el = document.getElementById('helpFaq');
@@ -3575,6 +3575,7 @@ function buildHelpFaq() {
   const countEl = document.getElementById('helpConceptCount');
   if (countEl) countEl.textContent = `경제 용어 ${CONCEPTS.length}개 백과사전. 검색·카테고리 필터·클릭으로 상세 설명을 봐요.`;
   const updates = [
+    { ver: 'v3.26.2', date: '2026.03.28', items: ['🔗 SIGNAL PRO 배너 링크 수정 — signal-1.html → signal-pro.html (실제 파일명 매칭)', '홈탭 SIGNAL PRO 배너 정상 연결', '도움말탭 SIGNAL PRO 배너 정상 연결'] },
     { ver: 'v3.26.1', date: '2026.03.28', items: ['🎨 히트맵 색상 통일 — 상승 와인 1색 / 하락 네이비 1색 / 무변동 그레이 1색', '7단계 색상 → 3단계로 단순화 (산만함 제거)', '럭셔리 모노톤 일관성 강화'] },
     { ver: 'v3.26.0', date: '2026.03.28', items: ['🎯 히트맵 데이터 정확 매칭 — symbol 기반 직접 참조로 변경', '✅ FALLBACK_DATA에 symbol 자동 주입 (페이지 로드 직후)', '🧹 안 쓰는 함수 7개 제거 (updateMarketUI, showNewsLoading, showVideoLoading, buildVideoCategoryBtns, scrollToSection, newsItemHTML, buildNews)', '히트맵 표시 이름을 MARKET_SYMBOLS 정식 이름과 일치시킴', '코드 약 80줄 정리'] },
     { ver: 'v3.25.2', date: '2026.03.28', items: ['🎨 히트맵 럭셔리 컬러로 변경 — 와인 레드 (#8b1e2e) + 네이비 블루 (#1a3a6e)', '📐 카드 균등 정렬 — min-height 108px로 모든 카드 동일 크기', '✨ 호버 효과 업그레이드 — 위로 떠오르는 애니메이션', '폰트 크기 조정 (변동률 13px → 15px, 더 잘 보임)', '경계선 추가 (각 카드별 border)'] },
