@@ -651,7 +651,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
       <svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
     </div>
     <div class="logo-t">INVESTMENT<br>SIGNAL</div>
-    <div class="logo-s">PRO · v3.7.1</div>
+    <div class="logo-s">PRO · v3.7.2</div>
   </div>
   <ul class="nav-list">
     <li class="nav-item"><button class="nav-btn active" data-page="dashboard" onclick="go('dashboard')">
@@ -1356,23 +1356,22 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
 
 <script>
 // ===================== CONFIG =====================
-const APP_VERSION = '3.7.1';
+const APP_VERSION = '3.7.2';
 const RELEASE_NOTES = [{
-  version:'3.7.1', date:'2026-04-26',
+  version:'3.7.2', date:'2026-04-26',
   changes:[
-    '📈 포트폴리오 6개월 손익 추이 그래프 — 보유종목 가중평균 시각화',
-    '🎯 연간 목표 수익률 게이지 — 반원 차트로 진척도 한눈에',
-    '✏️ 목표 수익률 직접 설정 (기본 +20%, localStorage 저장)',
-    '🏆 목표 달성/순조로움/분발 필요 자동 표시',
-    '📊 손익 그래프에 0% 기준선 + 마지막 포인트 강조',
-    '🎨 진척도 0~150% 시각화 (음수 목표 = 손실 방어 모드)',
+    '🐛 HERO 카드 라벨 버그 수정 — 모든 종목이 수익일 때 "최대 손실"이 잘못 표시되던 문제',
+    '✅ 동적 라벨: 진짜 손실(음수)일 때만 "⚠️ 최대 손실" 표시',
+    '📊 모두 수익이면 "최저 수익" 라벨로 변경 (정확한 의미)',
+    '🥲 모두 손실이면 "최저 손실" 라벨 (덜 잃은 종목)',
+    '🔢 종목 1개일 때 워스트 표시 안 함 ("종목 1개"로 표시)',
   ]
 },{
-  version:'3.7.0', date:'2026-04-23',
-  changes:['HERO 자산 카드','AI 신뢰성 강제','30일 미니 그래프']
+  version:'3.7.1', date:'2026-04-26',
+  changes:['손익 추이 그래프','연간 목표 수익률 게이지']
 },{
-  version:'3.6.0', date:'2026-04-23',
-  changes:['평가손익 표시','펀더멘털 분석 PRO']
+  version:'3.7.0', date:'2026-04-23',
+  changes:['HERO 자산 카드','AI 신뢰성 강제']
 }];
 
 // 종목 검색 헬퍼 — 대소문자 무관, 공백/특수문자 무시, 별칭 지원
@@ -1840,11 +1839,11 @@ async function renderHero() {
     <div class="hero-graph"><canvas id="hero-canvas" style="width:100%;height:100%"></canvas></div>
     <div class="hero-stats">
       <div>
-        <div class="hero-stat-lbl">🏆 최고 수익</div>
+        <div class="hero-stat-lbl" id="hero-best-lbl">🏆 최고 수익</div>
         <div class="hero-stat-val" id="hero-best">-</div>
       </div>
       <div>
-        <div class="hero-stat-lbl">⚠️ 최대 손실</div>
+        <div class="hero-stat-lbl" id="hero-worst-lbl">📊 최저 수익</div>
         <div class="hero-stat-val" id="hero-worst">-</div>
       </div>
     </div>
@@ -1896,12 +1895,29 @@ async function renderHero() {
   if(bestEl && best) {
     bestEl.className = `hero-stat-val ${best.pct >= 0 ? 'up' : 'dn'}`;
     bestEl.textContent = `${best.name} ${best.pct>=0?'+':''}${best.pct.toFixed(1)}%`;
+    // 라벨도 동적: 최고가 마이너스면 "최저 손실" (덜 잃은 것)
+    const bestLblEl = document.getElementById('hero-best-lbl');
+    if(bestLblEl) {
+      bestLblEl.textContent = best.pct >= 0 ? '🏆 최고 수익' : '🥲 최저 손실';
+    }
   }
-  if(worstEl && worst && stockPnls.length > 1) {
+  
+  // 워스트: 종목 2개 이상일 때만 표시 + 라벨 동적
+  const worstLblEl = document.getElementById('hero-worst-lbl');
+  if(stockPnls.length <= 1) {
+    // 종목 1개면 워스트 의미 없음 → 숨기거나 동일 표시
+    if(worstEl) worstEl.textContent = '종목 1개';
+    if(worstEl) worstEl.style.color = 'rgba(255,255,255,0.4)';
+    if(worstLblEl) worstLblEl.textContent = '📊 보유 현황';
+  } else if(worstEl && worst) {
+    const isLoss = worst.pct < 0;
     worstEl.className = `hero-stat-val ${worst.pct >= 0 ? 'up' : 'dn'}`;
+    worstEl.style.color = ''; // 클래스 우선
     worstEl.textContent = `${worst.name} ${worst.pct>=0?'+':''}${worst.pct.toFixed(1)}%`;
-  } else if(worstEl) {
-    worstEl.textContent = '-';
+    // 진짜 손실(음수)이면 "⚠️ 최대 손실", 아니면 "📊 최저 수익"
+    if(worstLblEl) {
+      worstLblEl.textContent = isLoss ? '⚠️ 최대 손실' : '📊 최저 수익';
+    }
   }
   
   // 미니 그래프 (지난 30일 보유 종목 가중평균 추이 시뮬)
