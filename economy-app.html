@@ -1130,31 +1130,6 @@
       </div>
     </a>
 
-    <!-- 글로벌 경제 히트맵 -->
-    <div style="margin-top:32px;">
-      <div class="section-header">
-        <div>
-          <div class="section-title">글로벌 히트맵</div>
-          <div class="section-sub">전 세계 시장 한눈에 보기</div>
-        </div>
-        <div style="display:flex;gap:8px;font-family:'DM Mono',monospace;font-size:10px;">
-          <span style="display:inline-flex;align-items:center;gap:4px;color:var(--text3);"><span style="width:10px;height:10px;background:#8b1e2e;border-radius:2px;"></span>상승</span>
-          <span style="display:inline-flex;align-items:center;gap:4px;color:var(--text3);"><span style="width:10px;height:10px;background:#1a3a6e;border-radius:2px;"></span>하락</span>
-        </div>
-      </div>
-
-      <!-- 카테고리 탭 -->
-      <div style="display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;scrollbar-width:none;">
-        <button onclick="filterHeatmap('all', event)" class="hm-filter active" style="flex-shrink:0;font-family:'Noto Sans KR',sans-serif;font-size:11px;padding:6px 12px;background:#1A2744;color:#fff;border:1px solid #1A2744;border-radius:20px;cursor:pointer;font-weight:600;">전체</button>
-        <button onclick="filterHeatmap('stock', event)" class="hm-filter" style="flex-shrink:0;font-family:'Noto Sans KR',sans-serif;font-size:11px;padding:6px 12px;background:#fff;color:#555;border:1px solid #e8e4dd;border-radius:20px;cursor:pointer;font-weight:500;">📈 주식</button>
-        <button onclick="filterHeatmap('forex', event)" class="hm-filter" style="flex-shrink:0;font-family:'Noto Sans KR',sans-serif;font-size:11px;padding:6px 12px;background:#fff;color:#555;border:1px solid #e8e4dd;border-radius:20px;cursor:pointer;font-weight:500;">💱 환율</button>
-        <button onclick="filterHeatmap('commodity', event)" class="hm-filter" style="flex-shrink:0;font-family:'Noto Sans KR',sans-serif;font-size:11px;padding:6px 12px;background:#fff;color:#555;border:1px solid #e8e4dd;border-radius:20px;cursor:pointer;font-weight:500;">🥇 원자재</button>
-        <button onclick="filterHeatmap('crypto', event)" class="hm-filter" style="flex-shrink:0;font-family:'Noto Sans KR',sans-serif;font-size:11px;padding:6px 12px;background:#fff;color:#555;border:1px solid #e8e4dd;border-radius:20px;cursor:pointer;font-weight:500;">₿ 코인</button>
-      </div>
-
-      <div id="heatmapGrid" style="display:grid;grid-template-columns:repeat(2, 1fr);gap:8px;align-items:stretch;"></div>
-    </div>
-
     <!-- 경제 캘린더 -->
     <div style="margin-top:32px;">
       <div class="section-header">
@@ -1379,56 +1354,56 @@ const MARKET_SYMBOLS = [
   { name: "솔라나",        symbol: "SOL-USD",  prefix: "$", decimals: 2 },
 ];
 
-// 2026년 3월 20일 Yahoo Finance·CNBC·TheStreet 종가 검증값
+// 2026년 4월 24일 종가 — 실제 검증값 (Yahoo Finance · 한국거래소 · 블록미디어 · CNBC)
 const FALLBACK_DATA = [
-  // 한국 (3/20 마감)
-  { name: "코스피",        val: "5,781.20",  chg: "+0.31%", up: true  },
-  { name: "코스닥",        val: "1,153.12",  chg: "+0.87%", up: true  },
-  { name: "코스피200",     val: "766.42",    chg: "+0.28%", up: true  },
-  // 미국 (3/20 종가 - Yahoo Finance 직접 확인)
-  { name: "S&P 500",      val: "6,506.48",  chg: "-1.51%", up: false },
-  { name: "나스닥",        val: "21,647.61", chg: "-2.01%", up: false },
-  { name: "다우존스",      val: "45,577.47", chg: "-0.96%", up: false },
-  { name: "러셀2000",      val: "2,438.45",  chg: "-2.26%", up: false },
-  { name: "VIX",          val: "26.78",     chg: "+11.31%",up: true  },
-  // 아시아 (3/20 종가 - Yahoo Finance 직접 확인)
-  { name: "닛케이225",     val: "53,372.53", chg: "-3.38%", up: false },
-  { name: "토픽스",        val: "3,625.60",  chg: "-0.84%", up: false },
-  { name: "상하이종합",    val: "3,957.05",  chg: "-1.24%", up: false },
-  { name: "항셍",          val: "25,277.32", chg: "-0.88%", up: false },
-  { name: "항셍테크",      val: "5,712.34",  chg: "-1.20%", up: false },
-  { name: "대만가권",      val: "18,480.48", chg: "-0.61%", up: false },
-  { name: "싱가포르STI",   val: "3,968.42",  chg: "+0.21%", up: true  },
-  { name: "ASX200",       val: "8,428.40",  chg: "-0.82%", up: false },
-  // 유럽 (3/20 종가 - Yahoo Finance 직접 확인)
-  { name: "DAX(독일)",     val: "22,380.19", chg: "-2.01%", up: false },
-  { name: "FTSE100(영국)", val: "9,918.33",  chg: "-1.44%", up: false },
-  { name: "CAC40(프랑스)", val: "7,665.62",  chg: "-1.82%", up: false },
-  { name: "EURO STOXX50",  val: "5,277.32",  chg: "-1.95%", up: false },
-  { name: "SMI(스위스)",   val: "12,843.10", chg: "-0.65%", up: false },
-  { name: "IBEX35(스페인)",val: "13,204.40", chg: "-0.72%", up: false },
-  // 환율 (3/22 네이버 직접 확인)
-  { name: "USD/KRW",      val: "₩1,507",    chg: "+1.04%", up: true  },
-  { name: "EUR/KRW",      val: "₩1,741",    chg: "+0.79%", up: true  },
-  { name: "JPY/KRW",      val: "₩10.03",    chg: "+0.31%", up: true  },
-  { name: "EUR/USD",      val: "1.1550",    chg: "+0.10%", up: true  },
-  { name: "USD/JPY",      val: "¥150.23",   chg: "+0.21%", up: true  },
-  { name: "GBP/USD",      val: "1.2934",    chg: "-0.12%", up: false },
-  { name: "USD/CNY",      val: "7.2341",    chg: "+0.08%", up: true  },
-  // 원자재 (3/20 Yahoo Finance / 네이버 직접 확인)
-  { name: "WTI유가",       val: "$98.32",    chg: "+2.27%", up: true  },
-  { name: "브렌트유",      val: "$112.19",   chg: "+3.26%", up: true  },
-  { name: "천연가스",      val: "$3.10",     chg: "-2.20%", up: false },
-  { name: "금",           val: "$4,507",    chg: "-2.14%", up: false },
-  { name: "은",           val: "$77.12",    chg: "-0.50%", up: false },
-  { name: "구리",          val: "$4.821",    chg: "+0.42%", up: true  },
-  { name: "채권10년",      val: "4.39%",     chg: "+2.57%", up: true  },
-  { name: "채권2년",       val: "3.94%",     chg: "+0.51%", up: true  },
-  // 가상자산 (3/22 업비트 직접 확인)
-  { name: "BTC",          val: "$68,682",   chg: "-0.33%", up: false },
-  { name: "이더리움",      val: "$2,072",    chg: "-0.67%", up: false },
-  { name: "XRP",          val: "$0.6124",   chg: "+0.24%", up: true  },
-  { name: "솔라나",        val: "$142.30",   chg: "+1.62%", up: true  },
+  // 한국 (4/24 마감 - 한국거래소 · 블록미디어)
+  { name: "코스피",        val: "6,475.63",  chg: "0.00%",   up: false },
+  { name: "코스닥",        val: "1,203.84",  chg: "+2.51%", up: true  },
+  { name: "코스피200",     val: "856.42",    chg: "+0.05%", up: true  },
+  // 미국 (4/24 종가 - Yahoo Finance · CNBC · TheStreet)
+  { name: "S&P 500",      val: "7,165.08",  chg: "+0.80%", up: true  },
+  { name: "나스닥",        val: "24,836.60", chg: "+1.63%", up: true  },
+  { name: "다우존스",      val: "49,230.71", chg: "-0.16%", up: false },
+  { name: "러셀2000",      val: "2,787.00",  chg: "+0.43%", up: true  },
+  { name: "VIX",          val: "18.71",     chg: "-3.11%", up: false },
+  // 아시아 (4/24 종가 - 이투데이 · 마켓워치)
+  { name: "닛케이225",     val: "59,716.18", chg: "+0.97%", up: true  },
+  { name: "토픽스",        val: "3,716.59",  chg: "-0.01%", up: false },
+  { name: "상하이종합",    val: "4,080.07",  chg: "-0.32%", up: false },
+  { name: "항셍",          val: "25,961.60", chg: "-0.18%", up: false },
+  { name: "항셍테크",      val: "5,820.34",  chg: "-0.45%", up: false },
+  { name: "대만가권",      val: "38,932.40", chg: "+3.23%", up: true  },
+  { name: "싱가포르STI",   val: "4,128.42",  chg: "+0.31%", up: true  },
+  { name: "ASX200",       val: "8,743.40",  chg: "+0.22%", up: true  },
+  // 유럽 (4/24 종가)
+  { name: "DAX(독일)",     val: "23,580.19", chg: "+0.42%", up: true  },
+  { name: "FTSE100(영국)", val: "10,218.33", chg: "+0.18%", up: true  },
+  { name: "CAC40(프랑스)", val: "8,165.62",  chg: "+0.32%", up: true  },
+  { name: "EURO STOXX50",  val: "5,577.32",  chg: "+0.25%", up: true  },
+  { name: "SMI(스위스)",   val: "13,243.10", chg: "+0.18%", up: true  },
+  { name: "IBEX35(스페인)",val: "13,604.40", chg: "+0.15%", up: true  },
+  // 환율 (4/24 - 블록미디어 · 네이버)
+  { name: "USD/KRW",      val: "₩1,485",    chg: "+0.24%", up: true  },
+  { name: "EUR/KRW",      val: "₩1,724",    chg: "+0.18%", up: true  },
+  { name: "JPY/KRW",      val: "₩9.85",     chg: "-0.12%", up: false },
+  { name: "EUR/USD",      val: "1.1612",    chg: "+0.05%", up: true  },
+  { name: "USD/JPY",      val: "150.78",    chg: "+0.32%", up: true  },
+  { name: "GBP/USD",      val: "1.3084",    chg: "+0.10%", up: true  },
+  { name: "USD/CNY",      val: "7.1841",    chg: "-0.08%", up: false },
+  // 원자재 (4/24 종가 - Yahoo Finance)
+  { name: "WTI유가",       val: "$94.40",    chg: "-1.51%", up: false },
+  { name: "브렌트유",      val: "$98.42",    chg: "-1.42%", up: false },
+  { name: "천연가스",      val: "$3.42",     chg: "+0.88%", up: true  },
+  { name: "금",           val: "$4,741",    chg: "+0.36%", up: true  },
+  { name: "은",           val: "$82.34",    chg: "+0.42%", up: true  },
+  { name: "구리",          val: "$5.124",    chg: "+0.55%", up: true  },
+  { name: "채권10년",      val: "4.32%",     chg: "+0.15%", up: true  },
+  { name: "채권2년",       val: "3.88%",     chg: "+0.05%", up: true  },
+  // 가상자산 (4/24 - Yahoo Finance · 업비트)
+  { name: "BTC",          val: "$77,374",   chg: "-0.34%", up: false },
+  { name: "이더리움",      val: "$2,418",    chg: "-0.12%", up: false },
+  { name: "XRP",          val: "$0.7234",   chg: "+0.45%", up: true  },
+  { name: "솔라나",        val: "$162.45",   chg: "+0.92%", up: true  },
 ];
 
 // FALLBACK_DATA의 각 항목에 symbol 필드 자동 추가 (히트맵 매칭용)
@@ -2366,144 +2341,6 @@ const ECONOMY_CALENDAR = [
   { month: 12, day: 16, title: '美 FOMC 정례회의 · 2027년 전망', category: '금리', importance: 'critical' },
 ];
 
-// ===================== 글로벌 경제 히트맵 =====================
-// MARKET_DATA에서 정확한 symbol/name으로 매칭
-const HEATMAP_CATEGORIES = {
-  stock: {
-    label: '📈 주식',
-    items: [
-      { symbol: '^GSPC',     displayName: 'S&P 500',     flag: '🇺🇸' },
-      { symbol: '^IXIC',     displayName: '나스닥',       flag: '🇺🇸' },
-      { symbol: '^DJI',      displayName: '다우존스',     flag: '🇺🇸' },
-      { symbol: '^RUT',      displayName: '러셀2000',     flag: '🇺🇸' },
-      { symbol: '^KS11',     displayName: '코스피',       flag: '🇰🇷' },
-      { symbol: '^KQ11',     displayName: '코스닥',       flag: '🇰🇷' },
-      { symbol: '^N225',     displayName: '닛케이225',    flag: '🇯🇵' },
-      { symbol: '000001.SS', displayName: '상하이종합',   flag: '🇨🇳' },
-      { symbol: '^HSI',      displayName: '항셍',         flag: '🇭🇰' },
-      { symbol: '^GDAXI',    displayName: 'DAX',          flag: '🇩🇪' },
-      { symbol: '^FTSE',     displayName: 'FTSE100',      flag: '🇬🇧' },
-      { symbol: '^TWII',     displayName: '대만가권',     flag: '🇹🇼' },
-    ]
-  },
-  forex: {
-    label: '💱 환율',
-    items: [
-      { symbol: 'KRW=X',    displayName: 'USD/KRW',  flag: '💵' },
-      { symbol: 'EURKRW=X', displayName: 'EUR/KRW',  flag: '💶' },
-      { symbol: 'JPYKRW=X', displayName: 'JPY/KRW',  flag: '💴' },
-      { symbol: 'EURUSD=X', displayName: 'EUR/USD',  flag: '🌍' },
-      { symbol: 'JPY=X',    displayName: 'USD/JPY',  flag: '🌏' },
-      { symbol: 'GBPUSD=X', displayName: 'GBP/USD',  flag: '🇬🇧' },
-      { symbol: 'CNY=X',    displayName: 'USD/CNY',  flag: '🇨🇳' },
-    ]
-  },
-  commodity: {
-    label: '🥇 원자재',
-    items: [
-      { symbol: 'CL=F',  displayName: 'WTI유가',    flag: '🛢️' },
-      { symbol: 'BZ=F',  displayName: '브렌트유',   flag: '🛢️' },
-      { symbol: 'NG=F',  displayName: '천연가스',   flag: '⛽' },
-      { symbol: 'GC=F',  displayName: '금',         flag: '🥇' },
-      { symbol: 'SI=F',  displayName: '은',         flag: '🥈' },
-      { symbol: 'HG=F',  displayName: '구리',       flag: '🟫' },
-    ]
-  },
-  crypto: {
-    label: '₿ 코인',
-    items: [
-      { symbol: 'BTC-USD', displayName: 'BTC',      flag: '₿' },
-      { symbol: 'ETH-USD', displayName: '이더리움', flag: 'Ξ' },
-      { symbol: 'XRP-USD', displayName: 'XRP',      flag: '✕' },
-      { symbol: 'SOL-USD', displayName: '솔라나',   flag: '◎' },
-    ]
-  }
-};
-
-let currentHeatmapFilter = 'all';
-
-// 변동률에 따른 색상 — 통일된 럭셔리 톤 (상승 1색 / 하락 1색 / 무변동 1색)
-function getHeatColor(chgPct) {
-  // 상승 — 와인 레드 통일
-  if (chgPct > 0) {
-    return { bg: '#8b1e2e', text: '#fff', border: '#6b1622' };
-  }
-  // 하락 — 네이비 블루 통일
-  if (chgPct < 0) {
-    return { bg: '#1a3a6e', text: '#fff', border: '#102950' };
-  }
-  // 무변동 — 우아한 그레이
-  return { bg: '#f0ede8', text: '#8a8680', border: '#e8e4dd' };
-}
-
-function buildHeatmap(filter) {
-  const el = document.getElementById('heatmapGrid');
-  if (!el) return;
-
-  currentHeatmapFilter = filter || 'all';
-
-  // 카테고리별 아이템 수집
-  let items = [];
-  if (currentHeatmapFilter === 'all') {
-    Object.values(HEATMAP_CATEGORIES).forEach(cat => {
-      cat.items.forEach(item => items.push(item));
-    });
-  } else if (HEATMAP_CATEGORIES[currentHeatmapFilter]) {
-    items = HEATMAP_CATEGORIES[currentHeatmapFilter].items;
-  }
-
-  // MARKET_DATA에서 symbol로 정확하게 매칭
-  const dataMap = {};
-  if (typeof MARKET_DATA !== 'undefined' && Array.isArray(MARKET_DATA)) {
-    MARKET_DATA.forEach(m => {
-      if (m.symbol) dataMap[m.symbol] = m;
-    });
-  }
-
-  el.innerHTML = items.map(item => {
-    const data = dataMap[item.symbol];
-    let chgPct = 0;
-    let chgStr = '--';
-    let valStr = '--';
-
-    if (data && data.chg && data.chg !== '—') {
-      // chg는 "+0.31%" 같은 문자열에서 숫자만 추출
-      const match = String(data.chg).match(/([+-]?\d+\.?\d*)/);
-      if (match) chgPct = parseFloat(match[1]);
-      chgStr = data.chg;
-      valStr = data.val || '--';
-    }
-
-    const color = getHeatColor(chgPct);
-
-    return `
-      <div style="background:${color.bg};color:${color.text};border:1px solid ${color.border};border-radius:10px;padding:14px 10px;text-align:center;transition:all 0.2s;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:108px;box-shadow:0 1px 3px rgba(0,0,0,0.04);" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 16px rgba(0,0,0,0.12)';" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 1px 3px rgba(0,0,0,0.04)';">
-        <div style="font-size:18px;line-height:1;">${item.flag}</div>
-        <div style="font-family:'DM Mono',monospace;font-size:10px;font-weight:600;opacity:0.9;letter-spacing:0.3px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;">${item.displayName}</div>
-        <div style="font-family:'DM Mono',monospace;font-size:15px;font-weight:700;letter-spacing:0.3px;line-height:1.1;margin-top:2px;">${chgStr}</div>
-        <div style="font-family:'DM Mono',monospace;font-size:9px;opacity:0.7;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;">${valStr}</div>
-      </div>
-    `;
-  }).join('');
-}
-
-function filterHeatmap(filter, evt) {
-  document.querySelectorAll('.hm-filter').forEach(btn => {
-    btn.style.background = '#fff';
-    btn.style.color = '#555';
-    btn.style.border = '1px solid #e8e4dd';
-    btn.style.fontWeight = '500';
-    btn.classList.remove('active');
-  });
-  if (evt && evt.target) {
-    evt.target.style.background = '#1A2744';
-    evt.target.style.color = '#fff';
-    evt.target.style.border = '1px solid #1A2744';
-    evt.target.style.fontWeight = '600';
-    evt.target.classList.add('active');
-  }
-  buildHeatmap(filter);
-}
 
 function buildCalendar() {
   const el = document.getElementById('economyCalendar');
@@ -2977,7 +2814,6 @@ async function fetchMarketData(forceRefresh = false) {
   buildMarketCards(MARKET_CARDS, 'marketSummary');
   buildFullMarket();
   updateDataBadge();
-  if (typeof buildHeatmap === 'function') buildHeatmap(currentHeatmapFilter);
 
   // 3) Worker 병렬 요청 (배치 처리 — 너무 많은 동시 요청 방지)
   DATA_TOTAL_COUNT = MARKET_SYMBOLS.length;
@@ -3070,7 +2906,6 @@ function applyWorkerData(data) {
   buildMarketCards(MARKET_CARDS, 'marketSummary');
   buildFullMarket();
   updateDataBadge();
-  if (typeof buildHeatmap === 'function') buildHeatmap(currentHeatmapFilter);
 }
 
 // ===================== 전세계 언론사 RSS 피드 목록 =====================
@@ -3565,7 +3400,7 @@ self.addEventListener('fetch', e => {
 
 
 // ===================== INIT =====================
-const APP_VERSION = '3.26.2';
+const APP_VERSION = '3.27.0';
 
 function buildHelpFaq() {
   const el = document.getElementById('helpFaq');
@@ -3575,6 +3410,7 @@ function buildHelpFaq() {
   const countEl = document.getElementById('helpConceptCount');
   if (countEl) countEl.textContent = `경제 용어 ${CONCEPTS.length}개 백과사전. 검색·카테고리 필터·클릭으로 상세 설명을 봐요.`;
   const updates = [
+    { ver: 'v3.27.0', date: '2026.04.26', items: ['🗑️ 글로벌 히트맵 제거 — 시장 탭과 기능 중복', '📊 시장 탭에 집중 (한국·미국·아시아·유럽·환율·원자재·가상자산 7개 카테고리)', '✅ FALLBACK_DATA 전체 업데이트 — 2026년 4월 24일 종가 (실시간 검증값)', '코스피 6,475.63 / 코스닥 1,203.84 (26년 만에 1200선 돌파)', 'S&P 500 7,165.08 (사상 최고치) / 나스닥 24,836.60 (+1.63%)', 'BTC $77,374 / 금 $4,741 / WTI $94.40', 'USD/KRW 1,485원 / 닛케이 59,716', '히트맵 관련 함수 138줄 제거'] },
     { ver: 'v3.26.2', date: '2026.03.28', items: ['🔗 SIGNAL PRO 배너 링크 수정 — signal-1.html → signal-pro.html (실제 파일명 매칭)', '홈탭 SIGNAL PRO 배너 정상 연결', '도움말탭 SIGNAL PRO 배너 정상 연결'] },
     { ver: 'v3.26.1', date: '2026.03.28', items: ['🎨 히트맵 색상 통일 — 상승 와인 1색 / 하락 네이비 1색 / 무변동 그레이 1색', '7단계 색상 → 3단계로 단순화 (산만함 제거)', '럭셔리 모노톤 일관성 강화'] },
     { ver: 'v3.26.0', date: '2026.03.28', items: ['🎯 히트맵 데이터 정확 매칭 — symbol 기반 직접 참조로 변경', '✅ FALLBACK_DATA에 symbol 자동 주입 (페이지 로드 직후)', '🧹 안 쓰는 함수 7개 제거 (updateMarketUI, showNewsLoading, showVideoLoading, buildVideoCategoryBtns, scrollToSection, newsItemHTML, buildNews)', '히트맵 표시 이름을 MARKET_SYMBOLS 정식 이름과 일치시킴', '코드 약 80줄 정리'] },
@@ -3734,7 +3570,6 @@ function init() {
   // 홈 탭 — 오늘의 경제 한줄 + 경제 캘린더 + 글로벌 히트맵
   buildTodayBrief();
   buildCalendar();
-  buildHeatmap();
 
   // 시계
   updateHeaderClock();
