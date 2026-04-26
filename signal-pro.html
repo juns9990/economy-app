@@ -627,7 +627,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
       <svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
     </div>
     <div class="logo-t">INVESTMENT<br>SIGNAL</div>
-    <div class="logo-s">PRO · v3.5.2</div>
+    <div class="logo-s">PRO · v3.6.0</div>
   </div>
   <ul class="nav-list">
     <li class="nav-item"><button class="nav-btn active" data-page="dashboard" onclick="go('dashboard')">
@@ -879,7 +879,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
     </div>
     
     <!-- 📰 AI 뉴스 분석 (PRO 기능) -->
-    <div class="card card-g">
+    <div class="card card-g mb16">
       <div class="fb mb16">
         <div>
           <div class="sec-title" style="margin-bottom:2px">📰 AI 뉴스 호재/악재 분석 <span style="background:var(--gold);color:#fff;font-size:10px;padding:2px 7px;border-radius:8px;font-weight:700;margin-left:6px;letter-spacing:.5px">PRO</span></div>
@@ -889,6 +889,21 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
       </div>
       <div id="sig-news-out" style="background:var(--bg3);border:1px solid var(--brl);border-radius:12px;padding:20px;min-height:100px;font-size:14px;line-height:1.85;white-space:pre-wrap;color:var(--t2)">
         💡 종목 분석 후 "분석 실행" 버튼을 눌러 최근 뉴스 기반 호재/악재 평가를 받아보세요.
+      </div>
+    </div>
+    
+    <!-- 💼 펀더멘털 (재무지표) PRO 기능 -->
+    <div class="card card-g">
+      <div class="fb mb16">
+        <div>
+          <div class="sec-title" style="margin-bottom:2px">💼 펀더멘털 분석 <span style="background:var(--gold);color:#fff;font-size:10px;padding:2px 7px;border-radius:8px;font-weight:700;margin-left:6px;letter-spacing:.5px">PRO</span></div>
+          <div style="font-size:13px;color:var(--t2)">PER · PBR · ROE · 시가총액 · 배당 · 부채비율 · AI 종합 평가</div>
+        </div>
+        <button class="btn btn-out" onclick="runFundamental()" id="fund-run-btn" style="font-size:12px;padding:7px 14px">분석 실행</button>
+      </div>
+      <div id="sig-fund-out" style="background:var(--bg3);border:1px solid var(--brl);border-radius:12px;padding:20px;min-height:120px;font-size:14px;line-height:1.85;color:var(--t2)">
+        💡 종목 분석 후 "분석 실행" 버튼을 눌러 재무지표 기반 평가를 받아보세요.<br>
+        <span style="font-size:12px">기술적 지표(시그널)와 펀더멘털을 함께 보면 매수 판단이 정확해집니다.</span>
       </div>
     </div>
   </div>
@@ -1293,23 +1308,23 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
 
 <script>
 // ===================== CONFIG =====================
-const APP_VERSION = '3.5.2';
+const APP_VERSION = '3.6.0';
 const RELEASE_NOTES = [{
-  version:'3.5.2', date:'2026-04-23',
+  version:'3.6.0', date:'2026-04-23',
   changes:[
-    '🔥 한글 깨짐 현상 완전 수정 — "다样성" → "다양성", "отсутств" → "없" 자동 보정',
-    '🇰🇷 system prompt 한국어 강제 — 한자/러시아어/일본어/중국어 절대 금지',
-    '🛡️ 5명 AI 전문가 모두 한국어 절대 규칙 추가',
-    '🎯 Temperature 0.7 → 0.3 — 더 안정적이고 일관된 한국어 생성',
-    '🧹 fixKoreanText() 후처리 — 깨진 글자 자동 매핑 30+ 패턴',
-    '⚙️ top_p 0.9 추가 — 다양성 줄이고 정확도 향상',
+    '💰 평가손익 표시 추가 — 보유 종목 현재가 기준 실시간 손익 계산',
+    '📊 포트폴리오 테이블 확장 — 평균단가 / 현재가 / 평가금액 / 평가손익 한눈에',
+    '👛 내 지갑 카드 업그레이드 — 평가금액·평가손익·수익률 자동 표시',
+    '💼 PRO: 펀더멘털 분석 신규 — PER/PBR/ROE/배당/부채비율 + AI 등급 평가',
+    '🎯 펀더멘털 = 시그널(기술적)과 상호보완 — 둘 다 보면 매수 판단 정확',
+    '⚡ 보유 종목 가격 조회 후 자동 합산 → 총 평가손익 계산',
   ]
 },{
-  version:'3.5.1', date:'2026-04-23',
-  changes:['종목 DB 195개로 확장','ETF 11종 추가','별칭 대폭 확장']
+  version:'3.5.2', date:'2026-04-23',
+  changes:['한글 깨짐 완전 수정','AI Temperature 0.3','후처리 30+ 패턴']
 },{
-  version:'3.5.0', date:'2026-04-23',
-  changes:['종목 비교/AI 예측 PRO','PC 중앙정렬','모바일 더 작게']
+  version:'3.5.1', date:'2026-04-23',
+  changes:['종목 DB 195개로 확장','ETF 11종 추가']
 }];
 
 // 종목 검색 헬퍼 — 대소문자 무관, 공백/특수문자 무시, 별칭 지원
@@ -2124,30 +2139,74 @@ function renderFearGreed() {
   ce.className = 'mchg mono '+(score<50?'down':'up');
 }
 
-function renderWallet() {
+async function renderWallet() {
   const el = document.getElementById('wallet-body');
   if(!el) return;
   const buys = S.portfolio.filter(t=>t.tp==='buy');
   const sells = S.portfolio.filter(t=>t.tp==='sell');
   const totBuy = buys.reduce((s,t)=>s+t.price*t.qty,0);
-  const totSell = sells.reduce((s,t)=>s+t.price*t.qty,0);
   const holdings = getHoldings();
+  
+  // 실현 손익 (매도 거래 기준)
   const realized = sells.reduce((s,t)=>{
     const b = buys.filter(b=>b.sym===t.sym);
     const avgBuy = b.length ? b.reduce((a,v)=>a+v.price*v.qty,0)/b.reduce((a,v)=>a+v.qty,0) : t.price;
     return s + (t.price-avgBuy)*t.qty;
   },0);
+  
   if(!buys.length) {
-    el.innerHTML = `<div class="tc" style="padding:20px;color:var(--t3)"><div style="font-size:28px;margin-bottom:8px">👛</div><div style="font-size:13px">투자 내역이 없습니다</div><button class="btn btn-out" style="margin-top:12px;font-size:12px" onclick="go('portfolio')">+ 매수 기록 추가</button></div>`;
+    el.innerHTML = `<div class="tc" style="padding:20px;color:var(--t3)"><div style="font-size:28px;margin-bottom:8px">👛</div><div style="font-size:13px">투자 내역이 없습니다</div><button class="btn btn-out" style="margin-top:12px;font-size:12px" onclick="openModal('buy')">+ 매수 기록 추가</button></div>`;
     return;
   }
-  const rPct = totBuy>0?(realized/totBuy*100):0;
+  
+  // 일단 기본 정보 렌더 (평가손익 로딩 중)
+  const totalHoldingCost = holdings.reduce((s,h)=>s+h.cost,0);
+  
   el.innerHTML = `
-    <div class="wallet-stat"><span class="wallet-lbl">총 투자금액</span><span class="wallet-val">${(totBuy/10000).toFixed(0)}만원</span></div>
+    <div class="wallet-stat"><span class="wallet-lbl">총 매수금액</span><span class="wallet-val">${(totBuy/10000).toFixed(0)}만원</span></div>
+    <div class="wallet-stat"><span class="wallet-lbl">평가금액</span><span class="wallet-val" id="w-eval-amt" style="color:var(--t3)">조회중...</span></div>
+    <div class="wallet-stat"><span class="wallet-lbl">평가손익</span><span class="wallet-val" id="w-eval-pnl" style="color:var(--t3)">조회중...</span></div>
+    <div class="wallet-stat"><span class="wallet-lbl">수익률</span><span class="wallet-val" id="w-eval-pct" style="color:var(--t3)">--</span></div>
     <div class="wallet-stat"><span class="wallet-lbl">실현 손익</span><span class="wallet-val" style="color:${realized>=0?'var(--green)':'var(--red)'}">${realized>=0?'+':''}${Math.round(realized).toLocaleString()}원</span></div>
-    <div class="wallet-stat"><span class="wallet-lbl">수익률</span><span class="wallet-val" style="color:${rPct>=0?'var(--green)':'var(--red)'}">${rPct>=0?'+':''}${rPct.toFixed(2)}%</span></div>
-    <div class="wallet-stat"><span class="wallet-lbl">보유 종목수</span><span class="wallet-val">${holdings.length}종목</span></div>
-    <div class="wallet-stat"><span class="wallet-lbl">총 거래횟수</span><span class="wallet-val">${S.portfolio.length}회</span></div>`;
+    <div class="wallet-stat"><span class="wallet-lbl">보유 종목수</span><span class="wallet-val">${holdings.length}종목</span></div>`;
+  
+  // 보유 종목 실시간 가격 조회
+  if(holdings.length === 0) return;
+  
+  let totalEval = 0;
+  for(const h of holdings) {
+    try {
+      const cur = await fetchStock(h.sym);
+      if(cur && cur.price) {
+        totalEval += cur.price * h.qty;
+      } else {
+        totalEval += h.cost; // 조회 실패시 매수가로
+      }
+    } catch(e) {
+      totalEval += h.cost;
+    }
+    await new Promise(r=>setTimeout(r,150));
+  }
+  
+  const evalPnl = totalEval - totalHoldingCost;
+  const evalPct = totalHoldingCost > 0 ? (evalPnl / totalHoldingCost) * 100 : 0;
+  const color = evalPnl >= 0 ? 'var(--green)' : 'var(--red)';
+  
+  const amtEl = document.getElementById('w-eval-amt');
+  const pnlEl = document.getElementById('w-eval-pnl');
+  const pctEl = document.getElementById('w-eval-pct');
+  if(amtEl) {
+    amtEl.textContent = (totalEval/10000).toFixed(0) + '만원';
+    amtEl.style.color = 'var(--t1)';
+  }
+  if(pnlEl) {
+    pnlEl.textContent = (evalPnl>=0?'+':'') + Math.round(evalPnl).toLocaleString() + '원';
+    pnlEl.style.color = color;
+  }
+  if(pctEl) {
+    pctEl.textContent = (evalPnl>=0?'+':'') + evalPct.toFixed(2) + '%';
+    pctEl.style.color = color;
+  }
 }
 
 function renderSectorHot() {
@@ -2897,6 +2956,90 @@ ${name} (${code})
   btn.textContent = '🔄 다시 분석';
 }
 
+// ===== 💼 펀더멘털 분석 (PRO) =====
+async function runFundamental() {
+  const out = document.getElementById('sig-fund-out');
+  const btn = document.getElementById('fund-run-btn');
+  if(!S.sigStock) { 
+    out.innerHTML = '⚠️ 종목을 먼저 분석해주세요.';
+    out.style.color = 'var(--red)';
+    return; 
+  }
+  
+  btn.disabled = true;
+  btn.textContent = '분석중...';
+  out.innerHTML = `<div style="display:flex;align-items:center;gap:10px;color:var(--t3);justify-content:center;padding:20px"><div class="spinner"></div>재무지표 수집 → AI 종합 평가 중...</div>`;
+  
+  const {name, code} = S.sigStock;
+  const priceEl = document.getElementById('sig-price');
+  const currentPrice = priceEl?.textContent || '불명';
+  
+  // Yahoo Finance에서 펀더멘털 데이터 시도
+  let fundData = {};
+  try {
+    const r = await fetch(`${CF_WORKER}/?sym=${encodeURIComponent(code)}&module=quoteSummary`);
+    if(r.ok) {
+      const d = await r.json();
+      // Yahoo 응답에서 핵심 지표 추출 시도
+      const summary = d?.quoteSummary?.result?.[0];
+      if(summary) {
+        fundData = {
+          per: summary.summaryDetail?.trailingPE?.fmt || '-',
+          pbr: summary.defaultKeyStatistics?.priceToBook?.fmt || '-',
+          marketCap: summary.summaryDetail?.marketCap?.fmt || '-',
+          dividendYield: summary.summaryDetail?.dividendYield?.fmt || '-',
+          eps: summary.defaultKeyStatistics?.trailingEps?.fmt || '-',
+        };
+      }
+    }
+  } catch(e) {}
+  
+  // AI에게 펀더멘털 평가 요청 (Yahoo 데이터 부족하면 AI 지식 활용)
+  const fundInfoText = (fundData.per && fundData.per !== '-') 
+    ? `\n[참고: PER ${fundData.per}, PBR ${fundData.pbr}, 시총 ${fundData.marketCap}]`
+    : '';
+  
+  const prompt = `당신은 25년 경력의 CFA 재무분석 전문가입니다. 아래 종목의 펀더멘털을 평가하세요.
+
+[분석 종목]
+${name} (${code})
+현재가: ${currentPrice}${fundInfoText}
+
+다음 구조로 답변하세요 (전체 700자 이내):
+
+【📊 핵심 재무 지표】
+- PER (주가수익비율): 추정값 + 해석 (업종 평균 대비 고/저평가)
+- PBR (주가순자산비율): 추정값 + 해석
+- ROE (자기자본이익률): 추정값 + 평가 (15% 이상이면 우수)
+- 부채비율: 추정값 + 안정성 평가
+- 영업이익률: 추정값 + 트렌드
+
+【💰 가치 평가】
+적정주가 추정 (DCF/PER 기반) — 현재가 대비 고/저평가 판단
+
+【🎯 배당/주주환원】
+배당수익률 + 자사주 매입 등 주주환원 정책
+
+【📈 성장성】
+- 최근 3년 매출/영업이익 트렌드
+- 2025년 전망
+
+【🏆 종합 펀더멘털 점수】
+A+ ~ D 등급으로 평가 + 한 줄 코멘트
+
+⚠️ 정확한 수치를 모르면 "공시 자료 확인 필요"라고 명시하세요. 절대 추측한 숫자를 단정적으로 쓰지 마세요. 100% 한국어로만 답변.`;
+  
+  try {
+    const result = await callAI(prompt, 1800);
+    out.innerHTML = `<div style="white-space:pre-wrap;color:var(--t1)">${result}</div>`;
+  } catch(e) {
+    out.innerHTML = `❌ 펀더멘털 분석 실패: ${e.message}`;
+    out.style.color = 'var(--red)';
+  }
+  btn.disabled = false;
+  btn.textContent = '🔄 다시 분석';
+}
+
 // ===== 📋 AI 매매 일지 + 복기 (PRO) =====
 async function runJournalAnalysis() {
   const out = document.getElementById('pf-journal-out');
@@ -3297,32 +3440,112 @@ function getHoldings() {
   return Object.values(map).filter(h=>h.qty>0);
 }
 
-function renderPF() {
+async function renderPF() {
   renderWallet(); // 지갑 카드 렌더링
   const h=getHoldings();
   const buys=S.portfolio.filter(t=>t.tp==='buy');
   const sells=S.portfolio.filter(t=>t.tp==='sell');
   const totB=buys.reduce((s,t)=>s+t.price*t.qty,0);
   const totS=sells.reduce((s,t)=>s+t.price*t.qty,0);
-  document.getElementById('pf-sum').innerHTML=`
-    <div class="pf-stat"><div class="pf-label">총 매수금액</div><div class="pf-val tg">${(totB/10000).toFixed(0)}만원</div></div>
-    <div class="pf-stat"><div class="pf-label">총 매도금액</div><div class="pf-val">${(totS/10000).toFixed(0)}만원</div></div>
-    <div class="pf-stat"><div class="pf-label">보유 종목수</div><div class="pf-val">${h.length}개</div></div>
-    <div class="pf-stat"><div class="pf-label">총 거래 횟수</div><div class="pf-val">${S.portfolio.length}회</div></div>`;
   
+  // 보유 종목 우선 렌더링 (가격 로딩 중 표시)
   const hEl=document.getElementById('pf-holdings');
   hEl.innerHTML = h.length===0
     ? `<div class="tc" style="padding:28px;color:var(--t3)">보유 종목이 없습니다</div>`
-    : `<table><thead><tr><th>종목명</th><th>수량</th><th>평균단가</th><th>투자금액</th><th></th></tr></thead><tbody>
-      ${h.map(x=>`<tr><td><div style="font-weight:600">${x.name}</div><div class="xs mono tm">${x.sym}</div></td><td class="mono">${x.qty.toLocaleString()}주</td><td class="mono">${Math.round(x.cost/x.qty).toLocaleString()}원</td><td class="mono tg">${x.cost.toLocaleString()}원</td><td><button class="btn btn-red" style="font-size:11px;padding:4px 10px" onclick="openSell('${x.sym}','${x.name}',${x.qty})">매도</button></td></tr>`).join('')}
-      </tbody></table>`;
+    : `<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:13px">
+      <thead><tr style="border-bottom:2px solid var(--brl);background:var(--bg3)">
+        <th style="text-align:left;padding:10px;font-size:12px;color:var(--t2);font-weight:700">종목명</th>
+        <th style="text-align:right;padding:10px;font-size:12px;color:var(--t2);font-weight:700">수량</th>
+        <th style="text-align:right;padding:10px;font-size:12px;color:var(--t2);font-weight:700">평균단가</th>
+        <th style="text-align:right;padding:10px;font-size:12px;color:var(--t2);font-weight:700">현재가</th>
+        <th style="text-align:right;padding:10px;font-size:12px;color:var(--t2);font-weight:700">평가금액</th>
+        <th style="text-align:right;padding:10px;font-size:12px;color:var(--t2);font-weight:700">평가손익</th>
+        <th style="padding:10px"></th>
+      </tr></thead><tbody>
+      ${h.map(x=>`<tr id="pf-row-${x.sym.replace(/\./g,'_')}" style="border-bottom:1px solid var(--brl)">
+        <td style="padding:12px"><div style="font-weight:700;color:var(--navy)">${x.name}</div><div style="font-size:10px;color:var(--t3);font-family:'JetBrains Mono';margin-top:2px">${x.sym}</div></td>
+        <td style="text-align:right;padding:12px;font-family:'JetBrains Mono'">${x.qty.toLocaleString()}주</td>
+        <td style="text-align:right;padding:12px;font-family:'JetBrains Mono'">${Math.round(x.cost/x.qty).toLocaleString()}원</td>
+        <td class="pf-cur-price" style="text-align:right;padding:12px;font-family:'JetBrains Mono';color:var(--t3)">조회중...</td>
+        <td class="pf-eval-amt" style="text-align:right;padding:12px;font-family:'JetBrains Mono';color:var(--t3)">-</td>
+        <td class="pf-eval-pnl" style="text-align:right;padding:12px;font-family:'JetBrains Mono';color:var(--t3)">-</td>
+        <td style="text-align:right;padding:12px"><button class="btn btn-red" style="font-size:11px;padding:5px 11px" onclick="openSell('${x.sym}','${x.name.replace(/'/g,'&apos;')}',${x.qty})">매도</button></td>
+      </tr>`).join('')}
+      </tbody></table></div>`;
   
+  // 거래 내역
   const sorted=[...S.portfolio].sort((a,b)=>new Date(b.date)-new Date(a.date));
   document.getElementById('pf-history').innerHTML = sorted.length===0
     ? `<div class="tc" style="padding:20px;color:var(--t3)">거래 내역이 없습니다</div>`
     : `<table><thead><tr><th>날짜</th><th>종목</th><th>구분</th><th>단가</th><th>수량</th><th>금액</th><th></th></tr></thead><tbody>
       ${sorted.map(t=>`<tr><td class="mono sm tm">${t.date}</td><td style="font-weight:600">${t.name}</td><td><span class="badge ${t.tp==='buy'?'b-buy':'b-sell'}">${t.tp==='buy'?'매수':'매도'}</span></td><td class="mono">${t.price.toLocaleString()}</td><td class="mono">${t.qty}</td><td class="mono">${(t.price*t.qty).toLocaleString()}</td><td><button onclick="delTrade('${t.id}')" style="background:none;border:none;color:var(--t3);cursor:pointer">✕</button></td></tr>`).join('')}
       </tbody></table>`;
+  
+  // 요약 카드 일단 렌더 (평가손익 로딩 중)
+  document.getElementById('pf-sum').innerHTML=`
+    <div class="pf-stat"><div class="pf-label">총 매수금액</div><div class="pf-val tg">${(totB/10000).toFixed(0)}만원</div></div>
+    <div class="pf-stat"><div class="pf-label">평가손익</div><div class="pf-val" id="pf-total-pnl" style="color:var(--t3)">조회중...</div></div>
+    <div class="pf-stat"><div class="pf-label">수익률</div><div class="pf-val" id="pf-total-pct" style="color:var(--t3)">--</div></div>
+    <div class="pf-stat"><div class="pf-label">보유 종목수</div><div class="pf-val">${h.length}개</div></div>`;
+  
+  // 보유 종목 실시간 가격 조회 + 평가손익 계산
+  if(h.length === 0) return;
+  
+  let totalEvalAmt = 0;
+  let totalCost = 0;
+  
+  for(const x of h) {
+    try {
+      const cur = await fetchStock(x.sym);
+      const rowId = `pf-row-${x.sym.replace(/\./g,'_')}`;
+      const row = document.getElementById(rowId);
+      if(!row) continue;
+      
+      if(!cur || !cur.price) {
+        row.querySelector('.pf-cur-price').textContent = '조회실패';
+        row.querySelector('.pf-cur-price').style.color = 'var(--red)';
+        continue;
+      }
+      
+      const avgBuy = x.cost / x.qty;
+      const evalAmt = cur.price * x.qty;
+      const pnl = evalAmt - x.cost;
+      const pnlPct = (pnl / x.cost) * 100;
+      
+      totalEvalAmt += evalAmt;
+      totalCost += x.cost;
+      
+      const color = pnl >= 0 ? 'var(--green)' : 'var(--red)';
+      
+      row.querySelector('.pf-cur-price').textContent = Math.round(cur.price).toLocaleString() + '원';
+      row.querySelector('.pf-cur-price').style.color = 'var(--t1)';
+      row.querySelector('.pf-eval-amt').textContent = Math.round(evalAmt).toLocaleString() + '원';
+      row.querySelector('.pf-eval-amt').style.color = 'var(--t1)';
+      row.querySelector('.pf-eval-pnl').innerHTML = `<div style="color:${color};font-weight:700">${pnl>=0?'+':''}${Math.round(pnl).toLocaleString()}원</div><div style="color:${color};font-size:11px;margin-top:2px">${pnl>=0?'+':''}${pnlPct.toFixed(2)}%</div>`;
+    } catch(e) {
+      console.error('Price fetch failed:', x.sym, e);
+    }
+    // Rate limit 보호
+    await new Promise(r=>setTimeout(r,150));
+  }
+  
+  // 총 평가손익 업데이트
+  if(totalCost > 0) {
+    const totalPnl = totalEvalAmt - totalCost;
+    const totalPct = (totalPnl / totalCost) * 100;
+    const color = totalPnl >= 0 ? 'var(--green)' : 'var(--red)';
+    
+    const pnlEl = document.getElementById('pf-total-pnl');
+    const pctEl = document.getElementById('pf-total-pct');
+    if(pnlEl) {
+      pnlEl.textContent = (totalPnl>=0?'+':'') + Math.round(totalPnl/10000).toLocaleString() + '만원';
+      pnlEl.style.color = color;
+    }
+    if(pctEl) {
+      pctEl.textContent = (totalPnl>=0?'+':'') + totalPct.toFixed(2) + '%';
+      pctEl.style.color = color;
+    }
+  }
 }
 
 function openModal(tp) {
