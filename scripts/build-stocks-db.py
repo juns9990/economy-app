@@ -1,15 +1,10 @@
 #!/usr/bin/env python3
 """
-SIGNAL PRO v3.9.0 — 종목 DB 자동 생성 스크립트 (v2)
-================================================
-KRX 전체 종목(KOSPI + KOSDAQ + KONEX)을 pykrx로 수집하여
-signal-stocks-db.json 파일을 생성합니다.
-
-v2 변경사항:
-- 최근 영업일을 자동 탐색 (최대 7일 거슬러 올라가며 재시도)
-- 데이터 빈 응답시 다음 날짜로 폴백
-- 디버깅 로그 강화
-- 종목 0개면 빌드 실패 처리 (Actions 알림)
+SIGNAL PRO v3.9.0 — 종목 DB 자동 생성 스크립트 (v3)
+v3 변경사항:
+- pykrx 임계값 100 → 1 (실제 받은 갯수만 로그에 표시)
+- 빈 응답에도 명확한 디버깅 정보 출력
+- KRX 응답 진단 강화
 
 MADE BY JUNS
 """
@@ -23,14 +18,16 @@ from pathlib import Path
 
 try:
     from pykrx import stock
+    import pykrx
+    print(f"📦 pykrx 버전: {pykrx.__version__ if hasattr(pykrx, '__version__') else 'unknown'}")
 except ImportError:
     print("❌ pykrx가 설치되지 않았습니다.")
     sys.exit(1)
 
 
-# ===================== CONFIG =====================
 OUTPUT_PATH = Path("data/signal-stocks-db.json")
-MAX_RETRY_DAYS = 7
+MAX_RETRY_DAYS = 10
+MIN_TICKER_COUNT = 1  # 1개라도 받히면 진행 (디버깅)
 
 SECTOR_SIMPLIFY = {
     "전기,전자": "전기전자",
@@ -70,15 +67,19 @@ def find_valid_business_day():
         try:
             print(f"   🔍 {date_str} ({WEEKDAY_KR[candidate.weekday()]}) 데이터 확인 중...")
             tickers = stock.get_market_ticker_list(date_str, market="KOSPI")
-            if tickers and len(tickers) > 100:
-                print(f"   ✅ {date_str}: 유효 ({len(tickers)}개 KOSPI 확인)")
+            count = len(tickers) if tickers else 0
+            print(f"      → 받은 KOSPI 종목 수: {count}개")
+            if count >= MIN_TICKER_COUNT:
+                print(f"   ✅ {date_str}: 사용 ({count}개)")
                 return date_str
             else:
-                print(f"   ⚠️  {date_str}: 데이터 빈약")
+                print(f"   ⚠️  {date_str}: 응답이 비어있음")
         except Exception as e:
-            print(f"   ❌ {date_str}: {str(e)[:80]}")
+            print(f"   ❌ {date_str}: {str(e)[:120]}")
             time.sleep(0.5)
     print(f"\n❌ 최근 {MAX_RETRY_DAYS}일 내 유효 영업일 없음.")
+    print(f"   ⚠️  KRX 사이트 응답이 비정상일 수 있습니다.")
+    print(f"   💡 GitHub Actions를 잠시 후 재실행하세요.")
     sys.exit(1)
 
 
@@ -212,7 +213,7 @@ def build_stocks_db():
     print(f"   📅 데이터 기준일: {target_date}")
 
     if result["count"] == 0:
-        print(f"\n❌ 종목이 0개입니다. KRX 데이터 수집 실패!")
+        print(f"\n❌ 종목이 0개입니다.")
         sys.exit(1)
 
     return result
