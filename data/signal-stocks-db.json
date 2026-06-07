@@ -1,12 +1,12 @@
 {
   "version": "2026.06.07",
-  "updated_at": "2026-06-07T20:47:14.768794+09:00",
+  "updated_at": "2026-06-07T22:07:34.474835+09:00",
   "source": "KIND 상장법인목록",
   "data_date": "20260607",
-  "count": 2764,
+  "count": 2765,
   "markets": {
     "KOSPI": 838,
-    "KOSDAQ": 1819,
+    "KOSDAQ": 1820,
     "KONEX": 107
   },
   "stocks": [
@@ -6731,6 +6731,14 @@
       "name": "한진중공업홀딩스",
       "market": "KOSPI",
       "sector": "연료용 가스 제조 및 배관공급업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "0117P0.KQ",
+      "name": "피스피스스튜디오",
+      "market": "KOSDAQ",
+      "sector": "섬유, 의복, 신발 및 가죽제품 소매업",
       "marketCap": 0,
       "aliases": []
     },
