@@ -214,25 +214,37 @@ def fetch_from_kind():
             df = dfs[0]
             print(f"      ✓ {len(df)}개 종목 발견")
             
+            success_in_market = 0
             for _, row in df.iterrows():
-                name = str(row.get("회사명", "")).strip()
-                ticker_raw = row.get("종목코드", "")
-                if not name or not ticker_raw:
-                    continue
-                
-                # 종목코드 6자리로 정규화
-                ticker = f"{int(ticker_raw):06d}"
-                sector_raw = str(row.get("업종", "기타")).strip()
-                sector = categorize_etf_reit(name, sector_raw)
-                
-                all_stocks.append({
-                    "code": normalize_code(ticker, market_name),
-                    "name": name,
-                    "market": market_name,
-                    "sector": sector,
-                    "marketCap": 0,  # KIND에는 시총 없음
-                    "aliases": make_aliases(name),
-                })
+                try:
+                    name = str(row.get("회사명", "")).strip()
+                    ticker_raw = row.get("종목코드", "")
+                    if not name or ticker_raw is None or str(ticker_raw).strip() == "":
+                        continue
+                    
+                    # 종목코드 6자리로 정규화 (영문자 포함 가능, 예: '0126Z0')
+                    ticker_str = str(ticker_raw).strip()
+                    if ticker_str.isdigit():
+                        ticker = f"{int(ticker_str):06d}"
+                    else:
+                        ticker = ticker_str.zfill(6) if len(ticker_str) < 6 else ticker_str
+                    
+                    sector_raw = str(row.get("업종", "기타")).strip()
+                    sector = categorize_etf_reit(name, sector_raw)
+                    
+                    all_stocks.append({
+                        "code": normalize_code(ticker, market_name),
+                        "name": name,
+                        "market": market_name,
+                        "sector": sector,
+                        "marketCap": 0,  # KIND에는 시총 없음
+                        "aliases": make_aliases(name),
+                    })
+                    success_in_market += 1
+                except Exception as row_err:
+                    continue  # 한 행 실패해도 계속
+            
+            print(f"      ✓ {success_in_market}개 종목 처리 완료")
         except Exception as e:
             print(f"      ❌ 에러: {str(e)[:120]}")
     
