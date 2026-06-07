@@ -1,12 +1,30 @@
 {
   "version": "2026.06.07",
-  "updated_at": "2026-06-07T10:38:09.700449+09:00",
-  "source": "KRX (pykrx)",
-  "count": 0,
+  "updated_at": "2026-06-07T11:20:19.816896+09:00",
+  "source": "KIND 상장법인목록",
+  "data_date": "20260607",
+  "count": 2,
   "markets": {
-    "KOSPI": 0,
+    "KOSPI": 2,
     "KOSDAQ": 0,
     "KONEX": 0
   },
-  "stocks": []
+  "stocks": [
+    {
+      "code": "279570.KS",
+      "name": "케이뱅크",
+      "market": "KOSPI",
+      "sector": "은행 및 저축기관",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "217590.KS",
+      "name": "티엠씨",
+      "market": "KOSPI",
+      "sector": "절연선 및 케이블 제조업",
+      "marketCap": 0,
+      "aliases": []
+    }
+  ]
 }
