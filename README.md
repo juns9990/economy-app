@@ -1,130 +1,188 @@
-# 📊 INVESTMENT SIGNAL PRO
+# 📊 SIGNAL PRO 종목 DB 자동화
 
-> AI 기반 한국 주식 실시간 분석 PWA — v3.2.0
-
-**MADE BY JUNS**
+KRX 한국 시장 전체 종목(약 2,500개)을 자동 수집하여 SIGNAL PRO 앱에서 검색 가능하게 합니다.
 
 ---
 
-## 🚀 앱 접속
+## 🗂️ 파일 구조
 
-**공개 URL:** https://juns9990.github.io/economy-app/signal-pro.html
+```
+economy-app/
+├─ .github/
+│  └─ workflows/
+│     └─ stocks-db-update.yml      ← GitHub Actions (자동 갱신)
+├─ scripts/
+│  └─ build-stocks-db.py            ← pykrx 활용 빌드 스크립트
+└─ data/
+   └─ signal-stocks-db.json         ← 결과물 (자동 생성)
+```
 
-## 📁 파일 구성
+---
 
-| 파일 | 용도 | 배포 위치 |
-|------|------|-----------|
-| `signal-pro.html` | 메인 앱 (PWA) | GitHub Pages |
-| `worker.js` | Yahoo Finance 프록시 | Cloudflare Workers |
+## 🚀 배포 방법
 
-## ⚙️ 세팅 (처음 한 번만)
+### 1단계: 파일 3개를 리포에 추가
 
-### 1. Cloudflare Worker 배포
+```bash
+cd ~/economy-app
 
-1. https://workers.cloudflare.com 접속
-2. `worker.js` 내용을 새 Worker에 붙여넣기
-3. **Deploy** 클릭
-4. Worker URL 복사 (예: `https://xxx.workers.dev`)
+# 디렉토리 생성
+mkdir -p .github/workflows scripts data
 
-### 2. Groq API 키 발급 (무료)
+# 파일 복사
+cp /path/to/stocks-db-update.yml .github/workflows/
+cp /path/to/build-stocks-db.py scripts/
+cp /path/to/signal-stocks-db.json data/   # 샘플 JSON (선택)
 
-1. https://console.groq.com/keys 접속
-2. Google 로그인 → **Create API Key**
-3. `gsk_...` 로 시작하는 키 복사
+# 커밋
+git add .
+git commit -m "🤖 종목 DB 자동화 추가 (SIGNAL PRO v3.9.0)"
+git push
+```
 
-### 3. 앱에서 키 설정
+### 2단계: GitHub Actions 첫 실행
 
-1. 앱 접속 → 사이드바 **설정**
-2. **GROQ API KEY** 란에 붙여넣기
-3. **💾 저장하기** 클릭
+1. GitHub 리포 → **Actions** 탭 진입
+2. **"SIGNAL PRO 종목 DB 자동 갱신"** workflow 선택
+3. **"Run workflow"** 버튼 클릭 (수동 실행)
+4. 약 1~2분 후 빌드 완료
+5. `data/signal-stocks-db.json` 자동 갱신 + 커밋
 
-**끝!** 이제 AI 심층분석, 상담실, 글로벌 브리핑 전부 작동.
+### 3단계: 결과 확인
 
-## 🎯 주요 기능
+- GitHub Pages URL: `https://juns9990.github.io/economy-app/data/signal-stocks-db.json`
+- 약 2,500개 종목, ~250KB
 
-### 🌏 글로벌 시장 브리핑 (v3.1.0~)
-- 매일 아침 미국 시장 데이터 자동 수집
-- S&P 500, 나스닥, 다우, VIX, 10Y 국채, 달러지수
-- AI가 오늘 한국 장 전망 분석 (주목/경계 섹터 추천)
-- 1시간 자동 캐시 + 수동 새로고침
+---
 
-### 🎯 시그널 분석
-- KOSPI / KOSDAQ 대부분 종목 지원
-- 10개 기술 지표 자동 계산
-  - RSI, MA5/20, MA20/60, 볼린저밴드
-  - MACD, 모멘텀, 거래량, 기간위치
-  - ATR, 추세강도
-- 종합 점수 (0~100) → 매수/중립/매도 시그널
-- 기간 전환: 3M / 6M / 1Y / 3Y / 10Y
-- AI 심층분석 자동 실행 (2~3초)
+## ⏰ 자동 갱신 일정
 
-### 💬 AI 전문가 그룹채팅
-카카오톡 스타일로 5명의 AI 전문가와 대화
-- 🎩 **워렌 버핏** — 가치투자
-- 📊 **40년 고수** — 한국 주식 베테랑
-- 🤖 **퀀트 전문가** — 통계/데이터
-- 🌍 **거시경제** — 금리/환율/지정학
-- 💰 **금융 전문가** — PER/PBR/재무
+- **매주 일요일 06:00 KST** (Cron: `0 21 * * 0` UTC)
+- 변경사항이 있으면 자동 커밋
+- 동일하면 커밋 안 함 (불필요한 commit 방지)
 
-### 💼 포트폴리오
-- 매수/매도 기록
-- 실시간 평가손익
-- 종목별 수익률 추적
+---
 
-### ⭐ 관심종목 + 🔔 가격 알림
-- 시그널 페이지에서 별표 추가
-- 대시보드에 실시간 시세
-- 목표가 도달시 브라우저 푸시 알림
+## 📡 앱 측 통합 코드
 
-### 🧬 성향 분석
-- 8문항 테스트
-- 5가지 유형 (보수형 ~ 공격형)
-- AI 분석이 성향 반영
+v3.9.0 signal-pro.html에 추가:
 
-### 📖 사용설명서
-- 8개 섹션 상세 가이드
-- 용어 사전 14개
+```javascript
+// 종목 DB 전역
+let STOCKS = [];
+let STOCKS_DB_VERSION = null;
+let STOCKS_DB_READY = false;
 
-## 🛠️ 기술 스택
+// 로딩
+async function loadStocksDB() {
+  const DB_URL = 'https://juns9990.github.io/economy-app/data/signal-stocks-db.json';
+  const FALLBACK_URL = './data/signal-stocks-db.json';
 
-- **프론트**: Vanilla JS + HTML + CSS (PWA)
-- **AI**: Groq Llama 3.3 70B (브라우저 직접 호출)
-- **데이터**: Yahoo Finance (Cloudflare Worker 프록시)
-- **저장**: localStorage (brower-only)
-- **배포**: GitHub Pages + Cloudflare Workers
+  try {
+    // 1차: GitHub Pages
+    let r = await fetch(DB_URL, { cache: 'no-cache' });
+    if (!r.ok) throw new Error('Primary fetch failed');
+    const data = await r.json();
 
-## 📱 지원 환경
+    STOCKS = data.stocks;
+    STOCKS_DB_VERSION = data.version;
+    STOCKS_DB_READY = true;
 
-- PC: Chrome / Edge / Safari / Firefox
-- 모바일: iOS Safari / Android Chrome
-- PWA 설치 가능 (홈화면 추가)
-- 반응형: 360px ~ 1920px
+    console.log(`✅ 종목 DB 로드: ${data.count}개 (v${data.version})`);
+    console.log(`   KOSPI: ${data.markets.KOSPI} / KOSDAQ: ${data.markets.KOSDAQ}`);
 
-## 🔒 보안/프라이버시
+    // localStorage 캐싱 (다음 로딩 가속)
+    localStorage.setItem('isp_stocks_db', JSON.stringify(data));
+    localStorage.setItem('isp_stocks_db_at', Date.now().toString());
+  } catch (e) {
+    console.warn('⚠️ 외부 DB 로드 실패, 캐시 시도:', e);
 
-- Groq API 키는 **본인 브라우저에만 저장**
-- 외부 서버로 절대 전송 안 함
-- 주가 데이터: Yahoo Finance (공개 데이터)
-- 포트폴리오/관심종목도 브라우저에만 저장
+    // 2차: localStorage 캐시
+    const cached = localStorage.getItem('isp_stocks_db');
+    if (cached) {
+      try {
+        const data = JSON.parse(cached);
+        STOCKS = data.stocks;
+        STOCKS_DB_VERSION = data.version + ' (cached)';
+        STOCKS_DB_READY = true;
+        console.log(`📦 캐시에서 ${data.count}개 종목 로드`);
+        return;
+      } catch (_) {}
+    }
 
-## 📝 버전 히스토리
+    // 3차: 하드코딩 fallback (최소 50개 종목)
+    STOCKS = HARDCODED_STOCKS;
+    STOCKS_DB_VERSION = 'fallback';
+    STOCKS_DB_READY = true;
+    console.log(`🔌 폴백 모드: ${STOCKS.length}개 종목`);
+  }
+}
 
-- **v3.2.0** (2026-04-22): API 키 마스킹 + 영구저장, 조회 실패 UX 개선
-- **v3.1.1** (2026-04-22): 반응형 레이아웃 전면 개선
-- **v3.1.0** (2026-04-22): 글로벌 시장 브리핑 추가
-- **v3.0.0** (2026-04-20): Groq 브라우저 직접 호출
-- **v2.9.x** (2026-04-20): Groq Llama AI 엔진 전환
-- **v2.8.0** (2026-04-20): 관심종목 + 가격 알림
-- **v2.7.0** (2026-04-20): AI 그룹채팅 스타일
+// 앱 시작시 호출
+document.addEventListener('DOMContentLoaded', () => {
+  loadStocksDB();
+});
+```
 
-## ⚠️ 법적 고지
+---
 
-이 앱은 투자 **참고용** 정보 제공 도구입니다.
-- 투자자문업 등록 앱이 아님
-- 모든 투자 결정은 본인 책임
-- AI 분석은 과거 데이터 기반 패턴 분석이며 미래 수익 보장 안 함
-- 투자 원금 손실 가능성 있음
+## 🔍 검색 함수 변경
 
-## 📞 문의
+기존 `stockMatch()` 함수는 **변경 불필요**. 2,500개 × 정규화 비교는 1~2ms 수준.
 
-GitHub: [@juns9990](https://github.com/juns9990)
+단, DB 로딩 전 검색 시도 처리만 추가:
+
+```javascript
+function stockMatch(query) {
+  if (!STOCKS_DB_READY) {
+    return [];  // 로딩 중
+  }
+  // 기존 로직 그대로...
+}
+```
+
+---
+
+## 🧪 로컬 테스트
+
+```bash
+# pykrx 설치
+pip install pykrx pandas
+
+# 스크립트 실행
+python scripts/build-stocks-db.py
+
+# 결과 확인
+cat data/signal-stocks-db.json | python -m json.tool | head -50
+```
+
+---
+
+## ⚠️ 트러블슈팅
+
+### Actions 빌드 실패시
+- **KRX 사이트 일시 장애:** 평일 KRX 휴장일에는 실행해도 데이터 없음 → 다음 영업일 자동 재시도
+- **pykrx 버전 충돌:** `requirements.txt`에 `pykrx==1.0.45` 고정
+
+### 종목 검색 안 됨
+- 브라우저 콘솔에서 `STOCKS_DB_READY` 확인
+- `console.log(STOCKS.length)` — 0이면 DB 로딩 실패
+- 네트워크 탭에서 `signal-stocks-db.json` fetch 상태 확인
+
+---
+
+## 📈 향후 확장
+
+추가할 수 있는 데이터:
+- ✅ 시가총액 (현재 포함)
+- ⏳ 외국인 보유 비중 (네이버 금융 크롤링 필요)
+- ⏳ 일평균 거래대금
+- ⏳ 52주 최고/최저가
+- ⏳ 배당수익률
+- ⏳ PER / PBR
+
+→ build-stocks-db.py에 추가 컬럼 확장 가능
+
+---
+
+**MADE BY JUNS · 2026.04.27**
