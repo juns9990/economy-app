@@ -1,412 +1,953 @@
-#!/usr/bin/env python3
-"""
-SIGNAL PRO v3.9.0 — 종목 DB 자동 생성 스크립트 (v4)
-================================================
-4단계 폴백 체인으로 KRX 데이터 안정 수집:
-  1차: KRX 정보데이터시스템 (data.krx.co.kr) - 직접 호출
-  2차: KIND 상장법인목록 (kind.krx.co.kr) - HTML 파싱
-  3차: pykrx 라이브러리
-  4차: 정적 백업 JSON
-
-MADE BY JUNS
-"""
-
-import json
-import os
-import sys
-import time
-from datetime import datetime, timedelta
-from io import StringIO, BytesIO
-from pathlib import Path
-
-import requests
-
-OUTPUT_PATH = Path("data/signal-stocks-db.json")
-BACKUP_PATH = Path("data/signal-stocks-db.backup.json")
-WEEKDAY_KR = ['월','화','수','목','금','토','일']
-
-# 브라우저 위장 헤더 (KRX 차단 회피)
-DESKTOP_UA = (
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-    "AppleWebKit/537.36 (KHTML, like Gecko) "
-    "Chrome/120.0.0.0 Safari/537.36"
-)
-
-SECTOR_SIMPLIFY = {
-    "전기,전자": "전기전자", "운수장비": "운송장비", "철강금속": "철강금속",
-    "화학": "화학", "기계": "기계", "음식료품": "음식료",
-    "섬유,의복": "섬유의류", "비금속광물": "비금속", "의약품": "제약바이오",
-    "건설업": "건설", "유통업": "유통", "금융업": "금융",
-    "보험": "보험", "증권": "증권", "운수창고업": "물류",
-    "전기가스업": "전기가스", "통신업": "통신", "서비스업": "서비스",
-    "오락,문화": "엔터테인먼트", "종이,목재": "제지목재",
+{
+  "version": "2026.06.07",
+  "updated_at": "2026-06-07T10:07:38.422512+09:00",
+  "source": "KRX (샘플 데이터 — Actions 첫 빌드시 2,500개로 자동 교체)",
+  "count": 109,
+  "markets": {
+    "KOSPI": 93,
+    "KOSDAQ": 16,
+    "KONEX": 0
+  },
+  "stocks": [
+    {
+      "code": "005930.KS",
+      "name": "삼성전자",
+      "market": "KOSPI",
+      "sector": "전기전자",
+      "marketCap": 432000000000000,
+      "aliases": [
+        "삼전",
+        "Samsung"
+      ]
+    },
+    {
+      "code": "000660.KS",
+      "name": "SK하이닉스",
+      "market": "KOSPI",
+      "sector": "전기전자",
+      "marketCap": 142000000000000,
+      "aliases": [
+        "하이닉스"
+      ]
+    },
+    {
+      "code": "373220.KS",
+      "name": "LG에너지솔루션",
+      "market": "KOSPI",
+      "sector": "전기전자",
+      "marketCap": 88000000000000,
+      "aliases": [
+        "엘지엔솔",
+        "LG엔솔"
+      ]
+    },
+    {
+      "code": "207940.KS",
+      "name": "삼성바이오로직스",
+      "market": "KOSPI",
+      "sector": "제약바이오",
+      "marketCap": 72000000000000,
+      "aliases": [
+        "삼성바이오"
+      ]
+    },
+    {
+      "code": "005380.KS",
+      "name": "현대차",
+      "market": "KOSPI",
+      "sector": "운송장비",
+      "marketCap": 51000000000000,
+      "aliases": [
+        "현대자동차"
+      ]
+    },
+    {
+      "code": "005935.KS",
+      "name": "삼성전자우",
+      "market": "KOSPI",
+      "sector": "전기전자",
+      "marketCap": 49000000000000,
+      "aliases": []
+    },
+    {
+      "code": "000270.KS",
+      "name": "기아",
+      "market": "KOSPI",
+      "sector": "운송장비",
+      "marketCap": 43000000000000,
+      "aliases": []
+    },
+    {
+      "code": "068270.KS",
+      "name": "셀트리온",
+      "market": "KOSPI",
+      "sector": "제약바이오",
+      "marketCap": 41000000000000,
+      "aliases": []
+    },
+    {
+      "code": "035420.KS",
+      "name": "NAVER",
+      "market": "KOSPI",
+      "sector": "서비스",
+      "marketCap": 35000000000000,
+      "aliases": [
+        "네이버"
+      ]
+    },
+    {
+      "code": "005490.KS",
+      "name": "POSCO홀딩스",
+      "market": "KOSPI",
+      "sector": "철강금속",
+      "marketCap": 31000000000000,
+      "aliases": [
+        "포스코"
+      ]
+    },
+    {
+      "code": "105560.KS",
+      "name": "KB금융",
+      "market": "KOSPI",
+      "sector": "금융",
+      "marketCap": 30000000000000,
+      "aliases": []
+    },
+    {
+      "code": "006400.KS",
+      "name": "삼성SDI",
+      "market": "KOSPI",
+      "sector": "전기전자",
+      "marketCap": 28000000000000,
+      "aliases": []
+    },
+    {
+      "code": "051910.KS",
+      "name": "LG화학",
+      "market": "KOSPI",
+      "sector": "화학",
+      "marketCap": 27000000000000,
+      "aliases": []
+    },
+    {
+      "code": "055550.KS",
+      "name": "신한지주",
+      "market": "KOSPI",
+      "sector": "금융",
+      "marketCap": 24000000000000,
+      "aliases": []
+    },
+    {
+      "code": "329180.KS",
+      "name": "HD현대중공업",
+      "market": "KOSPI",
+      "sector": "운송장비",
+      "marketCap": 24000000000000,
+      "aliases": [
+        "현대중공업"
+      ]
+    },
+    {
+      "code": "012330.KS",
+      "name": "현대모비스",
+      "market": "KOSPI",
+      "sector": "운송장비",
+      "marketCap": 22000000000000,
+      "aliases": [
+        "모비스"
+      ]
+    },
+    {
+      "code": "028260.KS",
+      "name": "삼성물산",
+      "market": "KOSPI",
+      "sector": "유통",
+      "marketCap": 22000000000000,
+      "aliases": []
+    },
+    {
+      "code": "042660.KS",
+      "name": "한화오션",
+      "market": "KOSPI",
+      "sector": "운송장비",
+      "marketCap": 21000000000000,
+      "aliases": [
+        "대우조선해양"
+      ]
+    },
+    {
+      "code": "035720.KS",
+      "name": "카카오",
+      "market": "KOSPI",
+      "sector": "서비스",
+      "marketCap": 19000000000000,
+      "aliases": []
+    },
+    {
+      "code": "196170.KQ",
+      "name": "알테오젠",
+      "market": "KOSDAQ",
+      "sector": "제약바이오",
+      "marketCap": 18500000000000,
+      "aliases": []
+    },
+    {
+      "code": "086790.KS",
+      "name": "하나금융지주",
+      "market": "KOSPI",
+      "sector": "금융",
+      "marketCap": 18000000000000,
+      "aliases": []
+    },
+    {
+      "code": "032830.KS",
+      "name": "삼성생명",
+      "market": "KOSPI",
+      "sector": "보험",
+      "marketCap": 18000000000000,
+      "aliases": []
+    },
+    {
+      "code": "000810.KS",
+      "name": "삼성화재",
+      "market": "KOSPI",
+      "sector": "보험",
+      "marketCap": 17000000000000,
+      "aliases": []
+    },
+    {
+      "code": "247540.KQ",
+      "name": "에코프로비엠",
+      "market": "KOSDAQ",
+      "sector": "화학",
+      "marketCap": 17000000000000,
+      "aliases": [
+        "에코프로BM"
+      ]
+    },
+    {
+      "code": "066570.KS",
+      "name": "LG전자",
+      "market": "KOSPI",
+      "sector": "전기전자",
+      "marketCap": 16000000000000,
+      "aliases": []
+    },
+    {
+      "code": "138040.KS",
+      "name": "메리츠금융지주",
+      "market": "KOSPI",
+      "sector": "금융",
+      "marketCap": 15000000000000,
+      "aliases": []
+    },
+    {
+      "code": "011200.KS",
+      "name": "HMM",
+      "market": "KOSPI",
+      "sector": "물류",
+      "marketCap": 15000000000000,
+      "aliases": []
+    },
+    {
+      "code": "012450.KS",
+      "name": "한화에어로스페이스",
+      "market": "KOSPI",
+      "sector": "운송장비",
+      "marketCap": 14500000000000,
+      "aliases": [
+        "한화에어로"
+      ]
+    },
+    {
+      "code": "003670.KS",
+      "name": "포스코퓨처엠",
+      "market": "KOSPI",
+      "sector": "화학",
+      "marketCap": 14000000000000,
+      "aliases": []
+    },
+    {
+      "code": "015760.KS",
+      "name": "한국전력",
+      "market": "KOSPI",
+      "sector": "전기가스",
+      "marketCap": 14000000000000,
+      "aliases": [
+        "한전"
+      ]
+    },
+    {
+      "code": "259960.KS",
+      "name": "크래프톤",
+      "market": "KOSPI",
+      "sector": "서비스",
+      "marketCap": 14000000000000,
+      "aliases": [
+        "배그"
+      ]
+    },
+    {
+      "code": "086520.KQ",
+      "name": "에코프로",
+      "market": "KOSDAQ",
+      "sector": "화학",
+      "marketCap": 14000000000000,
+      "aliases": []
+    },
+    {
+      "code": "042700.KS",
+      "name": "한미반도체",
+      "market": "KOSPI",
+      "sector": "전기전자",
+      "marketCap": 13500000000000,
+      "aliases": []
+    },
+    {
+      "code": "323410.KS",
+      "name": "카카오뱅크",
+      "market": "KOSPI",
+      "sector": "금융",
+      "marketCap": 13500000000000,
+      "aliases": [
+        "카뱅"
+      ]
+    },
+    {
+      "code": "003550.KS",
+      "name": "LG",
+      "market": "KOSPI",
+      "sector": "서비스",
+      "marketCap": 13000000000000,
+      "aliases": []
+    },
+    {
+      "code": "010130.KS",
+      "name": "고려아연",
+      "market": "KOSPI",
+      "sector": "철강금속",
+      "marketCap": 13000000000000,
+      "aliases": []
+    },
+    {
+      "code": "009540.KS",
+      "name": "HD한국조선해양",
+      "market": "KOSPI",
+      "sector": "운송장비",
+      "marketCap": 13000000000000,
+      "aliases": []
+    },
+    {
+      "code": "010140.KS",
+      "name": "삼성중공업",
+      "market": "KOSPI",
+      "sector": "운송장비",
+      "marketCap": 12500000000000,
+      "aliases": []
+    },
+    {
+      "code": "034020.KS",
+      "name": "두산에너빌리티",
+      "market": "KOSPI",
+      "sector": "기계",
+      "marketCap": 12500000000000,
+      "aliases": [
+        "두산중공업"
+      ]
+    },
+    {
+      "code": "091990.KQ",
+      "name": "셀트리온헬스케어",
+      "market": "KOSDAQ",
+      "sector": "제약바이오",
+      "marketCap": 12500000000000,
+      "aliases": [
+        "셀헬케"
+      ]
+    },
+    {
+      "code": "034730.KS",
+      "name": "SK",
+      "market": "KOSPI",
+      "sector": "서비스",
+      "marketCap": 12000000000000,
+      "aliases": []
+    },
+    {
+      "code": "017670.KS",
+      "name": "SK텔레콤",
+      "market": "KOSPI",
+      "sector": "통신",
+      "marketCap": 11500000000000,
+      "aliases": [
+        "SKT"
+      ]
+    },
+    {
+      "code": "018260.KS",
+      "name": "삼성SDS",
+      "market": "KOSPI",
+      "sector": "서비스",
+      "marketCap": 11500000000000,
+      "aliases": []
+    },
+    {
+      "code": "352820.KQ",
+      "name": "하이브",
+      "market": "KOSDAQ",
+      "sector": "엔터테인먼트",
+      "marketCap": 11500000000000,
+      "aliases": [
+        "HYBE",
+        "BTS"
+      ]
+    },
+    {
+      "code": "096770.KS",
+      "name": "SK이노베이션",
+      "market": "KOSPI",
+      "sector": "화학",
+      "marketCap": 11000000000000,
+      "aliases": []
+    },
+    {
+      "code": "316140.KS",
+      "name": "우리금융지주",
+      "market": "KOSPI",
+      "sector": "금융",
+      "marketCap": 11000000000000,
+      "aliases": []
+    },
+    {
+      "code": "009150.KS",
+      "name": "삼성전기",
+      "market": "KOSPI",
+      "sector": "전기전자",
+      "marketCap": 11000000000000,
+      "aliases": []
+    },
+    {
+      "code": "030200.KS",
+      "name": "KT",
+      "market": "KOSPI",
+      "sector": "통신",
+      "marketCap": 10000000000000,
+      "aliases": []
+    },
+    {
+      "code": "047810.KS",
+      "name": "한국항공우주",
+      "market": "KOSPI",
+      "sector": "운송장비",
+      "marketCap": 9000000000000,
+      "aliases": [
+        "KAI"
+      ]
+    },
+    {
+      "code": "003490.KS",
+      "name": "대한항공",
+      "market": "KOSPI",
+      "sector": "운송장비",
+      "marketCap": 8500000000000,
+      "aliases": []
+    },
+    {
+      "code": "000100.KS",
+      "name": "유한양행",
+      "market": "KOSPI",
+      "sector": "제약바이오",
+      "marketCap": 8500000000000,
+      "aliases": []
+    },
+    {
+      "code": "064350.KS",
+      "name": "현대로템",
+      "market": "KOSPI",
+      "sector": "운송장비",
+      "marketCap": 8500000000000,
+      "aliases": []
+    },
+    {
+      "code": "069500.KS",
+      "name": "KODEX 200",
+      "market": "KOSPI",
+      "sector": "ETF",
+      "marketCap": 8500000000000,
+      "aliases": []
+    },
+    {
+      "code": "079550.KS",
+      "name": "LIG넥스원",
+      "market": "KOSPI",
+      "sector": "운송장비",
+      "marketCap": 7500000000000,
+      "aliases": []
+    },
+    {
+      "code": "051900.KS",
+      "name": "LG생활건강",
+      "market": "KOSPI",
+      "sector": "음식료",
+      "marketCap": 7500000000000,
+      "aliases": [
+        "LG생건"
+      ]
+    },
+    {
+      "code": "010950.KS",
+      "name": "S-Oil",
+      "market": "KOSPI",
+      "sector": "화학",
+      "marketCap": 7500000000000,
+      "aliases": [
+        "에쓰오일"
+      ]
+    },
+    {
+      "code": "011070.KS",
+      "name": "LG이노텍",
+      "market": "KOSPI",
+      "sector": "전기전자",
+      "marketCap": 6800000000000,
+      "aliases": []
+    },
+    {
+      "code": "010620.KS",
+      "name": "HD현대미포",
+      "market": "KOSPI",
+      "sector": "운송장비",
+      "marketCap": 6500000000000,
+      "aliases": []
+    },
+    {
+      "code": "009830.KS",
+      "name": "한화솔루션",
+      "market": "KOSPI",
+      "sector": "화학",
+      "marketCap": 6500000000000,
+      "aliases": []
+    },
+    {
+      "code": "090430.KS",
+      "name": "아모레퍼시픽",
+      "market": "KOSPI",
+      "sector": "음식료",
+      "marketCap": 6500000000000,
+      "aliases": []
+    },
+    {
+      "code": "267250.KS",
+      "name": "HD현대",
+      "market": "KOSPI",
+      "sector": "서비스",
+      "marketCap": 6000000000000,
+      "aliases": []
+    },
+    {
+      "code": "006800.KS",
+      "name": "미래에셋증권",
+      "market": "KOSPI",
+      "sector": "증권",
+      "marketCap": 5500000000000,
+      "aliases": []
+    },
+    {
+      "code": "251270.KS",
+      "name": "넷마블",
+      "market": "KOSPI",
+      "sector": "서비스",
+      "marketCap": 5500000000000,
+      "aliases": []
+    },
+    {
+      "code": "028050.KS",
+      "name": "삼성E&A",
+      "market": "KOSPI",
+      "sector": "건설",
+      "marketCap": 5500000000000,
+      "aliases": [
+        "삼성엔지니어링"
+      ]
+    },
+    {
+      "code": "241560.KS",
+      "name": "두산밥캣",
+      "market": "KOSPI",
+      "sector": "기계",
+      "marketCap": 5500000000000,
+      "aliases": []
+    },
+    {
+      "code": "086280.KS",
+      "name": "현대글로비스",
+      "market": "KOSPI",
+      "sector": "물류",
+      "marketCap": 5500000000000,
+      "aliases": [
+        "글로비스"
+      ]
+    },
+    {
+      "code": "016360.KS",
+      "name": "삼성증권",
+      "market": "KOSPI",
+      "sector": "증권",
+      "marketCap": 5000000000000,
+      "aliases": []
+    },
+    {
+      "code": "006260.KS",
+      "name": "LS",
+      "market": "KOSPI",
+      "sector": "서비스",
+      "marketCap": 4800000000000,
+      "aliases": []
+    },
+    {
+      "code": "071050.KS",
+      "name": "한국금융지주",
+      "market": "KOSPI",
+      "sector": "금융",
+      "marketCap": 4500000000000,
+      "aliases": [
+        "한투"
+      ]
+    },
+    {
+      "code": "097950.KS",
+      "name": "CJ제일제당",
+      "market": "KOSPI",
+      "sector": "음식료",
+      "marketCap": 4500000000000,
+      "aliases": []
+    },
+    {
+      "code": "034220.KS",
+      "name": "LG디스플레이",
+      "market": "KOSPI",
+      "sector": "전기전자",
+      "marketCap": 4500000000000,
+      "aliases": [
+        "LGD"
+      ]
+    },
+    {
+      "code": "078930.KS",
+      "name": "GS",
+      "market": "KOSPI",
+      "sector": "서비스",
+      "marketCap": 4500000000000,
+      "aliases": []
+    },
+    {
+      "code": "277810.KQ",
+      "name": "레인보우로보틱스",
+      "market": "KOSDAQ",
+      "sector": "기계",
+      "marketCap": 4500000000000,
+      "aliases": [
+        "로보틱스"
+      ]
+    },
+    {
+      "code": "377300.KS",
+      "name": "카카오페이",
+      "market": "KOSPI",
+      "sector": "금융",
+      "marketCap": 4500000000000,
+      "aliases": []
+    },
+    {
+      "code": "360750.KS",
+      "name": "TIGER 미국S&P500",
+      "market": "KOSPI",
+      "sector": "ETF",
+      "marketCap": 4500000000000,
+      "aliases": []
+    },
+    {
+      "code": "271560.KS",
+      "name": "오리온",
+      "market": "KOSPI",
+      "sector": "음식료",
+      "marketCap": 4200000000000,
+      "aliases": []
+    },
+    {
+      "code": "128940.KS",
+      "name": "한미약품",
+      "market": "KOSPI",
+      "sector": "제약바이오",
+      "marketCap": 4000000000000,
+      "aliases": []
+    },
+    {
+      "code": "036570.KS",
+      "name": "엔씨소프트",
+      "market": "KOSPI",
+      "sector": "서비스",
+      "marketCap": 3800000000000,
+      "aliases": [
+        "NC",
+        "엔씨"
+      ]
+    },
+    {
+      "code": "000720.KS",
+      "name": "현대건설",
+      "market": "KOSPI",
+      "sector": "건설",
+      "marketCap": 3800000000000,
+      "aliases": []
+    },
+    {
+      "code": "011170.KS",
+      "name": "롯데케미칼",
+      "market": "KOSPI",
+      "sector": "화학",
+      "marketCap": 3500000000000,
+      "aliases": []
+    },
+    {
+      "code": "004020.KS",
+      "name": "현대제철",
+      "market": "KOSPI",
+      "sector": "철강금속",
+      "marketCap": 3500000000000,
+      "aliases": []
+    },
+    {
+      "code": "039490.KS",
+      "name": "키움증권",
+      "market": "KOSPI",
+      "sector": "증권",
+      "marketCap": 3500000000000,
+      "aliases": []
+    },
+    {
+      "code": "058470.KQ",
+      "name": "리노공업",
+      "market": "KOSDAQ",
+      "sector": "전기전자",
+      "marketCap": 3500000000000,
+      "aliases": []
+    },
+    {
+      "code": "145020.KQ",
+      "name": "휴젤",
+      "market": "KOSDAQ",
+      "sector": "제약바이오",
+      "marketCap": 3500000000000,
+      "aliases": []
+    },
+    {
+      "code": "379800.KS",
+      "name": "KODEX 미국S&P500",
+      "market": "KOSPI",
+      "sector": "ETF",
+      "marketCap": 3500000000000,
+      "aliases": []
+    },
+    {
+      "code": "381180.KS",
+      "name": "TIGER 미국필라델피아반도체",
+      "market": "KOSPI",
+      "sector": "ETF",
+      "marketCap": 3500000000000,
+      "aliases": []
+    },
+    {
+      "code": "000150.KS",
+      "name": "두산",
+      "market": "KOSPI",
+      "sector": "서비스",
+      "marketCap": 2800000000000,
+      "aliases": []
+    },
+    {
+      "code": "381170.KS",
+      "name": "TIGER 미국테크TOP10",
+      "market": "KOSPI",
+      "sector": "ETF",
+      "marketCap": 2800000000000,
+      "aliases": []
+    },
+    {
+      "code": "002790.KS",
+      "name": "아모레G",
+      "market": "KOSPI",
+      "sector": "음식료",
+      "marketCap": 2500000000000,
+      "aliases": []
+    },
+    {
+      "code": "004990.KS",
+      "name": "롯데지주",
+      "market": "KOSPI",
+      "sector": "서비스",
+      "marketCap": 2500000000000,
+      "aliases": []
+    },
+    {
+      "code": "039030.KQ",
+      "name": "이오테크닉스",
+      "market": "KOSDAQ",
+      "sector": "기계",
+      "marketCap": 2500000000000,
+      "aliases": []
+    },
+    {
+      "code": "263750.KQ",
+      "name": "펄어비스",
+      "market": "KOSDAQ",
+      "sector": "서비스",
+      "marketCap": 2500000000000,
+      "aliases": []
+    },
+    {
+      "code": "122630.KS",
+      "name": "KODEX 레버리지",
+      "market": "KOSPI",
+      "sector": "ETF",
+      "marketCap": 2500000000000,
+      "aliases": []
+    },
+    {
+      "code": "001040.KS",
+      "name": "CJ",
+      "market": "KOSPI",
+      "sector": "서비스",
+      "marketCap": 2400000000000,
+      "aliases": []
+    },
+    {
+      "code": "035900.KQ",
+      "name": "JYP Ent.",
+      "market": "KOSDAQ",
+      "sector": "엔터테인먼트",
+      "marketCap": 2300000000000,
+      "aliases": [
+        "JYP"
+      ]
+    },
+    {
+      "code": "023530.KS",
+      "name": "롯데쇼핑",
+      "market": "KOSPI",
+      "sector": "유통",
+      "marketCap": 2200000000000,
+      "aliases": []
+    },
+    {
+      "code": "328130.KQ",
+      "name": "루닛",
+      "market": "KOSDAQ",
+      "sector": "제약바이오",
+      "marketCap": 2200000000000,
+      "aliases": []
+    },
+    {
+      "code": "240810.KQ",
+      "name": "원익IPS",
+      "market": "KOSDAQ",
+      "sector": "기계",
+      "marketCap": 2000000000000,
+      "aliases": []
+    },
+    {
+      "code": "041510.KQ",
+      "name": "에스엠",
+      "market": "KOSDAQ",
+      "sector": "엔터테인먼트",
+      "marketCap": 1900000000000,
+      "aliases": [
+        "SM"
+      ]
+    },
+    {
+      "code": "139480.KS",
+      "name": "이마트",
+      "market": "KOSPI",
+      "sector": "유통",
+      "marketCap": 1800000000000,
+      "aliases": []
+    },
+    {
+      "code": "185750.KS",
+      "name": "종근당",
+      "market": "KOSPI",
+      "sector": "제약바이오",
+      "marketCap": 1800000000000,
+      "aliases": []
+    },
+    {
+      "code": "375500.KS",
+      "name": "DL이앤씨",
+      "market": "KOSPI",
+      "sector": "건설",
+      "marketCap": 1800000000000,
+      "aliases": [
+        "DL E&C"
+      ]
+    },
+    {
+      "code": "010060.KS",
+      "name": "OCI홀딩스",
+      "market": "KOSPI",
+      "sector": "화학",
+      "marketCap": 1600000000000,
+      "aliases": [
+        "OCI"
+      ]
+    },
+    {
+      "code": "112040.KQ",
+      "name": "위메이드",
+      "market": "KOSDAQ",
+      "sector": "서비스",
+      "marketCap": 1600000000000,
+      "aliases": []
+    },
+    {
+      "code": "004170.KS",
+      "name": "신세계",
+      "market": "KOSPI",
+      "sector": "유통",
+      "marketCap": 1500000000000,
+      "aliases": []
+    },
+    {
+      "code": "006360.KS",
+      "name": "GS건설",
+      "market": "KOSPI",
+      "sector": "건설",
+      "marketCap": 1500000000000,
+      "aliases": []
+    },
+    {
+      "code": "091160.KS",
+      "name": "KODEX 반도체",
+      "market": "KOSPI",
+      "sector": "ETF",
+      "marketCap": 1500000000000,
+      "aliases": []
+    },
+    {
+      "code": "293490.KQ",
+      "name": "카카오게임즈",
+      "market": "KOSDAQ",
+      "sector": "서비스",
+      "marketCap": 1400000000000,
+      "aliases": []
+    },
+    {
+      "code": "114800.KS",
+      "name": "KODEX 인버스",
+      "market": "KOSPI",
+      "sector": "ETF",
+      "marketCap": 1200000000000,
+      "aliases": []
+    }
+  ]
 }
-
-
-def make_aliases(name):
-    common = {
-        "삼성전자": ["삼전"], "SK하이닉스": ["하이닉스"],
-        "삼성바이오로직스": ["삼성바이오"], "LG에너지솔루션": ["엘지엔솔", "LG엔솔"],
-        "POSCO홀딩스": ["포스코", "포스코홀딩스"], "현대차": ["현대자동차"],
-        "NAVER": ["네이버"], "한화에어로스페이스": ["한화에어로"],
-        "한국항공우주": ["KAI"], "SK텔레콤": ["SKT"],
-    }
-    return common.get(name, [])
-
-
-def normalize_code(ticker, market):
-    return f"{ticker}.KQ" if market == "KOSDAQ" else f"{ticker}.KS"
-
-
-def categorize_etf_reit(name, sector):
-    if any(kw in name for kw in ["KODEX","TIGER","ACE","KBSTAR","HANARO","ARIRANG","SMART","KOSEF"]):
-        return "ETF"
-    elif any(kw in name for kw in ["리츠","REIT"]):
-        return "리츠"
-    return SECTOR_SIMPLIFY.get(sector, sector)
-
-
-# ============================================================
-# 방법 1: KRX 정보데이터시스템 (data.krx.co.kr) 직접 호출
-# ============================================================
-def fetch_from_krx_data():
-    print("\n🎯 방법 1: KRX 정보데이터시스템 (data.krx.co.kr)")
-    
-    session = requests.Session()
-    session.headers.update({
-        "User-Agent": DESKTOP_UA,
-        "Accept": "*/*",
-        "Accept-Language": "ko-KR,ko;q=0.9,en;q=0.8",
-        "Origin": "http://data.krx.co.kr",
-        "Referer": "http://data.krx.co.kr/contents/MDC/MDI/mdiLoader/index.cmd?menuId=MDC0201",
-    })
-    
-    # 영업일 자동 탐색
-    target_date = None
-    for offset in range(10):
-        d = datetime.now() - timedelta(days=offset)
-        if d.weekday() >= 5:
-            continue
-        target_date = d.strftime("%Y%m%d")
-        break
-    
-    if not target_date:
-        return None
-    
-    print(f"   📅 기준일: {target_date}")
-    
-    all_stocks = []
-    
-    # 시장별 (KOSPI=STK, KOSDAQ=KSQ, KONEX=KNX)
-    market_codes = {"KOSPI": "STK", "KOSDAQ": "KSQ", "KONEX": "KNX"}
-    
-    for market_name, mkt_id in market_codes.items():
-        print(f"\n   📊 {market_name} 수집...")
-        try:
-            # 시가총액 데이터 가져오기 (전체 종목 + 시총 한 번에)
-            payload = {
-                "bld": "dbms/MDC/STAT/standard/MDCSTAT01501",
-                "mktId": mkt_id,
-                "trdDd": target_date,
-                "money": "1",
-                "csvxls_isNo": "false",
-            }
-            
-            r = session.post(
-                "http://data.krx.co.kr/comm/bldAttendant/getJsonData.cmd",
-                data=payload,
-                timeout=15
-            )
-            
-            print(f"      상태: {r.status_code}, 크기: {len(r.content)}")
-            
-            if r.status_code != 200:
-                print(f"      ⚠️  실패")
-                continue
-            
-            data = r.json()
-            rows = data.get("OutBlock_1", [])
-            
-            if not rows:
-                print(f"      ⚠️  데이터 없음")
-                continue
-            
-            print(f"      ✓ {len(rows)}개 종목 받음")
-            
-            for row in rows:
-                ticker = row.get("ISU_SRT_CD", "").strip()
-                name = row.get("ISU_ABBRV", "").strip()
-                if not ticker or not name:
-                    continue
-                
-                # 시가총액 파싱
-                try:
-                    mkt_cap_str = row.get("MKTCAP", "0").replace(",", "")
-                    market_cap = int(mkt_cap_str) if mkt_cap_str else 0
-                except (ValueError, AttributeError):
-                    market_cap = 0
-                
-                # 섹터 (이 API는 섹터 정보가 없음, 별도 호출 필요)
-                sector = "기타"
-                sector = categorize_etf_reit(name, sector)
-                
-                all_stocks.append({
-                    "code": normalize_code(ticker, market_name),
-                    "name": name,
-                    "market": market_name,
-                    "sector": sector,
-                    "marketCap": market_cap,
-                    "aliases": make_aliases(name),
-                })
-            
-            time.sleep(1)  # API 부하 방지
-            
-        except Exception as e:
-            print(f"      ❌ 에러: {str(e)[:120]}")
-    
-    if all_stocks:
-        print(f"\n   ✅ KRX 정보데이터: 총 {len(all_stocks)}개 수집 성공")
-        return all_stocks, target_date
-    return None
-
-
-# ============================================================
-# 방법 2: KIND 상장법인목록 (kind.krx.co.kr)
-# ============================================================
-def fetch_from_kind():
-    print("\n🎯 방법 2: KIND 상장법인목록")
-    
-    headers = {
-        "User-Agent": DESKTOP_UA,
-        "Accept": "text/html,application/xhtml+xml,*/*",
-        "Accept-Language": "ko-KR,ko;q=0.9,en;q=0.8",
-        "Referer": "https://kind.krx.co.kr/corpgeneral/corpList.do",
-    }
-    
-    all_stocks = []
-    market_params = {
-        "KOSPI": "stockMkt",
-        "KOSDAQ": "kosdaqMkt",
-        "KONEX": "konexMkt",
-    }
-    
-    try:
-        import pandas as pd
-    except ImportError:
-        print("   ⚠️  pandas 필요 (HTML 테이블 파싱용)")
-        return None
-    
-    for market_name, mkt_type in market_params.items():
-        print(f"\n   📊 {market_name} 수집...")
-        try:
-            url = f"https://kind.krx.co.kr/corpgeneral/corpList.do?method=download&searchType=13&marketType={mkt_type}"
-            r = requests.get(url, headers=headers, timeout=15)
-            print(f"      상태: {r.status_code}, 크기: {len(r.content)}")
-            
-            if r.status_code != 200:
-                continue
-            
-            # HTML 테이블 파싱
-            dfs = pd.read_html(StringIO(r.text), encoding='euc-kr')
-            if not dfs:
-                continue
-            
-            df = dfs[0]
-            print(f"      ✓ {len(df)}개 종목 발견")
-            
-            success_in_market = 0
-            for _, row in df.iterrows():
-                try:
-                    name = str(row.get("회사명", "")).strip()
-                    ticker_raw = row.get("종목코드", "")
-                    if not name or ticker_raw is None or str(ticker_raw).strip() == "":
-                        continue
-                    
-                    # 종목코드 6자리로 정규화 (영문자 포함 가능, 예: '0126Z0')
-                    ticker_str = str(ticker_raw).strip()
-                    if ticker_str.isdigit():
-                        ticker = f"{int(ticker_str):06d}"
-                    else:
-                        ticker = ticker_str.zfill(6) if len(ticker_str) < 6 else ticker_str
-                    
-                    sector_raw = str(row.get("업종", "기타")).strip()
-                    sector = categorize_etf_reit(name, sector_raw)
-                    
-                    all_stocks.append({
-                        "code": normalize_code(ticker, market_name),
-                        "name": name,
-                        "market": market_name,
-                        "sector": sector,
-                        "marketCap": 0,  # KIND에는 시총 없음
-                        "aliases": make_aliases(name),
-                    })
-                    success_in_market += 1
-                except Exception as row_err:
-                    continue  # 한 행 실패해도 계속
-            
-            print(f"      ✓ {success_in_market}개 종목 처리 완료")
-        except Exception as e:
-            print(f"      ❌ 에러: {str(e)[:120]}")
-    
-    if all_stocks:
-        today = datetime.now().strftime("%Y%m%d")
-        print(f"\n   ✅ KIND: 총 {len(all_stocks)}개 수집 성공")
-        return all_stocks, today
-    return None
-
-
-# ============================================================
-# 방법 3: pykrx (기존)
-# ============================================================
-def fetch_from_pykrx():
-    print("\n🎯 방법 3: pykrx 라이브러리")
-    try:
-        from pykrx import stock
-    except ImportError:
-        print("   ⚠️  pykrx 설치 안 됨")
-        return None
-    
-    # 영업일 탐색
-    target_date = None
-    for offset in range(10):
-        d = datetime.now() - timedelta(days=offset)
-        if d.weekday() >= 5:
-            continue
-        date_str = d.strftime("%Y%m%d")
-        try:
-            tickers = stock.get_market_ticker_list(date_str, market="KOSPI")
-            if tickers and len(tickers) > 10:
-                target_date = date_str
-                print(f"   ✓ {date_str} 데이터 확인 ({len(tickers)}개)")
-                break
-        except Exception:
-            continue
-    
-    if not target_date:
-        print("   ❌ pykrx: 유효 영업일 없음")
-        return None
-    
-    all_stocks = []
-    for market_name, market_code in [("KOSPI","KOSPI"), ("KOSDAQ","KOSDAQ"), ("KONEX","KONEX")]:
-        try:
-            tickers = stock.get_market_ticker_list(target_date, market=market_code)
-            cap_df = stock.get_market_cap(target_date, market=market_code)
-            for ticker in tickers:
-                try:
-                    name = stock.get_market_ticker_name(ticker)
-                    if not name: continue
-                    market_cap = int(cap_df.loc[ticker, "시가총액"]) if ticker in cap_df.index else 0
-                    all_stocks.append({
-                        "code": normalize_code(ticker, market_name),
-                        "name": name,
-                        "market": market_name,
-                        "sector": categorize_etf_reit(name, "기타"),
-                        "marketCap": market_cap,
-                        "aliases": make_aliases(name),
-                    })
-                except Exception:
-                    continue
-        except Exception as e:
-            print(f"   ⚠️  {market_name}: {str(e)[:80]}")
-    
-    if all_stocks:
-        print(f"   ✅ pykrx: 총 {len(all_stocks)}개")
-        return all_stocks, target_date
-    return None
-
-
-# ============================================================
-# 방법 4: 정적 백업 (이전 빌드 결과 재사용)
-# ============================================================
-def fetch_from_backup():
-    print("\n🎯 방법 4: 백업 JSON 재사용")
-    if not OUTPUT_PATH.exists():
-        print("   ⚠️  백업 파일 없음")
-        return None
-    try:
-        with open(OUTPUT_PATH, "r", encoding="utf-8") as f:
-            data = json.load(f)
-        if data.get("count", 0) > 0:
-            print(f"   ✓ 백업 {data['count']}개 종목 재사용")
-            return data["stocks"], data.get("data_date", "backup")
-    except Exception as e:
-        print(f"   ❌ 백업 로드 실패: {e}")
-    return None
-
-
-# ============================================================
-# MAIN
-# ============================================================
-def main():
-    print(f"🚀 SIGNAL PRO 종목 DB 생성 시작 (v4 멀티소스)")
-    print(f"📅 현재 시각: {datetime.now().isoformat()}")
-    
-    # 4단계 폴백 체인
-    methods = [
-        ("KRX 정보데이터시스템", fetch_from_krx_data),
-        ("KIND 상장법인목록", fetch_from_kind),
-        ("pykrx", fetch_from_pykrx),
-        ("백업 JSON", fetch_from_backup),
-    ]
-    
-    stocks = None
-    data_date = None
-    method_used = None
-    
-    for method_name, fetch_func in methods:
-        try:
-            result = fetch_func()
-            if result and result[0]:
-                stocks, data_date = result
-                method_used = method_name
-                break
-        except Exception as e:
-            print(f"   ❌ {method_name} 예외: {str(e)[:120]}")
-    
-    if not stocks:
-        print("\n❌ 모든 데이터 소스 실패!")
-        sys.exit(1)
-    
-    # 시가총액 내림차순 정렬
-    stocks.sort(key=lambda x: x.get("marketCap", 0), reverse=True)
-    
-    # 중복 제거 (code 기준)
-    seen = set()
-    unique_stocks = []
-    for s in stocks:
-        if s["code"] not in seen:
-            seen.add(s["code"])
-            unique_stocks.append(s)
-    
-    now = datetime.now()
-    result = {
-        "version": now.strftime("%Y.%m.%d"),
-        "updated_at": now.isoformat() + "+09:00",
-        "source": method_used,
-        "data_date": data_date,
-        "count": len(unique_stocks),
-        "markets": {
-            "KOSPI": sum(1 for s in unique_stocks if s["market"] == "KOSPI"),
-            "KOSDAQ": sum(1 for s in unique_stocks if s["market"] == "KOSDAQ"),
-            "KONEX": sum(1 for s in unique_stocks if s["market"] == "KONEX"),
-        },
-        "stocks": unique_stocks,
-    }
-    
-    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
-        json.dump(result, f, ensure_ascii=False, indent=2)
-    
-    file_size_kb = OUTPUT_PATH.stat().st_size / 1024
-    print(f"\n{'='*50}")
-    print(f"✅ 빌드 완료! (방법: {method_used})")
-    print(f"{'='*50}")
-    print(f"   📊 총 종목: {result['count']}")
-    print(f"      KOSPI: {result['markets']['KOSPI']}")
-    print(f"      KOSDAQ: {result['markets']['KOSDAQ']}")
-    print(f"      KONEX: {result['markets']['KONEX']}")
-    print(f"   💾 크기: {file_size_kb:.1f} KB")
-
-
-if __name__ == "__main__":
-    main()
