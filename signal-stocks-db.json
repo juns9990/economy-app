@@ -1,0 +1,953 @@
+{
+  "version": "2026.06.07",
+  "updated_at": "2026-06-07T10:07:38.422512+09:00",
+  "source": "KRX (샘플 데이터 — Actions 첫 빌드시 2,500개로 자동 교체)",
+  "count": 109,
+  "markets": {
+    "KOSPI": 93,
+    "KOSDAQ": 16,
+    "KONEX": 0
+  },
+  "stocks": [
+    {
+      "code": "005930.KS",
+      "name": "삼성전자",
+      "market": "KOSPI",
+      "sector": "전기전자",
+      "marketCap": 432000000000000,
+      "aliases": [
+        "삼전",
+        "Samsung"
+      ]
+    },
+    {
+      "code": "000660.KS",
+      "name": "SK하이닉스",
+      "market": "KOSPI",
+      "sector": "전기전자",
+      "marketCap": 142000000000000,
+      "aliases": [
+        "하이닉스"
+      ]
+    },
+    {
+      "code": "373220.KS",
+      "name": "LG에너지솔루션",
+      "market": "KOSPI",
+      "sector": "전기전자",
+      "marketCap": 88000000000000,
+      "aliases": [
+        "엘지엔솔",
+        "LG엔솔"
+      ]
+    },
+    {
+      "code": "207940.KS",
+      "name": "삼성바이오로직스",
+      "market": "KOSPI",
+      "sector": "제약바이오",
+      "marketCap": 72000000000000,
+      "aliases": [
+        "삼성바이오"
+      ]
+    },
+    {
+      "code": "005380.KS",
+      "name": "현대차",
+      "market": "KOSPI",
+      "sector": "운송장비",
+      "marketCap": 51000000000000,
+      "aliases": [
+        "현대자동차"
+      ]
+    },
+    {
+      "code": "005935.KS",
+      "name": "삼성전자우",
+      "market": "KOSPI",
+      "sector": "전기전자",
+      "marketCap": 49000000000000,
+      "aliases": []
+    },
+    {
+      "code": "000270.KS",
+      "name": "기아",
+      "market": "KOSPI",
+      "sector": "운송장비",
+      "marketCap": 43000000000000,
+      "aliases": []
+    },
+    {
+      "code": "068270.KS",
+      "name": "셀트리온",
+      "market": "KOSPI",
+      "sector": "제약바이오",
+      "marketCap": 41000000000000,
+      "aliases": []
+    },
+    {
+      "code": "035420.KS",
+      "name": "NAVER",
+      "market": "KOSPI",
+      "sector": "서비스",
+      "marketCap": 35000000000000,
+      "aliases": [
+        "네이버"
+      ]
+    },
+    {
+      "code": "005490.KS",
+      "name": "POSCO홀딩스",
+      "market": "KOSPI",
+      "sector": "철강금속",
+      "marketCap": 31000000000000,
+      "aliases": [
+        "포스코"
+      ]
+    },
+    {
+      "code": "105560.KS",
+      "name": "KB금융",
+      "market": "KOSPI",
+      "sector": "금융",
+      "marketCap": 30000000000000,
+      "aliases": []
+    },
+    {
+      "code": "006400.KS",
+      "name": "삼성SDI",
+      "market": "KOSPI",
+      "sector": "전기전자",
+      "marketCap": 28000000000000,
+      "aliases": []
+    },
+    {
+      "code": "051910.KS",
+      "name": "LG화학",
+      "market": "KOSPI",
+      "sector": "화학",
+      "marketCap": 27000000000000,
+      "aliases": []
+    },
+    {
+      "code": "055550.KS",
+      "name": "신한지주",
+      "market": "KOSPI",
+      "sector": "금융",
+      "marketCap": 24000000000000,
+      "aliases": []
+    },
+    {
+      "code": "329180.KS",
+      "name": "HD현대중공업",
+      "market": "KOSPI",
+      "sector": "운송장비",
+      "marketCap": 24000000000000,
+      "aliases": [
+        "현대중공업"
+      ]
+    },
+    {
+      "code": "012330.KS",
+      "name": "현대모비스",
+      "market": "KOSPI",
+      "sector": "운송장비",
+      "marketCap": 22000000000000,
+      "aliases": [
+        "모비스"
+      ]
+    },
+    {
+      "code": "028260.KS",
+      "name": "삼성물산",
+      "market": "KOSPI",
+      "sector": "유통",
+      "marketCap": 22000000000000,
+      "aliases": []
+    },
+    {
+      "code": "042660.KS",
+      "name": "한화오션",
+      "market": "KOSPI",
+      "sector": "운송장비",
+      "marketCap": 21000000000000,
+      "aliases": [
+        "대우조선해양"
+      ]
+    },
+    {
+      "code": "035720.KS",
+      "name": "카카오",
+      "market": "KOSPI",
+      "sector": "서비스",
+      "marketCap": 19000000000000,
+      "aliases": []
+    },
+    {
+      "code": "196170.KQ",
+      "name": "알테오젠",
+      "market": "KOSDAQ",
+      "sector": "제약바이오",
+      "marketCap": 18500000000000,
+      "aliases": []
+    },
+    {
+      "code": "086790.KS",
+      "name": "하나금융지주",
+      "market": "KOSPI",
+      "sector": "금융",
+      "marketCap": 18000000000000,
+      "aliases": []
+    },
+    {
+      "code": "032830.KS",
+      "name": "삼성생명",
+      "market": "KOSPI",
+      "sector": "보험",
+      "marketCap": 18000000000000,
+      "aliases": []
+    },
+    {
+      "code": "000810.KS",
+      "name": "삼성화재",
+      "market": "KOSPI",
+      "sector": "보험",
+      "marketCap": 17000000000000,
+      "aliases": []
+    },
+    {
+      "code": "247540.KQ",
+      "name": "에코프로비엠",
+      "market": "KOSDAQ",
+      "sector": "화학",
+      "marketCap": 17000000000000,
+      "aliases": [
+        "에코프로BM"
+      ]
+    },
+    {
+      "code": "066570.KS",
+      "name": "LG전자",
+      "market": "KOSPI",
+      "sector": "전기전자",
+      "marketCap": 16000000000000,
+      "aliases": []
+    },
+    {
+      "code": "138040.KS",
+      "name": "메리츠금융지주",
+      "market": "KOSPI",
+      "sector": "금융",
+      "marketCap": 15000000000000,
+      "aliases": []
+    },
+    {
+      "code": "011200.KS",
+      "name": "HMM",
+      "market": "KOSPI",
+      "sector": "물류",
+      "marketCap": 15000000000000,
+      "aliases": []
+    },
+    {
+      "code": "012450.KS",
+      "name": "한화에어로스페이스",
+      "market": "KOSPI",
+      "sector": "운송장비",
+      "marketCap": 14500000000000,
+      "aliases": [
+        "한화에어로"
+      ]
+    },
+    {
+      "code": "003670.KS",
+      "name": "포스코퓨처엠",
+      "market": "KOSPI",
+      "sector": "화학",
+      "marketCap": 14000000000000,
+      "aliases": []
+    },
+    {
+      "code": "015760.KS",
+      "name": "한국전력",
+      "market": "KOSPI",
+      "sector": "전기가스",
+      "marketCap": 14000000000000,
+      "aliases": [
+        "한전"
+      ]
+    },
+    {
+      "code": "259960.KS",
+      "name": "크래프톤",
+      "market": "KOSPI",
+      "sector": "서비스",
+      "marketCap": 14000000000000,
+      "aliases": [
+        "배그"
+      ]
+    },
+    {
+      "code": "086520.KQ",
+      "name": "에코프로",
+      "market": "KOSDAQ",
+      "sector": "화학",
+      "marketCap": 14000000000000,
+      "aliases": []
+    },
+    {
+      "code": "042700.KS",
+      "name": "한미반도체",
+      "market": "KOSPI",
+      "sector": "전기전자",
+      "marketCap": 13500000000000,
+      "aliases": []
+    },
+    {
+      "code": "323410.KS",
+      "name": "카카오뱅크",
+      "market": "KOSPI",
+      "sector": "금융",
+      "marketCap": 13500000000000,
+      "aliases": [
+        "카뱅"
+      ]
+    },
+    {
+      "code": "003550.KS",
+      "name": "LG",
+      "market": "KOSPI",
+      "sector": "서비스",
+      "marketCap": 13000000000000,
+      "aliases": []
+    },
+    {
+      "code": "010130.KS",
+      "name": "고려아연",
+      "market": "KOSPI",
+      "sector": "철강금속",
+      "marketCap": 13000000000000,
+      "aliases": []
+    },
+    {
+      "code": "009540.KS",
+      "name": "HD한국조선해양",
+      "market": "KOSPI",
+      "sector": "운송장비",
+      "marketCap": 13000000000000,
+      "aliases": []
+    },
+    {
+      "code": "010140.KS",
+      "name": "삼성중공업",
+      "market": "KOSPI",
+      "sector": "운송장비",
+      "marketCap": 12500000000000,
+      "aliases": []
+    },
+    {
+      "code": "034020.KS",
+      "name": "두산에너빌리티",
+      "market": "KOSPI",
+      "sector": "기계",
+      "marketCap": 12500000000000,
+      "aliases": [
+        "두산중공업"
+      ]
+    },
+    {
+      "code": "091990.KQ",
+      "name": "셀트리온헬스케어",
+      "market": "KOSDAQ",
+      "sector": "제약바이오",
+      "marketCap": 12500000000000,
+      "aliases": [
+        "셀헬케"
+      ]
+    },
+    {
+      "code": "034730.KS",
+      "name": "SK",
+      "market": "KOSPI",
+      "sector": "서비스",
+      "marketCap": 12000000000000,
+      "aliases": []
+    },
+    {
+      "code": "017670.KS",
+      "name": "SK텔레콤",
+      "market": "KOSPI",
+      "sector": "통신",
+      "marketCap": 11500000000000,
+      "aliases": [
+        "SKT"
+      ]
+    },
+    {
+      "code": "018260.KS",
+      "name": "삼성SDS",
+      "market": "KOSPI",
+      "sector": "서비스",
+      "marketCap": 11500000000000,
+      "aliases": []
+    },
+    {
+      "code": "352820.KQ",
+      "name": "하이브",
+      "market": "KOSDAQ",
+      "sector": "엔터테인먼트",
+      "marketCap": 11500000000000,
+      "aliases": [
+        "HYBE",
+        "BTS"
+      ]
+    },
+    {
+      "code": "096770.KS",
+      "name": "SK이노베이션",
+      "market": "KOSPI",
+      "sector": "화학",
+      "marketCap": 11000000000000,
+      "aliases": []
+    },
+    {
+      "code": "316140.KS",
+      "name": "우리금융지주",
+      "market": "KOSPI",
+      "sector": "금융",
+      "marketCap": 11000000000000,
+      "aliases": []
+    },
+    {
+      "code": "009150.KS",
+      "name": "삼성전기",
+      "market": "KOSPI",
+      "sector": "전기전자",
+      "marketCap": 11000000000000,
+      "aliases": []
+    },
+    {
+      "code": "030200.KS",
+      "name": "KT",
+      "market": "KOSPI",
+      "sector": "통신",
+      "marketCap": 10000000000000,
+      "aliases": []
+    },
+    {
+      "code": "047810.KS",
+      "name": "한국항공우주",
+      "market": "KOSPI",
+      "sector": "운송장비",
+      "marketCap": 9000000000000,
+      "aliases": [
+        "KAI"
+      ]
+    },
+    {
+      "code": "003490.KS",
+      "name": "대한항공",
+      "market": "KOSPI",
+      "sector": "운송장비",
+      "marketCap": 8500000000000,
+      "aliases": []
+    },
+    {
+      "code": "000100.KS",
+      "name": "유한양행",
+      "market": "KOSPI",
+      "sector": "제약바이오",
+      "marketCap": 8500000000000,
+      "aliases": []
+    },
+    {
+      "code": "064350.KS",
+      "name": "현대로템",
+      "market": "KOSPI",
+      "sector": "운송장비",
+      "marketCap": 8500000000000,
+      "aliases": []
+    },
+    {
+      "code": "069500.KS",
+      "name": "KODEX 200",
+      "market": "KOSPI",
+      "sector": "ETF",
+      "marketCap": 8500000000000,
+      "aliases": []
+    },
+    {
+      "code": "079550.KS",
+      "name": "LIG넥스원",
+      "market": "KOSPI",
+      "sector": "운송장비",
+      "marketCap": 7500000000000,
+      "aliases": []
+    },
+    {
+      "code": "051900.KS",
+      "name": "LG생활건강",
+      "market": "KOSPI",
+      "sector": "음식료",
+      "marketCap": 7500000000000,
+      "aliases": [
+        "LG생건"
+      ]
+    },
+    {
+      "code": "010950.KS",
+      "name": "S-Oil",
+      "market": "KOSPI",
+      "sector": "화학",
+      "marketCap": 7500000000000,
+      "aliases": [
+        "에쓰오일"
+      ]
+    },
+    {
+      "code": "011070.KS",
+      "name": "LG이노텍",
+      "market": "KOSPI",
+      "sector": "전기전자",
+      "marketCap": 6800000000000,
+      "aliases": []
+    },
+    {
+      "code": "010620.KS",
+      "name": "HD현대미포",
+      "market": "KOSPI",
+      "sector": "운송장비",
+      "marketCap": 6500000000000,
+      "aliases": []
+    },
+    {
+      "code": "009830.KS",
+      "name": "한화솔루션",
+      "market": "KOSPI",
+      "sector": "화학",
+      "marketCap": 6500000000000,
+      "aliases": []
+    },
+    {
+      "code": "090430.KS",
+      "name": "아모레퍼시픽",
+      "market": "KOSPI",
+      "sector": "음식료",
+      "marketCap": 6500000000000,
+      "aliases": []
+    },
+    {
+      "code": "267250.KS",
+      "name": "HD현대",
+      "market": "KOSPI",
+      "sector": "서비스",
+      "marketCap": 6000000000000,
+      "aliases": []
+    },
+    {
+      "code": "006800.KS",
+      "name": "미래에셋증권",
+      "market": "KOSPI",
+      "sector": "증권",
+      "marketCap": 5500000000000,
+      "aliases": []
+    },
+    {
+      "code": "251270.KS",
+      "name": "넷마블",
+      "market": "KOSPI",
+      "sector": "서비스",
+      "marketCap": 5500000000000,
+      "aliases": []
+    },
+    {
+      "code": "028050.KS",
+      "name": "삼성E&A",
+      "market": "KOSPI",
+      "sector": "건설",
+      "marketCap": 5500000000000,
+      "aliases": [
+        "삼성엔지니어링"
+      ]
+    },
+    {
+      "code": "241560.KS",
+      "name": "두산밥캣",
+      "market": "KOSPI",
+      "sector": "기계",
+      "marketCap": 5500000000000,
+      "aliases": []
+    },
+    {
+      "code": "086280.KS",
+      "name": "현대글로비스",
+      "market": "KOSPI",
+      "sector": "물류",
+      "marketCap": 5500000000000,
+      "aliases": [
+        "글로비스"
+      ]
+    },
+    {
+      "code": "016360.KS",
+      "name": "삼성증권",
+      "market": "KOSPI",
+      "sector": "증권",
+      "marketCap": 5000000000000,
+      "aliases": []
+    },
+    {
+      "code": "006260.KS",
+      "name": "LS",
+      "market": "KOSPI",
+      "sector": "서비스",
+      "marketCap": 4800000000000,
+      "aliases": []
+    },
+    {
+      "code": "071050.KS",
+      "name": "한국금융지주",
+      "market": "KOSPI",
+      "sector": "금융",
+      "marketCap": 4500000000000,
+      "aliases": [
+        "한투"
+      ]
+    },
+    {
+      "code": "097950.KS",
+      "name": "CJ제일제당",
+      "market": "KOSPI",
+      "sector": "음식료",
+      "marketCap": 4500000000000,
+      "aliases": []
+    },
+    {
+      "code": "034220.KS",
+      "name": "LG디스플레이",
+      "market": "KOSPI",
+      "sector": "전기전자",
+      "marketCap": 4500000000000,
+      "aliases": [
+        "LGD"
+      ]
+    },
+    {
+      "code": "078930.KS",
+      "name": "GS",
+      "market": "KOSPI",
+      "sector": "서비스",
+      "marketCap": 4500000000000,
+      "aliases": []
+    },
+    {
+      "code": "277810.KQ",
+      "name": "레인보우로보틱스",
+      "market": "KOSDAQ",
+      "sector": "기계",
+      "marketCap": 4500000000000,
+      "aliases": [
+        "로보틱스"
+      ]
+    },
+    {
+      "code": "377300.KS",
+      "name": "카카오페이",
+      "market": "KOSPI",
+      "sector": "금융",
+      "marketCap": 4500000000000,
+      "aliases": []
+    },
+    {
+      "code": "360750.KS",
+      "name": "TIGER 미국S&P500",
+      "market": "KOSPI",
+      "sector": "ETF",
+      "marketCap": 4500000000000,
+      "aliases": []
+    },
+    {
+      "code": "271560.KS",
+      "name": "오리온",
+      "market": "KOSPI",
+      "sector": "음식료",
+      "marketCap": 4200000000000,
+      "aliases": []
+    },
+    {
+      "code": "128940.KS",
+      "name": "한미약품",
+      "market": "KOSPI",
+      "sector": "제약바이오",
+      "marketCap": 4000000000000,
+      "aliases": []
+    },
+    {
+      "code": "036570.KS",
+      "name": "엔씨소프트",
+      "market": "KOSPI",
+      "sector": "서비스",
+      "marketCap": 3800000000000,
+      "aliases": [
+        "NC",
+        "엔씨"
+      ]
+    },
+    {
+      "code": "000720.KS",
+      "name": "현대건설",
+      "market": "KOSPI",
+      "sector": "건설",
+      "marketCap": 3800000000000,
+      "aliases": []
+    },
+    {
+      "code": "011170.KS",
+      "name": "롯데케미칼",
+      "market": "KOSPI",
+      "sector": "화학",
+      "marketCap": 3500000000000,
+      "aliases": []
+    },
+    {
+      "code": "004020.KS",
+      "name": "현대제철",
+      "market": "KOSPI",
+      "sector": "철강금속",
+      "marketCap": 3500000000000,
+      "aliases": []
+    },
+    {
+      "code": "039490.KS",
+      "name": "키움증권",
+      "market": "KOSPI",
+      "sector": "증권",
+      "marketCap": 3500000000000,
+      "aliases": []
+    },
+    {
+      "code": "058470.KQ",
+      "name": "리노공업",
+      "market": "KOSDAQ",
+      "sector": "전기전자",
+      "marketCap": 3500000000000,
+      "aliases": []
+    },
+    {
+      "code": "145020.KQ",
+      "name": "휴젤",
+      "market": "KOSDAQ",
+      "sector": "제약바이오",
+      "marketCap": 3500000000000,
+      "aliases": []
+    },
+    {
+      "code": "379800.KS",
+      "name": "KODEX 미국S&P500",
+      "market": "KOSPI",
+      "sector": "ETF",
+      "marketCap": 3500000000000,
+      "aliases": []
+    },
+    {
+      "code": "381180.KS",
+      "name": "TIGER 미국필라델피아반도체",
+      "market": "KOSPI",
+      "sector": "ETF",
+      "marketCap": 3500000000000,
+      "aliases": []
+    },
+    {
+      "code": "000150.KS",
+      "name": "두산",
+      "market": "KOSPI",
+      "sector": "서비스",
+      "marketCap": 2800000000000,
+      "aliases": []
+    },
+    {
+      "code": "381170.KS",
+      "name": "TIGER 미국테크TOP10",
+      "market": "KOSPI",
+      "sector": "ETF",
+      "marketCap": 2800000000000,
+      "aliases": []
+    },
+    {
+      "code": "002790.KS",
+      "name": "아모레G",
+      "market": "KOSPI",
+      "sector": "음식료",
+      "marketCap": 2500000000000,
+      "aliases": []
+    },
+    {
+      "code": "004990.KS",
+      "name": "롯데지주",
+      "market": "KOSPI",
+      "sector": "서비스",
+      "marketCap": 2500000000000,
+      "aliases": []
+    },
+    {
+      "code": "039030.KQ",
+      "name": "이오테크닉스",
+      "market": "KOSDAQ",
+      "sector": "기계",
+      "marketCap": 2500000000000,
+      "aliases": []
+    },
+    {
+      "code": "263750.KQ",
+      "name": "펄어비스",
+      "market": "KOSDAQ",
+      "sector": "서비스",
+      "marketCap": 2500000000000,
+      "aliases": []
+    },
+    {
+      "code": "122630.KS",
+      "name": "KODEX 레버리지",
+      "market": "KOSPI",
+      "sector": "ETF",
+      "marketCap": 2500000000000,
+      "aliases": []
+    },
+    {
+      "code": "001040.KS",
+      "name": "CJ",
+      "market": "KOSPI",
+      "sector": "서비스",
+      "marketCap": 2400000000000,
+      "aliases": []
+    },
+    {
+      "code": "035900.KQ",
+      "name": "JYP Ent.",
+      "market": "KOSDAQ",
+      "sector": "엔터테인먼트",
+      "marketCap": 2300000000000,
+      "aliases": [
+        "JYP"
+      ]
+    },
+    {
+      "code": "023530.KS",
+      "name": "롯데쇼핑",
+      "market": "KOSPI",
+      "sector": "유통",
+      "marketCap": 2200000000000,
+      "aliases": []
+    },
+    {
+      "code": "328130.KQ",
+      "name": "루닛",
+      "market": "KOSDAQ",
+      "sector": "제약바이오",
+      "marketCap": 2200000000000,
+      "aliases": []
+    },
+    {
+      "code": "240810.KQ",
+      "name": "원익IPS",
+      "market": "KOSDAQ",
+      "sector": "기계",
+      "marketCap": 2000000000000,
+      "aliases": []
+    },
+    {
+      "code": "041510.KQ",
+      "name": "에스엠",
+      "market": "KOSDAQ",
+      "sector": "엔터테인먼트",
+      "marketCap": 1900000000000,
+      "aliases": [
+        "SM"
+      ]
+    },
+    {
+      "code": "139480.KS",
+      "name": "이마트",
+      "market": "KOSPI",
+      "sector": "유통",
+      "marketCap": 1800000000000,
+      "aliases": []
+    },
+    {
+      "code": "185750.KS",
+      "name": "종근당",
+      "market": "KOSPI",
+      "sector": "제약바이오",
+      "marketCap": 1800000000000,
+      "aliases": []
+    },
+    {
+      "code": "375500.KS",
+      "name": "DL이앤씨",
+      "market": "KOSPI",
+      "sector": "건설",
+      "marketCap": 1800000000000,
+      "aliases": [
+        "DL E&C"
+      ]
+    },
+    {
+      "code": "010060.KS",
+      "name": "OCI홀딩스",
+      "market": "KOSPI",
+      "sector": "화학",
+      "marketCap": 1600000000000,
+      "aliases": [
+        "OCI"
+      ]
+    },
+    {
+      "code": "112040.KQ",
+      "name": "위메이드",
+      "market": "KOSDAQ",
+      "sector": "서비스",
+      "marketCap": 1600000000000,
+      "aliases": []
+    },
+    {
+      "code": "004170.KS",
+      "name": "신세계",
+      "market": "KOSPI",
+      "sector": "유통",
+      "marketCap": 1500000000000,
+      "aliases": []
+    },
+    {
+      "code": "006360.KS",
+      "name": "GS건설",
+      "market": "KOSPI",
+      "sector": "건설",
+      "marketCap": 1500000000000,
+      "aliases": []
+    },
+    {
+      "code": "091160.KS",
+      "name": "KODEX 반도체",
+      "market": "KOSPI",
+      "sector": "ETF",
+      "marketCap": 1500000000000,
+      "aliases": []
+    },
+    {
+      "code": "293490.KQ",
+      "name": "카카오게임즈",
+      "market": "KOSDAQ",
+      "sector": "서비스",
+      "marketCap": 1400000000000,
+      "aliases": []
+    },
+    {
+      "code": "114800.KS",
+      "name": "KODEX 인버스",
+      "market": "KOSPI",
+      "sector": "ETF",
+      "marketCap": 1200000000000,
+      "aliases": []
+    }
+  ]
+}
