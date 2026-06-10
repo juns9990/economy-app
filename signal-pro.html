@@ -1025,7 +1025,16 @@ body {
   .brand-title { font-size:26px; }
   .brand-version { font-size:11px; padding:3px 8px; }
   .verdict-headline { font-size:23px; white-space:nowrap; }
-  .stock-name { font-size:20px; }
+  .stock-name { font-size:19px; white-space:nowrap; }
+  .stock-head-card { padding:18px 18px; }
+  .stock-name-row { flex-wrap:wrap; gap:6px; }
+  .stock-price { font-size:22px; white-space:nowrap; }
+  .stock-head-row { gap:10px; }
+  .stock-head-row > div:first-child { min-width:0; flex:1; }
+  .stock-price-row { flex-shrink:0; }
+  .plan-row-val { font-size:13px; white-space:nowrap; text-align:right; }
+  .plan-row-lbl { font-size:12px; flex-shrink:0; }
+  .plan-row { gap:8px; }
   .holding-name { font-size:17px; }
   .winner-banner { flex-direction:column; gap:14px; text-align:center; }
   .winner-info-block { flex-direction:column; }
@@ -1134,7 +1143,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
       </div>
       <div class="brand-name">SIGNAL</div>
     </div>
-    <div class="brand-meta">PRO · v3.12.1</div>
+    <div class="brand-meta">PRO · v3.12.2</div>
   </div>
   <div class="nav">
     <div class="nav-group-label">분석</div>
@@ -1165,7 +1174,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
     <div class="sb-foot-info">
       <div class="sb-foot-row">
         <span class="sb-foot-key">VERSION</span>
-        <span class="sb-foot-val">v3.12.1</span>
+        <span class="sb-foot-val">v3.12.2</span>
       </div>
       <div class="sb-foot-row">
         <span class="sb-foot-key">UPDATED</span>
@@ -1877,7 +1886,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
 <footer class="page-foot">
   <div class="page-foot-left">
     <span class="page-foot-brand">SIGNAL PRO</span>
-    <span class="page-foot-ver">v3.12.1</span>
+    <span class="page-foot-ver">v3.12.2</span>
   </div>
   <div class="page-foot-meta">
     <span>Updated 2026.04.27</span>
@@ -1912,8 +1921,14 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
 
 <script>
 // ===================== CONFIG =====================
-const APP_VERSION = '3.12.1';
+const APP_VERSION = '3.12.2';
 const RELEASE_NOTES = [{
+  version:'3.12.2', date:'2026-06-10',
+  changes:[
+    '📱 종목 헤더 모바일 대응 — 종목명·가격 줄바꿈 방지, 화면 폭에 맞게 유동 조정',
+    '📱 액션플랜 분할매수가 줄바꿈 해결',
+  ]
+},{
   version:'3.12.1', date:'2026-06-10',
   changes:[
     '📱 결론 카드 모바일 레이아웃 개선 — 국면·신뢰도·시장·수급을 상단 한 줄로',
