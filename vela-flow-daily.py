@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-vela-flow-daily.py v2 — 외국인/기관 수급 누적 + GitHub 자동 업로드
+vela-flow-daily.py v3 — 시총 상위 N종목 수급 누적 + GitHub 자동 업로드
 ====================================================================
 Z Fold3 Termux 매일 자동 실행 (cron).
-네이버 금융 -> 정규식 파싱(pandas 불필요) -> 누적 -> GitHub API 업로드.
+네이버 시총상위 자동 수집 -> 종목별 수급 파싱 -> 누적 -> GitHub 업로드.
+pandas 불필요 (requests + 정규식).
 
-환경변수: GH_TOKEN (GitHub Personal Access Token)
+환경변수: GH_TOKEN
 사용:  export GH_TOKEN=ghp_xxx ; python vela-flow-daily.py
 """
 
@@ -20,16 +21,10 @@ GH_PATH  = "data/signal-flow-db.json"
 GH_TOKEN = os.environ.get("GH_TOKEN", "")
 GH_API   = f"https://api.github.com/repos/{GH_OWNER}/{GH_REPO}/contents/{GH_PATH}"
 
-KEEP_DAYS = 60
+TOP_N     = 500     # 수집할 시총 상위 종목 수
+KEEP_DAYS = 60      # 종목당 유지 거래일
+REQ_DELAY = 0.35    # 종목 간 딜레이(초) — 네이버 차단 방지
 UA = {"User-Agent": "Mozilla/5.0"}
-
-TARGETS = {
-    "005930":"삼성전자","000660":"SK하이닉스","373220":"LG에너지솔루션",
-    "005380":"현대차","035420":"NAVER","000270":"기아",
-    "012450":"한화에어로스페이스","042700":"한미반도체","207940":"삼성바이오로직스",
-    "068270":"셀트리온","005490":"POSCO홀딩스","035720":"카카오",
-    "051910":"LG화학","006400":"삼성SDI","105560":"KB금융",
-}
 
 
 def gh_headers():
@@ -37,7 +32,37 @@ def gh_headers():
             "Accept": "application/vnd.github+json"}
 
 
-def load_existing():
+def get_top_codes(n=TOP_N):
+    """네이버 시총상위에서 코스피+코스닥 상위 n종목 코드 수집."""
+    codes, names = [], {}
+    # sosok=0 코스피, sosok=1 코스닥. 페이지당 50개.
+    for sosok in (0, 1):
+        pages = (n // 50) + 1
+        for page in range(1, pages + 1):
+            url = f"https://finance.naver.com/sise/sise_market_sum.naver?sosok={sosok}&page={page}"
+            try:
+                r = requests.get(url, headers=UA, timeout=10)
+                r.encoding = "euc-kr"
+                # 코드 + 종목명 같이 추출
+                found = re.findall(
+                    r'/item/main\.naver\?code=(\d{6})">([^<]+)</a>', r.text)
+                if not found:
+                    break
+                for code, name in found:
+                    if code not in names:
+                        codes.append(code)
+                        names[code] = name.strip()
+            except Exception:
+                break
+            time.sleep(0.2)
+        if len(codes) >= n:
+            pass  # 코스피 다 받고 코스닥도 추가
+    # 시총 큰 순으로 이미 정렬돼 있음. 상위 n개.
+    top = codes[:n]
+    return top, names
+
+
+def gh_load():
     try:
         r = requests.get(GH_API, headers=gh_headers(), timeout=15)
         if r.status_code == 200:
@@ -54,13 +79,12 @@ def load_existing():
 
 
 def num(s):
-    """'+1,767,022' -> 1767022.0"""
     s = re.sub(r"[^\d\-]", "", s)
     return float(s) if s and s not in ("-", "") else 0.0
 
 
 def fetch_today(code):
-    """네이버 -> 최신 1거래일 (date, frgn_amt억, inst_amt억)"""
+    """네이버 -> 최신 1거래일 (date, frgn억, inst억). 데이터 없으면 None."""
     url = f"https://finance.naver.com/item/frgn.naver?code={code}"
     r = requests.get(url, headers=UA, timeout=10)
     r.encoding = "euc-kr"
@@ -71,13 +95,11 @@ def fetch_today(code):
                  .replace("\n", "").replace("\t", "").strip() for c in cells]
         clean = [c for c in clean if c]
         if len(clean) >= 7 and re.match(r"\d{4}\.\d{2}\.\d{2}", clean[0]):
-            date  = clean[0].replace(".", "")        # 20260609
-            close = num(clean[1])                    # 종가
-            inst  = num(clean[5])                    # 기관 순매매(주)
-            frgn  = num(clean[6])                    # 외국인 순매매(주)
-            frgn_amt = round(frgn * close / 1e8, 1)  # 억 환산
-            inst_amt = round(inst * close / 1e8, 1)
-            return (date, frgn_amt, inst_amt)
+            date  = clean[0].replace(".", "")
+            close = num(clean[1])
+            inst  = num(clean[5])
+            frgn  = num(clean[6])
+            return (date, round(frgn * close / 1e8, 1), round(inst * close / 1e8, 1))
     return None
 
 
@@ -86,13 +108,16 @@ def main():
         print("[오류] GH_TOKEN 환경변수 없음.  export GH_TOKEN=ghp_xxx")
         sys.exit(1)
 
-    print("수급 누적 수집 시작...")
-    existing, sha = load_existing()
-    raw = existing.get("_raw", {})  # 누적 원본 {code:{date:{f,i}}}
+    print(f"시총 상위 {TOP_N}종목 목록 수집...")
+    codes, names = get_top_codes(TOP_N)
+    print(f"  대상 종목: {len(codes)}개")
 
-    ok = 0; today = None
-    for i, (code, name) in enumerate(TARGETS.items(), 1):
-        print(f"[{i}/{len(TARGETS)}] {code} {name} ...", end=" ")
+    existing, sha = gh_load()
+    raw = existing.get("_raw", {})
+
+    print("수급 수집 시작...")
+    ok = had = 0; today = None; t0 = time.time()
+    for i, code in enumerate(codes, 1):
         try:
             res = fetch_today(code)
             if res:
@@ -100,36 +125,38 @@ def main():
                 today = date
                 rec = raw.setdefault(code, {})
                 rec[date] = {"f": f_amt, "i": i_amt}
-                # 60일 유지
                 for k in sorted(rec.keys())[:-KEEP_DAYS]:
                     del rec[k]
                 ok += 1
-                print(f"{date} 외 {f_amt:+.0f} / 기 {i_amt:+.0f}억")
-            else:
-                print("데이터 없음")
-        except Exception as ex:
-            print(f"실패: {str(ex)[:40]}")
-        time.sleep(0.5)
+                if f_amt != 0 or i_amt != 0:
+                    had += 1
+            # 진행 표시 (50개마다)
+            if i % 50 == 0:
+                el = int(time.time() - t0)
+                print(f"  [{i}/{len(codes)}] 수집 {ok} · 유효 {had} · {el}s")
+        except Exception:
+            pass
+        time.sleep(REQ_DELAY)
 
-    print(f"\n수집 완료: {ok}/{len(TARGETS)} ({today})")
+    print(f"\n수집 완료: {ok}/{len(codes)} (수급있음 {had}) ({today})")
 
-    # 앱용 형식: data[code] = {frgn:[최근5일], inst:[최근5일]}
+    # 앱용 형식 (최근 5일)
     out = {"updated": datetime.now().strftime("%Y-%m-%d"),
            "unit": "억원(순매수,종가환산)", "source": "naver-daily",
-           "data": {}, "_raw": raw}
+           "count": ok, "data": {}, "_raw": raw, "_names": names}
     for code, rec in raw.items():
         keys = sorted(rec.keys())[-5:]
         out["data"][code] = {"frgn": [rec[k]["f"] for k in keys],
                              "inst": [rec[k]["i"] for k in keys]}
 
     print("GitHub 업로드 중...")
-    content = json.dumps(out, ensure_ascii=False, indent=1)
-    body = {"message": f"수급 자동 갱신 {datetime.now().strftime('%Y-%m-%d %H:%M')}",
+    content = json.dumps(out, ensure_ascii=False, separators=(",", ":"))
+    body = {"message": f"수급 자동 갱신 {datetime.now().strftime('%Y-%m-%d %H:%M')} ({ok}종목)",
             "content": base64.b64encode(content.encode()).decode()}
     if sha: body["sha"] = sha
-    rr = requests.put(GH_API, headers=gh_headers(), json=body, timeout=20)
+    rr = requests.put(GH_API, headers=gh_headers(), json=body, timeout=30)
     if rr.status_code in (200, 201):
-        print(f"✅ 업로드 성공 ({rr.status_code})")
+        print(f"✅ 업로드 성공 ({rr.status_code}) · {ok}종목")
     else:
         print(f"❌ 업로드 실패 ({rr.status_code}): {rr.text[:150]}")
         sys.exit(1)
