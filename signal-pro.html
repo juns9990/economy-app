@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Signal PRO">
 <meta name="mobile-web-app-capable" content="yes">
-<link rel="apple-touch-icon" href="./signal-icon-192.png">
+<link rel="apple-touch-icon" href="./signal-icon-180.png">
 <link rel="icon" type="image/png" sizes="192x192" href="./signal-icon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="./signal-icon-512.png">
 <link rel="manifest" href="./signal-manifest.json">
@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,900&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
    DESIGN TOKENS — Editorial Finance
@@ -187,6 +187,12 @@ body {
 
 /* SIGNAL PRO brand title (dashboard top) */
 .brand-title-row { display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; }
+/* === VELA 로고 (CSS 텍스트) === */
+.vela-mark { font-family:'Fraunces',serif; font-style:italic; font-weight:900; letter-spacing:-0.02em; line-height:1; }
+.vela-mark.primary { color:var(--ink); font-size:19px; }
+.vela-mark .accent { color:#0c9b86; }
+.brand-vela-row { display:flex; align-items:center; gap:9px; margin-bottom:3px; }
+.brand-vela-div { width:1px; height:15px; background:var(--line-2); }
 .brand-title {
   font-family:'Bricolage Grotesque',sans-serif;
   font-size:36px;
@@ -1116,13 +1122,17 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
 <!-- ====================== SIDEBAR ====================== -->
 <nav class="sidebar">
   <div class="brand">
+    <div class="brand-vela-row">
+      <span class="vela-mark primary">Ve<span class="accent">l</span>a</span>
+      <span class="brand-vela-div"></span>
+    </div>
     <div class="brand-row">
       <div class="brand-mark">
         <svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
       </div>
       <div class="brand-name">SIGNAL</div>
     </div>
-    <div class="brand-meta">PRO · v3.9.7</div>
+    <div class="brand-meta">PRO · v3.9.8</div>
   </div>
   <div class="nav">
     <div class="nav-group-label">분석</div>
@@ -1153,7 +1163,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
     <div class="sb-foot-info">
       <div class="sb-foot-row">
         <span class="sb-foot-key">VERSION</span>
-        <span class="sb-foot-val">v3.9.7</span>
+        <span class="sb-foot-val">v3.9.8</span>
       </div>
       <div class="sb-foot-row">
         <span class="sb-foot-key">UPDATED</span>
@@ -1179,6 +1189,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
   <div class="page-head">
     <div>
       <div class="brand-title-row">
+        <span class="vela-mark primary" style="font-size:24px">Ve<span class="accent">l</span>a</span>
         <h1 class="brand-title">SIGNAL PRO</h1>
       </div>
       <div class="page-meta" id="dash-time-wrap">
@@ -1227,9 +1238,6 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
       <div class="idx-chg" id="d-fg-c">--</div>
     </div>
   </div>
-
-  <!-- 🌟 내 자산 HERO (보유 종목 있을 때) -->
-  <div id="hero-card" class="hero-asset" style="margin-bottom:20px"></div>
 
   <!-- 오늘의 매매 시그널 요약 -->
   <div class="signal-summary">
@@ -1776,7 +1784,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
 <footer class="page-foot">
   <div class="page-foot-left">
     <span class="page-foot-brand">SIGNAL PRO</span>
-    <span class="page-foot-ver">v3.9.7</span>
+    <span class="page-foot-ver">v3.9.8</span>
   </div>
   <div class="page-foot-meta">
     <span>Updated 2026.04.27</span>
@@ -1811,8 +1819,15 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
 
 <script>
 // ===================== CONFIG =====================
-const APP_VERSION = '3.9.7';
+const APP_VERSION = '3.9.8';
 const RELEASE_NOTES = [{
+  version:'3.9.8', date:'2026-06-10',
+  changes:[
+    '🎨 Vela 브랜드 로고 추가 — 사이드바·대시보드 헤더 (Fraunces 이탤릭)',
+    '📱 앱 아이콘 새 디자인 — Vela + SIGNAL PRO (다크 + 청록 포인트)',
+    '🧹 대시보드 정리 — 총 평가자산 카드 제거 (포트폴리오로 일원화)',
+  ]
+},{
   version:'3.9.7', date:'2026-06-10',
   changes:[
     '⚖️ 종목 비교 페이지 Editorial 디자인 + 실제 작동 — 2~3개 종목 검색 후 비교',
@@ -2236,11 +2251,9 @@ async function loadTicker() {
 // ===================== DASHBOARD =====================
 async function initDash() {
   startClock();
-  renderHero();
   renderWatchlist();
   renderSectorHot();
   renderBuffettRecs();
-  renderPersonalityRecs();
   loadTicker();
   loadMainIndices();
   renderBriefing();
