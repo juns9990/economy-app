@@ -1105,7 +1105,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
       </div>
       <div class="brand-name">SIGNAL</div>
     </div>
-    <div class="brand-meta">PRO · v3.9.3</div>
+    <div class="brand-meta">PRO · v3.9.4</div>
   </div>
   <div class="nav">
     <div class="nav-group-label">분석</div>
@@ -1136,7 +1136,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
     <div class="sb-foot-info">
       <div class="sb-foot-row">
         <span class="sb-foot-key">VERSION</span>
-        <span class="sb-foot-val">v3.9.3</span>
+        <span class="sb-foot-val">v3.9.4</span>
       </div>
       <div class="sb-foot-row">
         <span class="sb-foot-key">UPDATED</span>
@@ -1494,30 +1494,38 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
   <div class="page-head">
     <div>
       <h1 class="page-greet">포트폴리오</h1>
-      <div class="page-meta">3종목 보유 · 21,020,000원 평가 · +750,000원 (+3.70%)</div>
+      <div class="page-meta" id="pf-head-meta">보유 종목 관리 · 실시간 평가손익</div>
     </div>
     <div class="head-actions">
-      <button class="btn-out" style="padding:9px 18px;font-size:13px">+ 매수 추가</button>
+      <button class="btn-out" style="padding:9px 18px;font-size:13px" onclick="openModal('buy')">+ 매수 추가</button>
     </div>
   </div>
 
   <!-- HERO 자산 -->
-  <div class="hero-asset">
+  <div class="hero-asset" id="pf-hero">
     <div style="position:relative">
       <div class="hero-label">💼 총 평가 자산</div>
-      <div class="hero-value">21,020,000<span style="font-size:18px;color:rgba(255,255,255,0.55);font-weight:500;margin-left:6px">원</span></div>
-      <div class="hero-pnl">▲ +750,000원 (+3.70%)</div>
+      <div class="hero-value" id="pf-hero-total">조회중...</div>
+      <div class="hero-pnl" id="pf-hero-pnl">평가손익 계산 중...</div>
       <div class="hero-stats">
         <div>
-          <div class="hero-stat-lbl">🏆 최고 수익</div>
-          <div class="hero-stat-val up">한화에어로 +22.50%</div>
+          <div class="hero-stat-lbl" id="pf-hero-best-lbl">🏆 최고 수익</div>
+          <div class="hero-stat-val" id="pf-hero-best">-</div>
         </div>
         <div>
-          <div class="hero-stat-lbl">⚠️ 최대 손실</div>
-          <div class="hero-stat-val dn">LG에너지 −6.58%</div>
+          <div class="hero-stat-lbl" id="pf-hero-worst-lbl">⚠️ 최대 손실</div>
+          <div class="hero-stat-val" id="pf-hero-worst">-</div>
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- 숨김: 실제 앱 호환 요소 (renderWallet/renderPF가 참조) -->
+  <div style="display:none">
+    <div id="wallet-body"></div>
+    <span id="w-eval-amt"></span><span id="w-eval-pnl"></span><span id="w-eval-pct"></span>
+    <div id="pf-sum"></div>
+    <span id="pf-total-pnl"></span><span id="pf-total-pct"></span>
   </div>
 
   <!-- 손익 추이 + 목표 게이지 -->
@@ -1525,311 +1533,46 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
     <div class="chart-card">
       <div class="chart-card-head">
         <div class="chart-card-title">📈 6개월 손익 추이</div>
-        <div class="chart-card-sub">+3.70%</div>
+        <div class="chart-card-sub" id="pl-graph-status">--</div>
       </div>
-      <div class="chart-placeholder">[ 가중평균 손익 그래프 ]</div>
+      <canvas id="pl-graph-cvs" style="width:100%;height:160px;display:block"></canvas>
     </div>
     <div class="chart-card">
       <div class="chart-card-head">
         <div class="chart-card-title">🎯 연간 목표 수익률</div>
-        <div class="chart-card-sub">+20% 목표</div>
+        <button onclick="editGoal()" style="background:none;border:none;color:var(--accent-2);font-size:12px;cursor:pointer;font-weight:700">목표 변경</button>
       </div>
-      <div class="chart-placeholder">[ 반원 게이지 · 진척도 18.5% ]</div>
+      <div id="goal-gauge"></div>
     </div>
   </div>
 
-  <!-- MODE A: 보유 종목 액션 플랜 -->
+  <!-- 보유 종목 -->
   <div class="section-divider">
-    <span class="section-divider-text">📌 내 보유 종목 — 액션 플랜</span>
+    <span class="section-divider-text">📌 내 보유 종목</span>
     <div class="section-divider-line"></div>
   </div>
+  <div id="pf-holdings"></div>
 
-  <!-- 삼성전자: 보유 -->
-  <div class="holding-card profit">
-    <div class="holding-row1">
-      <div class="holding-name-block">
-        <div>
-          <div class="holding-name">삼성전자</div>
-          <span class="holding-shares">100주 × 평단 70,000원</span>
-        </div>
-      </div>
-      <div class="holding-pnl-block">
-        <div class="holding-eval">7,250,000원</div>
-        <div class="holding-pnl up">+250,000원 (+3.57%)</div>
-      </div>
-    </div>
-    <div class="holding-verdict hold">
-      <span class="sig-tag buy"><span class="sig-tag-dot"></span>매수 지속</span>
-      <span class="holding-stars" style="font-size:14px">★★★★☆</span>
-      <span style="color:var(--ink-2);font-weight:600;font-size:12px">SCORE 78</span>
-    </div>
-    <div class="holding-actions-list">
-      <div class="action-line">• <strong>75,000원</strong> 도달시 → 30주 1차 익절</div>
-      <div class="action-line">• <strong>82,000원</strong> 도달시 → 50주 2차 익절</div>
-      <div class="action-line">• <strong>67,500원</strong> 깨지면 → 전량 손절</div>
-    </div>
-    <div class="holding-reason">
-      <strong>📝 이유:</strong> HBM3E 모멘텀 살아있음, 외국인 5일 연속 순매수, 20일선 지지
-    </div>
-    <div class="holding-cta">
-      <button class="btn-detail">상세 분석</button>
-      <button class="btn-sell">매도 기록</button>
-    </div>
-  </div>
-
-  <!-- LG에너지: 손절 검토 -->
-  <div class="holding-card alert">
-    <div class="holding-row1">
-      <div class="holding-name-block">
-        <div>
-          <div class="holding-name">LG에너지솔루션</div>
-          <span class="holding-shares">20주 × 평단 380,000원</span>
-        </div>
-      </div>
-      <div class="holding-pnl-block">
-        <div class="holding-eval">7,100,000원</div>
-        <div class="holding-pnl dn">−500,000원 (−6.58%)</div>
-      </div>
-    </div>
-    <div class="holding-verdict warn">
-      <span class="sig-tag sell"><span class="sig-tag-dot"></span>매도 검토</span>
-      <span class="holding-stars" style="font-size:14px">★★☆☆☆</span>
-      <span style="color:var(--ink-2);font-weight:600;font-size:12px">SCORE 32</span>
-    </div>
-    <div class="holding-actions-list">
-      <div class="action-line">• 손절 라인 <strong>348,000원</strong> (−8.4%) 근접</div>
-      <div class="action-line">• <strong>360,000원</strong> 회복 못하면 → 절반 손절</div>
-      <div class="action-line">• 추가 매수 비추 (하락 추세 진행 중)</div>
-    </div>
-    <div class="holding-reason">
-      <strong>📝 이유:</strong> 2차전지 약세, 외국인 5일 연속 매도, IRA 보조금 축소 우려
-    </div>
-    <div class="holding-cta">
-      <button class="btn-detail">상세 분석</button>
-      <button class="btn-sell">매도 기록</button>
-    </div>
-  </div>
-
-  <!-- 한화에어로: 익절 검토 -->
-  <div class="holding-card profit">
-    <div class="holding-row1">
-      <div class="holding-name-block">
-        <div>
-          <div class="holding-name">한화에어로스페이스</div>
-          <span class="holding-shares">30주 × 평단 200,000원</span>
-        </div>
-      </div>
-      <div class="holding-pnl-block">
-        <div class="holding-eval">7,350,000원</div>
-        <div class="holding-pnl up">+1,350,000원 (+22.50%)</div>
-      </div>
-    </div>
-    <div class="holding-verdict profit">
-      <span class="sig-tag hold"><span class="sig-tag-dot"></span>부분 익절</span>
-      <span class="holding-stars" style="font-size:14px">★★★☆☆</span>
-      <span style="color:var(--ink-2);font-weight:600;font-size:12px">SCORE 62 · 과열</span>
-    </div>
-    <div class="holding-actions-list">
-      <div class="action-line">• 이미 <strong>+22%</strong> 도달 — 분할 익절 권장</div>
-      <div class="action-line">• 1차: <strong>10주 매도</strong> (수익 확정)</div>
-      <div class="action-line">• 2차: <strong>250,000원</strong> 도달시 10주 추가</div>
-      <div class="action-line">• 잔여 10주는 장기 보유</div>
-    </div>
-    <div class="holding-reason">
-      <strong>📝 이유:</strong> 목표가 도달, 단기 과열 신호 (RSI 72), 폴란드 수주 이미 가격 반영
-    </div>
-    <div class="holding-cta">
-      <button class="btn-detail">상세 분석</button>
-      <button class="btn-sell">매도 기록</button>
-    </div>
-  </div>
-
-  <!-- MODE B: AI 추천 -->
+  <!-- 거래 내역 -->
   <div class="section-divider">
-    <span class="section-divider-text">🤖 오늘 시장의 AI 추천 — 추가 매수 후보</span>
+    <span class="section-divider-text">📋 거래 내역</span>
     <div class="section-divider-line"></div>
   </div>
+  <div class="watch-card"><div id="pf-history"></div></div>
 
-  <div class="mode-b-banner">
-    <div class="mode-b-mood">
-      <span class="mode-b-icon">🟢</span>
-      <div>
-        <div class="mode-b-mood-text">시장 모드: 강세장 (Bull)</div>
-        <div class="mode-b-mood-sub">KOSPI 상승 + VIX 안정 + 외국인 순매수 지속</div>
-      </div>
-    </div>
-    <div class="mode-b-meta">04.27 05:00 자동 선정</div>
+  <!-- AI 매매 일지 -->
+  <div class="section-divider">
+    <span class="section-divider-text">🤖 AI 매매 일지 + 복기</span>
+    <div class="section-divider-line"></div>
   </div>
-
-  <div class="recs-mode-b">
-    <div class="rec-b-card">
-      <div class="rec-b-head">
-        <div>
-          <div class="rec-b-name">SK하이닉스</div>
-          <div class="rec-b-code">000660.KS · 반도체</div>
-        </div>
-        <span class="rec-b-rank">#1</span>
-      </div>
-      <div class="rec-b-stars">★★★★★</div>
-      <div class="rec-b-why">
-        <div class="rec-b-why-lbl">💡 왜 지금?</div>
-        <div class="rec-b-why-text">HBM3E 수주 확대 + 외국인 8일 연속 순매수 + 지지선 안착</div>
-      </div>
-      <div class="rec-b-plan">
-        <div class="rec-b-plan-cell">
-          <div class="rec-b-plan-lbl">진입가</div>
-          <div class="rec-b-plan-val">≤ 198K</div>
-        </div>
-        <div class="rec-b-plan-cell">
-          <div class="rec-b-plan-lbl">손절</div>
-          <div class="rec-b-plan-val" style="color:var(--sell)">185K</div>
-        </div>
-        <div class="rec-b-plan-cell">
-          <div class="rec-b-plan-lbl">목표</div>
-          <div class="rec-b-plan-val" style="color:var(--buy)">235K</div>
-        </div>
-      </div>
-      <div class="rec-b-actions">
-        <button class="rec-b-btn primary">매수 기록</button>
-        <button class="rec-b-btn secondary">관심 추가</button>
-      </div>
-    </div>
-
-    <div class="rec-b-card">
-      <div class="rec-b-head">
-        <div>
-          <div class="rec-b-name">한미반도체</div>
-          <div class="rec-b-code">042700.KS · 반도체장비</div>
-        </div>
-        <span class="rec-b-rank">#2</span>
-      </div>
-      <div class="rec-b-stars">★★★★☆</div>
-      <div class="rec-b-why">
-        <div class="rec-b-why-lbl">💡 왜 지금?</div>
-        <div class="rec-b-why-text">HBM TC본더 독점 지위 + 신고가 돌파 후 조정 끝</div>
-      </div>
-      <div class="rec-b-plan">
-        <div class="rec-b-plan-cell">
-          <div class="rec-b-plan-lbl">진입가</div>
-          <div class="rec-b-plan-val">≤ 155K</div>
-        </div>
-        <div class="rec-b-plan-cell">
-          <div class="rec-b-plan-lbl">손절</div>
-          <div class="rec-b-plan-val" style="color:var(--sell)">142K</div>
-        </div>
-        <div class="rec-b-plan-cell">
-          <div class="rec-b-plan-lbl">목표</div>
-          <div class="rec-b-plan-val" style="color:var(--buy)">185K</div>
-        </div>
-      </div>
-      <div class="rec-b-actions">
-        <button class="rec-b-btn primary">매수 기록</button>
-        <button class="rec-b-btn secondary">관심 추가</button>
-      </div>
-    </div>
-
-    <div class="rec-b-card">
-      <div class="rec-b-head">
-        <div>
-          <div class="rec-b-name">HD현대중공업</div>
-          <div class="rec-b-code">329180.KS · 조선</div>
-        </div>
-        <span class="rec-b-rank">#3</span>
-      </div>
-      <div class="rec-b-stars">★★★★☆</div>
-      <div class="rec-b-why">
-        <div class="rec-b-why-lbl">💡 왜 지금?</div>
-        <div class="rec-b-why-text">조선 슈퍼사이클 진입 + LNG선 수주 폭증</div>
-      </div>
-      <div class="rec-b-plan">
-        <div class="rec-b-plan-cell">
-          <div class="rec-b-plan-lbl">진입가</div>
-          <div class="rec-b-plan-val">≤ 248K</div>
-        </div>
-        <div class="rec-b-plan-cell">
-          <div class="rec-b-plan-lbl">손절</div>
-          <div class="rec-b-plan-val" style="color:var(--sell)">228K</div>
-        </div>
-        <div class="rec-b-plan-cell">
-          <div class="rec-b-plan-lbl">목표</div>
-          <div class="rec-b-plan-val" style="color:var(--buy)">295K</div>
-        </div>
-      </div>
-      <div class="rec-b-actions">
-        <button class="rec-b-btn primary">매수 기록</button>
-        <button class="rec-b-btn secondary">관심 추가</button>
-      </div>
-    </div>
-
-    <div class="rec-b-card">
-      <div class="rec-b-head">
-        <div>
-          <div class="rec-b-name">현대차</div>
-          <div class="rec-b-code">005380.KS · 자동차</div>
-        </div>
-        <span class="rec-b-rank">#4</span>
-      </div>
-      <div class="rec-b-stars">★★★★☆</div>
-      <div class="rec-b-why">
-        <div class="rec-b-why-lbl">💡 왜 지금?</div>
-        <div class="rec-b-why-text">PER 5배 저평가 + 배당수익률 5% + 전기차 점유율 확대</div>
-      </div>
-      <div class="rec-b-plan">
-        <div class="rec-b-plan-cell">
-          <div class="rec-b-plan-lbl">진입가</div>
-          <div class="rec-b-plan-val">≤ 245K</div>
-        </div>
-        <div class="rec-b-plan-cell">
-          <div class="rec-b-plan-lbl">손절</div>
-          <div class="rec-b-plan-val" style="color:var(--sell)">228K</div>
-        </div>
-        <div class="rec-b-plan-cell">
-          <div class="rec-b-plan-lbl">목표</div>
-          <div class="rec-b-plan-val" style="color:var(--buy)">285K</div>
-        </div>
-      </div>
-      <div class="rec-b-actions">
-        <button class="rec-b-btn primary">매수 기록</button>
-        <button class="rec-b-btn secondary">관심 추가</button>
-      </div>
-    </div>
-
-    <div class="rec-b-card">
-      <div class="rec-b-head">
-        <div>
-          <div class="rec-b-name">현대로템</div>
-          <div class="rec-b-code">064350.KS · 방산/철도</div>
-        </div>
-        <span class="rec-b-rank">#5</span>
-      </div>
-      <div class="rec-b-stars">★★★★☆</div>
-      <div class="rec-b-why">
-        <div class="rec-b-why-lbl">💡 왜 지금?</div>
-        <div class="rec-b-why-text">K2 전차 추가 수주 + 폴란드 2차 계약 본격화</div>
-      </div>
-      <div class="rec-b-plan">
-        <div class="rec-b-plan-cell">
-          <div class="rec-b-plan-lbl">진입가</div>
-          <div class="rec-b-plan-val">≤ 78K</div>
-        </div>
-        <div class="rec-b-plan-cell">
-          <div class="rec-b-plan-lbl">손절</div>
-          <div class="rec-b-plan-val" style="color:var(--sell)">71K</div>
-        </div>
-        <div class="rec-b-plan-cell">
-          <div class="rec-b-plan-lbl">목표</div>
-          <div class="rec-b-plan-val" style="color:var(--buy)">92K</div>
-        </div>
-      </div>
-      <div class="rec-b-actions">
-        <button class="rec-b-btn primary">매수 기록</button>
-        <button class="rec-b-btn secondary">관심 추가</button>
-      </div>
-    </div>
+  <div class="watch-card">
+    <button class="btn-out" onclick="runJournalAnalysis()" id="journal-run-btn" style="margin-bottom:12px;font-size:13px">분석 실행</button>
+    <div class="ai-text" id="pf-journal-out" style="white-space:pre-wrap">💡 매매 기록이 5건 이상이면 AI가 더 정확하게 분석합니다. "분석 실행"으로 시작하세요.</div>
   </div>
 
 </div>
 <!-- ====== END PORTFOLIO ====== -->
+
 
 
 <!-- ============================================
@@ -2039,7 +1782,7 @@ SK하이닉스가 단기 모멘텀 가장 강하지만 변동성도 가장 큼(A
 <footer class="page-foot">
   <div class="page-foot-left">
     <span class="page-foot-brand">SIGNAL PRO</span>
-    <span class="page-foot-ver">v3.9.3</span>
+    <span class="page-foot-ver">v3.9.4</span>
   </div>
   <div class="page-foot-meta">
     <span>Updated 2026.04.27</span>
@@ -2074,8 +1817,16 @@ SK하이닉스가 단기 모멘텀 가장 강하지만 변동성도 가장 큼(A
 
 <script>
 // ===================== CONFIG =====================
-const APP_VERSION = '3.9.3';
+const APP_VERSION = '3.9.4';
 const RELEASE_NOTES = [{
+  version:'3.9.4', date:'2026-06-10',
+  changes:[
+    '💼 포트폴리오 페이지 Editorial 디자인 적용 — HERO 자산 + 손익그래프 + 목표게이지',
+    '📌 보유 종목별 액션 플랜 카드 — 시그널 점수 기반 익절/손절 라인 자동 생성',
+    '🎯 종목마다 유머 라벨 + 별점 + 매도/상세 버튼',
+    '🔍 검색바 버튼 잘림 수정 (모바일 반응형)',
+  ]
+},{
   version:'3.9.3', date:'2026-06-10',
   changes:[
     '🎨 Editorial Finance 디자인 전면 적용 — 대시보드 + 시그널 페이지',
@@ -4979,113 +4730,182 @@ async function renderPLGraph() {
 }
 
 async function renderPF() {
-  renderWallet(); // 지갑 카드 렌더링
-  renderGoalGauge(); // 🎯 목표 수익률 게이지
-  renderPLGraph(); // 📈 손익 추이 그래프
-  const h=getHoldings();
-  const buys=S.portfolio.filter(t=>t.tp==='buy');
-  const sells=S.portfolio.filter(t=>t.tp==='sell');
-  const totB=buys.reduce((s,t)=>s+t.price*t.qty,0);
-  const totS=sells.reduce((s,t)=>s+t.price*t.qty,0);
-  
-  // 보유 종목 우선 렌더링 (가격 로딩 중 표시)
-  const hEl=document.getElementById('pf-holdings');
-  hEl.innerHTML = h.length===0
-    ? `<div class="tc" style="padding:28px;color:var(--t3)">보유 종목이 없습니다</div>`
-    : `<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:13px">
-      <thead><tr style="border-bottom:2px solid var(--brl);background:var(--bg3)">
-        <th style="text-align:left;padding:10px;font-size:12px;color:var(--t2);font-weight:700">종목명</th>
-        <th style="text-align:right;padding:10px;font-size:12px;color:var(--t2);font-weight:700">수량</th>
-        <th style="text-align:right;padding:10px;font-size:12px;color:var(--t2);font-weight:700">평균단가</th>
-        <th style="text-align:right;padding:10px;font-size:12px;color:var(--t2);font-weight:700">현재가</th>
-        <th style="text-align:right;padding:10px;font-size:12px;color:var(--t2);font-weight:700">평가금액</th>
-        <th style="text-align:right;padding:10px;font-size:12px;color:var(--t2);font-weight:700">평가손익</th>
-        <th style="padding:10px"></th>
-      </tr></thead><tbody>
-      ${h.map(x=>`<tr id="pf-row-${x.sym.replace(/\./g,'_')}" style="border-bottom:1px solid var(--brl)">
-        <td style="padding:12px"><div style="font-weight:700;color:var(--navy)">${x.name}</div><div style="font-size:10px;color:var(--t3);font-family:'JetBrains Mono';margin-top:2px">${x.sym}</div></td>
-        <td style="text-align:right;padding:12px;font-family:'JetBrains Mono'">${x.qty.toLocaleString()}주</td>
-        <td style="text-align:right;padding:12px;font-family:'JetBrains Mono'">${Math.round(x.cost/x.qty).toLocaleString()}원</td>
-        <td class="pf-cur-price" style="text-align:right;padding:12px;font-family:'JetBrains Mono';color:var(--t3)">조회중...</td>
-        <td class="pf-eval-amt" style="text-align:right;padding:12px;font-family:'JetBrains Mono';color:var(--t3)">-</td>
-        <td class="pf-eval-pnl" style="text-align:right;padding:12px;font-family:'JetBrains Mono';color:var(--t3)">-</td>
-        <td style="text-align:right;padding:12px"><button class="btn btn-red" style="font-size:11px;padding:5px 11px" onclick="openSell('${x.sym}','${x.name.replace(/'/g,'&apos;')}',${x.qty})">매도</button></td>
-      </tr>`).join('')}
-      </tbody></table></div>`;
-  
-  // 거래 내역
-  const sorted=[...S.portfolio].sort((a,b)=>new Date(b.date)-new Date(a.date));
-  document.getElementById('pf-history').innerHTML = sorted.length===0
-    ? `<div class="tc" style="padding:20px;color:var(--t3)">거래 내역이 없습니다</div>`
-    : `<table><thead><tr><th>날짜</th><th>종목</th><th>구분</th><th>단가</th><th>수량</th><th>금액</th><th></th></tr></thead><tbody>
-      ${sorted.map(t=>`<tr><td class="mono sm tm">${t.date}</td><td style="font-weight:600">${t.name}</td><td><span class="badge ${t.tp==='buy'?'b-buy':'b-sell'}">${t.tp==='buy'?'매수':'매도'}</span></td><td class="mono">${t.price.toLocaleString()}</td><td class="mono">${t.qty}</td><td class="mono">${(t.price*t.qty).toLocaleString()}</td><td><button onclick="delTrade('${t.id}')" style="background:none;border:none;color:var(--t3);cursor:pointer">✕</button></td></tr>`).join('')}
-      </tbody></table>`;
-  
-  // 요약 카드 일단 렌더 (평가손익 로딩 중)
-  document.getElementById('pf-sum').innerHTML=`
-    <div class="pf-stat"><div class="pf-label">총 매수금액</div><div class="pf-val tg">${(totB/10000).toFixed(0)}만원</div></div>
-    <div class="pf-stat"><div class="pf-label">평가손익</div><div class="pf-val" id="pf-total-pnl" style="color:var(--t3)">조회중...</div></div>
-    <div class="pf-stat"><div class="pf-label">수익률</div><div class="pf-val" id="pf-total-pct" style="color:var(--t3)">--</div></div>
-    <div class="pf-stat"><div class="pf-label">보유 종목수</div><div class="pf-val">${h.length}개</div></div>`;
-  
-  // 보유 종목 실시간 가격 조회 + 평가손익 계산
-  if(h.length === 0) return;
-  
-  let totalEvalAmt = 0;
-  let totalCost = 0;
-  
-  for(const x of h) {
-    try {
-      const cur = await fetchStock(x.sym);
-      const rowId = `pf-row-${x.sym.replace(/\./g,'_')}`;
-      const row = document.getElementById(rowId);
-      if(!row) continue;
-      
-      if(!cur || !cur.price) {
-        row.querySelector('.pf-cur-price').textContent = '조회실패';
-        row.querySelector('.pf-cur-price').style.color = 'var(--red)';
-        continue;
+  renderWallet();
+  renderGoalGauge();
+  renderPLGraph();
+  renderPFHero();
+  const h = getHoldings();
+  const buys = S.portfolio.filter(t=>t.tp==='buy');
+  const sells = S.portfolio.filter(t=>t.tp==='sell');
+
+  // 헤더 메타
+  const metaEl = document.getElementById('pf-head-meta');
+
+  // 보유 종목 — 와이어프레임 holding-card 구조
+  const hEl = document.getElementById('pf-holdings');
+  if(h.length === 0) {
+    hEl.innerHTML = `<div class="watch-card" style="text-align:center;padding:32px;color:var(--ink-3)">
+      <div style="font-size:32px;margin-bottom:10px">💼</div>
+      <div style="font-size:14px;color:var(--ink-2);margin-bottom:6px;font-weight:700">보유 종목이 없습니다</div>
+      <div style="font-size:12px;margin-bottom:14px">매수 기록을 추가하면 종목별 액션 플랜이 표시됩니다</div>
+      <button class="btn-out" onclick="openModal('buy')" style="font-size:13px">+ 첫 매수 기록 추가</button>
+    </div>`;
+  } else {
+    // 골격 먼저
+    hEl.innerHTML = h.map(x=>{
+      const avg = Math.round(x.cost/x.qty);
+      return `<div class="holding-card" id="pf-card-${x.sym.replace(/\./g,'_')}">
+        <div class="holding-row1">
+          <div class="holding-name-block">
+            <div>
+              <div class="holding-name">${x.name}</div>
+              <span class="holding-shares">${x.qty.toLocaleString()}주 × 평단 ${avg.toLocaleString()}원</span>
+            </div>
+          </div>
+          <div class="holding-pnl-block">
+            <div class="holding-eval pf-eval">조회중...</div>
+            <div class="holding-pnl pf-pnl">-</div>
+          </div>
+        </div>
+        <div class="holding-verdict hold pf-verdict">
+          <span class="sig-tag hold pf-tag">분석중</span>
+          <span class="holding-stars pf-stars" style="font-size:14px">☆☆☆☆☆</span>
+          <span style="color:var(--ink-2);font-weight:600;font-size:12px" class="pf-score">SCORE --</span>
+        </div>
+        <div class="holding-actions-list pf-actions"></div>
+        <div class="holding-cta">
+          <button class="btn-detail" onclick="goSignal('${x.sym}','${x.name.replace(/'/g,'&apos;')}')">상세 분석</button>
+          <button class="btn-sell" onclick="openSell('${x.sym}','${x.name.replace(/'/g,'&apos;')}',${x.qty})">매도 기록</button>
+        </div>
+      </div>`;
+    }).join('');
+
+    // 종목별 실시간 분석 + 액션플랜
+    let totalEval=0, totalCost=0;
+    for(const x of h) {
+      const card = document.getElementById('pf-card-'+x.sym.replace(/\./g,'_'));
+      if(!card) continue;
+      try {
+        const [cur, hist] = await Promise.all([fetchStock(x.sym), fetchHist(x.sym,'3mo')]);
+        const avg = x.cost/x.qty;
+        const price = (cur&&cur.price)?cur.price:avg;
+        const evalAmt = price*x.qty;
+        const pnl = evalAmt - x.cost;
+        const pnlPct = (pnl/x.cost)*100;
+        totalEval += evalAmt; totalCost += x.cost;
+        const up = pnl>=0;
+        card.classList.add(up?'profit':'alert');
+        card.querySelector('.pf-eval').textContent = Math.round(evalAmt).toLocaleString()+'원';
+        const pnlEl = card.querySelector('.pf-pnl');
+        pnlEl.textContent = `${up?'+':''}${Math.round(pnl).toLocaleString()}원 (${up?'+':''}${pnlPct.toFixed(2)}%)`;
+        pnlEl.className = 'holding-pnl pf-pnl ' + (up?'up':'dn');
+
+        // 시그널 점수 + 액션플랜
+        const score = calcSignalScore(hist);
+        if(score !== null) {
+          const tier = scoreToTier(score);
+          const tagEl = card.querySelector('.pf-tag');
+          tagEl.className = `sig-tag ${tier.cls} pf-tag`;
+          tagEl.textContent = tier.label;
+          card.querySelector('.pf-stars').textContent = '★'.repeat(tier.stars)+'☆'.repeat(5-tier.stars);
+          card.querySelector('.pf-score').textContent = `SCORE ${score}`;
+          const vEl = card.querySelector('.pf-verdict');
+          vEl.className = 'holding-verdict pf-verdict ' + (tier.group==='buy'?'hold':tier.group==='sell'?'warn':'profit');
+          // 액션플랜 (ATR 기반)
+          card.querySelector('.pf-actions').innerHTML = buildHoldingActions(hist, price, avg, pnlPct, tier);
+        }
+      } catch(e) {
+        card.querySelector('.pf-eval').textContent = '조회실패';
       }
-      
-      const avgBuy = x.cost / x.qty;
-      const evalAmt = cur.price * x.qty;
-      const pnl = evalAmt - x.cost;
-      const pnlPct = (pnl / x.cost) * 100;
-      
-      totalEvalAmt += evalAmt;
-      totalCost += x.cost;
-      
-      const color = pnl >= 0 ? 'var(--green)' : 'var(--red)';
-      
-      row.querySelector('.pf-cur-price').textContent = Math.round(cur.price).toLocaleString() + '원';
-      row.querySelector('.pf-cur-price').style.color = 'var(--t1)';
-      row.querySelector('.pf-eval-amt').textContent = Math.round(evalAmt).toLocaleString() + '원';
-      row.querySelector('.pf-eval-amt').style.color = 'var(--t1)';
-      row.querySelector('.pf-eval-pnl').innerHTML = `<div style="color:${color};font-weight:700">${pnl>=0?'+':''}${Math.round(pnl).toLocaleString()}원</div><div style="color:${color};font-size:11px;margin-top:2px">${pnl>=0?'+':''}${pnlPct.toFixed(2)}%</div>`;
-    } catch(e) {
-      console.error('Price fetch failed:', x.sym, e);
-    }
-    // Rate limit 보호
-    await new Promise(r=>setTimeout(r,150));
-  }
-  
-  // 총 평가손익 업데이트
-  if(totalCost > 0) {
-    const totalPnl = totalEvalAmt - totalCost;
-    const totalPct = (totalPnl / totalCost) * 100;
-    const color = totalPnl >= 0 ? 'var(--green)' : 'var(--red)';
-    
-    const pnlEl = document.getElementById('pf-total-pnl');
-    const pctEl = document.getElementById('pf-total-pct');
-    if(pnlEl) {
-      pnlEl.textContent = (totalPnl>=0?'+':'') + Math.round(totalPnl/10000).toLocaleString() + '만원';
-      pnlEl.style.color = color;
-    }
-    if(pctEl) {
-      pctEl.textContent = (totalPnl>=0?'+':'') + totalPct.toFixed(2) + '%';
-      pctEl.style.color = color;
+      await new Promise(r=>setTimeout(r,120));
     }
   }
+
+  // 거래 내역
+  const sorted = [...S.portfolio].sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const histEl = document.getElementById('pf-history');
+  histEl.innerHTML = sorted.length===0
+    ? `<div style="text-align:center;padding:20px;color:var(--ink-3)">거래 내역이 없습니다</div>`
+    : sorted.map(t=>`<div class="watch-row" style="cursor:default">
+        <div class="watch-info">
+          <div class="watch-name">${t.name} <span class="sig-tag ${t.tp==='buy'?'buy':'sell'}" style="font-size:10px;padding:2px 7px;margin-left:4px">${t.tp==='buy'?'매수':'매도'}</span></div>
+          <div class="watch-code">${t.date} · ${t.qty}주 @ ${t.price.toLocaleString()}원</div>
+        </div>
+        <div>
+          <div class="watch-price">${(t.price*t.qty).toLocaleString()}원</div>
+          <div class="watch-chg"><button onclick="delTrade('${t.id}')" style="background:none;border:none;color:var(--ink-3);cursor:pointer;font-size:14px">✕</button></div>
+        </div>
+      </div>`).join('');
+}
+
+// 보유종목 액션플랜 생성 (ATR 기반)
+function buildHoldingActions(hist, price, avg, pnlPct, tier) {
+  if(!hist||!hist.closes||hist.closes.length<2) return '';
+  const closes=hist.closes, n=closes.length;
+  const atrPer=Math.min(14,n-1);
+  let atrSum=0; for(let i=n-atrPer;i<n;i++) atrSum+=Math.abs(closes[i]-closes[i-1]);
+  const atr=atrPer>0?atrSum/atrPer:price*0.02;
+  const fmt=v=>Math.round(v).toLocaleString();
+  const lines=[];
+  if(tier.group==='buy'){
+    const t1=Math.round(price+atr*2), t2=Math.round(price+atr*3.5);
+    const stop=Math.round(price-atr*2);
+    lines.push(`• <strong>${fmt(t1)}원</strong> 도달시 → 1차 익절 (수량 30%)`);
+    lines.push(`• <strong>${fmt(t2)}원</strong> 도달시 → 2차 익절 (수량 50%)`);
+    lines.push(`• <strong>${fmt(stop)}원</strong> 깨지면 → 손절 검토`);
+  } else if(tier.group==='sell'){
+    const stop=Math.round(price-atr*1.5);
+    lines.push(`• 손절 라인 <strong>${fmt(stop)}원</strong> 근접 — 비중 축소 검토`);
+    lines.push(`• 반등 시 <strong>${fmt(avg)}원</strong>(평단) 회복 못하면 → 절반 손절`);
+    lines.push(`• 추가 매수 비추 (하락 신호 진행 중)`);
+  } else {
+    if(pnlPct>=15){
+      lines.push(`• 이미 <strong>+${pnlPct.toFixed(0)}%</strong> 수익 — 분할 익절 권장`);
+      lines.push(`• 1차 일부 매도로 수익 확정 고려`);
+    } else {
+      lines.push(`• 뚜렷한 신호 없음 — 보유 유지`);
+      lines.push(`• 평단 <strong>${fmt(avg)}원</strong> 기준 추세 관찰`);
+    }
+  }
+  return lines.map(l=>`<div class="action-line">${l}</div>`).join('');
+}
+
+// 포트폴리오 HERO 자산
+async function renderPFHero() {
+  const holdings = getHoldings();
+  const totalEl=document.getElementById('pf-hero-total');
+  const pnlEl=document.getElementById('pf-hero-pnl');
+  const bestEl=document.getElementById('pf-hero-best');
+  const worstEl=document.getElementById('pf-hero-worst');
+  if(holdings.length===0){
+    if(totalEl) totalEl.textContent='0원';
+    if(pnlEl) pnlEl.textContent='보유 종목을 추가하세요';
+    if(bestEl) bestEl.textContent='-';
+    if(worstEl) worstEl.textContent='-';
+    return;
+  }
+  let totalEval=0,totalCost=0; const pnls=[];
+  for(const h of holdings){
+    try{
+      const cur=await fetchStock(h.sym);
+      const price=(cur&&cur.price)?cur.price:(h.cost/h.qty);
+      const e=price*h.qty;
+      totalEval+=e; totalCost+=h.cost;
+      pnls.push({name:h.name, pct:((e-h.cost)/h.cost)*100});
+    }catch(e){ totalEval+=h.cost; totalCost+=h.cost; }
+    await new Promise(r=>setTimeout(r,100));
+  }
+  const totalPnl=totalEval-totalCost;
+  const totalPct=totalCost>0?(totalPnl/totalCost)*100:0;
+  const up=totalPnl>=0;
+  pnls.sort((a,b)=>b.pct-a.pct);
+  const best=pnls[0], worst=pnls[pnls.length-1];
+  if(totalEl) totalEl.innerHTML = Math.round(totalEval).toLocaleString()+'<span style="font-size:18px;color:rgba(255,255,255,0.55);font-weight:500;margin-left:6px">원</span>';
+  if(pnlEl){ pnlEl.className='hero-pnl '+(up?'up':'dn'); pnlEl.textContent=`${up?'▲':'▼'} ${up?'+':''}${Math.round(totalPnl).toLocaleString()}원 (${up?'+':''}${totalPct.toFixed(2)}%)`; }
+  if(bestEl&&best){ bestEl.className='hero-stat-val '+(best.pct>=0?'up':'dn'); bestEl.textContent=`${best.name} ${best.pct>=0?'+':''}${best.pct.toFixed(1)}%`;
+    const l=document.getElementById('pf-hero-best-lbl'); if(l) l.textContent=best.pct>=0?'🏆 최고 수익':'🥲 최저 손실'; }
+  if(worstEl&&worst&&pnls.length>1){ worstEl.className='hero-stat-val '+(worst.pct>=0?'up':'dn'); worstEl.textContent=`${worst.name} ${worst.pct>=0?'+':''}${worst.pct.toFixed(1)}%`; }
+  else if(worstEl){ worstEl.textContent='종목 1개'; }
 }
 
 function openModal(tp) {
