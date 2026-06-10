@@ -385,9 +385,9 @@ body {
   display:flex; align-items:center;
   margin-bottom:24px;
 }
-.ticker-inner { display:flex; animation:tickerScroll 60s linear infinite; white-space:nowrap; padding-left:100%; }
+.ticker-inner { display:flex; width:max-content; animation:tickerScroll 60s linear infinite; white-space:nowrap; }
 .ticker-inner:hover { animation-play-state:paused; }
-@keyframes tickerScroll { 0%{transform:translateX(0)} 100%{transform:translateX(-100%)} }
+@keyframes tickerScroll { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
 .tick {
   display:inline-flex; align-items:center; gap:8px;
   margin-right:40px; font-family:'JetBrains Mono',monospace; font-size:12px;
@@ -1143,7 +1143,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
       </div>
       <div class="brand-name">SIGNAL</div>
     </div>
-    <div class="brand-meta">PRO · v3.12.2</div>
+    <div class="brand-meta">PRO · v3.12.3</div>
   </div>
   <div class="nav">
     <div class="nav-group-label">분석</div>
@@ -1174,7 +1174,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
     <div class="sb-foot-info">
       <div class="sb-foot-row">
         <span class="sb-foot-key">VERSION</span>
-        <span class="sb-foot-val">v3.12.2</span>
+        <span class="sb-foot-val">v3.12.3</span>
       </div>
       <div class="sb-foot-row">
         <span class="sb-foot-key">UPDATED</span>
@@ -1886,7 +1886,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
 <footer class="page-foot">
   <div class="page-foot-left">
     <span class="page-foot-brand">SIGNAL PRO</span>
-    <span class="page-foot-ver">v3.12.2</span>
+    <span class="page-foot-ver">v3.12.3</span>
   </div>
   <div class="page-foot-meta">
     <span>Updated 2026.04.27</span>
@@ -1921,8 +1921,14 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
 
 <script>
 // ===================== CONFIG =====================
-const APP_VERSION = '3.12.2';
+const APP_VERSION = '3.12.3';
 const RELEASE_NOTES = [{
+  version:'3.12.3', date:'2026-06-10',
+  changes:[
+    '🔧 상단 티커 겹침 버그 수정 — 글자가 한 자리에 뭉치던 문제 해결',
+    '⚡ 티커 흐름 속도 조정 (끊김 없이 부드럽게)',
+  ]
+},{
   version:'3.12.2', date:'2026-06-10',
   changes:[
     '📱 종목 헤더 모바일 대응 — 종목명·가격 줄바꿈 방지, 화면 폭에 맞게 유동 조정',
@@ -2441,8 +2447,8 @@ async function loadTicker() {
   if(items.length > 0) {
     const html = items.join('') + items.join(''); // 2번 반복으로 끊김 없이
     wrap.innerHTML = html;
-    // 길이에 따라 속도 조절
-    const duration = Math.max(30, items.length * 4);
+    // 항목당 약 3.5초 — 적당한 속도 (느리지 않게)
+    const duration = Math.max(20, items.length * 3.5);
     wrap.style.animationDuration = duration + 's';
   } else {
     wrap.innerHTML = `<span class="ticker-loading">시세 조회 불가 — 설정에서 Cloudflare 프록시를 설정하면 실시간 시세를 볼 수 있습니다</span>`;
