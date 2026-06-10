@@ -1,17 +1,20 @@
 {
-  "id": "/signal-pro",
+  "id": "/economy-app/signal-pro",
   "name": "INVESTMENT SIGNAL PRO",
   "short_name": "Signal PRO",
   "description": "한국 주식 AI 시그널 분석 — Vela",
   "start_url": "./signal-pro.html",
   "scope": "./",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "background_color": "#0A0E14",
-  "theme_color": "#FAFAF7",
-  "orientation": "portrait",
+  "theme_color": "#0A0E14",
+  "categories": ["finance", "productivity"],
+  "lang": "ko",
   "icons": [
     { "src": "./signal-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
     { "src": "./signal-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./signal-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
     { "src": "./signal-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ]
 }
