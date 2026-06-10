@@ -1132,7 +1132,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
       </div>
       <div class="brand-name">SIGNAL</div>
     </div>
-    <div class="brand-meta">PRO · v3.11.0</div>
+    <div class="brand-meta">PRO · v3.12.0</div>
   </div>
   <div class="nav">
     <div class="nav-group-label">분석</div>
@@ -1163,7 +1163,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
     <div class="sb-foot-info">
       <div class="sb-foot-row">
         <span class="sb-foot-key">VERSION</span>
-        <span class="sb-foot-val">v3.11.0</span>
+        <span class="sb-foot-val">v3.12.0</span>
       </div>
       <div class="sb-foot-row">
         <span class="sb-foot-key">UPDATED</span>
@@ -1875,7 +1875,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
 <footer class="page-foot">
   <div class="page-foot-left">
     <span class="page-foot-brand">SIGNAL PRO</span>
-    <span class="page-foot-ver">v3.11.0</span>
+    <span class="page-foot-ver">v3.12.0</span>
   </div>
   <div class="page-foot-meta">
     <span>Updated 2026.04.27</span>
@@ -1910,8 +1910,16 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
 
 <script>
 // ===================== CONFIG =====================
-const APP_VERSION = '3.11.0';
+const APP_VERSION = '3.12.0';
 const RELEASE_NOTES = [{
+  version:'3.12.0', date:'2026-06-10',
+  changes:[
+    '💰 수급 데이터(외국인·기관) 반영 — 쌍끌이 매수/매도 시 점수 ±7점 보정',
+    '📊 결론 카드에 수급 보정값 표시 (수급 데이터 있을 때만)',
+    '🔧 종목명 매칭 수정 — 리스트/추천에서 진입 시 정확한 코드 사용 (현대차≠현대차증권)',
+    '🐍 수급 수집 스크립트(signal-flow-fetch.py) — PC에서 pykrx로 갱신',
+  ]
+},{
   version:'3.11.0', date:'2026-06-10',
   changes:[
     '🔬 백테스트 검증 기능 추가 — 더보기 → 신호 검증',
@@ -2477,6 +2485,93 @@ function starsHtml(n) {
 
 // ── 데이터 품질 검증 ──────────────────────────────────────
 // 반환: { ok, confidence(0~100), reasons[], bars }
+
+// ============================================================
+// 수급 데이터 (외국인/기관 순매수) — v3.12
+// ============================================================
+//
+// 출처: KRX (pykrx) → PC에서 수집 → GitHub Pages JSON
+// 앱은 JSON을 읽기만 함. 없으면 "수급 미반영"으로 안전 처리.
+//
+// JSON 구조 (signal-flow-db.json):
+// {
+//   "updated": "2026-06-10",
+//   "data": {
+//     "005930": { "frgn": [순매수액(억)...최근5일], "inst": [...] },
+//     ...
+//   }
+// }
+// 순매수액 단위: 억원, 최근 5거래일 (오래된→최신 순)
+
+let FLOW_DB = null;
+let FLOW_DB_DATE = null;
+const FLOW_DB_URL = 'https://juns9990.github.io/economy-app/data/signal-flow-db.json';
+
+async function loadFlowDB() {
+  if(FLOW_DB) return FLOW_DB;
+  try {
+    const r = await fetch(FLOW_DB_URL, { cache: 'no-store' });
+    if(!r.ok) throw new Error('flow db ' + r.status);
+    const j = await r.json();
+    FLOW_DB = j.data || {};
+    FLOW_DB_DATE = j.updated || null;
+    return FLOW_DB;
+  } catch(e) {
+    FLOW_DB = {};  // 실패 시 빈 객체 — 수급 미반영
+    return FLOW_DB;
+  }
+}
+
+// 코드(005930.KS / 005930) → 6자리 숫자
+function flowKey(code) {
+  return String(code).replace(/\.(KS|KQ)$/i, '').replace(/[^0-9]/g, '').padStart(6, '0');
+}
+
+// 수급 지표 산출 → {score, sig, val, detail, hasData}
+// 외국인+기관 5일 누적 순매수의 방향·강도를 0~100 점수로
+function calcFlowSignal(code) {
+  if(!FLOW_DB) return { hasData:false };
+  const key = flowKey(code);
+  const d = FLOW_DB[key];
+  if(!d || (!d.frgn && !d.inst)) return { hasData:false };
+
+  const frgn = (d.frgn || []).reduce((a,b)=>a+(b||0),0);  // 5일 외국인 누적(억)
+  const inst = (d.inst || []).reduce((a,b)=>a+(b||0),0);  // 5일 기관 누적(억)
+  const total = frgn + inst;
+
+  // 연속성: 최근 며칠 연속 순매수/순매도인지
+  const recent = (d.frgn || []).map((f,i)=>(f||0)+((d.inst||[])[i]||0));
+  let streak = 0;
+  for(let i=recent.length-1; i>=0; i--){
+    if(recent[i] > 0 && streak >= 0) streak++;
+    else if(recent[i] < 0 && streak <= 0) streak--;
+    else break;
+  }
+
+  // 점수화: 양매수(외국인+기관 둘 다 매수)면 강한 신호
+  let score = 50;
+  if(frgn > 0 && inst > 0) score = 78;        // 쌍끌이 매수
+  else if(frgn > 0 || inst > 0) score = total > 0 ? 64 : 46;
+  else if(frgn < 0 && inst < 0) score = 24;   // 쌍끌이 매도
+  else score = total < 0 ? 38 : 50;
+  // 연속성 보정 (±8)
+  score += Math.max(-8, Math.min(8, streak * 2));
+  score = Math.max(5, Math.min(95, score));
+
+  const sig = frgn>0&&inst>0 ? '외국인·기관 쌍끌이 매수'
+            : frgn<0&&inst<0 ? '외국인·기관 쌍끌이 매도'
+            : frgn>0 ? '외국인 순매수'
+            : inst>0 ? '기관 순매수'
+            : frgn<0 ? '외국인 순매도'
+            : '기관 순매도';
+  const val = `외 ${frgn>=0?'+':''}${Math.round(frgn)} / 기 ${inst>=0?'+':''}${Math.round(inst)}억`;
+
+  return {
+    hasData:true, score, sig, val, frgn, inst, streak,
+    col: score>=60?'var(--buy)':score<=40?'var(--sell)':'var(--ink-2)',
+  };
+}
+
 function validateHist(hist) {
   const reasons = [];
   if(!hist || !hist.closes) return { ok:false, confidence:0, reasons:['데이터 없음'], bars:0 };
@@ -2608,7 +2703,7 @@ async function updateMarketBias() {
 
 // ── 종합 시그널 산출 (메인) ─────────────────────────────
 // 반환: { score, regime, confidence, valid, dataNote, reasons }
-function calcSignalFull(hist) {
+function calcSignalFull(hist, code) {
   const v = validateHist(hist);
   if(!v.ok) {
     return { score:null, regime:null, confidence:v.confidence, valid:false,
@@ -2623,19 +2718,31 @@ function calcSignalFull(hist) {
   const marketAdj = Math.round(MARKET_BIAS * 5);
   score = Math.max(0, Math.min(100, score + marketAdj));
 
+  // 수급 보정 (±7점 한도) — 외국인/기관 쌍끌이면 강화. 데이터 있을 때만.
+  let flowAdj = 0, flow = null;
+  if(code) {
+    flow = calcFlowSignal(code);
+    if(flow.hasData) {
+      // 수급 점수(5~95)를 -7~+7 보정으로 변환
+      flowAdj = Math.round((flow.score - 50) / 50 * 7);
+      score = Math.max(0, Math.min(100, score + flowAdj));
+    }
+  }
+
   return {
     score, regime,
     confidence: v.confidence,
     valid: true,
-    marketAdj,
+    marketAdj, flowAdj,
+    flow: flow && flow.hasData ? flow : null,
     dataNote: v.confidence >= 75 ? '데이터 양호' : v.confidence >= 55 ? '데이터 보통' : '데이터 신뢰도 낮음',
     reasons: v.reasons,
   };
 }
 
 // 하위 호환 — 기존 calcSignalScore 시그니처 유지
-function calcSignalScore(hist) {
-  const r = calcSignalFull(hist);
+function calcSignalScore(hist, code) {
+  const r = calcSignalFull(hist, code);
   return r.valid ? r.score : null;
 }
 
@@ -2939,6 +3046,7 @@ async function renderSignalSummary() {
 
   // 시장 환경(KOSPI 추세) 먼저 갱신 → 종목 점수 보정에 반영
   await updateMarketBias();
+  await loadFlowDB();  // 수급 데이터 로딩 (없으면 미반영)
 
   // 분석 대상: 관심종목 + 핵심 대형주 (관심종목 적으면 보강)
   let targets = [...S.watchlist];
@@ -2963,7 +3071,7 @@ async function renderSignalSummary() {
         fetchStock(t.code),
         fetchHist(t.code, '3mo')
       ]);
-      const score = calcSignalScore(hist);
+      const score = calcSignalScore(hist, t.code);
       if(score === null) continue;
       const tier = scoreToTier(score);
       const item = {
@@ -3468,7 +3576,7 @@ async function renderWatchlist() {
         ch.textContent = `${s}${d.pct.toFixed(2)}%`;
         ch.className = 'watch-chg ' + (d.change>=0?'up':'dn');
       }
-      const score = calcSignalScore(hist);
+      const score = calcSignalScore(hist, w.code);
       const tagEl = row.querySelector('.wl-tag');
       if(score!==null && tagEl){
         const tier = scoreToTier(score);
@@ -3841,7 +3949,7 @@ function pickSig(code,name) {
   document.getElementById('sig-inp').value=name;
   document.getElementById('sig-res').classList.add('hidden');
   S.sigStock={code,name};
-  doSignal();
+  doSignal(true);  // skipSearch=true: 넘겨받은 코드 그대로 사용 (재검색 금지)
 }
 
 function goSignal(code,name) { go('signal'); setTimeout(()=>pickSig(code,name),100); }
@@ -3866,26 +3974,27 @@ async function loadPeriodData(range) {
   else drawChart(genSimCloses(range), range);
 }
 
-async function doSignal() {
-  // 검색창 값이 있으면 무조건 그걸로 새로 세팅
-  const v = document.getElementById('sig-inp').value.trim();
-  if(v) {
-    // 1. DB에서 스마트 검색 (대소문자/공백/별칭 무관)
-    const m = stockFind(v);
-    if(m) {
-      S.sigStock = m;
-    } else {
-      // 2. DB에 없으면 종목 코드로 추정
-      // 숫자만 입력: 005930 → 005930.KS (한국 주식)
-      // 숫자.KS/KQ 입력: 그대로
-      // 영문: NVDA 같은 미국 주식
-      let code = v;
-      if(/^\d{6}$/.test(v)) code = v + '.KS';
-      else if(!v.includes('.')) code = v.toUpperCase(); // 영문은 대문자로 (NVDA, TSLA 등)
-      S.sigStock = {code, name: v};
+async function doSignal(skipSearch) {
+  // skipSearch=true면 이미 확정된 S.sigStock 사용 (리스트/추천에서 정확한 코드로 진입)
+  if(!skipSearch) {
+    // 검색창 값이 있으면 무조건 그걸로 새로 세팅
+    const v = document.getElementById('sig-inp').value.trim();
+    if(v) {
+      // 1. DB에서 스마트 검색 (대소문자/공백/별칭 무관)
+      const m = stockFind(v);
+      if(m) {
+        S.sigStock = m;
+      } else {
+        // 2. DB에 없으면 종목 코드로 추정
+        let code = v;
+        if(/^\d{6}$/.test(v)) code = v + '.KS';
+        else if(!v.includes('.')) code = v.toUpperCase();
+        S.sigStock = {code, name: v};
+      }
     }
   }
   if(!S.sigStock){alert('종목을 입력하세요');return;}
+  loadFlowDB();  // 수급 데이터 (비동기, 없으면 미반영)
   const {code,name} = S.sigStock;
   CUR_RANGE = '3mo';
   document.querySelectorAll('.period-btn').forEach(b=>b.classList.toggle('active',b.dataset.range==='3mo'));
@@ -4109,7 +4218,7 @@ function genSimCloses(range) {
 function renderInds(inds) {
   // 국면 인식 + 전체 시그널 정보 (CUR_HIST 기반)
   let full = null;
-  if(CUR_HIST && CUR_HIST.closes) full = calcSignalFull(CUR_HIST);
+  if(CUR_HIST && CUR_HIST.closes) full = calcSignalFull(CUR_HIST, S.sigStock ? S.sigStock.code : null);
   const regime = full && full.regime ? full.regime : 'range';
   const tot = full && full.valid ? full.score : indsToScore(inds, regime);
   CUR_SIGNAL = full;
@@ -4191,9 +4300,10 @@ function fillVerdict(score) {
     const regimeLabel = {trend_up:'📈 상승 추세장', trend_down:'📉 하락 추세장', range:'↔️ 횡보장'};
     const rg = regimeLabel[CUR_SIGNAL.regime] || '↔️ 횡보장';
     const conf = CUR_SIGNAL.confidence;
-    const confLabel = conf>=75?`신뢰도 ${conf}`:conf>=55?`신뢰도 ${conf}`:`⚠️ 신뢰도 ${conf}`;
+    const confLabel = conf>=55?`신뢰도 ${conf}`:`⚠️ 신뢰도 ${conf}`;
     const mkt = CUR_SIGNAL.marketAdj>0?` · 시장 +${CUR_SIGNAL.marketAdj}`:CUR_SIGNAL.marketAdj<0?` · 시장 ${CUR_SIGNAL.marketAdj}`:'';
-    kicker.textContent = `${rg} · ${confLabel}${mkt}`;
+    const flw = CUR_SIGNAL.flow ? ` · 수급 ${CUR_SIGNAL.flowAdj>0?'+':''}${CUR_SIGNAL.flowAdj}` : '';
+    kicker.textContent = `${rg} · ${confLabel}${mkt}${flw}`;
     kicker.style.color = conf<55 ? 'var(--sell)' : 'var(--ink-3)';
   }
 
@@ -5565,7 +5675,7 @@ async function renderPF() {
         pnlEl.className = 'holding-pnl pf-pnl ' + (up?'up':'dn');
 
         // 시그널 점수 + 액션플랜
-        const score = calcSignalScore(hist);
+        const score = calcSignalScore(hist, x.sym);
         if(score !== null) {
           const tier = scoreToTier(score);
           const tagEl = card.querySelector('.pf-tag');
