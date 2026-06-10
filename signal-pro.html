@@ -707,8 +707,10 @@ body {
 .verdict.buy .verdict-dot { background:var(--buy); box-shadow:0 0 0 4px var(--buy-bg); }
 .verdict.sell .verdict-dot { background:var(--sell); box-shadow:0 0 0 4px var(--sell-bg); }
 .verdict.hold .verdict-dot { background:var(--hold); box-shadow:0 0 0 4px var(--hold-bg); }
-.verdict-kicker { font-size:11px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; color:var(--ink-3); }
-.verdict-headline { font-family:'Bricolage Grotesque',sans-serif; font-size:38px; font-weight:700; letter-spacing:-0.03em; margin-top:6px; line-height:1.1; }
+.verdict-kicker { font-size:11px; font-weight:700; letter-spacing:0.3px; color:var(--ink-3); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.verdict-label-row { display:flex; align-items:center; gap:6px; min-width:0; }
+.verdict-label-row .verdict-dot { flex-shrink:0; }
+.verdict-headline { font-family:'Bricolage Grotesque',sans-serif; font-size:38px; font-weight:700; letter-spacing:-0.03em; margin-top:6px; line-height:1.1; white-space:nowrap; }
 .verdict.buy .verdict-headline { color:var(--buy); }
 .verdict.sell .verdict-headline { color:var(--sell); }
 .verdict.hold .verdict-headline { color:var(--hold); }
@@ -1022,7 +1024,7 @@ body {
   .page-greet { font-size:24px; }
   .brand-title { font-size:26px; }
   .brand-version { font-size:11px; padding:3px 8px; }
-  .verdict-headline { font-size:28px; }
+  .verdict-headline { font-size:23px; white-space:nowrap; }
   .stock-name { font-size:20px; }
   .holding-name { font-size:17px; }
   .winner-banner { flex-direction:column; gap:14px; text-align:center; }
@@ -1132,7 +1134,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
       </div>
       <div class="brand-name">SIGNAL</div>
     </div>
-    <div class="brand-meta">PRO · v3.12.0</div>
+    <div class="brand-meta">PRO · v3.12.1</div>
   </div>
   <div class="nav">
     <div class="nav-group-label">분석</div>
@@ -1163,7 +1165,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
     <div class="sb-foot-info">
       <div class="sb-foot-row">
         <span class="sb-foot-key">VERSION</span>
-        <span class="sb-foot-val">v3.12.0</span>
+        <span class="sb-foot-val">v3.12.1</span>
       </div>
       <div class="sb-foot-row">
         <span class="sb-foot-key">UPDATED</span>
@@ -1382,12 +1384,12 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
 
     <!-- 결론 카드 (VERDICT) -->
     <div class="verdict buy" id="sig-verdict">
+      <div class="verdict-label-row" style="margin-bottom:10px">
+        <span class="verdict-dot"></span>
+        <span class="verdict-kicker" id="verdict-kicker">AI VERDICT · 10개 지표 + AI 추론 종합</span>
+      </div>
       <div class="verdict-head">
         <div>
-          <div class="verdict-label-row">
-            <span class="verdict-dot"></span>
-            <span class="verdict-kicker" id="verdict-kicker">AI VERDICT · 10개 지표 + AI 추론 종합</span>
-          </div>
           <h2 class="verdict-headline" id="verdict-headline">분석 중...</h2>
           <div style="display:flex;align-items:center;gap:12px;margin-top:10px">
             <span class="sig-tag strong-buy sig-tag-lg" id="verdict-tag">분석 중</span>
@@ -1875,7 +1877,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
 <footer class="page-foot">
   <div class="page-foot-left">
     <span class="page-foot-brand">SIGNAL PRO</span>
-    <span class="page-foot-ver">v3.12.0</span>
+    <span class="page-foot-ver">v3.12.1</span>
   </div>
   <div class="page-foot-meta">
     <span>Updated 2026.04.27</span>
@@ -1910,8 +1912,14 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
 
 <script>
 // ===================== CONFIG =====================
-const APP_VERSION = '3.12.0';
+const APP_VERSION = '3.12.1';
 const RELEASE_NOTES = [{
+  version:'3.12.1', date:'2026-06-10',
+  changes:[
+    '📱 결론 카드 모바일 레이아웃 개선 — 국면·신뢰도·시장·수급을 상단 한 줄로',
+    '🔧 헤드라인 줄바꿈 방지 + 별점 겹침 해결',
+  ]
+},{
   version:'3.12.0', date:'2026-06-10',
   changes:[
     '💰 수급 데이터(외국인·기관) 반영 — 쌍끌이 매수/매도 시 점수 ±7점 보정',
