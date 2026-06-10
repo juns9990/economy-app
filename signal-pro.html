@@ -1053,6 +1053,23 @@ body {
   .mob-btn svg { width:20px; height:20px; stroke-width:1.8; fill:none; stroke:currentColor; }
 }
 
+/* === 설정·사용설명서 페이지 === */
+.set-card { background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:22px; margin-bottom:16px; box-shadow:var(--sh-1); }
+.set-card-title { font-family:'Bricolage Grotesque',sans-serif; font-size:17px; font-weight:700; color:var(--ink); margin-bottom:6px; letter-spacing:-0.01em; }
+.set-card-desc { font-size:13px; color:var(--ink-3); margin-bottom:16px; line-height:1.6; }
+.set-input { width:100%; background:var(--surface); border:1.5px solid var(--line-2); border-radius:11px; padding:13px 16px; font-size:14px; color:var(--ink); outline:none; font-family:'JetBrains Mono',monospace; transition:border 0.18s; }
+.set-input:focus { border-color:var(--ink); }
+.set-btn-primary { background:var(--ink); color:#fff; border:none; padding:12px 24px; border-radius:11px; font-size:13px; cursor:pointer; font:inherit; font-weight:700; }
+.set-btn-primary:hover { opacity:0.88; }
+.set-guide { margin-top:16px; padding:16px; background:var(--surface-2); border-radius:12px; font-size:12px; color:var(--ink-2); line-height:1.7; }
+.manual-item { font-size:13px; color:var(--ink-2); line-height:1.7; padding:12px 0; border-bottom:1px solid var(--line); }
+.manual-item b { color:var(--ink); }
+.manual-sig { font-size:13px; color:var(--ink-2); line-height:1.6; padding:9px 0; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.manual-sig .sig-tag { flex-shrink:0; }
+.set-note-item { padding:12px 0; border-bottom:1px solid var(--line); }
+.set-note-ver { font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:700; color:var(--ink); margin-bottom:6px; }
+.set-note-chg { font-size:12px; color:var(--ink-2); line-height:1.7; }
+
 /* === 모달/폼 CSS (실제 앱 이식) === */
 .btn{padding:11px 22px;border-radius:10px;border:none;cursor:pointer;font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:700;transition:all .2s}
 .dash-hdr-btn{font-size:12px;padding:8px 14px;display:flex;align-items:center;gap:5px;white-space:nowrap}
@@ -1105,7 +1122,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
       </div>
       <div class="brand-name">SIGNAL</div>
     </div>
-    <div class="brand-meta">PRO · v3.9.5</div>
+    <div class="brand-meta">PRO · v3.9.6</div>
   </div>
   <div class="nav">
     <div class="nav-group-label">분석</div>
@@ -1136,7 +1153,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
     <div class="sb-foot-info">
       <div class="sb-foot-row">
         <span class="sb-foot-key">VERSION</span>
-        <span class="sb-foot-val">v3.9.5</span>
+        <span class="sb-foot-val">v3.9.6</span>
       </div>
       <div class="sb-foot-row">
         <span class="sb-foot-key">UPDATED</span>
@@ -1289,15 +1306,6 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
     <span class="section-tag">AI</span>
   </div>
   <div class="recs-grid" id="buffett-recs"></div>
-
-  <!-- 성향 맞춤 AI 추천 -->
-  <div class="section-head">
-    <div>
-      <h2 class="section-title">🎯 내 성향 맞춤 AI 추천</h2>
-      <div class="section-sub" id="per-rec-status">--</div>
-    </div>
-  </div>
-  <div class="watch-card" id="personality-recs"></div>
 
   <!-- 내 관심종목 -->
   <div class="section-head">
@@ -1778,11 +1786,153 @@ SK하이닉스가 단기 모멘텀 가장 강하지만 변동성도 가장 큼(A
 </div>
 <!-- ====== END COMPARE ====== -->
 
+
+<!-- ====== SETTINGS ====== -->
+<div id="page-settings" class="page">
+  <div class="page-head">
+    <div>
+      <h1 class="page-greet">설정</h1>
+      <div class="page-meta">API 키 · 데이터 관리</div>
+    </div>
+  </div>
+
+  <!-- Groq AI 키 -->
+  <div class="set-card">
+    <div class="set-card-title">🔑 Groq AI 키</div>
+    <div class="set-card-desc">AI 심층분석 · 뉴스 평가 · 펀더멘털 · 글로벌 브리핑 기능에 필요해요. 무료로 1분이면 발급됩니다.</div>
+
+    <!-- 키 있을 때: 마스킹 -->
+    <div id="key-view-mode" style="display:none">
+      <div style="background:var(--buy-soft);border:1px solid var(--buy-bg);border-radius:12px;padding:16px">
+        <div style="font-size:12px;color:var(--buy);font-weight:700;margin-bottom:8px">● AI 활성화 완료</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--ink);margin-bottom:12px;word-break:break-all;letter-spacing:0.5px" id="key-masked">--</div>
+        <button class="btn-out" onclick="editKey()" style="width:100%;font-size:13px;padding:10px">✏️ 키 변경하기</button>
+      </div>
+      <div style="font-size:12px;color:var(--ink-3);line-height:1.7;margin-top:12px">
+        🔒 키는 이 브라우저에만 저장돼요 (외부 전송 없음)<br>
+        💾 앱을 다시 열어도 재입력 필요 없어요
+      </div>
+      <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center">
+        <button onclick="diagnoseKey()" style="background:none;border:1px solid var(--line);color:var(--ink-2);font-size:11px;cursor:pointer;padding:6px 12px;border-radius:7px;font-weight:700">🔍 키 진단</button>
+        <button onclick="removeKey()" style="background:none;border:none;color:var(--ink-3);font-size:11px;cursor:pointer;text-decoration:underline">키 삭제</button>
+      </div>
+      <pre id="key-diag-out" style="margin-top:10px;font-size:10px;line-height:1.5;color:var(--ink-2);white-space:pre-wrap;word-break:break-all;font-family:'JetBrains Mono',monospace;max-height:300px;overflow-y:auto"></pre>
+    </div>
+
+    <!-- 키 없을 때 -->
+    <div id="key-empty-mode">
+      <div style="background:var(--hold-soft);border:1px solid var(--hold-bg);border-radius:12px;padding:20px;text-align:center">
+        <div style="font-size:30px;margin-bottom:10px">🔑</div>
+        <div style="font-size:14px;color:var(--ink);font-weight:700;margin-bottom:6px">AI 키 미등록</div>
+        <div style="font-size:12px;color:var(--ink-2);margin-bottom:16px;line-height:1.6">
+          AI 분석 기능을 쓰려면 키 등록이 필요해요<br>(지표·차트·시그널·포트폴리오는 키 없이도 작동)
+        </div>
+        <button class="set-btn-primary" onclick="editKey()">🔑 API 키 등록하기</button>
+      </div>
+    </div>
+
+    <!-- 키 입력 모드 -->
+    <div id="key-edit-mode" style="display:none">
+      <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:8px">GROQ API KEY</div>
+      <input type="password" class="set-input" id="set-groq-key" placeholder="gsk_..." autocomplete="off">
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="set-btn-primary" onclick="saveKey()" style="flex:1">💾 저장</button>
+        <button class="btn-out" onclick="cancelEditKey()" style="padding:11px 20px">취소</button>
+      </div>
+      <div id="set-groq-status" style="font-family:'JetBrains Mono',monospace;font-size:12px;margin-top:10px"></div>
+      <div class="set-guide">
+        <div style="font-weight:700;color:var(--ink);margin-bottom:8px">💡 무료 키 발급 방법 (1분)</div>
+        <div style="line-height:1.9">
+          ① <a href="https://console.groq.com/keys" target="_blank" style="color:var(--accent-2);font-weight:700">console.groq.com/keys</a> 접속<br>
+          ② Google 계정으로 로그인<br>
+          ③ <b>Create API Key</b> 버튼 클릭<br>
+          ④ 생성된 <span style="font-family:'JetBrains Mono',monospace">gsk_...</span> 키 복사<br>
+          ⑤ 위 칸에 붙여넣고 <b>저장</b>
+        </div>
+        <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--line);color:var(--ink-3);font-size:11px;line-height:1.7">
+          🚀 Llama 3.3 70B 모델 사용 — 완전 무료, 초고속<br>
+          🔒 키는 본인 브라우저에만 저장 (서버 전송 없음)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 업데이트 내용 -->
+  <div class="set-card">
+    <div class="set-card-title">📋 업데이트 내용</div>
+    <div class="set-card-desc">최근 버전별 변경사항</div>
+    <div id="set-notes"></div>
+  </div>
+
+  <!-- 데이터 관리 -->
+  <div class="set-card">
+    <div class="set-card-title">💾 데이터 관리</div>
+    <div class="set-card-desc">포트폴리오·관심종목 백업 및 초기화</div>
+    <div style="display:flex;gap:8px">
+      <button class="btn-out" onclick="exportData()" style="flex:1;padding:11px;font-size:13px">📤 백업 내보내기</button>
+      <button class="btn-out" onclick="clearData()" style="flex:1;padding:11px;font-size:13px;border-color:var(--sell);color:var(--sell)">🗑️ 초기화</button>
+    </div>
+  </div>
+
+  <div class="set-card" style="text-align:center">
+    <div class="set-card-desc" style="margin-bottom:6px">MADE BY</div>
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;color:var(--ink);font-weight:800;letter-spacing:0.05em">JUNS</div>
+  </div>
+</div>
+<!-- ====== END SETTINGS ====== -->
+
+<!-- ====== MANUAL ====== -->
+<div id="page-manual" class="page">
+  <div class="page-head">
+    <div>
+      <h1 class="page-greet">사용설명서</h1>
+      <div class="page-meta">SIGNAL PRO 사용 가이드</div>
+    </div>
+  </div>
+
+  <div class="set-card">
+    <div class="set-card-title">📱 4개 메뉴 한눈에</div>
+    <div class="manual-item"><b>🏠 대시보드</b><br>오늘의 매매 시그널, 핫이슈, 글로벌 브리핑, 관심종목을 한 화면에. 시그널 카드를 탭하면 매수/매도/관망 종목 리스트가 펼쳐져요.</div>
+    <div class="manual-item"><b>📈 시그널 분석</b><br>종목을 검색하면 10개 기술지표를 계산해 <b>VERDICT 결론카드</b>로 보여줘요. 풀매수각🚀부터 탈출각🆘까지 5단계 + 진입/분할/손절/목표 액션플랜.</div>
+    <div class="manual-item"><b>⚖️ 종목 비교</b><br>두 종목을 나란히 비교해 어느 쪽이 더 매력적인지 판단해요.</div>
+    <div class="manual-item"><b>💼 포트폴리오</b><br>보유 종목을 등록하면 실시간 평가손익과 함께 종목별 <b>익절·손절 액션플랜</b>을 자동 생성해요.</div>
+  </div>
+
+  <div class="set-card">
+    <div class="set-card-title">🚦 시그널 라벨 읽는 법</div>
+    <div class="manual-sig"><span class="sig-tag strong-buy">🚀 풀매수 각</span> 10개 지표가 강하게 매수 — 적극 매수 구간</div>
+    <div class="manual-sig"><span class="sig-tag buy">💵 분할 매수 추천</span> 매수 우위 — 나눠서 담기 좋은 구간</div>
+    <div class="manual-sig"><span class="sig-tag hold">🍿 팝콘각</span> 뚜렷한 신호 없음 — 관망하며 지켜보기</div>
+    <div class="manual-sig"><span class="sig-tag sell">⚠️ 익절 or 손절</span> 매도 우위 — 수익 실현 또는 손절 검토</div>
+    <div class="manual-sig"><span class="sig-tag strong-sell">🆘 탈출각</span> 강한 매도 신호 — 비중 축소 권장</div>
+  </div>
+
+  <div class="set-card">
+    <div class="set-card-title">🔑 AI 기능 켜기</div>
+    <div class="set-card-desc">AI 심층분석·뉴스·펀더멘털 분석은 무료 Groq 키가 필요해요.</div>
+    <div class="manual-item" style="border:none;padding-top:4px">
+      우측 상단 <b>⋯ 더보기 → ⚙️ 설정</b>에서 키를 등록하면 활성화돼요.<br>
+      <span style="color:var(--ink-3);font-size:12px">지표·차트·시그널·포트폴리오는 키 없이도 전부 작동합니다.</span>
+    </div>
+    <button class="set-btn-primary" onclick="go('settings')" style="margin-top:12px">⚙️ 설정으로 이동</button>
+  </div>
+
+  <div class="set-card">
+    <div class="set-card-title">💡 팁</div>
+    <div class="manual-item">• 종목 검색은 이름(삼성전자) 또는 코드(005930) 둘 다 가능</div>
+    <div class="manual-item">• 지표명 옆 <b>?</b>를 누르면 각 지표 설명이 떠요</div>
+    <div class="manual-item">• 시그널 페이지에서 ☆를 누르면 관심종목에 추가</div>
+    <div class="manual-item" style="border:none">• 모든 분석은 참고용 — 투자 결정은 본인 책임이에요</div>
+  </div>
+</div>
+<!-- ====== END MANUAL ====== -->
+
+
 <!-- ====== 공통 푸터 (모든 페이지 하단) ====== -->
 <footer class="page-foot">
   <div class="page-foot-left">
     <span class="page-foot-brand">SIGNAL PRO</span>
-    <span class="page-foot-ver">v3.9.5</span>
+    <span class="page-foot-ver">v3.9.6</span>
   </div>
   <div class="page-foot-meta">
     <span>Updated 2026.04.27</span>
@@ -1817,8 +1967,15 @@ SK하이닉스가 단기 모멘텀 가장 강하지만 변동성도 가장 큼(A
 
 <script>
 // ===================== CONFIG =====================
-const APP_VERSION = '3.9.5';
+const APP_VERSION = '3.9.6';
 const RELEASE_NOTES = [{
+  version:'3.9.6', date:'2026-06-10',
+  changes:[
+    '⚙️ 설정 페이지 Editorial 디자인 — API 키 등록/마스킹/진단, 업데이트 내역, 데이터 관리',
+    '📖 사용설명서 전면 개편 — 4메뉴 안내 + 시그널 라벨 읽는 법 + AI 키 켜기',
+    '🧹 더보기 메뉴 정리 — 사용설명서·설정만 유지',
+  ]
+},{
   version:'3.9.5', date:'2026-06-10',
   changes:[
     '❓ 10개 지표마다 물음표 도움말 추가 — 탭하면 의미/해석법 설명',
@@ -2094,7 +2251,7 @@ function go(page) {
   if(page==='dashboard') initDash();
   if(page==='portfolio') renderPF();
   if(page==='personality') initPersonality();
-  if(page==='settings') renderSetNotes();
+  if(page==='settings') { renderSetNotes(); refreshKeyDisplay(); }
   if(page==='consult') initConsult();
   // 페이지 상단으로 스크롤
   window.scrollTo({top:0, behavior:'smooth'});
@@ -5342,7 +5499,11 @@ function clearChat() {
 }
 function renderSetNotes() {
   const el = document.getElementById('set-notes');
-  if(el) el.innerHTML = RELEASE_NOTES.map(n=>`<div class="fb mb16"><span class="mono b" style="color:var(--navy);font-size:15px">v${n.version}</span><span class="xs mono tm">${n.date}</span></div>${n.changes.map(c=>`<div class="rnote">▸ ${c}</div>`).join('')}`).join('');
+  if(el) el.innerHTML = RELEASE_NOTES.map((n,idx)=>`
+    <div class="set-note-item" ${idx===RELEASE_NOTES.length-1?'style="border-bottom:none"':''}>
+      <div class="set-note-ver">v${n.version} <span style="color:var(--ink-4);font-weight:400;font-size:11px;margin-left:6px">${n.date}</span></div>
+      <div class="set-note-chg">${n.changes.map(c=>`${c}`).join('<br>')}</div>
+    </div>`).join('');
   refreshKeyDisplay();
 }
 
@@ -5570,17 +5731,8 @@ if ('serviceWorker' in navigator) {
   <div class="modal" style="width:340px">
     <div class="modal-t"><span>더보기</span><button class="modal-x" onclick="closeMoreMenu()">×</button></div>
     <div style="display:flex;flex-direction:column;gap:8px">
-      <button class="btn btn-out" style="justify-content:flex-start;text-align:left;padding:14px 16px;display:flex;align-items:center;gap:12px" onclick="closeMoreMenu();go('predict')">
-        <span style="font-size:18px">🔮</span><span><b>AI 예측</b><br><span style="font-size:11px;color:var(--t3)">상승확률 + 시나리오 분석</span></span>
-      </button>
-      <button class="btn btn-out" style="justify-content:flex-start;text-align:left;padding:14px 16px;display:flex;align-items:center;gap:12px" onclick="closeMoreMenu();go('personality')">
-        <span style="font-size:18px">🧬</span><span><b>성향 분석</b><br><span style="font-size:11px;color:var(--t3)">투자 스타일 진단</span></span>
-      </button>
-      <button class="btn btn-out" style="justify-content:flex-start;text-align:left;padding:14px 16px;display:flex;align-items:center;gap:12px" onclick="closeMoreMenu();go('consult')">
-        <span style="font-size:18px">💬</span><span><b>AI 상담</b><br><span style="font-size:11px;color:var(--t3)">전문가 5인 그룹채팅</span></span>
-      </button>
       <button class="btn btn-out" style="justify-content:flex-start;text-align:left;padding:14px 16px;display:flex;align-items:center;gap:12px" onclick="closeMoreMenu();go('manual')">
-        <span style="font-size:18px">📖</span><span><b>사용설명서</b><br><span style="font-size:11px;color:var(--t3)">앱 완전 가이드</span></span>
+        <span style="font-size:18px">📖</span><span><b>사용설명서</b><br><span style="font-size:11px;color:var(--t3)">앱 사용 가이드</span></span>
       </button>
       <button class="btn btn-out" style="justify-content:flex-start;text-align:left;padding:14px 16px;display:flex;align-items:center;gap:12px" onclick="closeMoreMenu();go('settings')">
         <span style="font-size:18px">⚙️</span><span><b>설정</b><br><span style="font-size:11px;color:var(--t3)">API 키 · 데이터 관리</span></span>
