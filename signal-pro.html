@@ -1132,7 +1132,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
       </div>
       <div class="brand-name">SIGNAL</div>
     </div>
-    <div class="brand-meta">PRO · v3.9.8</div>
+    <div class="brand-meta">PRO · v3.9.9</div>
   </div>
   <div class="nav">
     <div class="nav-group-label">분석</div>
@@ -1163,7 +1163,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
     <div class="sb-foot-info">
       <div class="sb-foot-row">
         <span class="sb-foot-key">VERSION</span>
-        <span class="sb-foot-val">v3.9.8</span>
+        <span class="sb-foot-val">v3.9.9</span>
       </div>
       <div class="sb-foot-row">
         <span class="sb-foot-key">UPDATED</span>
@@ -1648,6 +1648,39 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
     </div>
   </div>
 
+  <!-- 앱 설치 -->
+  <div class="set-card" id="install-card">
+    <div class="set-card-title">📲 앱 설치</div>
+    <div class="set-card-desc">홈 화면/바탕화면에 설치하면 주소창 없이 전체화면 앱처럼 쓸 수 있어요.</div>
+    <div id="install-ready" style="display:none">
+      <button class="set-btn-primary" onclick="installApp()" style="width:100%">📲 지금 설치하기</button>
+    </div>
+    <div id="install-ios" style="display:none">
+      <div style="background:var(--hold-soft);border:1px solid var(--hold-bg);border-radius:12px;padding:16px;font-size:13px;color:var(--ink-2);line-height:1.8">
+        <div style="font-weight:700;color:var(--ink);margin-bottom:6px">🍎 iPhone / iPad 설치</div>
+        ① 사파리 하단 <b>공유 버튼</b>(⬆️) 탭<br>
+        ② <b>"홈 화면에 추가"</b> 선택<br>
+        ③ 우측 상단 <b>"추가"</b> 탭
+      </div>
+    </div>
+    <div id="install-installed" style="display:none">
+      <div style="background:var(--buy-soft);border:1px solid var(--buy-bg);border-radius:12px;padding:16px;text-align:center">
+        <div style="font-size:13px;color:var(--buy);font-weight:700">✅ 앱으로 실행 중입니다</div>
+      </div>
+    </div>
+    <div id="install-manual" style="display:none">
+      <div style="background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:16px;font-size:13px;color:var(--ink-2);line-height:1.8">
+        <div style="font-weight:700;color:var(--ink);margin-bottom:6px">💻 PC (Chrome / Edge)</div>
+        주소창 오른쪽 <b>설치 아이콘</b>(⊕ 또는 모니터 모양) 클릭<br>
+        또는 메뉴(⋮) → <b>"앱 설치"</b> / <b>"이 사이트를 앱으로 설치"</b>
+        <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--line)">
+          <div style="font-weight:700;color:var(--ink);margin-bottom:6px">📱 Android (Chrome)</div>
+          메뉴(⋮) → <b>"앱 설치"</b> 또는 <b>"홈 화면에 추가"</b>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Groq AI 키 -->
   <div class="set-card">
     <div class="set-card-title">🔑 Groq AI 키</div>
@@ -1784,7 +1817,7 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
 <footer class="page-foot">
   <div class="page-foot-left">
     <span class="page-foot-brand">SIGNAL PRO</span>
-    <span class="page-foot-ver">v3.9.8</span>
+    <span class="page-foot-ver">v3.9.9</span>
   </div>
   <div class="page-foot-meta">
     <span>Updated 2026.04.27</span>
@@ -1819,8 +1852,15 @@ label{display:block;font-size:13px;color:var(--t1);margin-bottom:8px;font-family
 
 <script>
 // ===================== CONFIG =====================
-const APP_VERSION = '3.9.8';
+const APP_VERSION = '3.9.9';
 const RELEASE_NOTES = [{
+  version:'3.9.9', date:'2026-06-10',
+  changes:[
+    '📲 PWA 앱 설치 지원 — PC(크롬/엣지)·안드로이드·iOS 모두 설치 가능',
+    '⚙️ 설정에 "앱 설치" 카드 추가 — 기기별 설치 안내 + 원터치 설치 버튼',
+    '🔧 서비스워커 추가 — 오프라인 지원 + 앱 셸 캐싱 (시세/AI는 항상 최신)',
+  ]
+},{
   version:'3.9.8', date:'2026-06-10',
   changes:[
     '🎨 Vela 브랜드 로고 추가 — 사이드바·대시보드 헤더 (Fraunces 이탤릭)',
@@ -2110,6 +2150,52 @@ function updateWatchStar() {
 }
 
 // ===================== ROUTER =====================
+// ===================== PWA 설치 =====================
+let DEFERRED_INSTALL = null;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  DEFERRED_INSTALL = e;
+  refreshInstallCard();
+});
+
+window.addEventListener('appinstalled', () => {
+  DEFERRED_INSTALL = null;
+  refreshInstallCard();
+});
+
+function isStandalone() {
+  return window.matchMedia('(display-mode: standalone)').matches ||
+         window.navigator.standalone === true;
+}
+function isIOS() {
+  return /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+}
+
+function refreshInstallCard() {
+  const ready = document.getElementById('install-ready');
+  const ios = document.getElementById('install-ios');
+  const installed = document.getElementById('install-installed');
+  const manual = document.getElementById('install-manual');
+  if(!ready) return;
+  [ready, ios, installed, manual].forEach(el => { if(el) el.style.display = 'none'; });
+
+  if(isStandalone()) { installed.style.display = 'block'; return; }
+  if(DEFERRED_INSTALL) { ready.style.display = 'block'; return; }
+  if(isIOS()) { ios.style.display = 'block'; return; }
+  manual.style.display = 'block';
+}
+
+async function installApp() {
+  if(!DEFERRED_INSTALL) { refreshInstallCard(); return; }
+  DEFERRED_INSTALL.prompt();
+  try {
+    const { outcome } = await DEFERRED_INSTALL.userChoice;
+    if(outcome === 'accepted') DEFERRED_INSTALL = null;
+  } catch(e) {}
+  refreshInstallCard();
+}
+
 function go(page) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
@@ -2118,7 +2204,7 @@ function go(page) {
   if(page==='dashboard') initDash();
   if(page==='portfolio') renderPF();
   if(page==='personality') initPersonality();
-  if(page==='settings') { renderSetNotes(); refreshKeyDisplay(); }
+  if(page==='settings') { renderSetNotes(); refreshKeyDisplay(); refreshInstallCard(); }
   if(page==='consult') initConsult();
   // 페이지 상단으로 스크롤
   window.scrollTo({top:0, behavior:'smooth'});
@@ -5634,8 +5720,7 @@ function renderStars() {
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
-    navigator.serviceWorker.register('./signal-sw.js').catch(function(){});
-  });
+    navigator.serviceWorker.register('./signal-sw.js').catch(function(){});  });
 }
 </script>
 <div class="modal-ov hidden" id="more-modal" onclick="if(event.target===this)closeMoreMenu()">
