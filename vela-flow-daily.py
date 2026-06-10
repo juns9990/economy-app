@@ -34,7 +34,8 @@ def gh_headers():
 
 def get_top_codes(n=TOP_N):
     """네이버 시총상위에서 코스피+코스닥 상위 n종목 코드 수집."""
-    codes, names = [], {}
+    codes = []
+    seen = set()
     # sosok=0 코스피, sosok=1 코스닥. 페이지당 50개.
     for sosok in (0, 1):
         pages = (n // 50) + 1
@@ -43,23 +44,21 @@ def get_top_codes(n=TOP_N):
             try:
                 r = requests.get(url, headers=UA, timeout=10)
                 r.encoding = "euc-kr"
-                # 코드 + 종목명 같이 추출
-                found = re.findall(
-                    r'/item/main\.naver\?code=(\d{6})">([^<]+)</a>', r.text)
+                found = re.findall(r'/item/main\.naver\?code=(\d{6})', r.text)
                 if not found:
                     break
-                for code, name in found:
-                    if code not in names:
+                for code in found:
+                    if code not in seen:
+                        seen.add(code)
                         codes.append(code)
-                        names[code] = name.strip()
             except Exception:
                 break
             time.sleep(0.2)
+            if len(codes) >= n:
+                break
         if len(codes) >= n:
-            pass  # 코스피 다 받고 코스닥도 추가
-    # 시총 큰 순으로 이미 정렬돼 있음. 상위 n개.
-    top = codes[:n]
-    return top, names
+            break
+    return codes[:n], {}
 
 
 def gh_load():
