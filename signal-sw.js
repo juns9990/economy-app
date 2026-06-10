@@ -1,37 +1,58 @@
-// INVESTMENT SIGNAL PRO - Service Worker v2
-const CACHE = 'signal-pro-v3.7.6';
-const ASSETS = [
+// INVESTMENT SIGNAL PRO — Service Worker
+// Vela / v3.9.9
+const CACHE = 'signal-pro-v3.9.9';
+const CORE = [
   './signal-pro.html',
   './signal-manifest.json',
   './signal-icon-192.png',
   './signal-icon-512.png',
+  './signal-icon-180.png',
 ];
 
-self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(ASSETS)).catch(() => {})
-  );
+// 설치 — 핵심 자산 캐시
+self.addEventListener('install', (e) => {
   self.skipWaiting();
-});
-
-self.addEventListener('activate', e => {
   e.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-    )
+    caches.open(CACHE).then((c) => c.addAll(CORE).catch(() => {}))
   );
-  self.clients.claim();
 });
 
-self.addEventListener('fetch', e => {
-  if (e.request.method !== 'GET') return;
-  // 실시간 데이터 API는 캐시하지 않음
-  const url = e.request.url;
-  if (url.includes('groq.com') || url.includes('yahoo') || url.includes('workers.dev') || url.includes('finance.yahoo')) {
+// 활성화 — 옛 캐시 정리
+self.addEventListener('activate', (e) => {
+  e.waitUntil(
+    caches.keys().then((keys) =>
+      Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
+    ).then(() => self.clients.claim())
+  );
+});
+
+// fetch 전략
+self.addEventListener('fetch', (e) => {
+  const url = new URL(e.request.url);
+
+  // 외부 API(시세/AI/종목DB)는 항상 네트워크 — 캐시하지 않음
+  const isDynamic =
+    url.hostname.includes('yahoo') ||
+    url.hostname.includes('groq') ||
+    url.hostname.includes('workers.dev') ||
+    url.pathname.includes('signal-stocks-db.json') ||
+    url.pathname.endsWith('.json') && url.pathname.includes('stocks');
+
+  if (isDynamic || e.request.method !== 'GET') {
+    e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
     return;
   }
-  // 그 외는 네트워크 우선, 실패시 캐시
+
+  // 앱 셸: 네트워크 우선, 실패 시 캐시 (최신 유지 + 오프라인 지원)
   e.respondWith(
-    fetch(e.request).catch(() => caches.match(e.request))
+    fetch(e.request)
+      .then((res) => {
+        if (res && res.status === 200 && url.origin === location.origin) {
+          const clone = res.clone();
+          caches.open(CACHE).then((c) => c.put(e.request, clone));
+        }
+        return res;
+      })
+      .catch(() => caches.match(e.request).then((r) => r || caches.match('./signal-pro.html')))
   );
 });
