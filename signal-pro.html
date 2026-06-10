@@ -630,16 +630,21 @@ body {
   background:var(--surface);
   border:1px solid var(--line);
   border-radius:14px;
-  padding:14px 20px;
-  display:flex; align-items:center; gap:14px;
+  padding:14px 16px;
+  display:flex; align-items:center; gap:10px;
   margin-bottom:24px;
   transition:all 0.18s;
 }
 .search-bar:focus-within { border-color:var(--ink); box-shadow:var(--sh-2); }
-.search-bar svg { width:18px; height:18px; stroke:var(--ink-3); fill:none; stroke-width:1.8; }
-.search-input { flex:1; border:none; background:transparent; outline:none; font:inherit; font-size:15px; color:var(--ink); }
+.search-bar svg { width:18px; height:18px; stroke:var(--ink-3); fill:none; stroke-width:1.8; flex-shrink:0; }
+.search-input { flex:1; min-width:0; border:none; background:transparent; outline:none; font:inherit; font-size:15px; color:var(--ink); }
 .search-input::placeholder { color:var(--ink-4); }
-.search-btn { background:var(--ink); color:#fff; border:none; padding:9px 22px; border-radius:9px; font-size:13px; font-weight:600; cursor:pointer; font:inherit; font-weight:600; }
+.search-btn { background:var(--ink); color:#fff; border:none; padding:9px 20px; border-radius:9px; font-size:13px; font-weight:600; cursor:pointer; font:inherit; flex-shrink:0; white-space:nowrap; }
+@media(max-width:480px){
+  .search-bar { padding:11px 13px; gap:8px; }
+  .search-input { font-size:14px; }
+  .search-btn { padding:9px 16px; font-size:13px; }
+}
 
 /* stock header card */
 .stock-head-card {
@@ -1006,7 +1011,8 @@ body {
 @media (max-width:768px) {
   :root { --sw:0px; }
   .sidebar { display:none; }
-  .main { margin-left:0; padding:18px 16px 88px; }
+  .main { margin-left:0; padding:18px 16px 88px; max-width:100%; overflow-x:hidden; }
+  .main * { max-width:100%; }
   .page-greet { font-size:24px; }
   .brand-title { font-size:26px; }
   .brand-version { font-size:11px; padding:3px 8px; }
