@@ -1,12 +1,12 @@
 {
-  "version": "2026.06.07",
-  "updated_at": "2026-06-07T22:07:34.474835+09:00",
+  "version": "2026.06.14",
+  "updated_at": "2026-06-14T22:16:07.075530+09:00",
   "source": "KIND 상장법인목록",
-  "data_date": "20260607",
-  "count": 2765,
+  "data_date": "20260614",
+  "count": 2762,
   "markets": {
-    "KOSPI": 838,
-    "KOSDAQ": 1820,
+    "KOSPI": 836,
+    "KOSDAQ": 1819,
     "KONEX": 107
   },
   "stocks": [
@@ -1232,14 +1232,6 @@
       "aliases": []
     },
     {
-      "code": "204210.KS",
-      "name": "JK리버스톤리츠",
-      "market": "KOSPI",
-      "sector": "리츠",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
       "code": "229640.KS",
       "name": "LS에코에너지",
       "market": "KOSPI",
@@ -1740,14 +1732,6 @@
       "name": "신세계인터내셔날",
       "market": "KOSPI",
       "sector": "섬유, 의복, 신발 및 가죽제품 소매업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
-      "code": "140910.KS",
-      "name": "에이리츠",
-      "market": "KOSPI",
-      "sector": "리츠",
       "marketCap": 0,
       "aliases": []
     },
@@ -6735,6 +6719,14 @@
       "aliases": []
     },
     {
+      "code": "0017J0.KQ",
+      "name": "세미티에스",
+      "market": "KOSDAQ",
+      "sector": "특수 목적용 기계 제조업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
       "code": "0117P0.KQ",
       "name": "피스피스스튜디오",
       "market": "KOSDAQ",
@@ -8975,14 +8967,6 @@
       "aliases": []
     },
     {
-      "code": "464680.KQ",
-      "name": "KB제27호스팩",
-      "market": "KOSDAQ",
-      "sector": "금융 지원 서비스업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
       "code": "188260.KQ",
       "name": "세니젠",
       "market": "KOSDAQ",
@@ -9275,14 +9259,6 @@
       "name": "아이티센피엔에스",
       "market": "KOSDAQ",
       "sector": "소프트웨어 개발 및 공급업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
-      "code": "451700.KQ",
-      "name": "엔에이치스팩29호",
-      "market": "KOSDAQ",
-      "sector": "금융 지원 서비스업",
       "marketCap": 0,
       "aliases": []
     },
