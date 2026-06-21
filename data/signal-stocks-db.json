@@ -1,8 +1,8 @@
 {
-  "version": "2026.06.14",
-  "updated_at": "2026-06-14T22:16:07.075530+09:00",
+  "version": "2026.06.21",
+  "updated_at": "2026-06-21T22:17:16.933675+09:00",
   "source": "KIND 상장법인목록",
-  "data_date": "20260614",
+  "data_date": "20260621",
   "count": 2762,
   "markets": {
     "KOSPI": 836,
@@ -3881,7 +3881,7 @@
       "code": "016880.KS",
       "name": "웅진",
       "market": "KOSPI",
-      "sector": "회사 본부 및 경영 컨설팅 서비스업",
+      "sector": "기타 금융업",
       "marketCap": 0,
       "aliases": []
     },
@@ -5334,7 +5334,7 @@
     },
     {
       "code": "006490.KS",
-      "name": "인스코비",
+      "name": "프리티",
       "market": "KOSPI",
       "sector": "전기 통신업",
       "marketCap": 0,
@@ -6715,6 +6715,14 @@
       "name": "한진중공업홀딩스",
       "market": "KOSPI",
       "sector": "연료용 가스 제조 및 배관공급업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "0165X0.KQ",
+      "name": "메리츠제2호스팩",
+      "market": "KOSDAQ",
+      "sector": "리츠",
       "marketCap": 0,
       "aliases": []
     },
@@ -8915,14 +8923,6 @@
       "name": "에이직랜드",
       "market": "KOSDAQ",
       "sector": "반도체 제조업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
-      "code": "464440.KQ",
-      "name": "한국제13호스팩",
-      "market": "KOSDAQ",
-      "sector": "금융 지원 서비스업",
       "marketCap": 0,
       "aliases": []
     },
