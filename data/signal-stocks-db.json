@@ -1,12 +1,12 @@
 {
-  "version": "2026.06.21",
-  "updated_at": "2026-06-21T22:17:16.933675+09:00",
+  "version": "2026.06.28",
+  "updated_at": "2026-06-28T22:04:45.649320+09:00",
   "source": "KIND 상장법인목록",
-  "data_date": "20260621",
-  "count": 2762,
+  "data_date": "20260628",
+  "count": 2763,
   "markets": {
     "KOSPI": 836,
-    "KOSDAQ": 1819,
+    "KOSDAQ": 1820,
     "KONEX": 107
   },
   "stocks": [
@@ -6715,6 +6715,14 @@
       "name": "한진중공업홀딩스",
       "market": "KOSPI",
       "sector": "연료용 가스 제조 및 배관공급업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "153890.KQ",
+      "name": "져스텍",
+      "market": "KOSDAQ",
+      "sector": "전동기, 발전기 및 전기 변환 · 공급 · 제어 장치 제조업",
       "marketCap": 0,
       "aliases": []
     },
@@ -13880,7 +13888,7 @@
     },
     {
       "code": "222080.KQ",
-      "name": "씨아이에스",
+      "name": "SFA넥셀",
       "market": "KOSDAQ",
       "sector": "특수 목적용 기계 제조업",
       "marketCap": 0,
@@ -16776,7 +16784,7 @@
     },
     {
       "code": "091970.KQ",
-      "name": "나노캠텍",
+      "name": "LSK아이로봇",
       "market": "KOSDAQ",
       "sector": "플라스틱제품 제조업",
       "marketCap": 0,
@@ -18663,6 +18671,14 @@
       "aliases": []
     },
     {
+      "code": "056190.KQ",
+      "name": "SFA",
+      "market": "KOSDAQ",
+      "sector": "특수 목적용 기계 제조업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
       "code": "058470.KQ",
       "name": "리노공업",
       "market": "KOSDAQ",
@@ -18675,14 +18691,6 @@
       "name": "성우테크론",
       "market": "KOSDAQ",
       "sector": "전자부품 제조업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
-      "code": "056190.KQ",
-      "name": "에스에프에이",
-      "market": "KOSDAQ",
-      "sector": "특수 목적용 기계 제조업",
       "marketCap": 0,
       "aliases": []
     },
@@ -20991,14 +20999,6 @@
       "aliases": []
     },
     {
-      "code": "013720.KQ",
-      "name": "THE CUBE&",
-      "market": "KOSDAQ",
-      "sector": "자동차 신품 부품 제조업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
       "code": "011320.KQ",
       "name": "유니크",
       "market": "KOSDAQ",
@@ -21011,6 +21011,14 @@
       "name": "진로발효",
       "market": "KOSDAQ",
       "sector": "알코올음료 제조업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "013720.KQ",
+      "name": "청보",
+      "market": "KOSDAQ",
+      "sector": "자동차 신품 부품 제조업",
       "marketCap": 0,
       "aliases": []
     },
