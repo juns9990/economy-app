@@ -1,12 +1,12 @@
 {
-  "version": "2026.06.28",
-  "updated_at": "2026-06-28T22:04:45.649320+09:00",
+  "version": "2026.07.05",
+  "updated_at": "2026-07-05T22:04:38.622649+09:00",
   "source": "KIND 상장법인목록",
-  "data_date": "20260628",
-  "count": 2763,
+  "data_date": "20260705",
+  "count": 2761,
   "markets": {
-    "KOSPI": 836,
-    "KOSDAQ": 1820,
+    "KOSPI": 835,
+    "KOSDAQ": 1819,
     "KONEX": 107
   },
   "stocks": [
@@ -3902,14 +3902,6 @@
       "aliases": []
     },
     {
-      "code": "008500.KS",
-      "name": "일정실업",
-      "market": "KOSPI",
-      "sector": "편조원단 제조업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
       "code": "010120.KS",
       "name": "엘에스일렉트릭",
       "market": "KOSPI",
@@ -6715,6 +6707,38 @@
       "name": "한진중공업홀딩스",
       "market": "KOSPI",
       "sector": "연료용 가스 제조 및 배관공급업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "365660.KQ",
+      "name": "레몬헬스케어",
+      "market": "KOSDAQ",
+      "sector": "소프트웨어 개발 및 공급업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "0039P0.KQ",
+      "name": "매드업",
+      "market": "KOSDAQ",
+      "sector": "광고업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "475040.KQ",
+      "name": "스트라드비젼",
+      "market": "KOSDAQ",
+      "sector": "소프트웨어 개발 및 공급업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "0164H0.KQ",
+      "name": "한국제16호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
       "marketCap": 0,
       "aliases": []
     },
@@ -9992,7 +10016,7 @@
     },
     {
       "code": "366030.KQ",
-      "name": "공구우먼",
+      "name": "나인앤컴퍼니",
       "market": "KOSDAQ",
       "sector": "의복 액세서리 제조업",
       "marketCap": 0,
@@ -10664,7 +10688,7 @@
     },
     {
       "code": "340930.KQ",
-      "name": "유일에너테크",
+      "name": "성원에너텍",
       "market": "KOSDAQ",
       "sector": "특수 목적용 기계 제조업",
       "marketCap": 0,
@@ -12239,14 +12263,6 @@
       "aliases": []
     },
     {
-      "code": "227100.KQ",
-      "name": "프로브잇",
-      "market": "KOSDAQ",
-      "sector": "부동산 관련 서비스업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
       "code": "194700.KQ",
       "name": "노바렉스",
       "market": "KOSDAQ",
@@ -12456,7 +12472,7 @@
     },
     {
       "code": "297570.KQ",
-      "name": "알로이스",
+      "name": "아틀라스링크",
       "market": "KOSDAQ",
       "sector": "통신 및 방송 장비 제조업",
       "marketCap": 0,
@@ -13415,14 +13431,6 @@
       "aliases": []
     },
     {
-      "code": "230360.KQ",
-      "name": "에코마케팅",
-      "market": "KOSDAQ",
-      "sector": "광고업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
       "code": "208860.KQ",
       "name": "다산디엠씨",
       "market": "KOSDAQ",
@@ -14168,7 +14176,7 @@
     },
     {
       "code": "195990.KQ",
-      "name": "에이비프로바이오",
+      "name": "루트K",
       "market": "KOSDAQ",
       "sector": "특수 목적용 기계 제조업",
       "marketCap": 0,
@@ -14963,14 +14971,6 @@
       "name": "네이블",
       "market": "KOSDAQ",
       "sector": "소프트웨어 개발 및 공급업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
-      "code": "106520.KQ",
-      "name": "노블엠앤비",
-      "market": "KOSDAQ",
-      "sector": "사진장비 및 광학기기 제조업",
       "marketCap": 0,
       "aliases": []
     },
@@ -16243,14 +16243,6 @@
       "name": "이엠앤아이",
       "market": "KOSDAQ",
       "sector": "기초 화학물질 제조업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
-      "code": "101390.KQ",
-      "name": "아이엠",
-      "market": "KOSDAQ",
-      "sector": "전자부품 제조업",
       "marketCap": 0,
       "aliases": []
     },
@@ -20299,14 +20291,6 @@
       "name": "디지틀조선",
       "market": "KOSDAQ",
       "sector": "자료처리, 호스팅, 포털 및 기타 인터넷 정보매개 서비스업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
-      "code": "032980.KQ",
-      "name": "바이온",
-      "market": "KOSDAQ",
-      "sector": "음·식료품 및 담배 도매업",
       "marketCap": 0,
       "aliases": []
     },
