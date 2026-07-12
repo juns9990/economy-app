@@ -1,12 +1,12 @@
 {
-  "version": "2026.07.05",
-  "updated_at": "2026-07-05T22:04:38.622649+09:00",
+  "version": "2026.07.12",
+  "updated_at": "2026-07-12T21:55:44.288992+09:00",
   "source": "KIND 상장법인목록",
-  "data_date": "20260705",
-  "count": 2761,
+  "data_date": "20260712",
+  "count": 2760,
   "markets": {
     "KOSPI": 835,
-    "KOSDAQ": 1819,
+    "KOSDAQ": 1818,
     "KONEX": 107
   },
   "stocks": [
@@ -6711,6 +6711,14 @@
       "aliases": []
     },
     {
+      "code": "387690.KQ",
+      "name": "레메디",
+      "market": "KOSDAQ",
+      "sector": "의료용 기기 제조업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
       "code": "365660.KQ",
       "name": "레몬헬스케어",
       "market": "KOSDAQ",
@@ -10195,14 +10203,6 @@
       "name": "알비더블유",
       "market": "KOSDAQ",
       "sector": "오디오물 출판 및 원판 녹음업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
-      "code": "222160.KQ",
-      "name": "NPX",
-      "market": "KOSDAQ",
-      "sector": "특수 목적용 기계 제조업",
       "marketCap": 0,
       "aliases": []
     },
@@ -14531,14 +14531,6 @@
       "name": "데브시스터즈",
       "market": "KOSDAQ",
       "sector": "소프트웨어 개발 및 공급업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
-      "code": "203690.KQ",
-      "name": "아크솔루션스",
-      "market": "KOSDAQ",
-      "sector": "펄프, 종이 및 판지 제조업",
       "marketCap": 0,
       "aliases": []
     },
