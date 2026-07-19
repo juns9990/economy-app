@@ -1,11 +1,11 @@
 {
-  "version": "2026.07.12",
-  "updated_at": "2026-07-12T21:55:44.288992+09:00",
+  "version": "2026.07.19",
+  "updated_at": "2026-07-19T21:57:04.910970+09:00",
   "source": "KIND 상장법인목록",
-  "data_date": "20260712",
-  "count": 2760,
+  "data_date": "20260719",
+  "count": 2758,
   "markets": {
-    "KOSPI": 835,
+    "KOSPI": 833,
     "KOSDAQ": 1818,
     "KONEX": 107
   },
@@ -1910,14 +1910,6 @@
       "name": "KTcs",
       "market": "KOSPI",
       "sector": "기타 정보 서비스업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
-      "code": "057050.KS",
-      "name": "현대홈쇼핑",
-      "market": "KOSPI",
-      "sector": "무점포 소매업",
       "marketCap": 0,
       "aliases": []
     },
@@ -4708,14 +4700,6 @@
       "name": "영원무역홀딩스",
       "market": "KOSPI",
       "sector": "기타 금융업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
-      "code": "012510.KS",
-      "name": "더존비즈온",
-      "market": "KOSPI",
-      "sector": "컴퓨터 프로그래밍, 시스템 통합 및 관리업",
       "marketCap": 0,
       "aliases": []
     },
@@ -13888,7 +13872,7 @@
     },
     {
       "code": "175140.KQ",
-      "name": "휴먼테크놀로지",
+      "name": "아고스",
       "market": "KOSDAQ",
       "sector": "통신 및 방송 장비 제조업",
       "marketCap": 0,
