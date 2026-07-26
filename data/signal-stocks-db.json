@@ -1,13 +1,13 @@
 {
-  "version": "2026.07.19",
-  "updated_at": "2026-07-19T21:57:04.910970+09:00",
+  "version": "2026.07.26",
+  "updated_at": "2026-07-26T22:01:48.155902+09:00",
   "source": "KIND 상장법인목록",
-  "data_date": "20260719",
-  "count": 2758,
+  "data_date": "20260726",
+  "count": 2760,
   "markets": {
     "KOSPI": 833,
-    "KOSDAQ": 1818,
-    "KONEX": 107
+    "KOSDAQ": 1819,
+    "KONEX": 108
   },
   "stocks": [
     {
@@ -3743,7 +3743,7 @@
     },
     {
       "code": "018500.KS",
-      "name": "동원금속",
+      "name": "동원모빌리티",
       "market": "KOSPI",
       "sector": "자동차 신품 부품 제조업",
       "marketCap": 0,
@@ -6691,6 +6691,22 @@
       "name": "한진중공업홀딩스",
       "market": "KOSPI",
       "sector": "연료용 가스 제조 및 배관공급업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "0218L0.KQ",
+      "name": "네오뷰",
+      "market": "KOSDAQ",
+      "sector": "영상 및 음향기기 제조업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "0156T0.KQ",
+      "name": "에이치엘지노믹스",
+      "market": "KOSDAQ",
+      "sector": "기초 의약물질 제조업",
       "marketCap": 0,
       "aliases": []
     },
@@ -14096,7 +14112,7 @@
     },
     {
       "code": "215380.KQ",
-      "name": "우정바이오",
+      "name": "콜마바이오텍",
       "market": "KOSDAQ",
       "sector": "자연과학 및 공학 연구개발업",
       "marketCap": 0,
@@ -18599,14 +18615,6 @@
       "aliases": []
     },
     {
-      "code": "060240.KQ",
-      "name": "스타코링크",
-      "market": "KOSDAQ",
-      "sector": "선박 및 보트 건조업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
       "code": "041930.KQ",
       "name": "SY동아",
       "market": "KOSDAQ",
@@ -20472,7 +20480,7 @@
     },
     {
       "code": "030520.KQ",
-      "name": "한글과컴퓨터",
+      "name": "한컴",
       "market": "KOSDAQ",
       "sector": "소프트웨어 개발 및 공급업",
       "marketCap": 0,
@@ -21235,6 +21243,14 @@
       "name": "모헨즈",
       "market": "KOSDAQ",
       "sector": "시멘트, 석회, 플라스터 및 그 제품 제조업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "0203K0.KS",
+      "name": "송우인포텍",
+      "market": "KONEX",
+      "sector": "소프트웨어 개발 및 공급업",
       "marketCap": 0,
       "aliases": []
     },
