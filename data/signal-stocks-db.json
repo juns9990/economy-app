@@ -1,13 +1,13 @@
 {
-  "version": "2026.07.26",
-  "updated_at": "2026-07-26T22:01:48.155902+09:00",
+  "version": "2026.08.02",
+  "updated_at": "2026-08-02T21:58:27.381865+09:00",
   "source": "KIND 상장법인목록",
-  "data_date": "20260726",
-  "count": 2760,
+  "data_date": "20260802",
+  "count": 2759,
   "markets": {
     "KOSPI": 833,
-    "KOSDAQ": 1819,
-    "KONEX": 108
+    "KOSDAQ": 1817,
+    "KONEX": 109
   },
   "stocks": [
     {
@@ -8823,22 +8823,6 @@
       "aliases": []
     },
     {
-      "code": "467930.KQ",
-      "name": "IBKS제23호스팩",
-      "market": "KOSDAQ",
-      "sector": "금융 지원 서비스업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
-      "code": "469880.KQ",
-      "name": "하나30호스팩",
-      "market": "KOSDAQ",
-      "sector": "금융 지원 서비스업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
       "code": "109670.KQ",
       "name": "씨싸이트",
       "market": "KOSDAQ",
@@ -10960,7 +10944,7 @@
     },
     {
       "code": "290690.KQ",
-      "name": "소룩스",
+      "name": "아리바이오홀딩스",
       "market": "KOSDAQ",
       "sector": "전구 및 조명장치 제조업",
       "marketCap": 0,
@@ -13264,7 +13248,7 @@
     },
     {
       "code": "220180.KQ",
-      "name": "핸디소프트",
+      "name": "폴라리스AI핸디",
       "market": "KOSDAQ",
       "sector": "소프트웨어 개발 및 공급업",
       "marketCap": 0,
@@ -13408,7 +13392,7 @@
     },
     {
       "code": "242040.KQ",
-      "name": "나무기술",
+      "name": "나무에이엑스",
       "market": "KOSDAQ",
       "sector": "소프트웨어 개발 및 공급업",
       "marketCap": 0,
@@ -21232,7 +21216,7 @@
     },
     {
       "code": "019570.KQ",
-      "name": "플루토스",
+      "name": "GMI벤처",
       "market": "KOSDAQ",
       "sector": "신탁업 및 집합투자업",
       "marketCap": 0,
@@ -21243,6 +21227,14 @@
       "name": "모헨즈",
       "market": "KOSDAQ",
       "sector": "시멘트, 석회, 플라스터 및 그 제품 제조업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "238540.KS",
+      "name": "나노솔루션",
+      "market": "KONEX",
+      "sector": "기타 화학제품 제조업",
       "marketCap": 0,
       "aliases": []
     },
