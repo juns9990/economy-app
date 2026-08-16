@@ -1,12 +1,12 @@
 {
-  "version": "2026.08.09",
-  "updated_at": "2026-08-09T21:35:30.091952+09:00",
-  "source": "백업 JSON",
-  "data_date": "20260802",
+  "version": "2026.08.16",
+  "updated_at": "2026-08-16T21:23:13.092717+09:00",
+  "source": "KIND 상장법인목록",
+  "data_date": "20260816",
   "count": 2759,
   "markets": {
-    "KOSPI": 833,
-    "KOSDAQ": 1817,
+    "KOSPI": 832,
+    "KOSDAQ": 1818,
     "KONEX": 109
   },
   "stocks": [
@@ -1998,14 +1998,6 @@
       "name": "삼성생명",
       "market": "KOSPI",
       "sector": "보험업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
-      "code": "031440.KS",
-      "name": "신세계푸드",
-      "market": "KOSPI",
-      "sector": "음식점업",
       "marketCap": 0,
       "aliases": []
     },
@@ -6695,6 +6687,22 @@
       "aliases": []
     },
     {
+      "code": "487400.KQ",
+      "name": "케이앤에스아이앤씨",
+      "market": "KOSDAQ",
+      "sector": "통신 및 방송 장비 제조업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "483350.KQ",
+      "name": "딜리셔스",
+      "market": "KOSDAQ",
+      "sector": "무점포 소매업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
       "code": "0218L0.KQ",
       "name": "네오뷰",
       "market": "KOSDAQ",
@@ -11056,7 +11064,7 @@
     },
     {
       "code": "291650.KQ",
-      "name": "압타머사이언스",
+      "name": "츌립앤사이언스",
       "market": "KOSDAQ",
       "sector": "자연과학 및 공학 연구개발업",
       "marketCap": 0,
@@ -12352,7 +12360,7 @@
     },
     {
       "code": "291230.KQ",
-      "name": "엔피",
+      "name": "컴투스엔",
       "market": "KOSDAQ",
       "sector": "기타 사업지원 서비스업",
       "marketCap": 0,
@@ -15648,7 +15656,7 @@
     },
     {
       "code": "070300.KQ",
-      "name": "엑스큐어",
+      "name": "퀀텀레일",
       "market": "KOSDAQ",
       "sector": "소프트웨어 개발 및 공급업",
       "marketCap": 0,
@@ -18795,14 +18803,6 @@
       "name": "메디콕스",
       "market": "KOSDAQ",
       "sector": "선박 및 보트 건조업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
-      "code": "043090.KQ",
-      "name": "더테크놀로지",
-      "market": "KOSDAQ",
-      "sector": "기타 전문 도매업",
       "marketCap": 0,
       "aliases": []
     },
