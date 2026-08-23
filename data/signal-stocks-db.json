@@ -1,12 +1,12 @@
 {
-  "version": "2026.08.16",
-  "updated_at": "2026-08-16T21:23:13.092717+09:00",
+  "version": "2026.08.23",
+  "updated_at": "2026-08-23T21:24:42.879200+09:00",
   "source": "KIND 상장법인목록",
-  "data_date": "20260816",
-  "count": 2759,
+  "data_date": "20260823",
+  "count": 2761,
   "markets": {
     "KOSPI": 832,
-    "KOSDAQ": 1818,
+    "KOSDAQ": 1820,
     "KONEX": 109
   },
   "stocks": [
@@ -6687,6 +6687,30 @@
       "aliases": []
     },
     {
+      "code": "417030.KQ",
+      "name": "니어스랩",
+      "market": "KOSDAQ",
+      "sector": "소프트웨어 개발 및 공급업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "282620.KQ",
+      "name": "기도산업",
+      "market": "KOSDAQ",
+      "sector": "봉제의복 제조업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "950260.KQ",
+      "name": "인제니아테라퓨틱스",
+      "market": "KOSDAQ",
+      "sector": "자연과학 및 공학 연구개발업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
       "code": "487400.KQ",
       "name": "케이앤에스아이앤씨",
       "market": "KOSDAQ",
@@ -12079,14 +12103,6 @@
       "aliases": []
     },
     {
-      "code": "299900.KQ",
-      "name": "위지윅스튜디오",
-      "market": "KOSDAQ",
-      "sector": "영화, 비디오물, 방송프로그램 제작 및 배급업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
       "code": "309930.KQ",
       "name": "조이웍스앤코",
       "market": "KOSDAQ",
@@ -13440,7 +13456,7 @@
     },
     {
       "code": "123010.KQ",
-      "name": "알엔티엑스",
+      "name": "MSDI",
       "market": "KOSDAQ",
       "sector": "전자부품 제조업",
       "marketCap": 0,
