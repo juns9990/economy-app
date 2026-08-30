@@ -1,15 +1,23 @@
 {
-  "version": "2026.08.23",
-  "updated_at": "2026-08-23T21:24:42.879200+09:00",
+  "version": "2026.08.30",
+  "updated_at": "2026-08-30T23:17:46.722013+09:00",
   "source": "KIND 상장법인목록",
-  "data_date": "20260823",
-  "count": 2761,
+  "data_date": "20260830",
+  "count": 2760,
   "markets": {
     "KOSPI": 832,
     "KOSDAQ": 1820,
-    "KONEX": 109
+    "KONEX": 108
   },
   "stocks": [
+    {
+      "code": "0220W0.KS",
+      "name": "한화머시너리앤서비스홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "marketCap": 0,
+      "aliases": []
+    },
     {
       "code": "279570.KS",
       "name": "케이뱅크",
@@ -2094,14 +2102,6 @@
       "name": "하이트진로",
       "market": "KOSPI",
       "sector": "알코올음료 제조업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
-      "code": "082640.KS",
-      "name": "동양생명",
-      "market": "KOSPI",
-      "sector": "보험업",
       "marketCap": 0,
       "aliases": []
     },
@@ -4809,7 +4809,7 @@
     },
     {
       "code": "009810.KS",
-      "name": "플레이그램",
+      "name": "MDS스피어",
       "market": "KOSPI",
       "sector": "기타 전문 도매업",
       "marketCap": 0,
@@ -6683,6 +6683,14 @@
       "name": "한진중공업홀딩스",
       "market": "KOSPI",
       "sector": "연료용 가스 제조 및 배관공급업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "0155E0.KQ",
+      "name": "해치텍",
+      "market": "KOSDAQ",
+      "sector": "반도체 제조업",
       "marketCap": 0,
       "aliases": []
     },
@@ -12667,14 +12675,6 @@
       "name": "씨앤지하이테크",
       "market": "KOSDAQ",
       "sector": "특수 목적용 기계 제조업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
-      "code": "269620.KQ",
-      "name": "시스웍",
-      "market": "KOSDAQ",
-      "sector": "측정, 시험, 항해, 제어 및 기타 정밀기기 제조업; 광학기기 제외",
       "marketCap": 0,
       "aliases": []
     },
@@ -21611,14 +21611,6 @@
       "name": "엔지브이아이",
       "market": "KONEX",
       "sector": "자동차 신품 부품 제조업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
-      "code": "327610.KS",
-      "name": "펨토바이오메드",
-      "market": "KONEX",
-      "sector": "의료용 기기 제조업",
       "marketCap": 0,
       "aliases": []
     },
