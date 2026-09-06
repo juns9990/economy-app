@@ -1,12 +1,12 @@
 {
-  "version": "2026.08.30",
-  "updated_at": "2026-08-30T23:17:46.722013+09:00",
+  "version": "2026.09.06",
+  "updated_at": "2026-09-06T22:47:29.944726+09:00",
   "source": "KIND 상장법인목록",
-  "data_date": "20260830",
-  "count": 2760,
+  "data_date": "20260906",
+  "count": 2759,
   "markets": {
     "KOSPI": 832,
-    "KOSDAQ": 1820,
+    "KOSDAQ": 1819,
     "KONEX": 108
   },
   "stocks": [
@@ -6608,7 +6608,7 @@
     },
     {
       "code": "002420.KS",
-      "name": "세기상사",
+      "name": "우양피앤엘",
       "market": "KOSPI",
       "sector": "연료 소매업",
       "marketCap": 0,
@@ -6683,6 +6683,14 @@
       "name": "한진중공업홀딩스",
       "market": "KOSPI",
       "sector": "연료용 가스 제조 및 배관공급업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "386380.KQ",
+      "name": "스카이랩스",
+      "market": "KOSDAQ",
+      "sector": "의료용 기기 제조업",
       "marketCap": 0,
       "aliases": []
     },
@@ -8839,14 +8847,6 @@
       "aliases": []
     },
     {
-      "code": "471050.KQ",
-      "name": "대신밸런스제17호스팩",
-      "market": "KOSDAQ",
-      "sector": "금융 지원 서비스업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
       "code": "457550.KQ",
       "name": "우진엔텍",
       "market": "KOSDAQ",
@@ -10040,7 +10040,7 @@
     },
     {
       "code": "396300.KQ",
-      "name": "세아메카닉스",
+      "name": "HT로보틱스",
       "market": "KOSDAQ",
       "sector": "기타 금속 가공제품 제조업",
       "marketCap": 0,
@@ -16447,14 +16447,6 @@
       "aliases": []
     },
     {
-      "code": "096610.KQ",
-      "name": "알에프세미",
-      "market": "KOSDAQ",
-      "sector": "반도체 제조업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
       "code": "092070.KQ",
       "name": "디엔에프",
       "market": "KOSDAQ",
@@ -18354,7 +18346,7 @@
       "code": "054410.KQ",
       "name": "케이피티유",
       "market": "KOSDAQ",
-      "sector": "섬유, 의복, 신발 및 가죽제품 소매업",
+      "sector": "기타 전문 도매업",
       "marketCap": 0,
       "aliases": []
     },
