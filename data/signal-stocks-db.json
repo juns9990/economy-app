@@ -1,12 +1,12 @@
 {
-  "version": "2026.09.06",
-  "updated_at": "2026-09-06T22:47:29.944726+09:00",
+  "version": "2026.09.13",
+  "updated_at": "2026-09-13T22:59:58.012530+09:00",
   "source": "KIND 상장법인목록",
-  "data_date": "20260906",
-  "count": 2759,
+  "data_date": "20260913",
+  "count": 2758,
   "markets": {
     "KOSPI": 832,
-    "KOSDAQ": 1819,
+    "KOSDAQ": 1818,
     "KONEX": 108
   },
   "stocks": [
@@ -6687,6 +6687,14 @@
       "aliases": []
     },
     {
+      "code": "0197V0.KQ",
+      "name": "엔에이치스팩34호",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
       "code": "386380.KQ",
       "name": "스카이랩스",
       "market": "KOSDAQ",
@@ -8771,14 +8779,6 @@
       "name": "스튜디오삼익",
       "market": "KOSDAQ",
       "sector": "기타 생활용품 소매업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
-      "code": "472220.KQ",
-      "name": "신영스팩10호",
-      "market": "KOSDAQ",
-      "sector": "금융 지원 서비스업",
       "marketCap": 0,
       "aliases": []
     },
@@ -13416,7 +13416,7 @@
     },
     {
       "code": "242040.KQ",
-      "name": "나무에이엑스",
+      "name": "나무AX",
       "market": "KOSDAQ",
       "sector": "소프트웨어 개발 및 공급업",
       "marketCap": 0,
@@ -14955,14 +14955,6 @@
       "name": "아바텍",
       "market": "KOSDAQ",
       "sector": "전자부품 제조업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
-      "code": "121850.KQ",
-      "name": "코이즈",
-      "market": "KOSDAQ",
-      "sector": "플라스틱제품 제조업",
       "marketCap": 0,
       "aliases": []
     },
@@ -16952,7 +16944,7 @@
     },
     {
       "code": "038060.KQ",
-      "name": "루멘스",
+      "name": "루멘스바이오스",
       "market": "KOSDAQ",
       "sector": "반도체 제조업",
       "marketCap": 0,
