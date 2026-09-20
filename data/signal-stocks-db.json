@@ -1,13 +1,13 @@
 {
-  "version": "2026.09.13",
-  "updated_at": "2026-09-13T22:59:58.012530+09:00",
+  "version": "2026.09.20",
+  "updated_at": "2026-09-20T23:04:26.486722+09:00",
   "source": "KIND 상장법인목록",
-  "data_date": "20260913",
-  "count": 2758,
+  "data_date": "20260920",
+  "count": 2753,
   "markets": {
-    "KOSPI": 832,
-    "KOSDAQ": 1818,
-    "KONEX": 108
+    "KOSPI": 831,
+    "KOSDAQ": 1815,
+    "KONEX": 107
   },
   "stocks": [
     {
@@ -4536,14 +4536,6 @@
       "aliases": []
     },
     {
-      "code": "009140.KS",
-      "name": "경인전자",
-      "market": "KOSPI",
-      "sector": "전자부품 제조업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
       "code": "009580.KS",
       "name": "무림P&P",
       "market": "KOSPI",
@@ -4556,6 +4548,14 @@
       "name": "인디에프",
       "market": "KOSPI",
       "sector": "봉제의복 제조업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "009140.KS",
+      "name": "케이아이이",
+      "market": "KOSPI",
+      "sector": "전자부품 제조업",
       "marketCap": 0,
       "aliases": []
     },
@@ -6303,14 +6303,6 @@
       "aliases": []
     },
     {
-      "code": "006380.KS",
-      "name": "카프로",
-      "market": "KOSPI",
-      "sector": "기초 화학물질 제조업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
       "code": "004990.KS",
       "name": "롯데지주",
       "market": "KOSPI",
@@ -6683,6 +6675,14 @@
       "name": "한진중공업홀딩스",
       "market": "KOSPI",
       "sector": "연료용 가스 제조 및 배관공급업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "0161M0.KQ",
+      "name": "네오사피엔스",
+      "market": "KOSDAQ",
+      "sector": "소프트웨어 개발 및 공급업",
       "marketCap": 0,
       "aliases": []
     },
@@ -8891,14 +8891,6 @@
       "name": "케이엔에스",
       "market": "KOSDAQ",
       "sector": "특수 목적용 기계 제조업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
-      "code": "465320.KQ",
-      "name": "교보15호스팩",
-      "market": "KOSDAQ",
-      "sector": "금융 지원 서비스업",
       "marketCap": 0,
       "aliases": []
     },
@@ -11792,7 +11784,7 @@
     },
     {
       "code": "282880.KQ",
-      "name": "코윈테크",
+      "name": "코윈로보틱스",
       "market": "KOSDAQ",
       "sector": "특수 목적용 기계 제조업",
       "marketCap": 0,
@@ -17279,14 +17271,6 @@
       "aliases": []
     },
     {
-      "code": "082660.KQ",
-      "name": "코스나인",
-      "market": "KOSDAQ",
-      "sector": "기타 화학제품 제조업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
       "code": "080010.KQ",
       "name": "이상네트웍스",
       "market": "KOSDAQ",
@@ -19223,14 +19207,6 @@
       "aliases": []
     },
     {
-      "code": "046070.KQ",
-      "name": "코다코",
-      "market": "KOSDAQ",
-      "sector": "자동차 신품 부품 제조업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
       "code": "041830.KQ",
       "name": "인바디",
       "market": "KOSDAQ",
@@ -20307,14 +20283,6 @@
       "name": "원익",
       "market": "KOSDAQ",
       "sector": "기계장비 및 관련 물품 도매업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
-      "code": "008290.KQ",
-      "name": "원풍물산",
-      "market": "KOSDAQ",
-      "sector": "봉제의복 제조업",
       "marketCap": 0,
       "aliases": []
     },
@@ -21595,14 +21563,6 @@
       "name": "엔지브이아이",
       "market": "KONEX",
       "sector": "자동차 신품 부품 제조업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
-      "code": "279060.KS",
-      "name": "이노벡스",
-      "market": "KONEX",
-      "sector": "측정, 시험, 항해, 제어 및 기타 정밀기기 제조업; 광학기기 제외",
       "marketCap": 0,
       "aliases": []
     },
