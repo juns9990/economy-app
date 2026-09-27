@@ -1,12 +1,12 @@
 {
-  "version": "2026.09.20",
-  "updated_at": "2026-09-20T23:04:26.486722+09:00",
+  "version": "2026.09.27",
+  "updated_at": "2026-09-27T23:42:42.310217+09:00",
   "source": "KIND 상장법인목록",
-  "data_date": "20260920",
-  "count": 2753,
+  "data_date": "20260927",
+  "count": 2756,
   "markets": {
     "KOSPI": 831,
-    "KOSDAQ": 1815,
+    "KOSDAQ": 1818,
     "KONEX": 107
   },
   "stocks": [
@@ -495,7 +495,7 @@
     },
     {
       "code": "381970.KS",
-      "name": "케이카",
+      "name": "KG모빌리티플랫폼",
       "market": "KOSPI",
       "sector": "자동차 판매업",
       "marketCap": 0,
@@ -6675,6 +6675,30 @@
       "name": "한진중공업홀딩스",
       "market": "KOSPI",
       "sector": "연료용 가스 제조 및 배관공급업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "0010S0.KQ",
+      "name": "와이즈플래닛컴퍼니",
+      "market": "KOSDAQ",
+      "sector": "기타 생활용품 소매업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "0209J0.KQ",
+      "name": "KB제34호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "0200G0.KQ",
+      "name": "한국제17호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
       "marketCap": 0,
       "aliases": []
     },
