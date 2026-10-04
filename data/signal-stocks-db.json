@@ -1,12 +1,12 @@
 {
-  "version": "2026.09.27",
-  "updated_at": "2026-09-27T23:42:42.310217+09:00",
+  "version": "2026.10.04",
+  "updated_at": "2026-10-04T23:52:42.436016+09:00",
   "source": "KIND 상장법인목록",
-  "data_date": "20260927",
-  "count": 2756,
+  "data_date": "20261004",
+  "count": 2759,
   "markets": {
     "KOSPI": 831,
-    "KOSDAQ": 1818,
+    "KOSDAQ": 1821,
     "KONEX": 107
   },
   "stocks": [
@@ -6675,6 +6675,38 @@
       "name": "한진중공업홀딩스",
       "market": "KOSPI",
       "sector": "연료용 가스 제조 및 배관공급업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "468670.KQ",
+      "name": "브릴스",
+      "market": "KOSDAQ",
+      "sector": "특수 목적용 기계 제조업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "266690.KQ",
+      "name": "덕산넵코어스",
+      "market": "KOSDAQ",
+      "sector": "항공기,우주선 및 부품 제조업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "486510.KQ",
+      "name": "글로벌테크놀로지",
+      "market": "KOSDAQ",
+      "sector": "반도체 제조업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "0035S0.KQ",
+      "name": "빅웨이브로보틱스",
+      "market": "KOSDAQ",
+      "sector": "소프트웨어 개발 및 공급업",
       "marketCap": 0,
       "aliases": []
     },
@@ -17171,14 +17203,6 @@
       "name": "케이엠",
       "market": "KOSDAQ",
       "sector": "기타 섬유제품 제조업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
-      "code": "084180.KQ",
-      "name": "수성웹툰",
-      "market": "KOSDAQ",
-      "sector": "일반 목적용 기계 제조업",
       "marketCap": 0,
       "aliases": []
     },
