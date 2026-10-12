@@ -1,12 +1,12 @@
 {
-  "version": "2026.10.04",
-  "updated_at": "2026-10-04T23:52:42.436016+09:00",
+  "version": "2026.10.12",
+  "updated_at": "2026-10-12T00:18:50.235554+09:00",
   "source": "KIND 상장법인목록",
-  "data_date": "20261004",
-  "count": 2759,
+  "data_date": "20261012",
+  "count": 2755,
   "markets": {
-    "KOSPI": 831,
-    "KOSDAQ": 1821,
+    "KOSPI": 830,
+    "KOSDAQ": 1818,
     "KONEX": 107
   },
   "stocks": [
@@ -6029,14 +6029,6 @@
       "aliases": []
     },
     {
-      "code": "005030.KS",
-      "name": "부산주공",
-      "market": "KOSPI",
-      "sector": "자동차 신품 부품 제조업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
       "code": "000590.KS",
       "name": "CS홀딩스",
       "market": "KOSPI",
@@ -8767,22 +8759,6 @@
       "aliases": []
     },
     {
-      "code": "472230.KQ",
-      "name": "SK증권제11호스팩",
-      "market": "KOSDAQ",
-      "sector": "금융 지원 서비스업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
-      "code": "473050.KQ",
-      "name": "유안타제15호스팩",
-      "market": "KOSDAQ",
-      "sector": "금융 지원 서비스업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
       "code": "468760.KQ",
       "name": "유진스팩10호",
       "market": "KOSDAQ",
@@ -9240,7 +9216,7 @@
     },
     {
       "code": "210120.KQ",
-      "name": "캔버스엔",
+      "name": "빅텐츠",
       "market": "KOSDAQ",
       "sector": "영화, 비디오물, 방송프로그램 제작 및 배급업",
       "marketCap": 0,
@@ -14519,14 +14495,6 @@
       "aliases": []
     },
     {
-      "code": "196490.KQ",
-      "name": "디에이테크놀로지",
-      "market": "KOSDAQ",
-      "sector": "특수 목적용 기계 제조업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
       "code": "205500.KQ",
       "name": "넥써쓰",
       "market": "KOSDAQ",
@@ -14776,7 +14744,7 @@
     },
     {
       "code": "134580.KQ",
-      "name": "탑코미디어",
+      "name": "엔키AX",
       "market": "KOSDAQ",
       "sector": "자료처리, 호스팅, 포털 및 기타 인터넷 정보매개 서비스업",
       "marketCap": 0,
@@ -17552,7 +17520,7 @@
     },
     {
       "code": "078130.KQ",
-      "name": "국일제지",
+      "name": "에스엠국일",
       "market": "KOSDAQ",
       "sector": "기타 종이 및 판지 제품 제조업",
       "marketCap": 0,
