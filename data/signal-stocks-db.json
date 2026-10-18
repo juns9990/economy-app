@@ -1,13 +1,13 @@
 {
-  "version": "2026.10.12",
-  "updated_at": "2026-10-12T00:18:50.235554+09:00",
+  "version": "2026.10.18",
+  "updated_at": "2026-10-18T22:52:41.431466+09:00",
   "source": "KIND 상장법인목록",
-  "data_date": "20261012",
-  "count": 2755,
+  "data_date": "20261018",
+  "count": 2752,
   "markets": {
-    "KOSPI": 830,
+    "KOSPI": 829,
     "KOSDAQ": 1818,
-    "KONEX": 107
+    "KONEX": 105
   },
   "stocks": [
     {
@@ -5566,7 +5566,7 @@
     },
     {
       "code": "001080.KS",
-      "name": "만호제강",
+      "name": "MH머트리얼즈",
       "market": "KOSPI",
       "sector": "1차 철강 제조업",
       "marketCap": 0,
@@ -5905,14 +5905,6 @@
       "name": "성창기업지주",
       "market": "KOSPI",
       "sector": "회사 본부 및 경영 컨설팅 서비스업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
-      "code": "005110.KS",
-      "name": "한창",
-      "market": "KOSPI",
-      "sector": "기계장비 및 관련 물품 도매업",
       "marketCap": 0,
       "aliases": []
     },
@@ -6520,7 +6512,7 @@
     },
     {
       "code": "000640.KS",
-      "name": "동아쏘시오홀딩스",
+      "name": "동아제약",
       "market": "KOSPI",
       "sector": "기타 금융업",
       "marketCap": 0,
@@ -6667,6 +6659,22 @@
       "name": "한진중공업홀딩스",
       "market": "KOSPI",
       "sector": "연료용 가스 제조 및 배관공급업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "179880.KQ",
+      "name": "멜콘",
+      "market": "KOSDAQ",
+      "sector": "특수 목적용 기계 제조업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "250030.KQ",
+      "name": "진코스텍",
+      "market": "KOSDAQ",
+      "sector": "기타 화학제품 제조업",
       "marketCap": 0,
       "aliases": []
     },
@@ -8747,14 +8755,6 @@
       "name": "케이엔알시스템",
       "market": "KOSDAQ",
       "sector": "측정, 시험, 항해, 제어 및 기타 정밀기기 제조업; 광학기기 제외",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
-      "code": "469900.KQ",
-      "name": "하나31호스팩",
-      "market": "KOSDAQ",
-      "sector": "금융 지원 서비스업",
       "marketCap": 0,
       "aliases": []
     },
@@ -16616,7 +16616,7 @@
     },
     {
       "code": "091340.KQ",
-      "name": "S&K폴리텍",
+      "name": "S&K글로벌",
       "market": "KOSDAQ",
       "sector": "전자부품 제조업",
       "marketCap": 0,
@@ -20367,14 +20367,6 @@
       "aliases": []
     },
     {
-      "code": "028080.KQ",
-      "name": "휴맥스홀딩스",
-      "market": "KOSDAQ",
-      "sector": "컴퓨터 프로그래밍, 시스템 통합 및 관리업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
       "code": "032280.KQ",
       "name": "삼일",
       "market": "KOSDAQ",
@@ -21431,14 +21423,6 @@
       "aliases": []
     },
     {
-      "code": "341170.KS",
-      "name": "퓨쳐메디신",
-      "market": "KONEX",
-      "sector": "자연과학 및 공학 연구개발업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
       "code": "354390.KS",
       "name": "바스칸바이오제약",
       "market": "KONEX",
@@ -21547,14 +21531,6 @@
       "name": "타스컴",
       "market": "KONEX",
       "sector": "의료용 기기 제조업",
-      "marketCap": 0,
-      "aliases": []
-    },
-    {
-      "code": "250030.KS",
-      "name": "진코스텍",
-      "market": "KONEX",
-      "sector": "기타 화학제품 제조업",
       "marketCap": 0,
       "aliases": []
     },
