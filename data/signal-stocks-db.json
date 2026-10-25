@@ -1,13 +1,13 @@
 {
-  "version": "2026.10.18",
-  "updated_at": "2026-10-18T22:52:41.431466+09:00",
+  "version": "2026.10.25",
+  "updated_at": "2026-10-25T23:05:12.250583+09:00",
   "source": "KIND 상장법인목록",
-  "data_date": "20261018",
-  "count": 2752,
+  "data_date": "20261025",
+  "count": 2757,
   "markets": {
     "KOSPI": 829,
-    "KOSDAQ": 1818,
-    "KONEX": 105
+    "KOSDAQ": 1821,
+    "KONEX": 107
   },
   "stocks": [
     {
@@ -6663,6 +6663,30 @@
       "aliases": []
     },
     {
+      "code": "0015M0.KQ",
+      "name": "디티에스",
+      "market": "KOSDAQ",
+      "sector": "특수 목적용 기계 제조업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "0013Y0.KQ",
+      "name": "엠에스바이오",
+      "market": "KOSDAQ",
+      "sector": "의료용 기기 제조업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "0158S0.KQ",
+      "name": "엘리스",
+      "market": "KOSDAQ",
+      "sector": "소프트웨어 개발 및 공급업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
       "code": "179880.KQ",
       "name": "멜콘",
       "market": "KOSDAQ",
@@ -8024,7 +8048,7 @@
     },
     {
       "code": "457600.KQ",
-      "name": "벡트",
+      "name": "벡트로보틱스",
       "market": "KOSDAQ",
       "sector": "영상 및 음향기기 제조업",
       "marketCap": 0,
@@ -21203,6 +21227,22 @@
       "name": "모헨즈",
       "market": "KOSDAQ",
       "sector": "시멘트, 석회, 플라스터 및 그 제품 제조업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "0230E0.KS",
+      "name": "이스트엔드",
+      "market": "KONEX",
+      "sector": "섬유, 의복, 신발 및 가죽제품 소매업",
+      "marketCap": 0,
+      "aliases": []
+    },
+    {
+      "code": "0077H0.KS",
+      "name": "모비콘텐츠테크",
+      "market": "KONEX",
+      "sector": "생활용품 도매업",
       "marketCap": 0,
       "aliases": []
     },
