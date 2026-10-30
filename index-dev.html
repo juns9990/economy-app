@@ -1325,6 +1325,109 @@ html[data-theme="light"]{--shift1:#fefce8;--shift2:#eef2ff;--shift3:#f5f3ff;--se
 .m-tr-row{display:flex;gap:8px;align-items:stretch;margin-top:6px}
 .m-tr-row .reason-input{flex:1;min-width:0}
 .m-tr-row .m-btn{width:auto;min-width:76px;margin:0;padding:0 14px}
+/* ═══════════════════════════════════════════════════════════════════
+   ★ v0.40.0 — VELA UI SPEC 1.1 공통 셸 (GPT 인계서 2026-10-29 · 사용자 확정 U01~U08)
+   · 밝은 화면 기본 = 블랙 글자 · 민트 주 동작 · 밝은 왼쪽 메뉴(전체 높이) · 위쪽 = 현재 위치
+   · 한 화면 한 업무 영역 = 단락 보기 전환(.view-tabs) · 상세·작성·수정 = 중앙 창(.modal 규격)
+   · 표시만 바꿈: 계산·원장·권한·저장 경로 무변 · 다크 테마 = 기존 색 유지(배치만 공통)
+   ═══════════════════════════════════════════════════════════════════ */
+html[data-theme="light"]{
+  --bg:#f6f8fa;--bg2:#ffffff;--panel:#ffffff;--panel2:#f8fafc;--line:#e2e8f0;--line2:#cbd5e1;
+  --ink:#17212b;--sub:#5b6878;--dim:#64748b;
+  --cyan:#087e6e;--cyan-dim:#0f9f8a;
+  --mint:#55dcc0;--mint-bg:#e7faf5;--mint-ink:#087e6e;
+  --prim:#55dcc0;--prim-ink:#102a25;
+  --sh:0 1px 2px rgba(15,23,42,.04);--sh2:0 10px 30px rgba(15,23,42,.10);
+}
+html[data-theme="light"] body{background:var(--bg)}
+html[data-theme="light"] body::before{display:none}
+html[data-theme="light"] .btn.primary{background:var(--prim);border-color:var(--prim);color:var(--prim-ink);font-weight:700}
+html[data-theme="light"] .btn.primary:hover{background:#3fcfb1;border-color:#3fcfb1;color:var(--prim-ink);opacity:1}
+html[data-theme="light"] .btn.primary svg{stroke:var(--prim-ink)}
+html[data-theme="light"] .btn{border-color:var(--line);border-radius:8px}
+html[data-theme="light"] .card{border-color:var(--line);border-radius:12px;background:var(--panel)}
+html[data-theme="light"] th{background:#f8fafc;color:#475569;font-size:11.5px;letter-spacing:.2px;font-weight:600}
+html[data-theme="light"] tbody tr:hover td{background:#f3fcf9}
+html[data-theme="light"] input,html[data-theme="light"] select,html[data-theme="light"] textarea{border-color:var(--line2);background:#fff}
+html[data-theme="light"] input:focus,html[data-theme="light"] select:focus,html[data-theme="light"] textarea:focus{border-color:var(--cyan-dim);box-shadow:0 0 0 3px rgba(85,220,192,.25)}
+:focus-visible{outline:3px solid var(--cyan-dim);outline-offset:2px}
+.pgtitle{font-size:24px;font-weight:800;letter-spacing:-.4px}
+.pgtitle .ic{display:none}
+.pg-count{font-size:14px;font-weight:500;color:var(--sub);letter-spacing:0;font-family:inherit}
+/* 사이드바 브랜드 · 부서 아이콘 · 위치 표시 (넓은 화면 전용 · 좁은 화면 = 기존 칩) */
+.tabnav .nav-brand{display:none}
+.crumb{display:none}
+.tabnav .nav-ico{display:none}
+@media(min-width:1101px){
+  #app.wrap{max-width:none;padding:0}
+  #app{grid-template-columns:232px minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto;grid-template-areas:"nav top" "nav main" "nav foot";column-gap:0;min-height:100vh}
+  #app > .tabnav{grid-area:nav;position:sticky;top:0;height:100vh;max-height:100vh;margin:0;border:0;border-right:1px solid var(--line);border-radius:0;padding:18px 12px 24px;background:var(--panel);box-shadow:none}
+  #app > .topbar{grid-area:top;align-self:start;position:sticky;top:0;z-index:30;margin:0;padding:10px 32px;min-height:64px;background:var(--panel);border-bottom:1px solid var(--line)}
+  #app > .topbar .brand{display:none}
+  #app > #view{padding:26px 32px 8px}
+  #app > .foot{margin:0 32px;padding:16px 0}
+  .tabnav .nav-brand{display:flex;align-items:baseline;gap:8px;padding:4px 14px 22px;text-decoration:none}
+  .tabnav .nav-brand b{font-size:27px;font-weight:900;letter-spacing:1.5px;color:var(--ink);font-family:'Inter','Pretendard',sans-serif;line-height:1}
+  .tabnav .nav-brand i{display:inline-block;width:10px;height:10px;background:var(--mint);margin-left:-4px}
+  .tabnav .nav-brand span{font-size:9.5px;font-weight:700;letter-spacing:2.2px;color:var(--dim)}
+  .tabnav .nav-ico{display:inline-flex;width:20px;height:20px;flex:none;align-items:center;justify-content:center}
+  .tabnav .nav-ico svg{width:19px;height:19px;stroke:currentColor;stroke-width:1.8;fill:none}
+  .tabnav .nav-sec{display:flex!important;align-items:center;gap:12px;font-size:14px!important;font-weight:700!important;letter-spacing:0!important;color:var(--ink)!important;padding:10px 14px 6px!important}
+  .tabnav .nav-dept-h{gap:12px;justify-content:flex-start!important;font-size:14px!important;padding:11px 14px!important;border-radius:8px}
+  .tabnav .nav-dept-h:hover{background:var(--panel2)}
+  .tabnav .nav-dept.cur .nav-dept-h{background:var(--mint-bg);color:var(--mint-ink)!important}
+  .tabnav .nav-dept-b{margin:2px 0 6px 23px;padding:0 0 0 12px!important;border-left:2px solid var(--line)}
+  .tabnav .nav-dept.cur .nav-dept-b{border-left-color:var(--mint)}
+  .tabnav .nav-dept-b button{font-size:13px!important;padding:8px 12px!important}
+  .tabnav > button[data-page]{font-size:13px;padding:8px 14px 8px 46px}
+  .tabnav button.on{box-shadow:none!important}
+  .crumb{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--sub);min-width:0}
+  .crumb b{color:var(--ink);font-weight:700}
+  .crumb .sep{color:var(--line2)}
+}
+html[data-theme="light"] .tabnav button.on{background:var(--mint-bg);color:var(--mint-ink)}
+/* 중앙 창 규격 (U02·U04 · 오른쪽 패널 0): 기본 760px · 최대 90dvh · 제목·하단 버튼 고정 · 본문만 스크롤 · 작은 화면 = 전체 화면 */
+.modal-bg{background:rgba(30,41,59,.45);backdrop-filter:none}
+html:not([data-theme="light"]) .modal-bg{background:rgba(8,9,11,.82)}
+.modal{max-width:760px;width:min(100%,calc(100vw - 48px));max-height:90dvh;padding:0 28px;border-radius:14px;box-shadow:0 24px 80px rgba(22,42,52,.25)}
+html[data-theme="light"] .modal{background:var(--panel)}
+.modal > h2{position:sticky;top:0;z-index:4;background:inherit;background:var(--panel);margin:0 0 14px;padding:22px 0 14px;border-bottom:1px solid var(--line);font-size:19px;font-weight:800}
+.modal .actions{position:sticky;bottom:0;z-index:4;background:var(--panel);margin-top:18px;padding:14px 0 20px}
+.modal > .body{padding-bottom:4px}
+@media(max-width:600px){
+  .modal-bg{padding:0}
+  .modal{max-width:none!important;width:100vw;height:100dvh;max-height:100dvh;border-radius:0;padding:0 16px}
+}
+/* 한 화면 한 업무 영역 — 단락 보기 전환 */
+.view-tabs{display:flex;gap:4px;flex-wrap:wrap;padding:5px;margin:0 0 16px;background:var(--panel);border:1px solid var(--line);border-radius:10px;width:max-content;max-width:100%}
+.view-tabs button{border:0;background:none;padding:9px 18px;border-radius:7px;font:inherit;font-size:13px;font-weight:600;color:var(--sub);cursor:pointer;white-space:nowrap}
+.view-tabs button[aria-selected="true"]{background:var(--mint-bg);color:var(--mint-ink);font-weight:800}
+.view-tabs button:hover{color:var(--ink)}
+.card.vt-hide{display:none!important}
+.vt-wrap-hide{display:none!important}
+.card.vt-solo{grid-column:1/-1}
+.st-tabs{display:flex;gap:4px;flex-wrap:wrap;padding:5px;margin:0 0 14px;background:var(--panel);border:1px solid var(--line);border-radius:10px;width:max-content;max-width:100%}
+.st-tabs button{border:0;background:none;padding:8px 16px;border-radius:7px;font:inherit;font-size:13px;font-weight:600;color:var(--sub);cursor:pointer;white-space:nowrap}
+.st-tabs button .n{display:inline-block;min-width:20px;margin-left:6px;padding:0 6px;border-radius:99px;background:var(--panel2);border:1px solid var(--line);font-size:11px;font-weight:700;color:var(--sub)}
+.st-tabs button[aria-selected="true"]{background:var(--mint-bg);color:var(--mint-ink);font-weight:800}
+.modal h2 .x{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:8px;flex:none}
+.modal h2 .x:hover{background:var(--panel2)}
+.modal h2 .x svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2}
+@media print{ .view-tabs{display:none!important} .card.vt-hide{display:block!important} }
+/* 행 상세 — 여러 동작 버튼은 상세 창 안으로 (원래 버튼 그대로 이동 · 닫으면 제자리) */
+td.ra-cell > :not(.ra-open){display:none!important}
+td.ra-cell{white-space:nowrap;text-align:right}
+.ra-open{background:none;border:0;color:var(--cyan);font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;padding:6px 4px;white-space:nowrap}
+.ra-open:hover{text-decoration:underline}
+@media print{ .ra-open{display:none!important} td.ra-cell > *{display:none!important} }
+.rd-grid{display:grid;grid-template-columns:minmax(110px,auto) 1fr;gap:0;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.rd-grid > div{padding:11px 14px;border-bottom:1px solid var(--line);font-size:13px}
+.rd-grid > .k{background:var(--panel2);color:var(--sub);font-weight:600}
+.rd-grid > div:nth-last-child(-n+2){border-bottom:0}
+.rd-head{font-size:20px;font-weight:800;margin:2px 0 4px}
+.rd-sub{color:var(--sub);font-size:13px;margin-bottom:14px}
+.rd-acts{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.rd-note{font-size:11.5px;color:var(--dim);margin-top:10px}
 </style>
 </head>
 <body>
@@ -1390,6 +1493,7 @@ html[data-theme="light"]{--shift1:#fefce8;--shift2:#eef2ff;--shift3:#f5f3ff;--se
       <!-- v0.9.0 — 업체명 헤더에서 제거. settings/company.name 있으면 hidden 채움 -->
       <span class="factory" id="brand-co" hidden></span>
     </div>
+    <nav class="crumb" id="crumb" aria-label="현재 위치"></nav>
     <div class="topbar-right">
       <!-- ★ v0.22.0 — DEMO 배지 (데모 체험 모드에서만 노출 · JS 가 hidden 토글) -->
       <span class="demo-badge" id="demo-badge" hidden title="데모 체험 모드 — 실데이터·서버와 완전 분리">DEMO</span>
@@ -1463,11 +1567,11 @@ html[data-theme="light"]{--shift1:#fefce8;--shift2:#eef2ff;--shift3:#f5f3ff;--se
    단일 HTML PWA. 데이터: localStorage stub (Firestore 어댑터는 §데이터레이어 참조).
    ================================================================================================= */
 
-const APP_VERSION = 'v0.39.7';
+const APP_VERSION = 'v0.40.0';
 /* ★ v0.31.5 — 물리 삭제 허용 마스터 컬렉션 (DB.remove 가드 · firestore.rules v4 와 1:1 동기)
    원장(records/lots/orders/plans/shipments/…)은 영구 불허 — voidDoc 마킹만. */
 const MASTER_DEL_COLS = ['items','bom','materials','workers','vendors','equipments','molds','defect_types','processes','drawings','expense_categories'];
-const APP_DATE    = '2026-10-26';
+const APP_DATE    = '2026-10-30';
 
 /* ★ v0.21.4 — 테마 (다크/라이트) · 로컬 전용 키 vela_theme · ★ v0.32.0 기본 light (디자인 리뉴얼)
    head 초기 스크립트가 <html data-theme> 이미 설정 · 여기선 토글/설정 UI 헬퍼만.
@@ -2289,6 +2393,14 @@ function _fsTrack(col, id, pr, onErr){
   if(_FS_TRACK) _FS_TRACK.push(pr.then(() => ({ col, id, ok: true }), e => ({ col, id, ok: false, err: String((e && (e.code || e.message)) || e) })));
   return pr.catch(onErr);
 }
+/* ★ v0.39.8 (GPT v0.39.7 필수 1 · 규칙 r13) — 단가 분리 저장 여부 1벌: 직원 계정 방식 = 항상 · 기존 방식(복구 기기 포함) = 서버가 이관 완료(sec_migrated)일 때
+   r13 은 이관 뒤 원본 단가 저장을 누구에게도 허용하지 않음 → 복구 복원도 단가를 sec_* 문서로 나눠 써야 서버가 받아 줌 (원본에 단가가 다시 들어오지 않음) */
+let _SRV_LAST = null;   // 마지막으로 서버에서 직접 읽은 settings/server_rules (복원 잠금·전환 점검)
+function _secMigratedSrv(){
+  try { const st = _ACTIVE_ADAPTER && _ACTIVE_ADAPTER._state; const m = st && st.settings && st.settings.server_rules;
+    return !!(m && m.sec_migrated === true) || !!(_SRV_LAST && _SRV_LAST.sec_migrated === true); } catch(e){ return false; }
+}
+function _secSplitOn(){ return isStaffMode() || (_ACTIVE_ADAPTER && _ACTIVE_ADAPTER.name === 'firestore' && _secMigratedSrv()); }
 function _fsSend(fs, col, id, doc, meta, viaAdmin){
   const ref = fs.collection(col).doc(String(id));
   const FV = window.firebase.firestore.FieldValue;
@@ -2296,7 +2408,7 @@ function _fsSend(fs, col, id, doc, meta, viaAdmin){
   const T = pr => _fsTrack(col, id, pr, onErr);   // ★ v0.39.6 — 복원 등에서 서버 응답(성공·거부)을 기다릴 수 있게 추적
   if(doc === null && meta && meta.op === 'delete'){ ref.delete().catch(e => console.warn('[VELA] firestore delete 거부', col, id, e)); return; }
   if(meta && meta.strip){ const up = {}; meta.strip.forEach(k => { up[k] = FV.delete(); }); T(ref.update(up)); return; }
-  if(!isStaffMode() || !meta || !meta.keys){
+  if(!_secSplitOn() || !meta || !meta.keys){
     if(meta && meta.restore){ const w = {}; (meta.keys || []).forEach(k => { if(k in doc) w[k] = doc[k]; }); (meta.del || []).forEach(k => { w[k] = FV.delete(); }); if(Object.keys(w).length) T(ref.set(w, { merge: true })); return; }   // ★ v0.39.4 — 복원: 바뀐 필드만 + 백업 뒤 추가된 필드 지움
     T(ref.set(doc, { merge: true })); return; }
   const _secTop = (SEC_SPEC[col] && SEC_SPEC[col].top) || [];
@@ -2426,18 +2538,23 @@ function secMigrationReport(){
   Object.keys(SEC_DOCS).forEach(col => SEC_DOCS[col].forEach(id => { const d = DB.get(col, id); if(d && Object.keys(d).some(k => !['id', '_logs', '_updated', 'migrated_to'].includes(k))) out.push({ col, id, whole: true }); }));
   return out;
 }
+// ★ v0.39.8 — 서버 원본에 남은 단가 목록 1벌 (이관 검증 · 복구 복원 뒤 · 복구 해제 전 공통) — 서버에서 직접 읽음 (메모리는 단가를 합쳐 보이므로 쓰지 않음)
+async function secRawPriceScan(fs){
+  const out = [];
+  for(const col of Object.keys(SEC_SPEC)){
+    const sp = SEC_SPEC[col]; const snap = await fs.collection(col).get({ source: 'server' });
+    snap.docs.forEach(d => { const x = d.data();
+      if((sp.top || []).some(k => x[k] != null) || Object.keys(sp.arr || {}).some(k => Array.isArray(x[k]) && x[k].some(it => it && sp.arr[k].some(f => it[f] != null)))) out.push(col + '/' + d.id); });
+  }
+  for(const col of Object.keys(SEC_DOCS)) for(const id of SEC_DOCS[col]){ const d = await fs.collection(col).doc(id).get({ source: 'server' }); if(d.exists && Object.keys(d.data()).some(k => !['id', '_logs', '_updated', 'migrated_to'].includes(k))) out.push(col + '/' + id); }
+  return out;
+}
 // ★ v0.38.30 (GPT P-2 ②) — 이관 검증: 서버 원본 문서를 직접 읽어 남은 단가·원가·구형 비밀번호 필드 수를 센다 (메모리는 단가를 합쳐 보이므로 쓰지 않음)
 async function secResidualCheck(){
   if(!isStaffMode()) throw Object.assign(new Error('직원 계정 방식에서만 실행'), { ui: true });
   if(!(await adminEnsure('이관 검증은 관리자 계정만 할 수 있습니다.'))) return null;
   const fs = _STAFF.isApprover ? _ACTIVE_ADAPTER._fs : _ADMIN.fs;
-  const out = { price: [], secret: [], total: 0 };
-  for(const col of Object.keys(SEC_SPEC)){
-    const sp = SEC_SPEC[col]; const snap = await fs.collection(col).get();
-    snap.docs.forEach(d => { const x = d.data();
-      if((sp.top || []).some(k => x[k] != null) || Object.keys(sp.arr || {}).some(k => Array.isArray(x[k]) && x[k].some(it => it && sp.arr[k].some(f => it[f] != null)))) out.price.push(col + '/' + d.id); });
-  }
-  for(const col of Object.keys(SEC_DOCS)) for(const id of SEC_DOCS[col]){ const d = await fs.collection(col).doc(id).get(); if(d.exists && Object.keys(d.data()).some(k => !['id', '_logs', '_updated', 'migrated_to'].includes(k))) out.price.push(col + '/' + id); }
+  const out = { price: await secRawPriceScan(fs), secret: [], total: 0 };
   (await fs.collection('users').get()).docs.forEach(d => { const x = d.data(); if(['pin', 'pin_v', 'pin_proof', 'devices'].some(k => x[k] != null)) out.secret.push('users/' + d.id); });
   // ★ v0.38.31 (GPT Q-1) — 정해 둔 필드 밖의 금액처럼 보이는 필드(이름에 price·amount·cost·total·단가·금액)도 찾아 「확인 필요」 로 보고 (0건 판정과 별도 · 사람이 확인)
   out.suspect = [];
@@ -2699,12 +2816,94 @@ function tpReportText(rep){
   L.push('', '## 사람이 확인할 것 (화면)', '- 시험신규·시험사무·시험단가없음 계정으로 로그인: 메뉴·단가 표시 · 「🔒 단가 권한 없음」 안내', '- 작업지시 작성 → 발행 · 계획 카드 끌어 놓기 · 폰(시험사무) 출하 등록', '', '(시험 프로젝트 전용 · 운영 서버 실행 0 · 비밀번호는 보고서에 넣지 않음)');
   return L.join('\n');
 }
+/* ★ v0.39.9 (GPT v0.39.8 판정 · 실서버 보강) — 복구 리허설 서버 증거 (시험 프로젝트 전용 · 읽기·거부 기대 요청만 · 업무 값 쓰기 = 메모 1칸)
+   「화면에서 숨김」 ≠ 「서버가 안 보냄」 → 단가 권한 없는 직원(시험단가없음) 별도 세션으로 서버 응답 자체의 필드를 기록
+   단계 = 서버 스위치로 자동 판정: recovery_uid 있음 = 복구 중 · 그 전 = 복구 전 · 복구 중 기록 뒤 = 해제 후
+   실시간 구독 = 「복구 전」 첫 실행 때 열어 이 창(앱)이 열려 있는 동안 유지 → 도착한 모든 문서의 필드 이름만 검사 (값은 기록 0)
+   쓰기 = 시험 수주(T-SO-1) 메모 칸 1개만(허용/거부 확인용) · 구독 도착은 「도착 순간의 서버 스위치」(같은 세션의 server_rules 구독)로 단계 분류 · [처음부터] = 기록·구독 초기화 */
+const TP_PRICE_KEYS = ['price', 'amount', 'unit_price'];
+function _tpPriceKeys(d){ if(!d || typeof d !== 'object') return []; const out = TP_PRICE_KEYS.filter(k => k in d);
+  Object.keys(d).forEach(k => { if(Array.isArray(d[k])) d[k].forEach((it, i) => { if(it && typeof it === 'object') TP_PRICE_KEYS.forEach(f => { if(f in it) out.push(k + '[' + i + '].' + f); }); }); });
+  if('rates' in d) out.push('rates'); return out; }
+function _tpStable(v){ if(Array.isArray(v)) return '[' + v.map(_tpStable).join(',') + ']'; if(v && typeof v === 'object'){ if(typeof v.toMillis === 'function') return String(v.toMillis()); return '{' + Object.keys(v).sort().map(k => JSON.stringify(k) + ':' + _tpStable(v[k])).join(',') + '}'; } return JSON.stringify(v); }
+const TP_REC_PHASE = { before: '복구 전', during: '복구 중', after: '해제 후' };
+async function _tpRead(fn){ try { const r = await fn(); return { ok: true, r }; } catch(e){ const m = String((e && (e.code || e.message)) || e); return { ok: false, got: /permission|insufficient/i.test(m) ? 'deny' : 'error: ' + m.slice(0, 80) }; } }
+async function tpRecoveryProbe(log){
+  _tpGuard(); log = log || (() => {});
+  const AFS = _ACTIVE_ADAPTER._fs; const T = Date.now();
+  const sr = (await AFS.collection('settings').doc('server_rules').get({ source: 'server' })).data() || {};
+  const REC = _TP.rec || (_TP.rec = { phases: [], sub: null });
+  if(REC.busy) throw Object.assign(new Error('기록 중입니다 — 끝날 때까지 기다리세요'), { ui: true });
+  const phase = sr.recovery_uid ? 'during' : (REC.phases.some(p => p.phase === 'during') || (REC.sub && REC.sub.sawDuring) ? 'after' : 'before');
+  REC.busy = true; try {
+  const rows = []; const add = (who, what, expect, got, note) => rows.push({ who, what, expect, got, ok: got === expect, note: note || '' });
+  const done = () => { const ph = { phase, at: new Date().toISOString(), sr: { sec_migrated: sr.sec_migrated === true, write_freeze: sr.write_freeze === true, recovery: !!sr.recovery_uid }, rows, pass: rows.filter(r => r.ok).length, fail: rows.filter(r => !r.ok).length,
+    sub: REC.sub ? { docs: REC.sub.docs, priced: REC.sub.priced.length, errs: REC.sub.errs.slice(), changes: Object.assign({}, REC.sub.changes) } : null }; REC.phases.push(ph); return ph; };
+  const miss = ['T-U-NOP', 'T-U-OFC'].filter(id => !_TP.cred[id]);
+  if(miss.length) throw Object.assign(new Error('시험 계정 없음 — 이 창에서 ① 준비 먼저 (' + miss.join(', ') + ') · 창을 새로고침했다면 처음부터'), { ui: true });
+  add('-', '이관 완료 상태(sec_migrated = true)에서 시험', 'true', String(sr.sec_migrated === true));
+  // 실시간 구독 (복구 전 첫 실행 때 1회 · 단가 없는 직원 세션)
+  if(!REC.sub){ const c = _TP.cred['T-U-NOP']; const ss = await _tpSession(c.email, c.pw);
+    const sub = REC.sub = { s: ss, startPhase: phase, docs: 0, priced: [], errs: [], changes: { before: 0, during: 0, after: 0 }, last: {}, unsub: [], srv: phase, sawDuring: phase === 'during' };
+    // 도착 순간의 단계 = 같은 세션이 받은 서버 스위치(recovery_uid) 기준 (버튼 누른 시점과 무관)
+    sub.unsub.push(ss.fs.collection('settings').doc('server_rules').onSnapshot(d => { const r = (d.data() || {}).recovery_uid; if(r){ sub.srv = 'during'; sub.sawDuring = true; } else sub.srv = sub.sawDuring ? 'after' : 'before'; }, e => sub.errs.push('server_rules:' + (e.code || e.message))));
+    ['orders', 'items', 'purchase_orders'].forEach(col => sub.unsub.push(ss.fs.collection(col).onSnapshot(sn => sn.docChanges().forEach(ch => { sub.docs++; sub.changes[sub.srv] = (sub.changes[sub.srv] || 0) + 1;
+      const d = ch.doc.data(); const k = _tpPriceKeys(d); if(k.length) sub.priced.push(col + '/' + ch.doc.id + ' (' + k.join(',') + ')'); sub.last[col + '/' + ch.doc.id] = _tpStable(_cmpDoc(d)); }),
+      e => sub.errs.push(col + ':' + (e.code || e.message)))));
+    await new Promise(r => setTimeout(r, 1500)); log('구독 시작 (시험단가없음)'); }
+  const W = (phase === 'during' || sr.write_freeze === true) ? 'deny' : 'allow'; const wNote = phase === 'during' ? '복구 중 = 지정 복구 기기만 허용' : sr.write_freeze === true ? '쓰기 중지 중' : '';
+  const as = async (id, fn) => { const c = _TP.cred[id]; const ss = await _tpSession(c.email, c.pw); try { await fn(ss.fs); } finally { await ss.end(); } };
+  await as('T-U-NOP', async fs => {
+    const g = await _tpRead(() => fs.collection('orders').doc('T-SO-1').get({ source: 'server' }));
+    add('단가 없음', '수주 원본 직접 조회 (orders/T-SO-1) — 응답 필드', 'no-price', g.ok ? (g.r.exists ? (_tpPriceKeys(g.r.data()).length ? 'price: ' + _tpPriceKeys(g.r.data()).join(',') : 'no-price') : 'not-found') : g.got);
+    for(const col of ['orders', 'items', 'purchase_orders']){ const l = await _tpRead(() => fs.collection(col).get({ source: 'server' }));
+      const bad = l.ok ? l.r.docs.filter(d => _tpPriceKeys(d.data()).length) : [];
+      add('단가 없음', col + ' 목록 조회 — 응답 필드' + (l.ok ? ' (' + l.r.docs.length + '건)' : ''), 'no-price', l.ok ? (bad.length ? 'price: ' + bad.length + '건' : 'no-price') : l.got, bad.slice(0, 3).map(d => d.id).join(', ')); }
+    const i1 = await _tpRead(() => fs.collection('items').doc('T-ITEM-1').get({ source: 'server' }));
+    add('단가 없음', '품목 원본 직접 조회 (items/T-ITEM-1) — 응답 필드', 'no-price', i1.ok ? (i1.r.exists ? (_tpPriceKeys(i1.r.data()).length ? 'price' : 'no-price') : 'not-found') : i1.got);
+    add('단가 없음', '단가 문서 직접 조회 (sec_orders/T-SO-1)', 'deny', await _tpTry(() => fs.collection('sec_orders').doc('T-SO-1').get({ source: 'server' })));
+    add('단가 없음', '단가 문서 목록 조회 (sec_orders)', 'deny', await _tpTry(() => fs.collection('sec_orders').get({ source: 'server' })));
+    add('단가 없음', '수주 저장 (메모)', W, await _tpTry(() => fs.collection('orders').doc('T-SO-1').set({ tp_rec_memo: phase + ' ' + T }, { merge: true })), wNote);
+  });
+  await as('T-U-OFC', async fs => { add('사무직', '수주 저장 (메모)', W, await _tpTry(() => fs.collection('orders').doc('T-SO-1').set({ tp_rec_memo2: phase + ' ' + T }, { merge: true })), wNote); });
+  add('관리자 계정', '수주 저장 (메모)', phase === 'during' ? 'deny' : 'allow', await _tpTry(() => AFS.collection('orders').doc('T-SO-1').set({ tp_rec_memo3: phase + ' ' + T }, { merge: true })), phase === 'during' ? '복구 중 = 관리자도 거부' : '');
+  await new Promise(r => setTimeout(r, 1200));
+  const sub = REC.sub;
+  add('단가 없음 (구독)', '복구 전부터 열린 실시간 구독 — 도착 문서 ' + sub.docs + '건의 필드', 'no-price', sub.errs.length ? 'error: ' + sub.errs.join(',') : sub.priced.length ? 'price: ' + sub.priced.length + '건' : 'no-price', sub.priced.slice(0, 3).join(' · '));
+  const last = sub.last['orders/T-SO-1']; let srvNow = null; try { const d = await AFS.collection('orders').doc('T-SO-1').get({ source: 'server' }); srvNow = d.exists ? _tpStable(_cmpDoc(d.data())) : null; } catch(e){}
+  add('단가 없음 (구독)', '구독의 최신 수주(T-SO-1) = 지금 서버 원본과 같음 (변경이 구독으로 도착)', 'same', last && srvNow ? (last === srvNow ? 'same' : 'different') : 'none');
+  let raw = null; try { raw = await secRawPriceScan(AFS); } catch(e){ raw = null; }
+  add('관리자 계정', '서버 원본에 남은 단가 (수주·품목·자재·입고·발주 품목·원가 설정)', '0', raw ? String(raw.length) : 'error', raw ? raw.slice(0, 5).join(', ') : '');
+  const ph = done(); log(TP_REC_PHASE[phase] + ' 기록 — 합격 ' + ph.pass + ' · 불합격 ' + ph.fail); return ph;
+  } finally { REC.busy = false; }
+}
+function tpRecoveryEnd(){ const s = _TP.rec && _TP.rec.sub; if(s){ s.unsub.forEach(u => { try { u(); } catch(e){} }); try { s.s.end(); } catch(e){} } _TP.rec = null; }
+function tpRecoveryVerdict(rec){
+  const ps = (rec && rec.phases) || []; const has = k => ps.some(p => p.phase === k);
+  const lastOf = k => ps.filter(p => p.phase === k).pop();   // 단계마다 마지막 기록으로 판정 (앞선 실패 기록도 보고서에는 그대로 남김)
+  const allOk = ps.length > 0 && ['before', 'during', 'after'].filter(has).every(k => lastOf(k).fail === 0) && (!has('during') || ps.filter(p => p.phase === 'during').some(p => p.fail === 0 && p.sub && (p.sub.changes.during || 0) > 0)); const sub = ps.length ? ps[ps.length - 1].sub : null;
+  const dur = sub ? (sub.changes.during || 0) : 0;
+  return { complete: has('before') && has('during') && has('after'), allOk, subDuring: dur, pass: has('before') && has('during') && has('after') && allOk && dur > 0 };
+}
+function tpRecoveryReportText(rec){
+  const v = tpRecoveryVerdict(rec); const ps = (rec && rec.phases) || [];
+  const L = ['# VELA MES 복구 리허설 서버 증거 보고서', `- 앱 ${APP_VERSION} · 프로젝트 ${(loadFirestoreConfig() || {}).projectId} · 기록 ${ps.length}회 (${ps.map(p => TP_REC_PHASE[p.phase]).join(' → ')})`,
+    `- 판정: ${v.pass ? '합격' : '미완/불합격'} — 복구 전·중·해제 후 ${v.complete ? '모두 기록' : '빠짐 있음'} · 불합격 행 ${v.allOk ? '0' : '있음'} · 복구 중 구독 도착 ${v.subDuring}건 (복구 모드 중 복원 변경이 구독으로 도착한 수 · 복원 뒤 「복구 중」 을 한 번 더 기록)`,
+    `- 단계마다 마지막 기록으로 판정 · 앞선 실패 기록도 아래에 그대로 남김 · 구독 도착은 도착 순간의 서버 스위치 기준`,
+    '- 기준: 「화면에서 숨김」 이 아니라 서버 응답 자체 — 단가 권한 없는 직원(시험단가없음) 세션의 직접 조회·목록 조회·실시간 구독 문서의 필드 이름 검사 (값 기록 0)', ''];
+  ps.forEach((p, i) => { L.push(`## ${i + 1}. ${TP_REC_PHASE[p.phase]} — ${p.at} · 합격 ${p.pass} · 불합격 ${p.fail}`, `- 서버 스위치: sec_migrated ${p.sr.sec_migrated} · write_freeze ${p.sr.write_freeze} · 복구 모드 ${p.sr.recovery}`, '', '| 계정 | 요청 | 기대 | 결과 | 판정 |', '|---|---|---|---|---|');
+    p.rows.forEach(r => L.push(`| ${r.who} | ${r.what} | ${r.expect} | ${r.got} | ${r.ok ? 'PASS' : '**FAIL**'}${r.note ? ' ' + r.note : ''} |`));
+    if(p.sub) L.push('', `- 구독 누계: 도착 ${p.sub.docs}건 (복구 전 ${p.sub.changes.before || 0} · 복구 중 ${p.sub.changes.during || 0} · 해제 후 ${p.sub.changes.after || 0}) · 단가 필드 든 문서 ${p.sub.priced} · 오류 ${p.sub.errs.length}`);
+    L.push(''); });
+  L.push('- 복구 기기 쪽 증거 = 복구 기기 복원 결과 보고서(「복원 완료」 · 서버 원본 단가 0건)를 함께 제출', '(시험 프로젝트 전용 · 비밀번호·단가 값 0)'); return L.join('\n');
+}
 function openTpModal(){
   if(!isTestProject()){ toast('시험 프로젝트에서만 쓸 수 있습니다 (운영 서버 차단)', 'warn'); return; }
   const render = (body) => openModal(`<h2>시험 자동 점검 <span class="pill amber" style="font-size:10px">시험 프로젝트 전용</span> <button class="x" onclick="closeModal()">${ico('x')}</button></h2><div class="body">
     <div style="font-size:12px;color:var(--sub);line-height:1.6">① [준비] 시험 계정 5명(신규·사무직·단가없음·구형 권한·관리책임자)과 가상 데이터(T- 로 시작)를 만들고 첫 비밀번호 변경까지 자동 · ② [점검] 계정마다 서버에 직접 요청해 허용/거부를 확인 + 단가 잔여·이관 대조·중복 검사 → 보고서</div>
     <div id="tp-out" style="margin-top:10px;font-size:12px">${body || ''}</div>
-    <div class="actions"><button class="btn" id="tp-prep">① 준비</button><button class="btn primary" id="tp-run">② 점검</button>${_TP.report ? '<button class="btn" id="tp-dl">보고서 내려받기</button>' : ''}</div></div>`, { width: '760px' });
+    <div style="margin-top:10px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:11.5px;color:var(--sub);line-height:1.6"><b style="color:var(--ink)">③ 복구 증거</b> (v0.39.9 · 이관 완료 뒤 복구 리허설) — 복구 <b>전</b> · 복구 <b>중</b>(복원 뒤 한 번 더) · <b>해제 후</b> 에 각각 누름 · 단계는 서버 스위치로 자동 판정 · 시험단가없음 세션의 서버 응답 필드·실시간 구독·단가 문서 거부·직원/관리자 저장 거부 기록 · <b>복구 전부터 해제 후까지 이 창(앱)을 닫거나 새로고침하지 마세요</b> (구독 유지)${_TP.rec ? ` · 지금까지 ${_TP.rec.phases.map(p => TP_REC_PHASE[p.phase] + (p.fail ? '✗' : '✓')).join(' → ')}` : ''}</div>
+    <div class="actions"><button class="btn" id="tp-prep">① 준비</button><button class="btn primary" id="tp-run">② 점검</button><button class="btn" id="tp-rec">③ 복구 증거</button>${_TP.report ? '<button class="btn" id="tp-dl">보고서 내려받기</button>' : ''}${_TP.rec && _TP.rec.phases.length ? '<button class="btn" id="tp-rdl">복구 증거 보고서</button><button class="btn ghost" id="tp-rrs">복구 증거 처음부터</button>' : ''}</div></div>`, { width: '760px' });
   const bind = () => {
     const out = () => document.getElementById('tp-out');
     document.getElementById('tp-prep').onclick = async () => { const lines = []; try { out().textContent = '준비 중…'; await tpPrepare(m => { lines.push(m); out().textContent = lines.join(' · '); });
@@ -2716,6 +2915,12 @@ function openTpModal(){
         <div class="tbl-wrap" style="margin-top:6px"><table><tbody>${rep.data.map(d => `<tr><td>${_esc(d.what)}</td><td><b style="color:${d.ok ? 'var(--ink)' : 'var(--red)'}">${_esc(String(d.val))}</b></td><td class="muted">${_esc(d.note || '')}</td></tr>`).join('')}</tbody></table></div>`); bind(); }
       catch(e){ out().innerHTML = `<span style="color:var(--red)">${_esc(e.message || String(e))}</span>`; } };
     const dl = document.getElementById('tp-dl'); if(dl) dl.onclick = () => { const blob = new Blob([tpReportText(_TP.report)], { type: 'text/markdown' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `vela-mes-시험점검_${fmtDate(Date.now())}.md`; a.click(); };
+    document.getElementById('tp-rec').onclick = async () => { try { out().textContent = '복구 증거 기록 중… (계정마다 로그인해 서버에 직접 요청)'; const ph = await tpRecoveryProbe(); const v = tpRecoveryVerdict(_TP.rec);
+      render(`<div style="font-weight:700;color:${ph.fail ? 'var(--red)' : 'var(--green)'}">${_esc(TP_REC_PHASE[ph.phase])} 기록 · 합격 ${ph.pass} · 불합격 ${ph.fail}</div><div style="font-size:11.5px;color:var(--sub);margin-top:2px">전체: ${v.pass ? '<b style="color:var(--green)">복구 전·중·해제 후 모두 합격</b>' : `${v.complete ? '세 단계 기록됨' : '아직 단계 남음'} · 복구 중 구독 도착 ${v.subDuring}건`}</div>
+        <div class="tbl-wrap" style="margin-top:6px;max-height:40vh;overflow:auto"><table><thead><tr><th>계정</th><th>요청</th><th>기대</th><th>결과</th></tr></thead><tbody>${ph.rows.map(r => `<tr style="${r.ok ? '' : 'background:rgba(248,113,113,.1)'}"><td>${_esc(r.who)}</td><td>${_esc(r.what)}</td><td>${_esc(r.expect)}</td><td><b style="color:${r.ok ? 'var(--green)' : 'var(--red)'}">${_esc(r.got)}</b></td></tr>`).join('')}</tbody></table></div>`); bind(); }
+      catch(e){ out().innerHTML = `<span style="color:var(--red)">${_esc(e.message || String(e))}</span>`; } };
+    const rrs = document.getElementById('tp-rrs'); if(rrs) rrs.onclick = () => { tpRecoveryEnd(); render('<div class="muted">복구 증거 기록·구독을 지웠습니다 — 복구 전부터 다시</div>'); bind(); };
+    const rdl = document.getElementById('tp-rdl'); if(rdl) rdl.onclick = () => { const blob = new Blob([tpRecoveryReportText(_TP.rec)], { type: 'text/markdown' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `vela-mes-복구증거_${fmtDate(Date.now())}.md`; a.click(); };
   };
   render(''); bind();
 }
@@ -2777,6 +2982,7 @@ function _fsStartSync(fs, adapter){
     catch(e){ console.warn('[VELA] flush write fail', w.col, w.id, e); }
   });
   const cols = _FS_COLLECTIONS.concat(isStaffMode() && typeof SEC_COLLECTIONS !== 'undefined' ? SEC_COLLECTIONS : []);
+  adapter._secSubbed = isStaffMode();
   const expected = cols.length;
   const seen = new Set();
   _FS_STATE.denied = new Set(); _FS_STATE.serverIds = {};
@@ -2801,7 +3007,7 @@ function _fsStartSync(fs, adapter){
     }
     return true;
   };
-  cols.forEach(col => {
+  const subscribe = (col, dyn) => {   // dyn = 첫 라운드 뒤 추가 구독(단가 문서) — 첫 라운드 집계에 넣지 않음
     const un = fs.collection(col).onSnapshot(snap => {
       const state = adapter._state;
       if(!state) return;
@@ -2812,13 +3018,15 @@ function _fsStartSync(fs, adapter){
         const data = d.data();
         if(!isSec && chg.type !== 'removed') (_FS_STATE.serverIds[col] = _FS_STATE.serverIds[col] || new Set()).add(String(d.id));
         if(isSec){ _secOnSnapshot(col, d.id, chg.type === 'removed' ? null : data); return; }
+        if(col === 'settings' && d.id === 'server_rules' && data && data.sec_migrated === true && !adapter._secSubbed){ adapter._secSubbed = true; setTimeout(() => SEC_COLLECTIONS.forEach(c => subscribe(c, true)), 0); }   // ★ v0.39.8 — 기존 방식(복구 기기) + 이관 완료 = 단가 문서도 구독 (권한 없으면 거부 = 단가 빈칸)
         if(chg.type === 'removed'){
           delete state[col][d.id];
         } else {
           state[col][d.id] = (typeof _secMergeInto === 'function') ? _secMergeInto(col, d.id, { ...(data||{}), id: d.id }) : { ...(data||{}), id: d.id };
         }
       });
-      if(!arrived(col)){
+      if(dyn){ try { if(SESSION.loggedIn) router(); } catch(e){} }
+      else if(!arrived(col)){
         try {
           try { if(col === 'settings') renderBrandCompany(); } catch(e){}
           if(SESSION.loggedIn) router();
@@ -2829,18 +3037,19 @@ function _fsStartSync(fs, adapter){
     }, err => {
       console.warn('[VELA] onSnapshot 오류', col, err && err.code);
       _FS_STATE.denied.add(col);
-      arrived(col);
+      if(!dyn) arrived(col);
       _syncPillMark();
     });
     adapter._unsubs = (adapter._unsubs || []).concat([un]);
-  });
+  };
+  cols.forEach(c => subscribe(c, false));
   _FS_STATE.ready = true;
   _syncPillMark();
   return round;
 }
 function _fsStopSync(adapter){
   (adapter._unsubs || []).forEach(u => { try { u(); } catch(e){} });
-  adapter._unsubs = []; adapter._ready = false;
+  adapter._unsubs = []; adapter._ready = false; adapter._secSubbed = false;
   const st = adapter._state; if(st) Object.keys(st).forEach(k => delete st[k]);
   if(typeof _SEC !== 'undefined'){ _SEC.parts = {}; }
 }
@@ -3045,14 +3254,14 @@ async function staffIssueFor(userIds, opts){
    「완료」 = 서버 응답 전부 성공 + 서버 대조 차이 0 일 때만 */
 let _RESTORE_BUSY = false;
 function _secStripCmp(col, d){
-  if(!d || !isStaffMode() || !SEC_SPEC[col]) return d;
+  if(!d || !_secSplitOn() || !SEC_SPEC[col]) return d;
   const o = Object.assign({}, d); (SEC_SPEC[col].top || []).forEach(k => delete o[k]);
   Object.keys(SEC_SPEC[col].arr || {}).forEach(k => { if(Array.isArray(o[k])) o[k] = o[k].map(it => { if(!it || typeof it !== 'object') return it; const c = Object.assign({}, it); SEC_SPEC[col].arr[k].forEach(f => delete c[f]); return c; }); });
   return o;
 }
 function _cmpDoc(d){ const o = Object.assign({}, d || {}); delete o.id; Object.keys(o).forEach(k => { if(k.startsWith('_')) delete o[k]; }); return o; }
 // 직원 모드: 단가 문서로 통째 옮긴 설정 문서(SEC_DOCS · 예: settings/cost_rates)는 원본에 남는 키만 비교
-function _secDocCmp(col, id, d){ if(!d || !isStaffMode() || !(SEC_DOCS[col] || []).includes(id)) return d; const o = {}; ['migrated_to'].forEach(k => { if(k in d) o[k] = d[k]; }); return o; }
+function _secDocCmp(col, id, d){ if(!d || !_secSplitOn() || !(SEC_DOCS[col] || []).includes(id)) return d; const o = {}; ['migrated_to'].forEach(k => { if(k in d) o[k] = d[k]; }); return o; }
 async function _restoreServerCols(cols){
   const fs = _ACTIVE_ADAPTER._fs; const out = {};
   for(const c of cols){ const snap = await fs.collection(c).get({ source: 'server' }); out[c] = {}; snap.docs.forEach(d => { out[c][d.id] = d.data(); }); }
@@ -3064,9 +3273,10 @@ async function restoreLockState(){
   if(!_ACTIVE_ADAPTER._ready || !_ACTIVE_ADAPTER._fs) return { mode: 'offline', ok: false, msg: '서버 연결 전 — 연결된 뒤 다시' };
   // ★ v0.39.7 (GPT v0.39.6 ① · 규칙 r12) — 복구 모드(server_rules.recovery_uid): 서버가 그 기기만 쓰기 허용 → 이 기기면 체크 없이 실행 · 다른 기기·계정은 실행 0
   let srv = null; try { const d = await _ACTIVE_ADAPTER._fs.collection('settings').doc('server_rules').get({ source: 'server' }); srv = d.exists ? d.data() : {}; } catch(e){ srv = null; }
+  if(srv) _SRV_LAST = srv;
   let myUid = null; try { myUid = window.firebase && window.firebase.auth().currentUser ? window.firebase.auth().currentUser.uid : null; } catch(e){}
   const rec = srv && srv.recovery_uid ? String(srv.recovery_uid) : '';
-  if(rec){ return rec === myUid ? { mode: 'recovery', ok: true } : { mode: isStaffMode() ? 'staff' : 'legacy', ok: false, msg: '복구 모드 중 — 서버가 복구 기기(' + rec.slice(0, 6) + '…)만 저장 허용' }; }
+  if(rec){ return rec === myUid ? { mode: 'recovery', ok: true, secMigrated: srv.sec_migrated === true } : { mode: isStaffMode() ? 'staff' : 'legacy', ok: false, msg: '복구 모드 중 — 서버가 복구 기기(' + rec.slice(0, 6) + '…)만 저장 허용' }; }
   if(!isStaffMode()) return { mode: 'legacy', ok: true, needConfirm: true };
   if(!srv) return { mode: 'staff', ok: false, msg: '서버 스위치 확인 실패' };
   const fz = srv.write_freeze === true;
@@ -3096,7 +3306,8 @@ function _settle(list, ms){
 async function restoreVerifyServer(written){
   if(DB._backend !== 'firestore' || !written || !written.length) return { checked: 0, diffs: [] };
   const fs = _ACTIVE_ADAPTER._fs; const cols = [...new Set(written.map(w => w.col))]; const diffs = [];
-  const staff = isStaffMode(); const secCols = staff ? cols.filter(c => SEC_SPEC[c] || SEC_DOCS[c]).map(c => 'sec_' + c) : [];   // ★ v0.39.7 — 배열 단가(발주 품목) 컬렉션도
+  const staff = _secSplitOn(); const secCols = staff ?   // ★ v0.39.8 — 기존 방식 복구 기기도 이관 뒤엔 단가 문서 대조
+    cols.filter(c => SEC_SPEC[c] || SEC_DOCS[c]).map(c => 'sec_' + c) : [];   // ★ v0.39.7 — 배열 단가(발주 품목) 컬렉션도
   let srv; try { srv = await _restoreServerCols(cols.concat(canSeePrice() ? secCols : [])); } catch(e){ return { checked: 0, diffs: written.map(w => ({ col: w.col, id: w.id, key: '*', why: '서버 조회 실패 ' + (e.code || e.message) })) }; }
   written.forEach(w => {
     if(staff && (SEC_DOCS[w.col] || []).includes(w.id)){   // 통째로 단가 문서로 가는 설정 문서 = sec_* 쪽만 대조
@@ -3143,7 +3354,7 @@ function openRestorePreview(parsed, fname, colCount, docCount, opts){
     const hn = _restoreHealthHtml(plan.healthNew); const exN = plan.exclude ? Object.keys(plan.exclude).reduce((s, k) => s + plan.exclude[k].length, 0) : 0;
     const lockHtml = !lock ? '<div style="font-size:12px;color:var(--sub)">잠금 확인 중…</div>'
       : lock.mode === 'legacy' ? `<label style="display:flex;gap:6px;align-items:flex-start;font-size:12px;margin-top:8px;padding:8px;border:1px solid var(--amber);border-radius:8px"><input type="checkbox" id="bk-lock-ok"> <span><b>다른 기기(직원 PC·폰) 모두 로그아웃 확인</b> — 기존 방식(v4)은 서버가 다른 사람 저장을 막지 못함 · 복원 뒤 서버 대조로 충돌을 표시</span></label>`
-      : lock.ok && lock.mode === 'recovery' ? `<div style="font-size:12px;color:var(--green);margin-top:8px">복구 모드 — 서버가 이 기기만 저장 허용 (직원·관리자·다른 기기 저장 거부 · 규칙 r12)</div>`
+      : lock.ok && lock.mode === 'recovery' ? `<div style="font-size:12px;color:var(--green);margin-top:8px">복구 모드 — 서버가 이 기기만 저장 허용 (직원·관리자·다른 기기 저장 거부 · 규칙 r15)${lock.secMigrated ? ' · 이관 완료 → 단가는 단가 문서로 나눠 저장 (원본 단가 저장 = 서버 거부)' : ''}</div>`
       : lock.ok ? `<div style="font-size:12px;color:var(--green);margin-top:8px">쓰기 중지 켜짐 — 복원 중 다른 직원 저장은 서버가 거부</div>`
       : `<div style="font-size:12px;color:var(--red);margin-top:8px">${_esc(lock.msg || '잠금 확인 실패')} <button class="btn ghost" id="bk-lock-re">다시 확인</button></div>`;
     const canRun = !plan.blocked && lock && lock.ok;
@@ -3189,12 +3400,15 @@ async function runRestore(parsed, plan, opts){
     const results = await _settle(tracked, opts.timeoutMs || 30000);
     const fails = results.filter(r => r && !r.ok), pending = results.filter(r => !r).length;
     const verify = pending ? { checked: 0, diffs: [], skipped: true } : await restoreVerifyServer(rep.written);
+    // ★ v0.39.8 (GPT v0.39.7 필수 1) — 이관 뒤 복구 = 서버 원본에 단가가 1건이라도 있으면 「충돌」 (복구 해제 전 0건 필요 · 단가 권한 없는 직원에게 보이지 않게)
+    let rawPrice = null; if(!pending && DB._backend === 'firestore' && _secMigratedSrv()){ try { rawPrice = await secRawPriceScan(_ACTIVE_ADAPTER._fs); } catch(e){ rawPrice = ['* (원본 검사 실패 ' + (e.code || e.message) + ')']; }
+      rawPrice.forEach(x => { const [c, i] = String(x).split('/'); verify.diffs.push({ col: c, id: i || '*', key: 'price', why: '원본에 단가 남음 — 단가 문서로 옮긴 뒤 다시 (복구 해제 전 0건 필요)' }); }); }
     const post = restoreHealthLive(); const nw = _healthNew(pre, post); const bad = _healthCount(nw);
     const kept = []; Object.keys((plan && plan.exclude) || {}).forEach(c => plan.exclude[c].forEach(id => kept.push({ col: c, id, why: (plan.excludeWhy || {})[c + '/' + id] || '범위 조정' })));
     const failIds = [...new Set(fails.map(f => f.col + '/' + f.id).concat(verify.diffs.map(d => d.col + '/' + d.id)))];
     const status = fails.length ? 'partial-fail' : pending ? 'pending' : verify.diffs.length ? 'conflict' : bad ? 'health' : 'done';
     const res = { status, at: new Date().toISOString(), file: opts.fname || '', app: APP_VERSION, mode: lock.mode, changed: rep.changed, same: rep.same, newer: rep.newer, skipped: rep.skipped,
-      written: (rep.written || []).length, exclude: (plan && plan.exclude) || null, excludeWhy: (plan && plan.excludeWhy) || {}, fails: fails.map(f => ({ col: f.col, id: f.id, err: f.err })), pending, verify: { checked: verify.checked, diffs: verify.diffs }, kept, healthNew: nw, failIds };
+      written: (rep.written || []).length, exclude: (plan && plan.exclude) || null, excludeWhy: (plan && plan.excludeWhy) || {}, fails: fails.map(f => ({ col: f.col, id: f.id, err: f.err })), pending, verify: { checked: verify.checked, diffs: verify.diffs }, kept, healthNew: nw, failIds, rawPrice };
     DB._lastRestore = res;
     renderNav(); router();
     openRestoreResult(res, JSON.parse(SRC));
@@ -3207,6 +3421,7 @@ function restoreReportText(r){
   const L = ['# VELA MES 백업 복원 결과', `- 시각 ${r.at} · 앱 ${r.app} · 방식 ${r.mode} · 파일 ${r.file}`, `- 상태: ${RESTORE_STATUS_LABEL[r.status] || r.status}`,
     `- 복원(쓴 문서) ${r.written} · 같음 ${r.same} · 백업 뒤 생긴 문서 유지 ${r.newer} · 현재 값 유지 ${r.kept.length} · 실패 ${r.fails.length} · 처리 중 ${r.pending} · 서버 대조 ${r.verify.checked}건 중 차이 ${r.verify.diffs.length}`,
     `- 복원 제외(보안·계정): ${(r.skipped || []).join(', ') || '없음'}`];
+  if(r.rawPrice) L.push(`- 서버 원본에 남은 단가 ${r.rawPrice.length}건 (이관 뒤 복구 · 0건이어야 복구 해제)`);
   if(r.kept.length) L.push('', '## 현재 값 유지 (이유)', ...r.kept.map(k => `- ${k.col}/${k.id} — ${k.why}`));
   if(r.fails.length) L.push('', '## 서버 거부', ...r.fails.map(f => `- ${f.col}/${f.id} — ${f.err}`));
   if(r.verify.diffs.length) L.push('', '## 서버 대조 차이', ...r.verify.diffs.map(d => `- ${d.col}/${d.id} · ${d.key} — ${d.why}`));
@@ -3220,7 +3435,8 @@ function openRestoreResult(r, parsed){
     복원 <b>${r.written}</b> · 현재 값 유지 <b>${r.kept.length}</b> · 보안 항목 제외 ${(r.skipped || []).length ? _esc(r.skipped.join(', ')) : '0'} · 실패 <b>${r.fails.length}</b> · 처리 중 <b>${r.pending}</b> · 서버 대조 차이 <b>${r.verify.diffs.length}</b> · 백업 뒤 생긴 문서 ${r.newer}건 그대로
     ${r.kept.length ? `<details style="margin-top:6px"><summary>현재 값 유지 ${r.kept.length}건 — 이유</summary>${r.kept.slice(0, 30).map(k => `<div>· ${_esc(k.col)}/${_esc(k.id)} — ${_esc(k.why)}</div>`).join('')}</details>` : ''}
     ${r.fails.length || r.verify.diffs.length ? `<details style="margin-top:6px" open><summary>실패·차이 ${r.failIds.length}건</summary>${r.fails.slice(0, 20).map(f => `<div>· ${_esc(f.col)}/${_esc(f.id)} — ${_esc(f.err)}</div>`).join('')}${r.verify.diffs.slice(0, 20).map(d => `<div>· ${_esc(d.col)}/${_esc(d.id)} · ${_esc(d.key)} — ${_esc(d.why)}</div>`).join('')}</details>` : ''}
-    <div style="margin-top:6px;font-weight:700;color:${_healthCount(r.healthNew) ? 'var(--red)' : 'var(--green)'}">재검사 (수량·연결·금액·LOT 보류): ${_healthCount(r.healthNew) ? '새 문제 ' + _healthCount(r.healthNew) + '건 — 복원 전 자동 백업 파일로 되돌리세요' : '새 문제 0건'}</div>${_restoreHealthHtml(r.healthNew)}</div>
+    <div style="margin-top:6px;font-weight:700;color:${_healthCount(r.healthNew) ? 'var(--red)' : 'var(--green)'}">재검사 (수량·연결·금액·LOT 보류): ${_healthCount(r.healthNew) ? '새 문제 ' + _healthCount(r.healthNew) + '건 — 복원 전 자동 백업 파일로 되돌리세요' : '새 문제 0건'}</div>${_restoreHealthHtml(r.healthNew)}
+    ${r.rawPrice ? `<div style="margin-top:6px;font-weight:700;color:${r.rawPrice.length ? 'var(--red)' : 'var(--green)'}">서버 원본 단가 (이관 뒤 복구): ${r.rawPrice.length ? '남음 ' + r.rawPrice.length + '건 — 복구 해제(recovery_uid 비우기) 금지 · 단가 문서로 옮긴 뒤 다시' : '0건 — 단가 권한 없는 직원에게 전달되지 않음 · 복구 해제 가능'}</div>` : ''}</div>
     <div class="actions">${r.failIds.length || r.pending ? '<button class="btn" id="rs-retry">실패·미응답 문서만 다시 시도</button>' : ''}<button class="btn" id="rs-dl">결과 보고서 내려받기</button><button class="btn primary" onclick="closeModal()">확인</button></div></div>`);
   document.getElementById('rs-dl').onclick = () => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([restoreReportText(r)], { type: 'text/markdown' })); a.download = `vela-mes-restore-report_${fmtDate(Date.now())}.md`; a.click(); };
   // 재시도 = 같은 백업 전체로 다시 계산 → 이미 반영된 문서는 「같음」 이라 쓰지 않음 → 실패·미응답 문서만 다시 씀 (같은 범위 조정·잠금·검사·대조)
@@ -3294,7 +3510,10 @@ async function cutoverStatus(opts){
   let sr = {}; try { sr = (fs && (await fs.collection('settings').doc('server_rules').get({ source: 'server' })).data()) || {}; } catch(e){ st.srErr = String(e.code || e.message); }
   let log = null; try { const l = await fs.collection('settings').doc('sec_migration_log').get({ source: 'server' }); log = l.exists ? l.data() : null; } catch(e){}
   let probe = 'unknown'; try { await fs.collection('vela_rules_probe').doc('x').get({ source: 'server' }); probe = 'allow'; } catch(e){ probe = /permission|insufficient/i.test(String(e.code || e.message)) ? 'deny' : 'error'; }
-  st.test = isTestProject(); st.sr = sr; st.probe = probe;
+  // ★ v0.39.8 (GPT v0.39.7 필수 2) — 설정값(version)이 아니라 실제 게시 규칙 확인 · ★ v0.39.13 = rules_probe/r14 (r14 만 허용 · r13 이하 = 거부 — 요청 판정 기록 plan_move_reqs 필요)
+  let probe13 = 'unknown'; try { await fs.collection('rules_probe').doc('r15').get({ source: 'server' }); probe13 = 'allow'; } catch(e){ probe13 = /permission|insufficient/i.test(String(e.code || e.message)) ? 'deny' : 'error'; }
+  if(sr && Object.keys(sr).length) _SRV_LAST = sr;
+  st.test = isTestProject(); st.sr = sr; st.probe = probe; st.probe13 = probe13;
   const logAt = log ? _tsMs(log.at) : 0; const final = sr.sec_migrated === true && sr.write_freeze !== true;
   const me = SESSION.userId;
   const users = DB.all('users').filter(u => u.active !== false && u.id !== me && u.role !== 'vendor');
@@ -3305,9 +3524,9 @@ async function cutoverStatus(opts){
   const m = _cutLoad(); const resid = m.resid || null; const secret = legacySecretFieldsReport().total;
   st.mem = m; st.logAt = logAt;
   const S = (id, title, ok, msg, extra) => st.steps.push(Object.assign({ id, title, ok: !!ok, msg }, extra || {}));
-  S('server', '서버 확인 — 규칙 r12 · 관리자 계정', probe === 'deny' && (+sr.version || 0) >= 11 && isStaffMode() && _STAFF.isApprover && !sr.recovery_uid,
-    `${sr.recovery_uid ? '⚠ 복구 모드 중(recovery_uid) — 전환 단계 진행 전 해제 · ' : ''}접속 서버 ${st.project}${st.test ? ' (시험)' : ' (운영)'} · 회차 ${st.run} · 규칙 확인 요청 ${probe === 'deny' ? '거부 = r11 동작' : probe === 'allow' ? '허용 = 아직 v4' : probe} · version ${sr.version ?? '없음'} · 관리자 계정 ${_STAFF.isApprover ? '예' : '아니오'}`,
-    { console: '콘솔: settings/server_rules 에 version=12 · write_freeze=true · sec_migrated=false · legacy_device=false · recovery_uid 없음 → Firestore 규칙 r12 게시 (이 순간부터 기존 방식 사용자 업무 중단)' });
+  S('server', '서버 확인 — 규칙 r15 · 관리자 계정', probe === 'deny' && probe13 === 'allow' && (+sr.version || 0) >= 15 && isStaffMode() && _STAFF.isApprover && !sr.recovery_uid,
+    `${sr.recovery_uid ? '⚠ 복구 모드 중(recovery_uid) — 전환 단계 진행 전 해제 · ' : ''}접속 서버 ${st.project}${st.test ? ' (시험)' : ' (운영)'} · 회차 ${st.run} · 규칙 확인 ${probe === 'allow' ? '허용 = 아직 v4' : probe13 === 'allow' ? '게시된 규칙 = r15 (확인 요청 rules_probe/r15 허용)' : probe13 === 'deny' ? 'r15 아님 (r14 이하 · rules_probe/r15 거부) — r15 게시 필요' : probe13} · version ${sr.version ?? '없음'}${(+sr.version || 0) < 15 ? ' (15 로)' : ''} · 관리자 계정 ${_STAFF.isApprover ? '예' : '아니오'}`,
+    { console: '콘솔: settings/server_rules 에 version=15 · write_freeze=true · sec_migrated=false · legacy_device=false · recovery_uid 없음 → Firestore 규칙 r15 게시 (이 순간부터 기존 방식 사용자 업무 중단)' });
   S('freeze', '쓰기 중지 켜짐 (직원 업무 저장 차단)', sr.write_freeze === true || final, `write_freeze = ${sr.write_freeze === true ? '켜짐' : '꺼짐'}`, { console: '콘솔: settings/server_rules.write_freeze = true' });
   const b = m.backup; const bOk = !!(b && b.verified) && (!m.migratedHere || b.at < m.migratedHere);   // 이 회차 이관보다 먼저 받은 백업만
   S('backup', '전체 백업 + 파일 확인 (SHA-256·문서 수)', bOk, b ? `${b.name} · 문서 ${b.docs} · ${b.verified ? '파일 확인 완료' : '[백업 파일 확인] 으로 내려받은 파일을 골라 주세요'}` : '아직 안 함',
@@ -3333,9 +3552,9 @@ async function cutoverStatus(opts){
   return st;
 }
 const CUTOVER_RECOVER = [
-  ['서버 확인 ~ 직원 계정 단계에서 멈춤', '규칙 r11 그대로 · 복구 기기 승인 불필요 (데이터 변화 없음) → 콘솔에서 규칙 v4 다시 게시 → 모든 기기 「기존 방식」 로그인 → 업무 계속'],
-  ['단가 이관 ~ 대조 단계에서 실패', '규칙 r12 그대로 둠 → 관리자 PC 를 「기존 방식」 으로 열어 로그인 화면의 「이 기기 ID (복구용)」 확인 → 콘솔: devices/{ID} = {status:"approved"} · server_rules.recovery_uid = ID (복구 모드: 서버가 이 기기만 저장 허용 — 직원·관리자·다른 승인 기기 저장 거부 · 쓰기 중지는 켜 둔 채) → 그 PC 에서 설정 › 백업 복원(이번 회차 전체 백업 파일 · 미리보기·대조) → 「완료」 확인 → 그 뒤에만 규칙 v4 게시 → recovery_uid 비우기 · devices/{ID}.status = "revoked" → 직원 업무 재개'],
-  ['업무 재개 뒤 문제', '쓰기 중지 다시 켬 → 원인 확인 · 복원이 필요하면 미리보기의 연결 검사에 따라 범위 조정 (재개 뒤 입력분은 유지됨)'],
+  ['서버 확인 ~ 직원 계정 단계에서 멈춤', '규칙 r15 그대로 · 복구 기기 승인 불필요 (데이터 변화 없음) → 콘솔에서 규칙 v4 다시 게시 → 모든 기기 「기존 방식」 로그인 → 업무 계속'],
+  ['단가 이관 ~ 대조 단계에서 실패', '규칙 r15 그대로 둠 → 관리자 PC 를 「기존 방식」 으로 열어 로그인 화면의 「이 기기 ID (복구용)」 확인 → 콘솔: devices/{ID} = {status:"approved"} · server_rules.recovery_uid = ID (복구 모드: 서버가 이 기기만 저장 허용 — 직원·관리자·다른 승인 기기 저장 거부 · 쓰기 중지는 켜 둔 채) → 그 PC 에서 설정 › 백업 복원(이번 회차 전체 백업 파일 · 미리보기·대조) → 「완료」 확인 → 그 뒤에만 규칙 v4 게시 → recovery_uid 비우기 · devices/{ID}.status = "revoked" → 직원 업무 재개'],
+  ['업무 재개 뒤 문제', '쓰기 중지 다시 켬 → 원인 확인 · 복원이 필요하면 미리보기의 연결 검사에 따라 범위 조정 (재개 뒤 입력분은 유지됨) · 복구 기기로 복원하면 이관 완료 상태라 단가는 단가 문서로 나눠 저장됨(규칙 r15 가 원본 단가 저장 거부) → 복원 결과 「서버 원본 단가 0건」 확인 뒤에만 recovery_uid 비우기'],
 ];
 function cutoverReportText(st){
   const L = ['# VELA MES 운영 전환 점검 결과', `- 시각 ${new Date(st.at).toISOString()} · 서버 ${st.project}${st.test ? ' (시험)' : ''} · 회차 ${st.run} · 앱 ${APP_VERSION}`, `- ${st.done ? '전환 완료 — 모든 단계 통과' : '진행 중 — 통과 ' + st.steps.filter(s => s.ok).length + '/' + st.steps.length}`, ''];
@@ -5179,7 +5398,7 @@ function seedDemoData(){
     // ═══ 18-19. 마감 3개월 재계산 (대량 출하 반영 · 이월 규칙 동일 — 마감 화면 숫자 = 산식 일치) ═══
     {
       let _prevCarry = {};
-      [_tsMonth(daysBack(90)), _tsMonth(daysBack(60)), _tsMonth(daysBack(30))].forEach((m, idx) => {
+      [3, 2, 1].map(k => { const d = new Date(now); d.setDate(1); d.setMonth(d.getMonth() - k); return _tsMonth(d.getTime()); }).forEach((m, idx) => {   // ★ v0.39.14 — 지난 3개 달력 월 (일수 90·60·30 은 30·31일에 같은 달이 겹쳐 마감 2개가 됨 · 데모 시드만)
         const { byParty } = calcClosing('sales', m);
         const rows = [];
         Object.keys(byParty).forEach(party => {
@@ -6878,6 +7097,7 @@ document.addEventListener('keydown', e => {
   }
 });
 function openModal(html, opts={}){
+  if(_raMoved) _raRestore();   // ★ v0.40.0 — 행 상세 창에서 옮긴 버튼을 먼저 제자리로 (다른 창으로 바뀔 때)
   const bg = document.getElementById('modal-bg');
   const md = document.getElementById('modal');
   if(!bg.classList.contains('show')){ _modalOpener = document.activeElement && document.activeElement !== document.body ? document.activeElement : null; }
@@ -6897,7 +7117,7 @@ function openModal(html, opts={}){
   bg.onclick = e => { if(e.target===bg && opts.closeOnBg===true) _modalUserClose(); };
   setTimeout(() => { try { if(md.contains(document.activeElement)) return; const f = [...md.querySelectorAll('input:not([type=hidden]):not([readonly]):not([type=checkbox]):not([type=radio]):not([type=file]),select,textarea')].find(el => !el._velaCalBound && el.offsetParent !== null); if(f && !opts.noAutoFocus && !(window.matchMedia && window.matchMedia('(pointer:coarse)').matches)) f.focus({ preventScroll: true }); /* 터치 기기 = 자동 키보드 0 */ } catch(e){} }, 30);
 }
-function closeModal(){ if(typeof _closeCal==='function') _closeCal(); document.getElementById('modal-bg').classList.remove('show'); _modalDirty = false;
+function closeModal(){ if(_raMoved) _raRestore(); if(typeof _closeCal==='function') _closeCal(); document.getElementById('modal-bg').classList.remove('show'); _modalDirty = false;
   const o = _modalOpener; _modalOpener = null; try { if(o && o.isConnected && typeof o.focus === 'function') o.focus({ preventScroll: true }); } catch(e){}
   if(window._pReturn){ const r = window._pReturn; window._pReturn = null; setTimeout(() => { if(!document.getElementById('modal-bg').classList.contains('show')) location.hash = r; }, 0); }   // ★ v0.39.3 — 폰에서 연 등록 창을 닫으면 폰 화면으로
 }
@@ -7395,7 +7615,7 @@ function renderGate(){
       <div class="fr-sub" style="line-height:1.6">운영 규칙이 직원 계정 방식(r11)으로 바뀌어 기존 방식 접속이 막혔습니다. 직원은 관리자 안내를 기다려 주세요.</div>
       <div class="fld"><label>이 기기 ID (복구용)</label><input id="gr-uid" readonly value="${_esc(uid)}" style="font-family:'JetBrains Mono',monospace;font-size:12px"></div>
       <button class="reg-btn" id="gr-copy" type="button">ID 복사</button>
-      <div class="fr-note">복구 담당 관리자 기기만: Firebase 콘솔 › <code>devices/{이 ID}</code> = <code>{status:"approved"}</code> · <code>settings/server_rules.recovery_uid = 이 ID</code> (규칙 r12 복구 모드 — 서버가 이 기기만 저장 허용 · 직원·관리자·다른 기기 저장 거부) → 새로고침 → 로그인 → 백업 복원 · 끝나면 <code>recovery_uid</code> 비우기 + <code>devices/{이 ID}.status = "revoked"</code></div>`;
+      <div class="fr-note">복구 담당 관리자 기기만: Firebase 콘솔 › <code>devices/{이 ID}</code> = <code>{status:"approved"}</code> · <code>settings/server_rules.recovery_uid = 이 ID</code> (규칙 r15 복구 모드 — 서버가 이 기기만 저장 허용 · 직원·관리자·다른 기기 저장 거부 · 이관 뒤엔 원본 단가 저장도 거부) → 새로고침 → 로그인 → 백업 복원 · 결과의 「서버 원본 단가 0건」 확인 뒤 <code>recovery_uid</code> 비우기 + <code>devices/{이 ID}.status = "revoked"</code></div>`;
     const cp = document.getElementById('gr-copy'); if(cp) cp.onclick = () => { const v = document.getElementById('gr-uid'); try { navigator.clipboard.writeText(v.value).then(() => toast('기기 ID 복사', 'ok'), () => { v.select(); }); } catch(e){ v.select(); } };
   } else if(rec){ rec.remove(); }
   if(DB.all('users').length === 0 && !isStaffMode() && !_denied){   // ★ v0.38.29 — 직원 계정 모드: 로그인 전엔 서버를 읽지 않으므로 최초 등록 카드 없음 (첫 관리자 = 관리자 계정 이메일 로그인)
@@ -7712,7 +7932,9 @@ function enterAsUser(u){
   const db = document.getElementById('demo-badge');
   if(db) db.hidden = !isDemoMode();
   if(mobileEntryDefault() && !isMobileHash()) location.hash = '#m/home';
-  else if(phoneEntryDefault() && !isPhoneHash() && !isMobileHash()) location.hash = '#p/home';   // ★ v0.39.3 — 폰(사무직·관리책임자) = 폰 홈 · [PC 화면으로] 이후 이 기기는 PC   // ★ v0.37.0 — 자동 진입 = 현장 모드 「내 작업」 노출 (자동 작업 시작 아님)
+  else if(phoneEntryDefault() && !isPhoneHash() && !isMobileHash()) location.hash = '#p/home';
+  else if(!isPhoneHash() && !isMobileHash() && (!location.hash || location.hash === '#')){ const lp = landingPage(); if(lp !== 'dash') location.hash = '#' + lp; }   // ★ v0.39.9 — 로그인 첫 화면 = 「내 업무」 첫 ★ 메뉴 (볼 수 있는 것 · 없으면 대시보드 · 주소에 화면이 적혀 있으면 #dash 포함 그대로 — 새로고침 때 고른 화면 유지)
+  // ★ v0.39.3 — 폰(사무직·관리책임자) = 폰 홈 · [PC 화면으로] 이후 이 기기는 PC   // ★ v0.37.0 — 자동 진입 = 현장 모드 「내 작업」 노출 (자동 작업 시작 아님)
   renderNav(); router();
   renderSyncPill();   // ★ v0.20.0 — 로그인 진입 시 동기화 pill 갱신
 }
@@ -7901,15 +8123,7 @@ function _permBlockWrite(col, id){
 
 /* ★ v0.32.1 — 사이드바 그룹 정의 (데스크톱 사이드바 전용 — 좁은 화면은 CSS 가 라벨을 숨겨 기존 가로 칩 그대로)
    그룹에 없는 신규 페이지는 '기타'로 자동 수용 · 게이팅(flags·권한)·메뉴 순서(getMenuOrder)는 불변. */
-const NAV_GROUPS = [
-  { label:'',          ids:['dash'] },
-  { label:'영업',      ids:['so','quote','ship','pallet'] },
-  { label:'생산',      ids:['plan','autoplan','scan','wo','perf','lot','eqstatus'] },
-  { label:'품질·기술', ids:['qc','mold','draw','proc'] },
-  { label:'구매·재고', ids:['po','matin','os','inv'] },
-  { label:'경영',      ids:['closing','acct','cost','report'] },
-  { label:'기준정보',  ids:['masters','docs','audit','set'] },
-];
+/* ★ v0.40.0 (GPT UI SPEC 1.1 §7 「NAV_DEPTS 와 NAV_GROUPS」) — 메뉴 찾기 묶음 = 사이드바 부서 묶음과 같은 정의 1벌 (아래 NAV_DEPTS 에서 생성) */
 /* ★ v0.35.7 — 상단(사이드) 메뉴 축소 → ★ v0.37.7 사이드바 = 「내 메뉴」 + 「⋯ 전체 메뉴」 버튼 1개 (SPEC 「개인화 v0.1」 §3 · GPT 🟢 2026-09-23)
    · 사이드바에는 내 메뉴(회사 기본 또는 내가 ★ 로 고른 것)만 · 아이콘 없음(글자만) · 「관리」 접이식·그룹 라벨·[내 메뉴 편집] 폐지 (localStorage vela_nav_more 미사용)
    · 전체 메뉴 창 = 검색 + NAV_GROUPS 묶음 + ☆/★(즉시 저장) + 회사 기본 복원 — 목록은 renderNav 와 같은 menuCanSee 1벌 (관리책임자가 열어주지 않은 메뉴는 없음)
@@ -7917,16 +8131,37 @@ const NAV_GROUPS = [
 const NAV_PRIMARY_DEFAULT = ['dash','so','plan','scan','perf','lot','qc','ship'];
 /* ★ v0.39.0 — PC 사이드바 부서 묶음 (GPT 인계서 2026-10-22 §4.1 · '부' 접미어 없음) · 메뉴 매핑 = PAGES 28개 전부 (누락 = 「기타」 로 자동 · 정적 시험 NV1)
    권한·게이팅 무변: 묶음은 표시 위치만 · 각 버튼은 menuCanSee 를 통과한 것만 · 회계·마감·권한 기능은 기존 메뉴 그대로 「관리」 아래 */
+//   ★ v0.40.0 (GPT UI SPEC 1.1 §6) — 구매 / 자재 분리 (표시 묶음만 · 데이터·권한 나눔 0) · 부서 아이콘 · 메뉴 찾기(NAV_GROUPS)도 이 정의에서 생성
 const NAV_DEPTS = [
   { key:'sales',   label:'영업',      ids:['so','quote'] },
   { key:'prod',    label:'생산',      ids:['wo','plan','perf','scan','autoplan','lot','eqstatus'] },
-  { key:'buy',     label:'구매·자재', ids:['po','matin','inv','os'] },
+  { key:'buy',     label:'구매',      ids:['po','os'] },
+  { key:'mat',     label:'자재',      ids:['matin','inv'] },
   { key:'qual',    label:'품질',      ids:['qc','mold','draw'] },
   { key:'ship',    label:'출하',      ids:['ship','pallet'] },
   { key:'admin',   label:'관리',      ids:['dash','closing','acct','cost','report','docs','audit'] },
   { key:'master',  label:'기준정보',  ids:['masters','proc'] },
   { key:'setting', label:'설정',      ids:['set'] },
 ];
+const NAV_GROUPS = NAV_DEPTS.map(d => ({ label: d.label, ids: d.ids.slice() }));
+// 부서 아이콘 (표시만) · 사이드바·위치 표시용 화면 이름 (PAGES.title·권한 키 무변 — 「구매」 화면 = 구매 › 발주)
+const NAV_ICONS = {
+  home:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/>',
+  sales:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',
+  prod:'<path d="M3 21V10l6 4v-4l6 4V5h6v16z"/>',
+  buy:'<circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.6 12h11.2L21 7H6.2"/>',
+  mat:'<path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7M12 11v10"/>',
+  qual:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/>',
+  ship:'<rect x="2" y="7" width="13" height="10" rx="1"/><path d="M15 10h4l3 3v4h-7"/><circle cx="6.5" cy="19" r="1.6"/><circle cx="18" cy="19" r="1.6"/>',
+  admin:'<path d="M4 20V11M10 20V5M16 20v-6M2 20h20"/>',
+  master:'<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>',
+  setting:'<circle cx="12" cy="12" r="3.2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/>',
+  etc:'<circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>'
+};
+const NAV_LABEL = { po:'발주' };
+function navTitle(p){ return (p && (NAV_LABEL[p.id] || p.title)) || ''; }
+function navIco(k){ return `<span class="nav-ico" aria-hidden="true"><svg viewBox="0 0 24 24">${NAV_ICONS[k] || NAV_ICONS.etc}</svg></span>`; }
+function navDeptOf(id){ return NAV_DEPTS.find(d => d.ids.includes(id)) || null; }
 // 펼친 묶음 = 이 기기 편의 설정 (localStorage · 실패해도 동작)
 function _navOpenGet(){ try { return new Set(JSON.parse(localStorage.getItem('vela_nav_open') || '[]')); } catch(e){ return new Set(); } }
 function _navOpenSet(k, on){ try { const s = _navOpenGet(); if(on) s.add(k); else s.delete(k); localStorage.setItem('vela_nav_open', JSON.stringify([...s])); } catch(e){} }
@@ -7945,6 +8180,13 @@ function setPrefs(userId, patch){
   return DB.set('settings', _prefsId(id), { ...(getPrefs(id) || {}), userId: id, ...clean, updated: Date.now() });
 }
 /* ★ v0.37.7 — 메뉴 노출 판정 1벌 (renderNav · 전체 메뉴 창 공통): 기능 플래그 ∧ MANAGER_ONLY(manager/vendor 만) ∧ 권한 ≠ none (v0.28.0 · 관리책임자·개발자 제외) */
+// ★ v0.39.9 (사용자 요청 「별표 첫 메뉴로 시작」) — 로그인 첫 화면 1벌: 「내 업무」(★) 순서대로 볼 수 있는 첫 메뉴 · 없으면 대시보드
+function landingPage(){
+  try { const flags = getFlags();
+    for(const id of getPrimaryMenu()){ const p = PAGES.find(x => x.id === id); if(p && menuCanSee(p, flags)) return id; }
+  } catch(e){}
+  return 'dash';
+}
 function menuCanSee(p, flags){
   flags = flags || getFlags();
   if(p && PRICE_PAGES.includes(p.id) && !canSeePrice()) return false;   // ★ v0.38.29 — 단가·금액 권한 없으면 금액 화면 숨김
@@ -8041,7 +8283,7 @@ function renderNav(){
   const primary = getPrimaryMenu();
   const prim = ordered.filter(p => primary.includes(p.id));
   // ★ v0.39.0 (PC 개편 U-01·U-04 · GPT 승인) — 사이드바 = 「내 업무」(★ 고른 메뉴) + 부서 묶음(접기 · '부' 없음) · 게이팅 = menuCanSee 1벌 그대로 (위치 이동 = 권한 확대 0)
-  let out = `<div class="nav-sec">내 업무</div>` + (prim.length ? prim.map(p => `<button data-page="${p.id}">${_esc(p.title)}</button>`).join('') : `<div class="nav-empty" style="font-size:11.5px;color:var(--sub);padding:6px 12px;line-height:1.5">☆ 메뉴 찾기에서 별표로 추가</div>`);
+  let out = `<a class="nav-brand" href="#${landingPage()}" title="VELA MES SYSTEM"><b>VELA</b><i></i><span>MES</span></a><div class="nav-sec">${navIco('home')}내 업무</div>` + (prim.length ? prim.map(p => `<button data-page="${p.id}">${_esc(navTitle(p))}</button>`).join('') : `<div class="nav-empty" style="font-size:11.5px;color:var(--sub);padding:6px 12px;line-height:1.5">☆ 메뉴 찾기에서 별표로 추가</div>`);
   const openSet = _navOpenGet(); const cur = (location.hash || '#dash').replace('#', '').split('/')[0];
   const used = new Set();
   let depts = '';
@@ -8049,10 +8291,10 @@ function renderNav(){
     const ps = g.ids.map(id => ordered.find(p => p.id === id)).filter(Boolean); if(!ps.length) return;   // 묶음 안 순서 = 업무 순서 (작업지시 → 생산계획 → 실적)
     ps.forEach(p => used.add(p.id));
     const open = openSet.has(g.key) || ps.some(p => p.id === cur);
-    depts += `<div class="nav-dept${open ? ' open' : ''}" data-dept="${g.key}"><button type="button" class="nav-dept-h" data-dept-h="${g.key}" aria-expanded="${open}">${_esc(g.label)}<span class="nav-dept-n">${ps.length}</span></button><div class="nav-dept-b">${ps.map(p => `<button data-page="${p.id}">${_esc(p.title)}</button>`).join('')}</div></div>`;
+    depts += `<div class="nav-dept${open ? ' open' : ''}" data-dept="${g.key}"><button type="button" class="nav-dept-h" data-dept-h="${g.key}" aria-expanded="${open}">${navIco(g.key)}${_esc(g.label)}<span class="nav-dept-n">${ps.length}</span></button><div class="nav-dept-b">${ps.map(p => `<button data-page="${p.id}">${_esc(navTitle(p))}</button>`).join('')}</div></div>`;
   });
   const rest = ordered.filter(p => !used.has(p.id));
-  if(rest.length) depts += `<div class="nav-dept${openSet.has('etc') ? ' open' : ''}" data-dept="etc"><button type="button" class="nav-dept-h" data-dept-h="etc">기타<span class="nav-dept-n">${rest.length}</span></button><div class="nav-dept-b">${rest.map(p => `<button data-page="${p.id}">${_esc(p.title)}</button>`).join('')}</div></div>`;
+  if(rest.length) depts += `<div class="nav-dept${openSet.has('etc') ? ' open' : ''}" data-dept="etc"><button type="button" class="nav-dept-h" data-dept-h="etc">${navIco('etc')}기타<span class="nav-dept-n">${rest.length}</span></button><div class="nav-dept-b">${rest.map(p => `<button data-page="${p.id}">${_esc(navTitle(p))}</button>`).join('')}</div></div>`;
   out += `<div class="nav-depts">${depts}</div>`;
   out += `<button class="nav-all-btn" data-allmenu title="메뉴 찾기 · ★ 로 내 업무 고르기">☰ 메뉴 찾기 · ★</button>`;
   nav.innerHTML = out;
@@ -8063,7 +8305,9 @@ function renderNav(){
 }
 function setActive(id){
   document.querySelectorAll('#nav button[data-page]').forEach(b=>b.classList.toggle('on', b.dataset.page===id));
-  document.querySelectorAll('#nav .nav-dept').forEach(d => { if(d.querySelector('button.on')){ d.classList.add('open'); const h = d.querySelector('[data-dept-h]'); if(h) h.setAttribute('aria-expanded', 'true'); } });   // ★ v0.39.0 — 현재 화면의 묶음 펼침
+  document.querySelectorAll('#nav .nav-dept').forEach(d => { const cur = !!d.querySelector('button.on'); d.classList.toggle('cur', cur); if(cur){ d.classList.add('open'); const h = d.querySelector('[data-dept-h]'); if(h) h.setAttribute('aria-expanded', 'true'); } });
+  // ★ v0.40.0 — 위쪽 현재 위치 (부서 › 화면) · 표시만
+  try { const cr = document.getElementById('crumb'); if(cr){ const pg = PAGES.find(x => x.id === id); const dp = navDeptOf(id); cr.innerHTML = pg ? `${dp ? `<span>${_esc(dp.label)}</span><span class="sep">›</span>` : ''}<b>${_esc(navTitle(pg))}</b>` : ''; } } catch(e){}   // ★ v0.39.0 — 현재 화면의 묶음 펼침
   // ★ v0.37.7 — 현재 화면이 내 메뉴에 없으면(전체 메뉴에서 이동) 「전체 메뉴」 버튼에 활성 표시 + 화면 이름(위치 힌트)
   const nav = document.getElementById('nav'); const all = nav && nav.querySelector('[data-allmenu]');
   if(!all) return;
@@ -8119,6 +8363,8 @@ function router(){
   try { _ruleNoteEnhance(); } catch(e){}
   // ★ v0.38.17 — 단락 켜기/끄기 (렌더 후 부착 · 전 메뉴 공통)
   try { _secToggleEnhance(); } catch(e){ console.warn('[VELA] 단락 토글', e); }
+  // ★ v0.40.0 — 여러 동작 버튼 행 → [상세 보기] 중앙 창 (전 메뉴 공통 · 원래 버튼 그대로)
+  try { _rowDetailEnhance(); } catch(e){ console.warn('[VELA] 행 상세', e); }
 }
 /* ★ v0.38.17 — 화면 단락(하위 섹션) 켜기/끄기 1벌 (사용자 요청 2026-10-09 · 「개인화 v0.1」 원칙: 표시만 · 계산·원장·권한·write path 무변)
    · 단락 = #view 안 .card 중 머리글 h3 가 있는 것 — 마크업 무수정 · 렌더 후 부착 → 전 메뉴 자동 (대시보드 = 카드 Picker 별도 · 현장 모드 제외)
@@ -8158,6 +8404,7 @@ function secCanTurnOff(key){
 let _secEnhanceRuns = 0;   // 회귀용 계측 (MutationObserver 반복 실행 감시)
 function _secToggleEnhance(){
   _secEnhanceRuns++;
+  try { _viewTabsEnhance(); } catch(e){ console.warn('[VELA] 보기 전환', e); }   // ★ v0.40.0 — 한 화면 한 업무 영역 (단락 보기 전환)
   if(!SESSION.loggedIn || _secPage() === 'dash' || isMobileHash()) return;
   const list = secList(); if(!list.length) return;
   const off = secOffMap();
@@ -8184,8 +8431,9 @@ function _secToggleEnhance(){
   if(!btn){
     btn = document.createElement('button'); btn._secBound = true; btn.id = 'sec-pick-btn'; btn.type = 'button'; btn.className = 'btn';
     btn.onclick = () => openSecPicker();
-    const tools = document.querySelector('#view .pghead .pgtools') || document.querySelector('#view .pghead');
+    const tools = document.querySelector('#view .pghead .pgtools'); const ph = document.querySelector('#view .pghead');
     if(tools) tools.insertBefore(btn, tools.firstChild);
+    else if(ph) ph.appendChild(btn);   // ★ v0.40.0 — 도구 묶음이 없는 화면 = 머리 끝에 (제목 앞에 끼워 제목이 밀리던 문제)
     else { const bar = document.createElement('div'); bar.style.cssText = 'display:flex;justify-content:flex-end;margin-bottom:10px'; bar.appendChild(btn); document.getElementById('view').prepend(bar); }
   }
   btn.textContent = `단락 ${list.length - nOff}/${list.length}`;
@@ -8222,6 +8470,81 @@ function openSecPicker(){
     const page = _secPage() + ':'; const m = { ...secOffMap() }; Object.keys(m).forEach(k => { if(k.startsWith(page)) delete m[k]; });
     setPrefs(SESSION.userId, { sec_off: m }); _secToggleEnhance(); document.getElementById('sec-pick-list').innerHTML = draw(); bind();
   };
+}
+/* ★ v0.40.0 (GPT UI SPEC 1.1 §4.1 · U03) — 한 화면 한 업무 영역: 단락(제목 있는 카드)이 2개 이상이면 위에 [보기] 전환 탭 → 고른 단락 하나만 표시
+   · 표시만 (DOM·계산·구독 그대로 · 숨긴 단락도 화면에 존재) · 고른 보기 = 이 기기 편의 설정(localStorage · 실패해도 동작 · 업무 데이터 아님)
+   · 안전 신호 단락(data-sec-lock · 제목 키워드) = 탭 대상이 아님 → 항상 표시 (GPT 원칙 「안전 신호 은폐 금지」) · 꺼 둔 단락(sec_off)은 탭에도 없음
+   · 기본 보기 = 표가 있는 첫 단락 (업무 목록) → 없으면 첫 단락 · 대시보드(카드 고르기 별도)·실적 등록 작업대·현장/폰 화면 제외 · 인쇄 = 전부 펼침 */
+const VT_SKIP = ['dash', 'scan', 'docs', 'autoplan'];   // 대시보드 = 카드 고르기 · 실적 등록 = 작업대 · 문서 출력·자동계획 = 단계 흐름(고르기 → 대상) 화면
+const VT_FIRST = ['plan'];   // 기본 보기 = 첫 단락 (생산계획 = 계획판)
+const VT_LABEL = { plan: ['계획판'] };   // 탭 이름 (화면별 단락 순서 · 없으면 단락 제목)
+function _vtKey(page){ return 'vela_view_tab:' + page; }
+function _viewTabsEnhance(){
+  const v = document.getElementById('view'); if(!v) return;
+  const old = v.querySelector('.view-tabs');
+  const page = _secPage();
+  const clear = () => { if(old) old.remove(); v.querySelectorAll('.card.vt-hide,.card.vt-solo,.vt-wrap-hide').forEach(c => c.classList.remove('vt-hide', 'vt-solo', 'vt-wrap-hide')); };
+  if(typeof SESSION === 'undefined' || !SESSION.loggedIn || isMobileHash() || VT_SKIP.includes(page)) return clear();
+  const list = secList(); const off = secOffMap();
+  const U = list.filter(x => !x.locked && !off[x.key]);
+  // 안전 단락이 업무 목록(표)이면 그 목록만 보는 기본 보기 탭을 맨 앞에 (예: 품질 관리 = 부적합 목록 · 분석 단락은 탭)
+  const lk = list.find(x => x.locked && x.card.querySelector('table'));
+  const base = lk ? { key: page + ':__base', title: lk.title, base: true } : null;
+  const tabs = base ? [base, ...U] : U;
+  if(tabs.length < 2) return clear();
+  let want = null; try { want = localStorage.getItem(_vtKey(page)); } catch(e){}
+  const cur = tabs.find(x => x.key === want) || base || (VT_FIRST.includes(page) ? U[0] : null) || U.find(x => x.card.querySelector('table')) || U[0];
+  list.forEach(x => { x.card.classList.toggle('vt-hide', U.includes(x) && x !== cur); x.card.classList.toggle('vt-solo', x === cur || (cur.base && x === lk)); });
+  [...v.children].forEach(el => { if(el.classList.contains('card') || el.classList.contains('view-tabs')) return; const cs = el.querySelectorAll('.card'); el.classList.toggle('vt-wrap-hide', cs.length > 0 && [...cs].every(c => c.classList.contains('vt-hide') || (c.parentElement && c.parentElement.closest('.card.vt-hide')))); });   // 숨긴 단락만 담은 감싸개(격자) 여백 0
+  const bar = old || Object.assign(document.createElement('div'), { className: 'view-tabs' });
+  bar.setAttribute('role', 'tablist'); bar.setAttribute('aria-label', '이 화면 보기 전환');
+  const lbl = x => { const i = U.indexOf(x); const o = VT_LABEL[page]; return (o && i >= 0 && o[i]) || String(x.title).replace(/[\s·\-–—:|/]+$/, '').trim() || x.title; };
+  bar.innerHTML = tabs.map(x => `<button type="button" role="tab" data-vt="${_esc(x.key)}" aria-selected="${x === cur}">${_esc(lbl(x))}</button>`).join('');
+  let anc = list[0].card; while(anc.parentElement && anc.parentElement !== v) anc = anc.parentElement;   // 단락을 감싼 맨 바깥(격자 안에 넣지 않음)
+  if(anc.parentElement === v && bar.nextElementSibling !== anc) v.insertBefore(bar, anc);
+  bar.querySelectorAll('[data-vt]').forEach(b => b.onclick = () => { try { localStorage.setItem(_vtKey(page), b.dataset.vt); } catch(e){} _viewTabsEnhance(); });
+}
+/* ★ v0.40.0 (U04 · INTEGRATION 「모달 계약」) — 목록 행의 동작 버튼이 2개 이상이면 행에는 [상세 보기 →] 하나만 → 중앙 창 = 읽기 전용 행 정보 + 원래 버튼(같은 노드 · 같은 핸들러 · 권한·검증 그대로)
+   · 버튼은 DOM 에 그대로 남고 화면에서만 가려짐 (회귀 시험·단축 동작 무변) · 창을 열 때 버튼을 창으로 옮기고 닫거나 다른 창을 열면 제자리로
+   · 동작을 누르면 그 동작이 새 창을 열거나 화면을 다시 그림 → 행 상세 창은 자동으로 닫힘 (창을 겹겹이 쌓지 않음)
+   · 입력칸이 있는 행(현장 수량 입력 등)·버튼 1개 행·대시보드·현장/폰 화면 제외 · 표시 문자열은 textContent → _esc */
+var _raMoved = null;
+function _raRestore(){
+  const m = _raMoved; _raMoved = null; if(!m) return;
+  m.forEach(({ b, parent, next }) => { try { if(parent && parent.isConnected){ if(next && next.parentNode === parent) parent.insertBefore(b, next); else parent.insertBefore(b, parent.querySelector(':scope > .ra-open')); } } catch(e){} });
+}
+function _rowDetailEnhance(){
+  const v = document.getElementById('view'); if(!v || typeof SESSION === 'undefined' || !SESSION.loggedIn || isMobileHash() || _secPage() === 'dash') return;
+  v.querySelectorAll('table').forEach(tb => {
+    if(tb.closest('.no-ra')) return;
+    const hr = tb.tHead && tb.tHead.rows.length ? tb.tHead.rows[tb.tHead.rows.length - 1] : null;
+    const heads = hr ? [...hr.cells].map(th => (th.textContent || '').trim()) : [];
+    [...tb.tBodies].forEach(tbd => [...tbd.rows].forEach(tr => {
+      const td = tr.lastElementChild; if(!td || td.tagName !== 'TD' || td.classList.contains('ra-cell')) return;
+      const bs = [...td.querySelectorAll('button')].filter(b => !b.classList.contains('ra-open'));
+      if(bs.length < 2 || td.querySelector('input,select,textarea') || td.colSpan > 1 || tr.cells.length < 3) return;   // 펼침 행(여러 칸 합친 상세 줄)·입력 행 제외
+      td.classList.add('ra-cell');
+      const ob = document.createElement('button'); ob.type = 'button'; ob.className = 'ra-open'; ob.textContent = '상세 보기 →'; ob.title = '상세 보기 — 수정·출력·취소 등은 상세 창에서';
+      ob.onclick = e => { e.stopPropagation(); openRowDetail(tr, heads); };
+      td.appendChild(ob);
+    }));
+  });
+}
+function openRowDetail(tr, heads){
+  const td = tr.lastElementChild; if(!td) return;
+  const txt = c => String((c.innerText !== undefined ? c.innerText : c.textContent) || c.textContent || '').trim().replace(/\s+/g, ' ');
+  const pairs = [...tr.cells].slice(0, -1).map((c, i) => [heads[i] || '', txt(c)]).filter(x => x[1] && x[1] !== '—' && x[1] !== '-');
+  const pg = PAGES.find(p => p.id === _secPage());
+  const head = pairs[0] ? pairs[0][1] : '상세'; const sub = pairs.slice(1, 3).map(x => x[1]).join(' · ');
+  openModal(`<h2>${_esc(navTitle(pg) || '')} 상세 <button class="x" onclick="closeModal()" aria-label="닫기">${ico('x')}</button></h2>
+    <div class="body"><div><div class="rd-head">${_esc(head)}</div>${sub ? `<div class="rd-sub">${_esc(sub)}</div>` : ''}</div>
+      <div class="rd-grid">${pairs.map(x => `<div class="k">${_esc(x[0] || '항목')}</div><div>${_esc(x[1])}</div>`).join('')}</div>
+      <div class="rd-note">읽기 전용 · 수정·출력·취소는 아래 버튼 — 기존 화면과 같은 기능(권한·검증·저장 확인 그대로)</div>
+      <div class="actions"><div class="rd-acts" id="rd-acts"></div><button class="btn" onclick="closeModal()">닫기</button></div></div>`, { width: '760px' });
+  const box = document.getElementById('rd-acts'); if(!box) return;
+  _raMoved = [...td.querySelectorAll('button')].filter(b => !b.classList.contains('ra-open')).map(b => ({ b, parent: b.parentNode, next: b.nextSibling }));
+  _raMoved.forEach(x => box.appendChild(x.b));
+  box.addEventListener('click', e => { if(e.target && e.target.closest && e.target.closest('button')) setTimeout(() => { if(document.getElementById('rd-acts') && document.getElementById('modal-bg').classList.contains('show')) closeModal(); }, 0); });
 }
 /* ★ v0.32.4 — 규칙·가드 안내 접기 1벌 (사용자 판정: 상주 안내문 정리 — 시안 확정 방향)
    마크업 무수정: 렌더 후 '규칙'/'가드' 표머리 박스를 찾아 접힘 클래스만 부여 → 전 화면 자동 적용.
@@ -8952,8 +9275,7 @@ function calcDayLoad(date, equipmentName, extras, excludeId){
   let usedH = 0, uncounted = 0;
   const acc = (itemCode, qty) => {
     const q = +qty || 0;
-    const it = itemCode ? DB.get('items', itemCode) : null;
-    const ct = procCode ? +(it?.proc_times?.[procCode]?.ct) : 0;
+    const ct = procCode ? itemCt(itemCode, procCode, equipmentName) : 0;   // ★ v0.39.9 — 설비별 CT 우선
     if(!procCode || !(ct > 0) || !(q > 0)){
       uncounted++;
       return;
@@ -8962,7 +9284,7 @@ function calcDayLoad(date, equipmentName, extras, excludeId){
   };
   // ★ v0.23.3 — plan_type 하드 조건 제거 · getLivePlans 기준으로 통일 (구형 미지정 · 자동 · 수동 모두 포함)
   getLivePlans().filter(p =>
-    p.date === date && p.equipment === equipmentName && p.id !== excludeId
+    p.date === date && p.equipment === equipmentName && (Array.isArray(excludeId) ? !excludeId.includes(p.id) : p.id !== excludeId)   // ★ v0.39.9 — 여러 건 제외(모아 옮기기)
   ).forEach(p => acc(p.itemCode, p.qty));
   (extras || []).forEach(e => acc(e.itemCode, e.qty));
   const pct = capH > 0 ? (usedH / capH) * 100 : 0;
@@ -9352,12 +9674,8 @@ VIEWS.dash = () => {
   //   구성 = 메뉴 공통 규격: 핵심 스트립 4(총 수주잔 · 당월 매출 · 오늘 생산 · 오늘 이상 신호등) + 카드 2(수주 대비 띠 · 생산 추세).
   //   이동(삭제 아님): 연 누적·월별 매출·고객사 5년 → 출하/AI 보고서 · 생산 진도 4칸 → 작업지시 · 공정 흐름 → 설비현황 · 품질 KPI → 품질.
   //   계산은 전부 기존 헬퍼 1벌(calcSales·calcSoFulfillment·computeTrend·lockedPlotSet·heldPlotSet·calcSoRows) — 신규 계산식 0.
-  const _lockN = lockedPlotSet().size;
-  const _holdN = heldPlotSet().size;
-  const _lateN = calcSoRows().filter(r => r.status.label === '지연').length;
-  // ★ v0.35.9-B — 부적합 대기 대신 「판정 지체」(조치 필요 = alert 일수 이상 · 정책값) 집계 — GPT §10
-  const _ncDelay = flags.qc ? DB.query('nc_records', n => ncIsPending(n) && ncPendingLevel(n) >= 2).length : 0;
-  const _ncPend  = flags.qc ? DB.query('nc_records', n => ncIsPending(n)).length : 0;
+  const _sf = todaySafetySignals(flags);   // ★ v0.39.9 — 안전 신호 1벌 (보고서 「안전 신호」 줄과 같은 함수)
+  const _lockN = _sf.lock, _holdN = _sf.hold, _lateN = _sf.late, _ncDelay = _sf.ncDelay, _ncPend = _sf.ncPend;
   const _issueN = _lockN + _holdN + _lateN + _ncDelay;
   const _issueParts = [];
   if(_lockN) _issueParts.push({ t:`동시성 사고 ${_lockN}`, h:'#audit' });   // ★ v0.36.0 — 잠금 → 사고(보류)
@@ -9574,7 +9892,7 @@ function renderSessionSetup(prefill){
         </div>
 
         <!-- 2. 작업자 -->
-        <div class="sec-label"><span class="n">2</span>작업자<span class="hint">생산부에서 선택</span></div>
+        <div class="sec-label"><span class="n">2</span>작업자<span class="hint">생산 담당자에서 선택</span></div>
         <div class="pick-box">
           <div class="pick-cur worker">
             <div class="pc-ic"><svg viewBox="0 0 24 24" stroke="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 12 0v1"/></svg></div>
@@ -9585,7 +9903,7 @@ function renderSessionSetup(prefill){
           </div>
           ${noWorkers
             ? `<div class="pick-actions"><button class="pa-btn list" onclick="location.hash='#masters'">기준정보 → 작업자 마스터로</button></div>`
-            : `<div class="pick-actions"><button class="pa-btn list" data-toggle="worker"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>${openList==='worker'?'목록 닫기':'생산부 직원 선택'}</button></div>`
+            : `<div class="pick-actions"><button class="pa-btn list" data-toggle="worker"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>${openList==='worker'?'목록 닫기':'작업자 선택'}</button></div>`
           }
           ${openList==='worker' ? `
             <div class="list-open">
@@ -10241,7 +10559,7 @@ function phoneRouter(){
   const parts = (location.hash || '#p/home').replace(/^#p\/?/, '').split('/').map(decodeURIComponent);
   const page = parts[0] || 'home';
   const fab = document.getElementById('p-home-fab'); if(fab) fab.hidden = true;
-  const fn = { home: VIEWS.p_home, todo: VIEWS.p_todo, find: VIEWS.p_find, more: VIEWS.p_more, so: VIEWS.p_so }[page] || VIEWS.p_home;
+  const fn = { home: VIEWS.p_home, todo: VIEWS.p_todo, find: VIEWS.p_find, more: VIEWS.p_more, so: VIEWS.p_so, lot: VIEWS.p_lot, today: VIEWS.p_today }[page] || VIEWS.p_home;
   fn(parts.slice(1));
 }
 VIEWS.p_home = () => {
@@ -10253,6 +10571,7 @@ VIEWS.p_home = () => {
   if(_pCan('perf') || isMgr){ const recs = DB.query('records', r => fmtDate(r.ts) === today); const good = recs.reduce((s, r) => s + (+r.good || 0), 0); cards.push(`<div class="m-stat blue"><span>오늘 생산 (양품)</span><b>${good.toLocaleString()}</b></div>`); }
   if(_pCan('ship')){ const sh = DB.query('shipments', s => fmtDate(s.ts || s.date) === today || s.date === today); cards.push(`<div class="m-stat"><span>오늘 출하</span><b>${sh.length}</b></div>`); }
   const acts = [];
+  if(isMgr || _pCan('perf')) acts.push(`<a class="m-btn" href="#p/today">📊 오늘 현황 (공정·설비별)</a>`);   // ★ v0.39.9 — 관리책임자 폰 「오늘 현황 한 화면」 (SPEC 스마트폰 v0.2 §1)
   if(_pEdit('ship')) acts.push(`<button class="m-btn primary" data-p-form="ship">🚚 출하 등록</button>`);
   if(_pEdit('matin')) acts.push(`<div class="m-strip"><button class="m-btn" data-p-form="buy">📦 구매품 입고</button><button class="m-btn" data-p-form="material">🧱 소재 입고</button></div>`);
   phoneShell('home', `
@@ -10300,6 +10619,48 @@ VIEWS.p_so = (args) => {
   phoneShell('home', `<a class="m-back" href="#p/home">← 홈</a><div class="m-title">수주 잔량 <span class="dim" style="font-size:13px">${rows.length}건 · 납기순</span></div>
     ${rows.length ? rows.slice(0, 60).map(r => `<a class="m-card" href="#p/so/${encodeURIComponent(r.o.id)}"><div class="m-row1"><b class="mono">${_esc(r.o.id)}</b> · ${_esc(DB.get('vendors', r.o.cust)?.name || r.o.cust || '')}</div><div class="m-row2">${_esc(r.o.itemCode)} · 미납 <b>${(+r.remain || 0).toLocaleString()}</b> · 납기 <span class="${r.status.label === '지연' ? 'red' : r.status.label === '납기임박' ? 'amber' : ''}">${_esc(r.o.due || '—')}</span></div></a>`).join('') : '<div class="m-empty">미납 수주 없음</div>'}`);
 };
+/* ★ v0.39.9 — 관리책임자 폰 (SPEC 스마트폰 UI v0.2 §1 「오늘 현황 한 화면 · LOT 조회」) — 읽기 전용 · 숫자 = 기존 원장 헬퍼(LOT.totalGood·balance·lotTimeline·heldPlotSet) 1벌 · 쓰기 0 */
+function phoneTodayData(day){
+  day = day || fmtDate(Date.now());
+  const recs = DB.query('records', r => fmtDate(r.ts) === day);
+  const byProc = {}, byEq = {};
+  recs.forEach(r => { const pc = r.proc || '-'; const e = typeof r.equipment === 'string' ? r.equipment : (r.equipment && r.equipment.name) || '';
+    const P = byProc[pc] = byProc[pc] || { proc: pc, good: 0, defect: 0, n: 0 }; P.good += +r.good || 0; P.defect += +r.defect || 0; P.n++;
+    if(e){ const E = byEq[e] = byEq[e] || { eq: e, proc: pc, good: 0, n: 0, last: 0 }; E.good += +r.good || 0; E.n++; E.last = Math.max(E.last, +r.ts || 0); } });
+  const procs = getProcesses().map(p => p.code); const order = c => { const i = procs.indexOf(c); return i < 0 ? 999 : i; };
+  const ships = DB.query('shipments', s => fmtDate(s.ts || s.date) === day || s.date === day);
+  const ncs = DB.query('nc_records', n => fmtDate(n.ts) === day);
+  return { day, procs: Object.values(byProc).sort((a, b) => order(a.proc) - order(b.proc)), eqs: Object.values(byEq).sort((a, b) => b.last - a.last), shipQty: ships.reduce((s, x) => s + (+x.qty || 0), 0), shipN: ships.length, ncQty: ncs.reduce((s, n) => s + (+n.qty || 0), 0), ncN: ncs.length, idleEq: buildEquipmentListSafe().filter(n => !byEq[n]) };
+}
+function buildEquipmentListSafe(){ try { return getProcesses().filter(p => p.type !== 'out' && p.code !== 'SHIP' && p.active !== false).flatMap(p => getEquipment(p.code)); } catch(e){ return []; } }
+VIEWS.p_today = () => {
+  if(!(SESSION.role === 'manager' || SESSION.role === 'vendor' || _pCan('perf'))){ location.hash = '#p/home'; return; }
+  const d = phoneTodayData(); const pn = c => DB.get('processes', c)?.name || c;
+  phoneShell('home', `<a class="m-back" href="#p/home">← 홈</a><div class="m-title">오늘 현황 <span class="dim" style="font-size:13px">${d.day}</span></div>
+    <div class="m-strip"><div class="m-stat blue"><span>양품</span><b>${d.procs.reduce((s, p) => s + p.good, 0).toLocaleString()}</b></div><div class="m-stat ${d.ncN ? 'red' : ''}"><span>부적합 접수</span><b>${d.ncN}</b></div><div class="m-stat"><span>출하</span><b>${d.shipQty.toLocaleString()}</b></div></div>
+    <div class="m-sec">공정별 (오늘 실적)</div>
+    ${d.procs.length ? d.procs.map(p => `<div class="m-card static"><div class="m-kv"><span>${_esc(pn(p.proc))}</span><b class="mono">양품 ${p.good.toLocaleString()}${p.defect ? ` · <span class="red">불량 ${p.defect.toLocaleString()}</span>` : ''}</b></div><div class="m-row2">실적 ${p.n}건</div></div>`).join('') : '<div class="m-empty">오늘 실적 없음</div>'}
+    <div class="m-sec">설비별 (실적 있는 설비 ${d.eqs.length} · 없는 설비 ${d.idleEq.length})</div>
+    ${d.eqs.slice(0, 30).map(e => `<div class="m-card static"><div class="m-kv"><span>${_esc(e.eq)}</span><b class="mono">${e.good.toLocaleString()}</b></div><div class="m-row2">${_esc(pn(e.proc))} · ${e.n}건 · 마지막 ${new Date(e.last).toTimeString().slice(0, 5)}</div></div>`).join('')}
+    ${d.idleEq.length ? `<div class="m-card static"><div class="m-row2">오늘 실적 없는 설비: ${d.idleEq.slice(0, 20).map(_esc).join(' · ')}${d.idleEq.length > 20 ? ' …' : ''}</div></div>` : ''}
+    <div class="m-foot">읽기 전용 · 실적 원장 그대로 · ${APP_VERSION}</div>`);
+};
+VIEWS.p_lot = (args) => {
+  const id = args && args[0];
+  if(!id || !_pCan('lot')){ location.hash = '#p/find'; return; }
+  const l = DB.get('production_lots', id); if(!l){ phoneShell('find', `<a class="m-back" href="#p/find">← 조회</a><div class="m-empty">LOT 없음</div>`); return; }
+  const route = getRoute(l.itemCode).filter(r => r.proc !== 'SHIP'); const held = heldPlotSet().has(id);
+  const ev = lotTimeline(id).slice(-12).reverse();
+  phoneShell('find', `<a class="m-back" href="#p/find/${encodeURIComponent(id)}">← 조회</a>
+    <div class="m-title mono">${_esc(id)}</div>
+    ${held ? '<div class="m-ban red">품질 HOLD — 출하·반출 차단 중 (판정은 PC 화면 › 품질)</div>' : ''}
+    <div class="m-card static"><div class="m-kv"><span>품번</span><b class="mono">${_esc(l.itemCode)} ${_esc(DB.get('items', l.itemCode)?.name || '')}</b></div><div class="m-kv"><span>초기 수량</span><b class="mono">${(+l.qty_initial || 0).toLocaleString()}</b></div></div>
+    <div class="m-sec">공정 (양품 · 남은 수량)</div>
+    ${route.map(r => `<div class="m-card static"><div class="m-kv"><span>${_esc(DB.get('processes', r.proc)?.name || r.proc)}</span><b class="mono">양품 ${LOT.totalGood(id, r.proc).toLocaleString()} · 남음 ${LOT.balance(id, r.proc).toLocaleString()}</b></div></div>`).join('') || '<div class="m-empty">공정 경로 없음</div>'}
+    <div class="m-sec">최근 이력</div>
+    ${ev.map(e => `<div class="m-card static"><div class="m-row1"><span class="pill" style="font-size:9.5px">${_esc(e.kind)}</span> <span class="dim mono">${e.ts ? fmtDate(e.ts) + ' ' + new Date(e.ts).toTimeString().slice(0, 5) : ''}</span></div><div class="m-row2">${_esc(e.text)}${e.by ? ' · ' + _esc(e.by) : ''}</div></div>`).join('') || '<div class="m-empty">이력 없음</div>'}
+    <a class="m-btn ghost" href="#lot">PC 화면 LOT 추적 ↗</a>`);
+};
 VIEWS.p_find = (args) => {
   const q = String((args && args[0]) || '').trim().toLowerCase();
   const res = [];
@@ -10308,7 +10669,7 @@ VIEWS.p_find = (args) => {
     if(_pCan('so')) DB.all('orders').filter(o => hit(o.id) || hit(o.itemCode) || hit(DB.get('vendors', o.cust)?.name)).slice(0, 20).forEach(o => res.push(`<a class="m-card" href="#p/so/${encodeURIComponent(o.id)}"><div class="m-row1"><span class="pill cyan" style="font-size:9.5px">수주</span> <b class="mono">${_esc(o.id)}</b></div><div class="m-row2">${_esc(o.itemCode)} · ${_esc(DB.get('vendors', o.cust)?.name || '')} · 미납 ${soOpenQty(o).toLocaleString()}</div></a>`));
     DB.all('items').filter(i => hit(i.code) || hit(i.name)).slice(0, 15).forEach(i => res.push(`<div class="m-card static"><div class="m-row1"><span class="pill" style="font-size:9.5px">품번</span> <b class="mono">${_esc(i.code)}</b> ${_esc(i.name || '')}</div><div class="m-row2">${_esc(i.mat || '')}${+i.dia ? ' · Ø' + (+i.dia) : ''}${i.active === false ? ' · 비활성' : ''}</div></div>`));
     DB.all('vendors').filter(v => hit(v.name) || hit(v.code)).slice(0, 10).forEach(v => res.push(`<div class="m-card static"><div class="m-row1"><span class="pill" style="font-size:9.5px">거래처</span> <b>${_esc(v.name)}</b></div><div class="m-row2">${_esc(v.code || '')}${v.tel ? ' · ' + _esc(v.tel) : ''}${v.manager ? ' · ' + _esc(v.manager) : ''}</div></div>`));
-    if(_pCan('lot')) DB.all('production_lots').filter(l => hit(l.plot_no) || hit(l.itemCode)).slice(0, 15).forEach(l => res.push(`<a class="m-card" href="#lot" data-p-pc="lot"><div class="m-row1"><span class="pill" style="font-size:9.5px">LOT</span> <b class="mono">${_esc(l.plot_no)}</b>${heldPlotSet().has(l.plot_no) ? ' <span class="pill red" style="font-size:9.5px">HOLD</span>' : ''}</div><div class="m-row2">${_esc(l.itemCode)} · 지시 ${(+l.qty_initial || 0).toLocaleString()} · PC 화면 ↗</div></a>`));
+    if(_pCan('lot')) DB.all('production_lots').filter(l => hit(l.plot_no) || hit(l.itemCode)).slice(0, 15).forEach(l => res.push(`<a class="m-card" href="#p/lot/${encodeURIComponent(l.plot_no)}"><div class="m-row1"><span class="pill" style="font-size:9.5px">LOT</span> <b class="mono">${_esc(l.plot_no)}</b>${heldPlotSet().has(l.plot_no) ? ' <span class="pill red" style="font-size:9.5px">HOLD</span>' : ''}</div><div class="m-row2">${_esc(l.itemCode)} · 지시 ${(+l.qty_initial || 0).toLocaleString()} · PC 화면 ↗</div></a>`));
   }
   phoneShell('find', `<div class="m-title">조회</div>
     <form id="p-find-f" class="p-find"><input id="p-find-q" value="${_esc(q)}" placeholder="수주번호 · 품번 · 품명 · 거래처 · LOT" autocomplete="off" enterkeyhint="search"><button class="m-btn primary" type="submit" style="width:auto;padding:0 18px">검색</button></form>
@@ -12036,7 +12397,13 @@ VIEWS.po = () => {
     return (p.items||[]).some(it => (it.name||'').toLowerCase().includes(q));
   }) : pos;
 
-  const rowsHTML = filtered.length ? filtered.map(p => {
+  // ★ v0.40.0 (GPT UI SPEC 1.1 기준 화면 A) — 진행 상태 필터 (같은 목록 · 같은 상태 계산 calcPoStatus 1벌 · 저장 0)
+  const PO_ST = [['', '전체'], ['대기', '대기'], ['부분입고', '부분입고'], ['지연', '지연'], ['입고완료', '입고완료'], ['단위 확인', '단위 확인']];
+  const stCount = {}; filtered.forEach(p => { const k = calcPoStatus(p).state; stCount[k] = (stCount[k] || 0) + 1; });
+  if(state.st && !stCount[state.st]) state.st = '';
+  const shown = state.st ? filtered.filter(p => calcPoStatus(p).state === state.st) : filtered;
+  const stTabs = `<div class="st-tabs" role="tablist" aria-label="진행 상태">${PO_ST.filter(([k]) => !k || stCount[k]).map(([k, l]) => `<button type="button" role="tab" data-po-st="${_esc(k)}" aria-selected="${(state.st || '') === k}">${_esc(l)} <span class="n">${k ? stCount[k] : filtered.length}</span></button>`).join('')}</div>`;
+  const rowsHTML = shown.length ? shown.map(p => {
     const st = calcPoStatus(p);
     const v  = DB.get('vendors', p.vendor);
     const items = p.items||[];
@@ -12071,7 +12438,7 @@ VIEWS.po = () => {
 
   document.getElementById('view').innerHTML = `
     <div class="pghead">
-      <div class="pgtitle"><svg class="ic" viewBox="0 0 24 24">${PAGES.find(pp=>pp.id==='po').icon}</svg>구매(발주) <span class="pill cyan">${APP_VERSION}</span></div>
+      <div class="pgtitle"><svg class="ic" viewBox="0 0 24 24">${PAGES.find(pp=>pp.id==='po').icon}</svg>발주 <span class="pg-count">${shown.length}건</span> <span class="pill cyan">${APP_VERSION}</span></div>
       <div class="pgtools">
         <label style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--sub);padding:6px 10px;border:1px solid var(--line);border-radius:8px;cursor:pointer;background:${state.voidView?'rgba(248,113,113,.08)':'var(--bg2)'}"><input type="checkbox" id="po-void-view" ${state.voidView?'checked':''} style="width:auto;margin:0"> 취소 포함 보기</label>
         <button class="btn" id="po-xlsx">${ico('excel')}엑셀</button>
@@ -12079,6 +12446,7 @@ VIEWS.po = () => {
       </div>
     </div>
     <div style="font-size:11px;color:var(--dim);margin-bottom:14px">발주(PO) → 입고 = 수주(SO) → 출하 미러 구조 · 잔량·상태 자동 · 입고 연결은 소재/구매품 입고 모달에서</div>
+    ${stTabs}
 
     <div class="card" style="padding:14px;margin-bottom:12px">
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
@@ -12160,6 +12528,7 @@ VIEWS.po = () => {
   };
 
   document.getElementById('po-add').onclick = () => VIEWS._poNew();
+  document.querySelectorAll('[data-po-st]').forEach(b => b.onclick = () => { state.st = b.dataset.poSt; router(); });   // ★ v0.40.0 — 상태 필터
 };
 
 /* ★ v0.31.1 — 소재·구매품 사용 이력 검사 1벌 (물리 삭제 가드 — 이력 있으면 비활성만)
@@ -21602,7 +21971,7 @@ function splitPlansForWo(planIds){
     // 부하 초과 (설비·CT 있는 건만 · calcDayLoad 재사용 · p 는 이미 저장돼 있어 그대로 합산)
     if(p.equipment){
       const procCode = getEqProcCode(p.equipment);
-      const ct = procCode ? +(it?.proc_times?.[procCode]?.ct) : 0;
+      const ct = procCode ? itemCt(p.itemCode, procCode, p.equipment) : 0;
       if(procCode && ct > 0){
         const load = calcDayLoad(p.date, p.equipment);
         if(load.pct > 100){
@@ -21661,6 +22030,15 @@ function issueWoFromPlan(plan){
    설비 레인 × 교대 밴드 × 순번 → 타수 3단 폴백(라우트 uph×cav → 실적 일산출 환산 → 설비 능력) ·
    금형 교체(순번 간·마스터 평균) · 수명 도달 예측(예비 벌 분기) · 교대 경계 자동 이월.
    시간 표기는 "경" 수준 — Setup 외 중단 미반영(능력 기준 단순 환산 — capacity-v1 원칙). */
+/* ★ v0.39.9 (v0.39.3 미구현 · 인계서 설비별 CT) — 품번 × 공정 × 설비 사이클타임 1벌
+   items.proc_times[공정].ct_eq = { 설비이름: 초/개 } (선택) → 그 설비면 설비별 값 · 없으면 공정 공통 ct · 저장 = 기준값(초/개)만 · 시간당은 환산 */
+function itemCt(itemCode, proc, eqName){
+  if(!itemCode || !proc) return 0;
+  const pt = DB.get('items', itemCode)?.proc_times?.[proc]; if(!pt) return 0;
+  const e = eqName && pt.ct_eq ? +pt.ct_eq[eqName] : 0;
+  return e > 0 ? e : (+pt.ct || 0);
+}
+function itemCtIsEq(itemCode, proc, eqName){ const pt = DB.get('items', itemCode)?.proc_times?.[proc]; return !!(eqName && pt && pt.ct_eq && +pt.ct_eq[eqName] > 0); }
 function planRateFor(itemCode, eqName){
   const eq = DB.query('equipment', e => e.name === eqName)[0] || null;
   const proc = eq?.proc || null;
@@ -21669,8 +22047,8 @@ function planRateFor(itemCode, eqName){
   const isMold = proc ? !!DB.get('processes', proc)?.mold_linked : false;
   // ★ v0.39.2 (GPT: 기준값 1개 · 나머지는 환산 표시) — 0순위 = 품번 공정별 사이클타임 CT(초/개 · 기준정보 › 품번 › 공정별 시간) → 시간당 = 3600 ÷ CT
   if(proc){
-    const ct = +(it?.proc_times?.[proc]?.ct) || 0;
-    if(ct > 0) return { rate: 3600 / ct, basis: `사이클타임 ${ct}초/개${planCtShared(proc) ? ' · 설비 공통값 — 설비마다 속도가 다르면 예상시간 확인' : ''}`, shared: planCtShared(proc) };
+    const ct = itemCt(itemCode, proc, eqName); const own = itemCtIsEq(itemCode, proc, eqName);
+    if(ct > 0) return { rate: 3600 / ct, basis: `사이클타임 ${ct}초/개${own ? ' (이 설비 값)' : planCtShared(proc) ? ' · 설비 공통값 — 설비마다 속도가 다르면 품번 › 설비별 CT 입력' : ''}`, shared: !own && planCtShared(proc) };
   }
   if(proc){
     const step = getRoute(itemCode).find(r => r.proc === proc);
@@ -21694,11 +22072,11 @@ function planRateFor(itemCode, eqName){
    셋팅(분) = 품번 공정별 셋팅 → 금형 교체시간 → 설비 교체시간 → 0 · 시간 기준 없음 = rate 0 (0분으로 보지 않음) */
 function planTimeBasis(itemCode, proc, eqName){
   const it = DB.get('items', itemCode);
-  const ct = +(it?.proc_times?.[proc]?.ct) || 0;
+  const ct = itemCt(itemCode, proc, eqName); const own = itemCtIsEq(itemCode, proc, eqName);
   let rate = 0, basis = '';
-  if(ct > 0){ rate = 3600 / ct; basis = `사이클타임 ${ct}초/개`; }
+  if(ct > 0){ rate = 3600 / ct; basis = `사이클타임 ${ct}초/개${own ? ' (이 설비 값)' : ''}`; }
   else { const r = planRateFor(itemCode, eqName); rate = r.rate; basis = r.basis; }
-  const shared = ct > 0 && planCtShared(proc);   // ★ v0.39.4 (GPT) — 품번 CT 는 설비 공통값 · 그 공정 설비가 2대 이상이면 「예상시간 확인 필요」
+  const shared = ct > 0 && !own && planCtShared(proc);   // ★ v0.39.4 (GPT) — 품번 CT 는 설비 공통값 · 그 공정 설비가 2대 이상이면 「예상시간 확인 필요」
   const eq = DB.query('equipment', e => e.name === eqName)[0] || null;
   const isMold = proc ? !!DB.get('processes', proc)?.mold_linked : false;
   const mold = isMold ? planMoldFor(itemCode) : null;
@@ -22092,7 +22470,7 @@ VIEWS.plan = () => {
     const dayLabels = ['월','화','수','목','금','토','일'];
     body = `
       <div class="card">
-        <h3>월간 · ${_esc(period.label)} <span class="tag">셀 클릭 → 일간 뷰 점프 (개별 칩 나열 없음)</span></h3>
+        <h3>월간 · ${_esc(period.label)} <span class="tag">셀 클릭 → 일간 뷰 · 계획 칩을 다른 날로 끌어 놓기 = 날짜 옮기기(설비 그대로)</span></h3>
         <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px">
           ${dayLabels.map(l => `<div style="font-size:10px;color:var(--dim);text-align:center;padding:4px 0;letter-spacing:.3px">${l}</div>`).join('')}
           ${cells.map(d => {
@@ -22100,9 +22478,11 @@ VIEWS.plan = () => {
             const cnt = dayCounts[d];
             const isToday = d===today;
             const style = `background:${isToday?'rgba(94,234,212,.08)':(inMonth?'var(--bg2)':'transparent')};border:1px solid ${isToday?'var(--cyan)':'var(--line)'};border-radius:6px;padding:6px 8px;min-height:56px;cursor:pointer;opacity:${inMonth?1:0.35}`;
-            return `<div style="${style}" onclick="VIEWS._planNav('${d}')">
+            const dps = scoped.filter(p => p.date === d);   // ★ v0.39.9 — 월간 끌어 놓기 (칩 최대 3 + 나머지 개수 · 일간·주간과 같은 확인 창/모아 옮기기)
+            return `<div style="${style}" onclick="VIEWS._planNav('${d}')" data-plan-drop-date="${_esc(d)}">
               <div style="font-size:10px;color:var(--sub);font-weight:600">${d.slice(-2)}</div>
               ${cnt ? `<div style="font-size:11px;color:var(--cyan);font-family:'JetBrains Mono',monospace;margin-top:2px">${cnt.cnt}건 · ${cnt.qty.toLocaleString()}</div>` : ''}
+              ${dps.slice(0, 3).map(p => `<div class="pill ${stateColor(calcPlanProgress(p).state)}" draggable="true" data-plan-drag="${_esc(p.id)}" style="display:block;font-size:9.5px;margin-top:2px;padding:1px 5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap${_PLAN_PEND && _PLAN_PEND[p.id] ? ';outline:1px dashed var(--amber)' : ''}" title="${_esc(p.itemCode)} · ${(+p.qty || 0).toLocaleString()}ea · ${_esc(p.equipment || '미배정')} — 끌어서 다른 날로">${_esc(p.itemCode)}</div>`).join('')}${dps.length > 3 ? `<div style="font-size:9.5px;color:var(--dim)">+${dps.length - 3}</div>` : ''}
             </div>`;
           }).join('')}
         </div>
@@ -22133,7 +22513,10 @@ VIEWS.plan = () => {
         </div>
         <span style="color:var(--sub);font-size:11.5px;margin-left:8px">${_esc(period.label)}</span>
         ${state.tab==='week' ? `<div style="margin-left:auto;display:flex;gap:4px">${axisBtn('item','품번별')}${axisBtn('eq','설비별')}</div>` : ''}
+        <button class="btn ${state.batch ? 'primary' : 'ghost'}" id="plan-batch-tg" style="${state.tab==='week' ? '' : 'margin-left:auto;'}font-size:11px;padding:6px 12px" title="끌어 놓기를 바로 저장하지 않고 모아서 한 번에 확정">${state.batch ? '모아 옮기기 켜짐' : '여러 건 모아 옮기기'}</button>
       </div>
+      ${planReqLocked() ? `<div style="margin-top:10px;padding:8px 10px;border:1px solid var(--amber);border-radius:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12px"><b style="color:var(--amber)">확정 요청 ${_esc(_PLAN_REQ.reqId)} — 결과 미확정 (계획 ${_PLAN_REQ.moves.length}건)</b><span style="color:var(--sub)">목록 잠금 · 저장 여부를 서버에서 확인해야 합니다 (새로고침해도 유지)</span><button class="btn primary" id="plan-pend-open" style="margin-left:auto">결과 확인</button></div>`
+        : Object.keys(_PLAN_PEND).length ? `<div style="margin-top:10px;padding:8px 10px;border:1px dashed var(--amber);border-radius:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12px"><b style="color:var(--amber)">옮길 계획 ${Object.keys(_PLAN_PEND).length}건 — 아직 저장 안 됨</b><span style="color:var(--sub)">(새로고침하면 사라짐)</span><button class="btn primary" id="plan-pend-open" style="margin-left:auto">확인 · 모두 확정</button><button class="btn ghost" id="plan-pend-clear">모두 취소</button></div>` : ''}
 
       <!-- 검색·필터 (전 기간 뷰 공통) -->
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px">
@@ -22229,6 +22612,9 @@ VIEWS.plan = () => {
   document.querySelectorAll('[data-ptab]').forEach(b => b.onclick = ()=>{ state.tab=b.dataset.ptab; router(); });
   _planBindDnd();
   document.querySelectorAll('[data-paxis]').forEach(b => b.onclick = ()=>{ state.axis=b.dataset.paxis; router(); });
+  { const tg = document.getElementById('plan-batch-tg'); if(tg) tg.onclick = () => { state.batch = !state.batch; if(!state.batch && Object.keys(_PLAN_PEND).length) toast(`모은 이동 ${Object.keys(_PLAN_PEND).length}건은 그대로 — 확정 또는 취소하세요`, 'info'); router(); };
+    const po = document.getElementById('plan-pend-open'); if(po) po.onclick = () => VIEWS._planPendModal();
+    const pc = document.getElementById('plan-pend-clear'); if(pc) pc.onclick = () => { if(planReqLocked()) return; _PLAN_PEND = {}; toast('모은 이동 모두 취소 — 저장된 것 없음', 'info'); router(); }; }
   let qT;
   bindSearch('plan-q', v => { state.q = v; });   // ★ v0.35.9 — Search Contract
   document.getElementById('plan-eq').onchange = (e)=>{ state.eq=e.target.value; router(); };
@@ -22337,6 +22723,7 @@ function _planBindDnd(){
     t.addEventListener('dragleave', () => t.classList.remove('pln-drop-on'));
     t.addEventListener('drop', e => { e.preventDefault(); t.classList.remove('pln-drop-on'); let id = ''; try { id = e.dataTransfer.getData('text/vela-plan'); } catch(_){}
       if(!id) return; const preset = { date: t.dataset.planDropDate }; if(t.hasAttribute('data-plan-drop-eq')) preset.equipment = t.dataset.planDropEq || '';
+      if(window._planFilter && window._planFilter.batch){ planPendAdd(id, preset); return; }   // ★ v0.39.9 — 모아 옮기기: 저장 0 · 목록에 쌓음
       VIEWS._planMove(id, preset); });
   });
 }
@@ -22357,6 +22744,207 @@ function planMoveCheck(p, date, eqName){
   }
   return out;
 }
+/* ★ v0.39.9 (v0.39.3 미구현 P-04 「여러 이동을 모아 한 번에 확정」) — 옮기기 목록은 이 화면 메모리에만(저장 0 · 새로고침하면 사라짐)
+   확정 = 전부 다시 검사(완료·공정 경로·버전 = 모은 뒤 다른 사람이 바꿨는지 · 모은 이동을 함께 반영한 부하) → 막히는 것이 1건이라도 있으면 아무것도 저장 안 함
+   저장 = 기존 계획 쓰기 경로(DB.set production_plans · 날짜·설비·순번) 그대로 · 순번 = 옮긴 레인 맨 뒤부터 모은 순서대로 */
+let _PLAN_PEND = {};
+function planPendAdd(id, preset){
+  if(planReqLocked()){ toast('확정 요청 결과를 확인하는 중 — 목록이 잠겨 있습니다 ([결과 확인])', 'warn', 4000); return; }   // ★ v0.39.11
+  const p = DB.get('production_plans', id); if(!p) return;
+  const prev = _PLAN_PEND[id];
+  if(!prev && Object.keys(_PLAN_PEND).length >= PLAN_BATCH_MAX){ toast(`한 번에 최대 ${PLAN_BATCH_MAX}건까지 모아 확정할 수 있습니다 — 먼저 [확인 · 모두 확정] 후 이어서 모으세요`, 'warn', 5000); return; }   // ★ v0.39.14 (서버 규칙 r15 검증 한도)
+  const to = { date: preset.date || p.date, equipment: preset.equipment !== undefined ? preset.equipment : (prev ? prev.equipment : (p.equipment || '')) };
+  if(to.date === p.date && (to.equipment || '') === (p.equipment || '')){ delete _PLAN_PEND[id]; toast('원래 자리 — 목록에서 뺌', 'info'); router(); return; }
+  _PLAN_PEND[id] = { ...to, ver: prev ? prev.ver : (p._updated || p.ts || 0), from: prev ? prev.from : { date: p.date, equipment: p.equipment || '' }, at: Date.now() };
+  toast(`옮길 목록에 추가 — ${p.itemCode} → ${to.date} · ${to.equipment || '미배정'} (아직 저장 안 됨)`, 'info'); router();
+}
+// 모은 이동을 모두 반영했을 때의 칸 부하 (calcDayLoad 재사용 · 옮겨 가는 계획 제외 + 옮겨 오는 계획 추가)
+function planPendLoad(date, eq, pend){
+  const ids = Object.keys(pend); const extras = ids.filter(i => pend[i].date === date && (pend[i].equipment || '') === (eq || '')).map(i => { const p = DB.get('production_plans', i); const pr = calcPlanProgress(p); return { itemCode: p.itemCode, qty: Math.max(0, (+p.qty || 0) - (pr.actual || 0)) }; });
+  return calcDayLoad(date, eq, extras, ids);
+}
+function planPendCheck(pend){
+  pend = pend || _PLAN_PEND; const rows = [];
+  Object.keys(pend).forEach(id => { const mv = pend[id]; const cur = DB.get('production_plans', id); const r = { id, mv, p: cur, block: [], warn: [] };
+    if(!cur){ r.block.push('계획 없음(취소됨)'); rows.push(r); return; }
+    if((cur._updated || cur.ts || 0) !== mv.ver) r.block.push('모은 뒤 다른 사용자가 이 계획을 바꿨습니다');   // ★ v0.39.11 (GPT v0.39.10 ①) — 날짜·설비가 같아도 버전이 다르면 막음 (건너뛰기 0)
+    const c = planMoveCheck(cur, mv.date, mv.equipment); r.block.push(...c.block); r.warn.push(...c.warn.filter(w => !/부하/.test(w)));
+    if(mv.equipment){ const ld = planPendLoad(mv.date, mv.equipment, pend); r.load = ld; if(ld.pct > 100) r.warn.push(`${mv.date} ${mv.equipment} 부하 ${ld.pct.toFixed(0)}% (모은 이동 함께 반영) — 가능 시간 초과`); }
+    rows.push(r); });
+  return { rows, blocked: rows.filter(r => r.block.length).length, warned: rows.filter(r => r.warn.length).length };
+}
+/* ★ v0.39.10 (GPT v0.39.9 판정 필수) → ★ v0.39.11 (GPT v0.39.10 판정 ①②) — 「모두 확정」 = 서버 트랜잭션 + 요청 번호 + 결과 미확정 동안 잠금
+   서버 모드 = Firestore 트랜잭션 1회: 계획마다 서버 최신 문서를 읽어 서버 버전(_updated) = 모을 때 버전이어야 씀 (날짜·설비가 이미 같아도 건너뛰지 않음)
+     → 하나라도 다르거나 없거나(취소) 서버가 거부하면 트랜잭션 전체 실패 = 아무것도 저장 안 함 (Firestore 원자성)
+   요청 번호 = 확정 1회마다 새로 (MV-…) · 쓰기 = 날짜·설비·순번 + move_req(요청 번호) + _updated + _logs{req} → 「내 요청이 반영됐는지」 = 서버 문서의 요청 번호로만 판정
+   결과 미확정(20초 응답 없음 · 새로고침) = 요청 기록을 이 기기에 남기고 목록 잠금(추가·삭제·취소·다시 확정 0) → [결과 확인] = 서버 문서에서 요청 번호를 찾음
+     · 찾음 = 반영됨(완료) · 원래 요청이 아직 진행 중 = 처리 중 유지 · 실패로 끝남 = 저장 0 확정
+   ★ v0.39.12 (GPT v0.39.11 판정 ②) — 시간 경과로 「반영 안 됨」 을 확정하지 않는다. 원래 요청을 볼 수 없으면(새로고침 뒤) [결과 확인] = 서버 트랜잭션 1회로
+     요청 번호가 있으면 완료 · 없으면 같은 트랜잭션에서 계획 문서마다 차단 기록(move_fences += 요청 번호)을 써서 원래 요청이 더는 저장될 수 없게 만든 뒤에만 「반영 안 됨」
+     (원래 요청의 커밋 = 읽은 시점 문서 갱신시각 조건 → 차단 기록 뒤 도착하면 서버가 거부 · 원래 요청이 다시 시도되면 본문이 차단 기록을 보고 중단)
+     차단 기록이 서버에서 확인되기 전(응답 없음·거부·연결 없음) = 결과 미확정 · 잠금 유지 · 버전(_updated)은 바꾸지 않음
+   ★ v0.39.13 (GPT v0.39.12 판정) — 판정 근거 = 요청 번호별 서버 기록 plan_move_reqs/{요청 번호} 1개 (계획 문서의 move_req·_logs(최근 50)·move_fences(최근 20) 로 판정하지 않음)
+     확정 트랜잭션 = 계획 저장 + 이 기록 {state:'done'} 을 함께 만듦 · 차단 = 같은 기록을 {state:'fenced'} 로 만듦 → 두 트랜잭션 모두 「기록 없음」 을 읽고 만들기 때문에 서버가 먼저 온 하나만 받음
+     규칙 r14 = 이 기록은 만들기만(수정·삭제 거부) → 완료·차단이 다른 작업에 밀려 사라지는 일 0 · 원래 요청이 다시 실행돼도 본문이 기록을 보고 중단
+   ★ v0.39.14 (GPT v0.39.13 판정) — 기록 내용 = 실제 작업: 기록에 dests{계획: 날짜|설비} 추가 · 규칙 r15 가 ids 전부(이 요청에서 저장 · 목적지 일치)를 확인 ·
+     결과 확인 = 기록의 ids·목적지가 이 기기의 요청과 같을 때만 완료/반영 안 됨 · 다르면 결과 미확정 유지(잠금) · 한 요청 최대 5건
+   로컬·데모 = 메모리에서 같은 검사 뒤 한 번에 반영 (동기 · 미확정 상태 없음) */
+const PLAN_TX_TIMEOUT_MS = 20000;
+const PLAN_BATCH_MAX = 5;   // ★ v0.39.14 — 한 요청 최대 5건 (규칙 r15 가 요청 기록의 계획 전부를 서버에서 확인 · 규칙 식 한도 실측: 직원 계정 6건부터 초과)
+function _planPendSeq(rows){
+  const seqAt = {}; const out = {};
+  rows.slice().sort((a, b) => a.mv.at - b.mv.at).forEach(r => { const k = r.mv.date + '|' + (r.mv.equipment || '');
+    if(seqAt[k] == null){ const sibs = getLivePlans().filter(x => !_PLAN_PEND[x.id] && x.date === r.mv.date && (x.equipment || '') === (r.mv.equipment || '')); seqAt[k] = sibs.reduce((m, x) => Math.max(m, +x.seq || 0), 0) || sibs.length * 10; }
+    seqAt[k] += 10; out[r.id] = seqAt[k]; });
+  return out;
+}
+// 진행 중 확정 요청 (결과 미확정) — 메모리 + 이 기기 저장(새로고침 뒤 이어서 확인 · 업무 데이터 아님)
+let _PLAN_REQ = null;
+function _planReqKey(){ const c = (typeof loadFirestoreConfig === 'function' && loadFirestoreConfig()) || {}; return 'vela_plan_move_req:' + (c.projectId || 'local'); }
+function _planReqSave(){ try { if(_PLAN_REQ){ const { promise, ...rest } = _PLAN_REQ; localStorage.setItem(_planReqKey(), JSON.stringify(rest)); } else localStorage.removeItem(_planReqKey()); } catch(e){} }
+function _planReqLoad(){ if(_PLAN_REQ) return _PLAN_REQ; try { const v = JSON.parse(localStorage.getItem(_planReqKey()) || 'null'); if(v && v.reqId){ _PLAN_REQ = { ...v, promise: null, settled: null }; } } catch(e){} return _PLAN_REQ; }
+function planReqLocked(){ return !!_planReqLoad(); }
+function _planReqNew(){ return 'MV-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).slice(2, 7).toUpperCase(); }
+function _planReqFinish(kind, info){   // kind: 'done' | 'failed' | 'notApplied'
+  const rq = _PLAN_REQ; if(!rq) return;
+  _PLAN_REQ = null; _planReqSave();
+  if(kind === 'done'){ rq.moves.forEach(m => { delete _PLAN_PEND[m.id]; }); }
+  else { rq.moves.forEach(m => { if(!_PLAN_PEND[m.id]) _PLAN_PEND[m.id] = { date: m.date, equipment: m.equipment, ver: m.ver, from: m.from || { date: '', equipment: '' }, at: m.at || rq.sentAt }; }); }   // 반영 안 됨 = 같은 목록으로 되돌림 (다시 확정하면 새 요청 번호 · 버전 검사 그대로)
+  window._planReqLast = { kind, reqId: rq.reqId, at: Date.now(), ...(info || {}) };
+}
+function _planReqRef(fs, reqId){ return fs.collection('plan_move_reqs').doc(String(reqId)); }
+function _planReqDests(moves){ const d = {}; moves.forEach(m => { d[String(m.id)] = (m.date || '') + '|' + (m.equipment || ''); }); return d; }
+function _planReqRec(rq, state){ return { state, ids: rq.moves.map(m => String(m.id)), dests: _planReqDests(rq.moves), by: SESSION.user || 'system', by_uid: (typeof currentAuthUid === 'function' && currentAuthUid()) || '', at: Date.now() }; }
+// ★ v0.39.14 — 서버 기록이 이 기기의 요청과 같은 작업인지 (계획 목록 · 목적지) — 다르면 완료·반영 안 됨 어느 쪽으로도 단정하지 않음
+function _planReqMatch(rec, rq){
+  if(!rec || !Array.isArray(rec.ids) || !rec.dests || typeof rec.dests !== 'object') return false;
+  const want = _planReqDests(rq.moves); const ids = rec.ids.map(String);
+  if(ids.length !== rq.moves.length || new Set(ids).size !== ids.length) return false;
+  return Object.keys(want).every(id => ids.includes(id) && rec.dests[id] === want[id]) && Object.keys(rec.dests).length === ids.length;
+}
+async function planReqCheck(){
+  const rq = _planReqLoad(); if(!rq) return { status: 'none' };
+  if(rq.settled === 'failed'){ const why = rq.why; _planReqFinish('failed', { why }); return { status: 'failed', why, reqId: rq.reqId }; }
+  if(DB._backend !== 'firestore' || !_ACTIVE_ADAPTER._fs) return { status: 'pending', why: '서버 연결 전' };
+  const fs = _ACTIVE_ADAPTER._fs;
+  let rec; try { const d = await _planReqRef(fs, rq.reqId).get({ source: 'server' }); rec = d.exists ? d.data() : null; }
+  catch(e){ return { status: 'pending', reqId: rq.reqId, why: '서버 조회 실패(' + String(e.code || e.message).slice(0, 40) + ') — 결과 미확정 유지 · 연결 뒤 다시 [결과 확인]' }; }
+  if(!rec && rq.promise && !rq.settled) return { status: 'pending', reqId: rq.reqId, why: '원래 요청이 아직 서버 응답을 기다리는 중 — 잠시 뒤 다시 [결과 확인]' };
+  // ★ v0.39.13 — 기록이 없고 원래 요청을 볼 수 없음(새로고침 뒤) → 차단 기록을 만들어 확정 (시간 기준 0)
+  const fr = rec ? { status: rec.state === 'done' ? 'done' : rec.state === 'fenced' ? 'fenced' : 'unknown', rec } : await _planReqFence(rq);
+  if((fr.status === 'done' || fr.status === 'fenced') && !_planReqMatch(fr.rec, rq)) return { status: 'pending', mismatch: true, reqId: rq.reqId, why: '서버 요청 기록의 계획 목록·목적지가 이 요청과 다름 — 완료·반영 안 됨으로 단정하지 않음 · 결과 미확정 유지 (관리자 확인 필요)' };
+  if(fr.status === 'done'){ await _planReqSyncMem(rq); _planReqFinish('done'); return { status: 'done', saved: rq.moves.length, reqId: rq.reqId }; }
+  if(fr.status === 'fenced'){ _planReqFinish('notApplied', { fenced: true }); return { status: 'notApplied', reqId: rq.reqId, fenced: true, why: '서버 요청 기록 = 차단 확정 (이후 도착해도 저장 불가) · 목록을 되돌림 (다시 확정 = 새 요청)' }; }
+  return { status: 'pending', reqId: rq.reqId, why: fr.why || '요청 기록 상태를 알 수 없음 — 결과 미확정 유지' };
+}
+async function _planReqSyncMem(rq){   // 완료 확인 뒤 이 기기 메모리를 서버 계획 문서로 맞춤 (판정과 무관 · 실패해도 구독이 맞춤)
+  try { const col = _ACTIVE_ADAPTER._fs.collection('production_plans'); const st = _ACTIVE_ADAPTER._state;
+    for(const m of rq.moves){ const d = await col.doc(String(m.id)).get({ source: 'server' }); if(d.exists && st && st.production_plans && st.production_plans[m.id]) st.production_plans[m.id] = { ...st.production_plans[m.id], ...d.data(), id: m.id }; } } catch(e){}
+}
+// ★ v0.39.13 — 차단 트랜잭션: 요청 기록을 읽음 → 있으면 그 상태(done/fenced) 그대로 · 없으면 {state:'fenced'} 만들기 → 서버 커밋 확인 뒤에만 fenced
+//   원래 확정 트랜잭션도 같은 기록을 「없음」 으로 읽고 만들기 때문에, 먼저 커밋된 쪽만 서버가 받음 (다른 쪽 = 조건 실패 → 다시 읽어 상대 상태 확인)
+async function _planReqFence(rq, opts){
+  opts = opts || {};
+  const fs = _ACTIVE_ADAPTER._fs; const ref = _planReqRef(fs, rq.reqId);
+  const txp = fs.runTransaction(async tx => {
+    const d = await tx.get(ref);
+    if(d.exists){ const st = d.data().state; return { status: st === 'done' ? 'done' : st === 'fenced' ? 'fenced' : 'unknown', rec: d.data() }; }
+    const nr = _planReqRec(rq, 'fenced'); tx.set(ref, nr); return { status: 'fenced', rec: nr };
+  });
+  const res = await Promise.race([txp.then(v => ({ v }), e => ({ e })), new Promise(r => setTimeout(() => r({ timeout: true }), opts.timeoutMs || PLAN_TX_TIMEOUT_MS))]);
+  if(res.timeout) return { status: 'pending', why: '서버 확인 응답 대기 — 결과 미확정 유지 · 잠시 뒤 다시 [결과 확인]' };
+  if(res.e){ const m = String((res.e && (res.e.code || res.e.message)) || res.e); return { status: 'pending', why: (/permission|insufficient/i.test(m) ? '서버가 차단 기록을 거부 (규칙 r15 게시 확인)' : /unavailable|offline|network/i.test(m) ? '서버 연결 필요' : '서버 확인 실패') + ' — 결과 미확정 유지 (반영 여부 모름) · ' + m.slice(0, 60) }; }
+  return res.v;
+}
+async function planPendCommit(opts){
+  opts = opts || {};
+  if(planReqLocked()) return { status: 'locked', saved: 0, reqId: _PLAN_REQ.reqId, why: '앞선 확정 요청 결과 확인 전 — [결과 확인]' };
+  const chk = planPendCheck(); if(!chk.rows.length) return { status: 'empty', saved: 0 };
+  if(chk.rows.length > PLAN_BATCH_MAX) return { status: 'blocked', saved: 0, blocked: chk.rows.length - PLAN_BATCH_MAX, rows: chk.rows, why: `한 번에 최대 ${PLAN_BATCH_MAX}건 — 목록에서 ${chk.rows.length - PLAN_BATCH_MAX}건을 빼고 확정하세요` };   // ★ v0.39.14
+  if(chk.blocked) return { status: 'blocked', saved: 0, blocked: chk.blocked, rows: chk.rows };
+  if(_permBlockWrite('production_plans')) return { status: 'blocked', saved: 0, blocked: chk.rows.length, rows: chk.rows, why: '보기 전용 권한' };
+  const seq = _planPendSeq(chk.rows);
+  const moves = chk.rows.map(r => ({ id: r.id, date: r.mv.date, equipment: r.mv.equipment || '', seq: seq[r.id], ver: r.mv.ver, from: r.mv.from, at: r.mv.at }));
+  const by = SESSION.user || 'system';
+  if(DB._backend !== 'firestore' || !_ACTIVE_ADAPTER._fs){
+    // 로컬·데모: 메모리 검사 = 서버 검사와 같은 규칙(버전만 · 건너뛰기 0) → 전부 반영 (동기)
+    const bad = moves.filter(m => { const cur = DB.get('production_plans', m.id); return !cur || cur.void || (cur._updated || cur.ts || 0) !== m.ver; });
+    if(bad.length) return { status: 'conflict', saved: 0, why: '모은 뒤 바뀐 계획 ' + bad.length + '건 — 아무것도 저장 안 함', ids: bad.map(m => m.id) };
+    const reqId = _planReqNew(); moves.forEach(m => DB.set('production_plans', m.id, { date: m.date, equipment: m.equipment, seq: m.seq, move_req: reqId }));
+    _PLAN_PEND = {}; return { status: 'done', saved: moves.length, reqId };
+  }
+  const reqId = _planReqNew();
+  const fs = _ACTIVE_ADAPTER._fs; const col = fs.collection('production_plans');
+  _PLAN_REQ = { reqId, moves, sentAt: Date.now(), promise: null, settled: null }; _planReqSave();   // 보내기 전에 기록 → 새로고침해도 결과 확인 가능
+  const rq = _PLAN_REQ;
+  const reqRef = _planReqRef(fs, reqId);
+  const txp = fs.runTransaction(async tx => {
+    const rs = await tx.get(reqRef);   // ★ v0.39.13 — 요청 기록 먼저 읽음 (없음 = 커밋 조건 「아직 없음」 → 차단이 먼저 만들어지면 서버가 이 커밋을 거부)
+    if(rs.exists){ if(rs.data().state === 'fenced') throw Object.assign(new Error('이 요청은 결과 확인에서 차단됨'), { planFenced: true }); throw Object.assign(new Error('이미 처리된 요청 번호'), { planDup: true }); }
+    const snaps = []; for(const m of moves) snaps.push(await tx.get(col.doc(String(m.id))));   // 읽기 전부 먼저 (Firestore 트랜잭션 규칙)
+    const conflict = [];
+    moves.forEach((m, i) => { const d = snaps[i].exists ? snaps[i].data() : null;
+      if(!d || d.void) conflict.push(m.id + ' (없음·취소)');
+      else if((d._updated || d.ts || 0) !== m.ver) conflict.push(m.id); });   // ★ v0.39.11 — 목적지가 같아도 버전이 다르면 충돌 (다른 사람이 같은 곳으로 옮긴 것과 구별 불가 → 막음)
+    if(conflict.length) throw Object.assign(new Error('서버 최신 버전과 다름: ' + conflict.join(', ')), { planConflict: conflict });
+    const now = Date.now();
+    const writes = moves.map((m, i) => ({ m, w: { date: m.date, equipment: m.equipment, seq: m.seq, move_req: reqId, _updated: now, _logs: (snaps[i].data()._logs || []).concat([{ ts: now, op: 'update', by, reason: '모아 옮기기 확정', req: reqId }]).slice(-50) } }));
+    writes.forEach(x => tx.set(col.doc(String(x.m.id)), x.w, { merge: true }));
+    tx.set(reqRef, _planReqRec(rq, 'done'));   // ★ v0.39.13 — 완료 기록 = 계획 저장과 같은 트랜잭션 (규칙 r14: 첫 계획의 move_req = 이 요청 번호일 때만)
+    return writes;
+  });
+  rq.promise = txp;
+  const classify = e => { if(e && e.planFenced) return { status: 'notApplied', why: '결과 확인에서 차단된 요청 — 저장 0' };
+    if(e && e.planDup) return { status: 'rejected', why: '같은 요청 번호 기록이 이미 있음 — 저장 0' };
+    if(e && e.planConflict) return { status: 'conflict', why: '모은 뒤 다른 사용자가 바꾼 계획 ' + e.planConflict.length + '건 (서버 기준) — 아무것도 저장 안 함 · 목록에서 빼거나 다시 모으세요', ids: e.planConflict };
+    const m = String((e && (e.code || e.message)) || e);
+    if(/permission|insufficient/i.test(m)) return { status: 'rejected', why: '서버가 거부 (권한·쓰기 중지 등) — 아무것도 저장 안 함 · ' + m.slice(0, 80) };
+    if(/unavailable|offline|network|failed-precondition/i.test(m)) return { status: 'offline', why: '서버 연결 필요 — 아무것도 저장 안 함 · 목록 유지 · ' + m.slice(0, 80) };
+    return { status: 'rejected', why: '서버 저장 실패 — 아무것도 저장 안 함 · ' + m.slice(0, 120) }; };
+  const applyMem = w => { const st = _ACTIVE_ADAPTER._state; w.forEach(x => { if(st && st.production_plans && st.production_plans[x.m.id]) st.production_plans[x.m.id] = { ...st.production_plans[x.m.id], ...x.w }; }); };
+  // 늦게 끝나도 결과를 반영 (처리 중이었던 경우) — 요청이 아직 이 요청일 때만
+  txp.then(w => { rq.settled = 'done'; if(_PLAN_REQ === rq){ applyMem(w); _planReqFinish('done', { late: !!rq.returnedPending }); if(rq.returnedPending) try { toast(`앞선 확정 요청 ${reqId} — 서버 반영 확인 (계획 ${w.length}건)`, 'ok', 5000); if(location.hash.startsWith('#plan')) router(); } catch(e){} } },
+           e => { const c = classify(e); rq.settled = 'failed'; rq.why = c.why; if(_PLAN_REQ === rq){ _planReqFinish('failed', c); if(rq.returnedPending) try { toast(`앞선 확정 요청 ${reqId} — ${c.why}`, 'err', 6000); if(location.hash.startsWith('#plan')) router(); } catch(e2){} } });
+  const res = await Promise.race([txp.then(w => ({ w }), e => ({ e })), new Promise(r => setTimeout(() => r({ timeout: true }), opts.timeoutMs || PLAN_TX_TIMEOUT_MS))]);
+  if(res.timeout){ rq.returnedPending = true; return { status: 'pending', saved: 0, reqId, why: `서버 응답 대기 — 요청 ${reqId} · 결과가 정해질 때까지 목록 잠금 · [결과 확인]` }; }
+  if(res.e) return { ...classify(res.e), saved: 0, reqId };   // 실패 = 위 then 에서 잠금 해제 · 목록 그대로
+  return { status: 'done', saved: res.w.length, reqId };
+}
+const PLAN_COMMIT_LABEL = { done: '한 번에 확정 — 서버 반영 확인', blocked: '막힌 이동이 있어 저장 안 함', conflict: '충돌 — 아무것도 저장 안 함', rejected: '서버 거부 — 아무것도 저장 안 함', offline: '연결 없음 — 아무것도 저장 안 함', pending: '처리 중 — 결과 미확정 (목록 잠금)', locked: '앞선 요청 결과 확인 전', empty: '옮길 계획 없음', notApplied: '반영 안 됨 확정 — 목록 되돌림', failed: '앞선 요청 실패 확정 — 저장 0' };
+VIEWS._planPendModal = () => {
+  const rq = _planReqLoad();
+  if(rq){   // ★ v0.39.11 — 결과 미확정 = 잠금 화면 (수정·삭제·취소·다시 확정 0 · 결과 확인만)
+    openModal(`<h2>확정 요청 결과 확인 — ${_esc(rq.reqId)} <span class="pill amber" style="font-size:10px">결과 미확정 · 목록 잠금</span> <button class="x" onclick="closeModal()">${ico('x')}</button></h2><div class="body">
+      <div style="font-size:12px;line-height:1.7">보낸 시각 ${fmtDate(rq.sentAt)} ${fmtTime(rq.sentAt)} · 계획 ${rq.moves.length}건 · 서버가 반영했는지 아직 모릅니다 — <b>「저장 안 됨」 도 「완료」 도 아닙니다</b><br>
+      [결과 확인] = 서버 문서에서 이 요청 번호를 찾음 (있으면 완료 · 서버 요청 기록이 「완료」 면 완료 · 원래 요청이 실패로 끝났거나 서버 요청 기록이 「차단」 으로 만들어진 뒤에만 「반영 안 됨」 확정 → 목록 되돌림 · 확인 전엔 잠금 유지)</div>
+      <div class="tbl-wrap" style="margin-top:8px"><table style="font-size:12px"><thead><tr><th>계획</th><th>옮길 곳</th><th class="num">순번</th></tr></thead><tbody>${rq.moves.map(m => `<tr><td class="mono">${_esc(m.id)}</td><td><b>${_esc(m.date)} · ${_esc(m.equipment || '미배정')}</b></td><td class="num">${m.seq}</td></tr>`).join('')}</tbody></table></div>
+      <div id="req-msg" style="margin-top:6px;font-size:12px;color:var(--amber)">${window._planReqMsg ? _esc(window._planReqMsg) : ''}</div>
+      <div class="actions"><button class="btn" onclick="closeModal()">닫기</button><button class="btn primary" id="req-check">${ico('refresh')}결과 확인</button></div></div>`, { width: '720px' });
+    document.getElementById('req-check').onclick = async () => { const b = document.getElementById('req-check'); b.disabled = true; b.textContent = '서버 확인 중…';
+      const r = await planReqCheck(); window._planLastResult = r; window._planReqMsg = r.why || '';
+      if(r.status === 'done'){ window._planReqMsg = ''; closeModal(); toast(`요청 ${r.reqId} — 서버 반영 확인 (계획 ${r.saved}건 옮김)`, 'ok'); router(); return; }
+      if(r.status === 'notApplied' || r.status === 'failed'){ window._planReqMsg = ''; closeModal(); toast(`요청 ${r.reqId} — ${PLAN_COMMIT_LABEL[r.status]}${r.why ? ' · ' + r.why : ''}`, 'warn', 7000); router(); VIEWS._planPendModal(); return; }
+      closeModal(); VIEWS._planPendModal(); };
+    return;
+  }
+  const chk = planPendCheck();
+  const last = window._planReqLast && Date.now() - window._planReqLast.at < 600000 ? window._planReqLast : null;
+  openModal(`<h2>모아 옮기기 — ${chk.rows.length}건 <span class="pill amber" style="font-size:10px">아직 저장 안 됨</span> <button class="x" onclick="closeModal()">${ico('x')}</button></h2><div class="body">
+    <div class="tbl-wrap"><table style="font-size:12px"><thead><tr><th>품번</th><th class="num">수량</th><th>지금</th><th>옮길 곳</th><th>검사</th><th></th></tr></thead><tbody>${chk.rows.map(r => `<tr>
+      <td class="mono">${_esc(r.p ? r.p.itemCode : r.id)}</td><td class="num">${r.p ? (+r.p.qty || 0).toLocaleString() : ''}</td><td class="muted">${_esc(r.mv.from.date)} · ${_esc(r.mv.from.equipment || '미배정')}</td><td><b>${_esc(r.mv.date)} · ${_esc(r.mv.equipment || '미배정')}</b></td>
+      <td>${r.block.length ? `<span style="color:var(--red);font-weight:700">⛔ ${r.block.map(_esc).join(' · ')}</span>` : r.warn.length ? `<span style="color:var(--amber)">⚠ ${r.warn.map(_esc).join(' · ')}</span>` : '<span style="color:var(--green)">가능</span>'}</td>
+      <td><button class="btn ghost" data-pend-del="${_esc(r.id)}">${ico('x')}</button></td></tr>`).join('')}</tbody></table></div>
+    ${last && last.kind !== 'done' ? `<div style="margin-top:6px;font-size:12px;color:var(--red)"><b>지난 요청 ${_esc(last.reqId)}: ${_esc(PLAN_COMMIT_LABEL[last.kind === 'failed' ? 'failed' : 'notApplied'])}</b>${last.why ? ' — ' + _esc(last.why) : ''}</div>` : ''}
+    <div style="font-size:11px;color:var(--sub);margin-top:6px">${chk.blocked ? `<b style="color:var(--red)">막힌 이동 ${chk.blocked}건 — 빼거나 고친 뒤 확정 (일부만 저장하지 않음)</b>` : '확정 = 새 요청 번호로 서버가 계획마다 최신 버전을 확인하고 전부 저장하거나 전부 거부합니다 (일부만 저장 0) · 결과는 서버 확인 뒤에만 · 응답이 없으면 결과가 정해질 때까지 목록 잠금'}</div>
+    <div class="actions"><button class="btn" id="pend-clear">모두 취소</button><button class="btn" onclick="closeModal()">닫기</button><button class="btn primary" id="pend-ok" ${chk.blocked || !chk.rows.length ? 'disabled' : ''}>${ico('save')}모두 확정 (${chk.rows.length}건)</button></div></div>`, { width: '820px' });
+  document.querySelectorAll('[data-pend-del]').forEach(b => b.onclick = () => { if(planReqLocked()) return; delete _PLAN_PEND[b.dataset.pendDel]; closeModal(); router(); VIEWS._planPendModal(); });
+  document.getElementById('pend-clear').onclick = () => { if(planReqLocked()){ toast('확정 요청 결과 확인 전 — 취소할 수 없습니다', 'warn'); return; } _PLAN_PEND = {}; window._planReqLast = null; closeModal(); toast('모은 이동 모두 취소 — 보낸 요청 없음 · 저장된 것 없음', 'info'); router(); };
+  document.getElementById('pend-ok').onclick = async () => { const ok = document.getElementById('pend-ok'); if(ok.disabled) return; ok.disabled = true; ok.textContent = '서버 확인 중…';   // ★ v0.39.10 — 서버 확인 전 성공 표시 0
+    const r = await planPendCommit(); window._planLastResult = r;
+    if(r.status === 'done'){ closeModal(); toast(`계획 ${r.saved}건 옮김 — ${PLAN_COMMIT_LABEL.done} (요청 ${r.reqId || ''})`, 'ok'); router(); return; }
+    if(r.status === 'pending'){ window._planReqMsg = r.why; closeModal(); toast(`${PLAN_COMMIT_LABEL.pending} · 요청 ${r.reqId}`, 'warn', 7000); router(); VIEWS._planPendModal(); return; }
+    toast(`${PLAN_COMMIT_LABEL[r.status] || r.status}${r.why ? ' · ' + r.why : ''} · 목록은 그대로`, 'err', 7000); closeModal(); router(); VIEWS._planPendModal(); };
+};
 VIEWS._planMove = (id, preset) => {
   const p = DB.get('production_plans', id); if(!p){ toast('계획 없음', 'err'); return; }
   preset = preset || {};
@@ -22629,8 +23217,7 @@ VIEWS._planNew = (prefill) => {
       return;
     }
     const procCode = getEqProcCode(eq);
-    const it = itemCode ? DB.get('items', itemCode) : null;
-    const ct = procCode ? +(it?.proc_times?.[procCode]?.ct) : 0;
+    const ct = procCode ? itemCt(itemCode, procCode, eq) : 0;
     if(!procCode || !(ct > 0)){
       const reason = !procCode ? '설비 공정 매칭 실패' : 'CT 미등록';
       loadHint.innerHTML = `<span style="color:var(--dim)">부하 미산정 (${reason}) — <a href="#masters" style="color:var(--cyan)">품번 CT 등록</a> 후 산정</span>`;
@@ -22769,7 +23356,7 @@ VIEWS._planNew = (prefill) => {
       // 미산정이거나 100% 이하면 바로 저장, 초과면 재확인
       const canMeasure = eq && itemCode && qty > 0 && next && (() => {
         const pc = getEqProcCode(eq);
-        const ct = pc ? +(DB.get('items', itemCode)?.proc_times?.[pc]?.ct) : 0;
+        const ct = pc ? itemCt(itemCode, pc, eq) : 0;
         return pc && ct > 0;
       })();
       if(!canMeasure || load2.pct <= 100){ doSave(next); }
@@ -22788,7 +23375,7 @@ VIEWS._planNew = (prefill) => {
     // ★ v0.20.4 — 부하 판정 (설비·CT 있는 경우만 · 미산정은 경고 없이 진행)
     const canMeasure = eq && (() => {
       const pc = getEqProcCode(eq);
-      const ct = pc ? +(DB.get('items', itemCode)?.proc_times?.[pc]?.ct) : 0;
+      const ct = pc ? itemCt(itemCode, pc, eq) : 0;
       return pc && ct > 0;
     })();
     if(canMeasure){
@@ -23967,7 +24554,8 @@ VIEWS._mstItemEdit = (code) => {
                 <td class="num"><input type="number" min="0" step="0.01" class="mi-ct" data-proc="${_esc(p.code)}" value="${ct}" placeholder="예: 12" style="font-family:'JetBrains Mono',monospace;text-align:right;width:100%"></td>
                 <td class="num"><input type="number" min="0" step="1" class="mi-uph" data-proc="${_esc(p.code)}" value="${uph}" placeholder="예: 300" style="font-family:'JetBrains Mono',monospace;text-align:right;width:100%"></td>
                 <td class="num"><input type="number" min="0" step="1" class="mi-setup" data-proc="${_esc(p.code)}" value="${pt[p.code]?.setup ?? ''}" placeholder="예: 30" style="font-family:'JetBrains Mono',monospace;text-align:right;width:100%"></td>
-              </tr>`;
+              </tr>${(() => { const eqs = getEquipment(p.code); if(eqs.length < 2) return '';   // ★ v0.39.9 — 설비별 CT (같은 공정 설비 2대 이상일 때만 · 비우면 공통 CT)
+                return `<tr><td></td><td colspan="4" style="padding-top:0"><div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:11px;color:var(--sub)"><span>설비별 CT(초/개 · 선택 · 비우면 위 공통값)</span>${eqs.map(en => `<label style="display:inline-flex;gap:4px;align-items:center;font-size:11px;margin:0">${_esc(en)}<input type="number" min="0" step="0.01" class="mi-cteq" data-proc="${_esc(p.code)}" data-eq="${_esc(en)}" value="${+(pt[p.code]?.ct_eq?.[en]) || ''}" placeholder="공통" style="width:72px;font-family:'JetBrains Mono',monospace;text-align:right"></label>`).join('')}</div></td></tr>`; })()}`;
             }).join('')}</tbody>
           </table></div>`}
       </div>
@@ -24120,7 +24708,8 @@ VIEWS._mstItemEdit = (code) => {
       const proc = el.dataset.proc;
       const v = +el.value;
       const su = document.querySelector(`.mi-setup[data-proc="${proc}"]`); const sv = su && su.value !== '' ? Math.max(0, +su.value || 0) : null;   // ★ v0.39.2 — 공정별 셋팅(분)
-      if(v > 0 || sv != null){ nextPt[proc] = {}; if(v > 0) nextPt[proc].ct = v; if(sv != null) nextPt[proc].setup = sv; }
+      const ce = { ...((it.proc_times || {})[proc]?.ct_eq || {}) }; document.querySelectorAll('.mi-cteq').forEach(x => { if(x.dataset.proc !== proc) return; if(+x.value > 0) ce[x.dataset.eq] = +x.value; else delete ce[x.dataset.eq]; });   // ★ v0.39.9 — 설비별 CT (화면에 칸이 없는 설비 값은 보존 · 칸을 비우면 그 설비만 공통값으로)
+      if(v > 0 || sv != null || Object.keys(ce).length){ nextPt[proc] = {}; if(v > 0) nextPt[proc].ct = v; if(sv != null) nextPt[proc].setup = sv; if(Object.keys(ce).length) nextPt[proc].ct_eq = ce; }
       else delete nextPt[proc];
     });
     const custom = readCustomFieldsInputs('items');
@@ -24839,6 +25428,13 @@ function _deptBadge(dept, size){
 function _wKr(v){ return '₩' + Math.round(+v||0).toLocaleString(); }
 
 // buildReportData(scope, baseDate) — 기존 헬퍼 재사용만 · 새 집계·판정 금지
+/* ★ v0.39.9 — 오늘 안전 신호 1벌 (대시보드 「오늘 이상」 · 보고서 「안전 신호」 줄 공통 · 파생 · 저장 0)
+   사고(동시성) · 품질 HOLD · 납기 지연 · 판정 지체(정책 일수 이상) · 판정 대기 — 기존 헬퍼(lockedPlotSet·heldPlotSet·calcSoRows·ncIsPending·ncPendingLevel) 그대로 */
+function todaySafetySignals(flags){
+  flags = flags || getFlags();
+  return { lock: lockedPlotSet().size, hold: heldPlotSet().size, late: calcSoRows().filter(r => r.status.label === '지연').length,
+    ncDelay: flags.qc ? DB.query('nc_records', n => ncIsPending(n) && ncPendingLevel(n) >= 2).length : 0, ncPend: flags.qc ? DB.query('nc_records', n => ncIsPending(n)).length : 0 };
+}
 function buildReportData(scope, baseDate){
   scope = (scope === 'week' || scope === 'month') ? scope : 'day';
   baseDate = baseDate || fmtDate(Date.now());
@@ -25098,6 +25694,67 @@ const REPORT_SECTIONS = [
   { id:'ai',     title:'자동 브리핑',   pages:['report'], desc:'API 키 있을 때 생성' },
 ];
 const REPORT_FORMATS = { screen:'화면만', xlsx:'엑셀', pptx:'PPT', print:'인쇄' };
+/* ★ v0.39.9 — 보고서 빌더 R-1 (SPEC 보고서 빌더 v0.2 · GPT 판정 R1~R6 · R-1 = 운영 가능 읽기 전용)
+   블록 카탈로그 = buildReportData 반환 경로를 「읽기만」 하는 보기 단위 (계산식 0) · 기존 8섹션 = 기본 템플릿 (섹션 → 블록 대응 · 화면 결과 그대로)
+   신규 노출 2: sales.otd(납기준수 = calcOnTime 1벌) · safety.line(안전 신호 = todaySafetySignals 1벌 · 모든 출력 마지막 · 삭제·이동 불가)
+   집계 기준 라벨(GPT R2) = reportBasisLabel 1벌 · 블록마다 basis · 기간과 다른 기준은 실제 범위 표기
+   R-2(개인 템플릿·페이지) = 데모 개발만 · 운영은 서버 소유권 강제 뒤 (GPT R5) → 이번 범위 밖 */
+const REPORT_BLOCKS = [
+  { id:'kpi.summary',      sec:'kpi',    title:'전사 KPI',          basis:'period',  read: d => d.companyKPI },
+  { id:'prod.summary',     sec:'prod',   title:'생산 요약',         basis:'period',  read: d => ({ plan: d.production.plan, actual: d.production.actual, pct: d.production.pct, activeLots: d.production.activeLots }) },
+  { id:'prod.byEquipment', sec:'prod',   title:'설비별 실적·부하',  basis:'period',  read: d => d.production.byEquipment, extra: [{ label:'설비 부하율', basis:'baseDay' }] },
+  { id:'sales.summary',    sec:'sales',  title:'영업 요약',         basis:'period',  read: d => ({ newOrders: d.sales.newOrders, shipped: d.sales.shipped, revenue: d.sales.revenue, backlog: d.sales.backlog }), extra: [{ label:'수주 잔량', basis:'now' }] },
+  { id:'sales.byCustomer', sec:'sales',  title:'고객사별 매출',     basis:'period',  read: d => d.sales.byCustomer, extra: [{ label:'고객사 잔량·최근 납기', basis:'now' }] },
+  { id:'sales.otd',        sec:'sales',  title:'납기준수율',        basis:'due',     read: d => d.extras ? d.extras.otd : null },
+  { id:'pur.summary',      sec:'pur',    title:'구매·자재 요약',    basis:'period',  read: d => ({ matInKg: d.procurement.matInKg, purchaseAmount: d.procurement.purchaseAmount, osActive: d.procurement.osActive, osCost: d.procurement.osCost }), extra: [{ label:'매입액·외주비', basis:'month' }] },
+  { id:'pur.byMaterial',   sec:'pur',    title:'재질별 입고',       basis:'period',  read: d => d.procurement.byMaterial, extra: [{ label:'재질 현 잔량', basis:'now' }] },
+  { id:'qc.summary',       sec:'qc',     title:'품질 요약',         basis:'period',  read: d => d.quality, flag:'qc' },
+  { id:'qc.topTypes',      sec:'qc',     title:'불량 유형 상위',    basis:'period',  read: d => d.quality.ncTopTypes, flag:'qc' },
+  { id:'fin.summary',      sec:'fin',    title:'경영·정산',         basis:'month',   read: d => d.finance },
+  { id:'issues.list',      sec:'issues', title:'이슈 목록',         basis:'now',     read: d => d.issues },
+  { id:'ai.briefing',      sec:'ai',     title:'자동 브리핑',       basis:'period',  read: d => d.ai_summary },
+  { id:'note.text',        sec:null,     title:'메모',              basis:'none',    read: () => null },
+  { id:'safety.line',      sec:'*',      title:'안전 신호',         basis:'now',     read: d => d.extras ? d.extras.safety : null, fixed:true },
+];
+function reportBlocksForSections(secs){ return REPORT_BLOCKS.filter(b => b.sec && b.sec !== '*' && secs.includes(b.sec)).map(b => b.id).concat(['safety.line']); }   // 기본 템플릿 = 섹션 순서 그대로 + 안전 신호 마지막
+function reportBasisLabel(basis, data){
+  const P = (data && data.period) || {};
+  if(basis === 'period') return `선택 기간 (${P.label || ''})`;
+  if(basis === 'baseDay') return `기준일 하루 (${(data && data.baseDate) || P.end || ''})`;
+  if(basis === 'month') return `해당 월 전체 (${P.month || ''})`;
+  if(basis === 'now') return `작성 시점 현재`;
+  if(basis === 'due') return `선택 기간 안 납기 도래 수주 (오늘 납기 제외)`;
+  return '';
+}
+// 섹션 안에서 「선택 기간」 과 다른 기준만 모아 한 줄 (화면·엑셀·PPT·인쇄·브리핑 공통 1벌)
+function reportSectionBasisNote(secId, data){
+  const items = []; REPORT_BLOCKS.filter(b => b.sec === secId).forEach(b => { if(b.basis !== 'period' && b.basis !== 'none' && !(b.id === 'sales.otd' && !(data && data.extras))) items.push(`${b.title} = ${reportBasisLabel(b.basis, data)}`); (b.extra || []).forEach(x => items.push(`${x.label} = ${reportBasisLabel(x.basis, data)}`)); });
+  return items.length ? `집계 기준: 그 밖 = ${reportBasisLabel('period', data)} · ${items.join(' · ')}` : '';
+}
+// 스냅샷 때 함께 저장하는 값 (buildReportData 무변 · 열람 때 재계산 0 · 구 문서 = 없음 → 표시 안 함)
+function reportExtras(data){
+  const today = _kstDate(Date.now()); const P = data.period || {};
+  const to = P.end && P.end < today ? P.end : today; const cut = !!(P.end && P.end > today);
+  let otd = null;
+  if(P.start && P.start <= to){ const r = calcOnTime({ from: P.start, to });
+    const pick = t => ({ lines: t.lines, okLines: t.okLines, rateLines: t.rateLines, qty: t.qty, onTime: t.onTime, rateQty: t.rateQty, unit: t.unit, mixedUnit: t.mixedUnit });
+    otd = { from: P.start, to, cut, total: pick(r.total), byCust: r.byCust.slice(0, 5).map(g => ({ key: g.key, name: DB.get('vendors', g.key)?.name || g.key || '미지정', ...pick(g) })), excluded: { ...r.excluded } };
+  } else otd = { from: P.start, to, cut, future: true, total: null, byCust: [], excluded: null };
+  let over = 0; try { over = DB.all('production_lots').filter(l => (lotShipOverage(l.plot_no) || {}).over > 0).length; } catch(e){}
+  const sf = todaySafetySignals();
+  return { v: 1, at: Date.now(), otd, safety: { ...sf, shipOver: over, total: sf.lock + sf.hold + sf.late + sf.ncDelay + over } };
+}
+function reportWithExtras(data){ if(data && !data.extras){ try { data.extras = reportExtras(data); } catch(e){ console.warn('[VELA] 보고서 추가 값 실패', e); } } return data; }
+function reportOtdText(o){
+  if(!o) return ''; if(o.future || !o.total) return `납기준수율 — 기간이 아직 시작 전 (미도래)`;
+  const pct = v => v == null ? '—' : v.toFixed(1) + '%'; const t = o.total;
+  return `납기준수율 ${pct(t.rateLines)} (건수 ${t.okLines}/${t.lines})${t.mixedUnit ? ' · 수량 기준 미산출(단위 혼합)' : t.rateQty != null ? ` · 수량 ${pct(t.rateQty)}` : ''}${o.cut ? ` · ${o.to} 까지(미도래 제외)` : ''}${o.excluded && o.excluded.dueToday ? ` · 오늘 납기 ${o.excluded.dueToday}건 별도` : ''}`;
+}
+function reportSafetyText(sf){
+  if(!sf) return '';
+  const parts = []; if(sf.lock) parts.push(`동시성 사고 ${sf.lock}`); if(sf.hold) parts.push(`품질 HOLD ${sf.hold}`); if(sf.ncDelay) parts.push(`판정 지체 ${sf.ncDelay}`); if(sf.late) parts.push(`납기 지연 ${sf.late}`); if(sf.shipOver) parts.push(`LOT 출하 초과 ${sf.shipOver}`);
+  return `안전 신호 (작성 시점) — ${parts.length ? parts.join(' · ') : '이상 없음 (사고·HOLD·판정 지체·납기 지연·LOT 출하 초과 0)'}`;
+}
 function reportSectionVisible(sec, flags){
   flags = flags || getFlags();
   if(sec.flag && !flags[sec.flag]) return false;
@@ -25141,8 +25798,19 @@ function openReportPicker(){
 }
 /* ★ v0.38.0 — [보고서 만들기] 원클릭 (SPEC §5-3 · GPT 🟢): 계산(무변) → 스냅샷(sections 포함 · 기존 21879 경로) → 자동 브리핑(고른 섹션만 · 기존 DB.correct 경로) → 내 기본 형식 출력.
    새 write path 0 — 기존 핸들러를 순서대로 부른다. 🔴 페이지 열 때 자동 생성 금지: 오직 이 버튼으로만. 브리핑 실패여도 스냅샷·출력은 완료. */
+// ★ v0.39.9 — 화면 출력 보조 (보고서 빌더 R-1 · 표시만)
+function _repWithBasis(html, extra, note){ if(!html) return ''; const add = (extra || '') + (note ? `<div class="rep-basis" style="font-size:10.5px;color:var(--dim);margin-top:8px">${_esc(note)}</div>` : ''); if(!add) return html; const i = html.lastIndexOf('</div>'); return i < 0 ? html + add : html.slice(0, i) + add + html.slice(i); }
+function _repOtdHtml(data){
+  const o = data && data.extras && data.extras.otd; if(!o) return '';
+  return `<div data-rep-block="sales.otd" style="margin-top:10px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:12px"><b>${_esc(reportOtdText(o))}</b>${o.byCust && o.byCust.length ? `<div class="tbl-wrap" style="margin-top:6px"><table style="font-size:11.5px"><thead><tr><th>고객사 (준수율 낮은 순)</th><th class="num">평가</th><th class="num">준수</th><th class="num">건수 기준</th></tr></thead><tbody>${o.byCust.map(g => `<tr><td>${_esc(g.name)}</td><td class="num">${g.lines}</td><td class="num">${g.okLines}</td><td class="num">${g.rateLines == null ? '—' : g.rateLines.toFixed(1) + '%'}</td></tr>`).join('')}</tbody></table></div>` : ''}<div style="font-size:10.5px;color:var(--dim);margin-top:4px">계산 = 출하 › 납기 실적과 같은 함수(calcOnTime) · 저장 당시 확정값</div></div>`;
+}
+function _repSafetyHtml(data){
+  const sf = data && data.extras && data.extras.safety;
+  if(!sf) return `<div class="card" data-rep-safety="1" style="font-size:11.5px;color:var(--dim)">안전 신호 — 이 스냅샷(v0.39.9 이전)에는 저장되지 않았습니다</div>`;
+  return `<div class="card" data-rep-safety="1" style="border-left:3px solid ${sf.total ? 'var(--amber)' : 'var(--green)'};font-size:12.5px"><b style="color:${sf.total ? 'var(--amber)' : 'var(--green)'}">${_esc(reportSafetyText(sf))}</b><div style="font-size:10.5px;color:var(--dim);margin-top:4px">모든 보고서 마지막에 자동 · 삭제·이동 불가 · 대시보드 「오늘 이상」 과 같은 계산</div></div>`;
+}
 async function makeReportOneClick(st){
-  const fresh = buildReportData(st.scope, st.anchor);
+  const fresh = reportWithExtras(buildReportData(st.scope, st.anchor));   // ★ v0.39.9 — 납기준수·안전 신호도 저장 당시 값으로
   const sections = myReportSections();
   const id = nextDocNo('RP');
   if(DB.get('reports', id)){ toast(`보고서 번호 중복 — ${id}`,'err'); return null; }
@@ -25176,7 +25844,7 @@ VIEWS.report = () => {
   const st = window._reportState;
   // 스냅샷 열람 모드? 저장된 데이터 사용 (재계산 금지) · 아니면 라이브 buildReportData
   const snap = st.viewSnapshotId ? DB.get('reports', st.viewSnapshotId) : null;
-  const data = (snap && snap.data) ? snap.data : buildReportData(st.scope, st.anchor);
+  const data = (snap && snap.data) ? snap.data : reportWithExtras(buildReportData(st.scope, st.anchor));
   const scope = data.scope;
   const title = _REPORT_TITLES[scope] || '보고서';
   const co = getCompany();
@@ -25366,8 +26034,9 @@ VIEWS.report = () => {
       ${kpi('이슈', num(data.companyKPI.issueCount,'건'), null, data.companyKPI.issueCount>0?'var(--amber)':'var(--dim)')}
     </div>
 
-    <!-- ② 부서별 데이터 · ③ 이슈 · ④ 자동 브리핑 (★ v0.38.0 — 선택 섹션만 · prefs 순서 그대로) -->
-    ${secs.filter(id => id !== 'kpi').map(id => _sec[id] || '').join('')}
+    <!-- ② 부서별 데이터 · ③ 이슈 · ④ 자동 브리핑 (★ v0.38.0 — 선택 섹션만 · prefs 순서 그대로) · ★ v0.39.9 집계 기준 줄 · 납기준수 · 안전 신호(마지막 · 고정) -->
+    ${secs.filter(id => id !== 'kpi').map(id => _repWithBasis(_sec[id] || '', id === 'sales' ? _repOtdHtml(data) : '', reportSectionBasisNote(id, data))).join('')}
+    ${_repSafetyHtml(data)}
 
     <!-- 이력 -->
     <div class="card">
@@ -25473,6 +26142,7 @@ function _aiBriefingInput(data, sections){
   }
   if(has('sales')){
     lines.push(`[영업] 신규 수주 ${s.newOrders}건 · 출하 ${s.shipped}ea · 매출 ${_wKr(s.revenue)} · 잔량 ${s.backlog}ea`);
+    if(data.extras && data.extras.otd) lines.push(`  · ${reportOtdText(data.extras.otd)}`);   // ★ v0.39.9
     if(s.byCustomer.length) lines.push(`  · 고객사: ${s.byCustomer.map(c => `${c.name} ${_wKr(c.revenue)}(잔량 ${c.backlog}${c.nextDue?`, 납기 ${c.nextDue}`:''})`).join(', ')}`);
   }
   if(has('pur')){
@@ -25485,6 +26155,8 @@ function _aiBriefingInput(data, sections){
     lines.push(`[이슈]`);
     data.issues.slice(0, 12).forEach(iss => { lines.push(`  · [${iss.severity}][${iss.dept}] ${iss.text}`); });
   }
+  secs.filter(id => id !== 'kpi' && id !== 'ai').forEach(id => { const bn = reportSectionBasisNote(id, data); if(bn) lines.push(`  (${_deptName(id) || id} ${bn})`); });   // ★ v0.39.9 — 집계 기준
+  if(data.extras && data.extras.safety) lines.push(`[${reportSafetyText(data.extras.safety)}]`);   // ★ v0.39.9 — 안전 신호 = 마지막
   const fmt = ['[총평] 1~2 문장'];
   if(has('prod')) fmt.push('[생산부] 1~2 문장'); if(has('sales')) fmt.push('[영업부] 1~2 문장'); if(has('pur')) fmt.push('[구매·자재] 1~2 문장'); if(has('qc')) fmt.push('[품질] 1~2 문장'); if(has('fin')) fmt.push('[경영·정산] 1~2 문장');
   return { text: lines.join('\n'), format: fmt.join('\n'), label: reportSectionLabel(secs) };
@@ -25664,7 +26336,10 @@ function buildReportSheet(reportDoc){
   else   putWide('— 자동 브리핑 없음 (보고서 화면 [보고서 만들기] 또는 [브리핑 생성] 후 다시 내보내기)');
   };
 
-  secs.filter(id => id !== 'kpi').forEach(id => { if(_xs[id]) _xs[id](); });
+  secs.filter(id => id !== 'kpi').forEach(id => { if(_xs[id]){ _xs[id]();
+    if(id === 'sales' && data.extras && data.extras.otd){ const o = data.extras.otd; putWide('· ' + reportOtdText(o)); if(o.byCust && o.byCust.length) subTable('· 납기준수 고객사별 (준수율 낮은 순)', ['고객사','평가','준수','건수 기준'], o.byCust.map(g => [g.name, _zNum(g.lines), _zNum(g.okLines), g.rateLines == null ? '—' : _zPct(g.rateLines)])); putBlank(); }
+    const bn = reportSectionBasisNote(id, data); if(bn) { putWide(bn); putBlank(); } } });   // ★ v0.39.9 — 집계 기준 · 납기준수
+  putWide('■ ' + (data.extras && data.extras.safety ? reportSafetyText(data.extras.safety) : '안전 신호 — 이 스냅샷(v0.39.9 이전)에는 저장되지 않음'));   // ★ v0.39.9 — 안전 신호 = 마지막 고정
 
   // ── 조립: 결재란(상단 우측) → 본문 ──
   const ap        = buildApprovalRows();
@@ -25841,8 +26516,10 @@ function buildReportPpt(reportDoc){
     s.addText(meta.name || deptKey, { x:0.5, y:1.06, w:0.9, h:0.26, fontSize:10, bold:true, color:'FFFFFF',
       align:'center', valign:'middle', fontFace:PPT_FONT });
     kpiRow(s, kpis, 1.46);
-    if(tableCaption) s.addText(tableCaption, { x:0.5, y:2.72, w:9.0, h:0.26, fontSize:11, bold:true, color:accent, fontFace:PPT_FONT });
+    if(tableCaption) s.addText(tableCaption, { x:0.5, y:2.72, w:3.2, h:0.26, fontSize:11, bold:true, color:accent, fontFace:PPT_FONT });
     table(s, head, rows, 3.02, colW, accent);
+    const bn = reportSectionBasisNote(deptKey, data); if(bn) s.addText(bn, { x:3.8, y:2.7, w:5.7, h:0.3, fontSize:8, color:PPT_SUB, fontFace:PPT_FONT, align:'right', fit:'shrink' });   // ★ v0.39.9 — 집계 기준
+    if(deptKey === 'sales' && data.extras && data.extras.otd) s.addText(reportOtdText(data.extras.otd), { x:1.55, y:1.06, w:7.95, h:0.26, fontSize:10, bold:true, color:accent, fontFace:PPT_FONT, valign:'middle' });   // ★ v0.39.9 — 납기준수
     return s;
   }
 
@@ -25990,6 +26667,9 @@ function buildReportPpt(reportDoc){
   }
   };
   secs.filter(id => id !== 'kpi').forEach(id => { if(_ps[id]) _ps[id](); });
+  { const sf = data.extras && data.extras.safety; const sS = frame('안전 신호', sf && sf.total ? 'D97706' : PPT_MINT);   // ★ v0.39.9 — 마지막 고정 슬라이드
+    sS.addText(sf ? reportSafetyText(sf) : '안전 신호 — 이 스냅샷(v0.39.9 이전)에는 저장되지 않음', { x:0.5, y:1.3, w:9.0, h:1.0, fontSize:16, bold:true, color: sf && sf.total ? 'D97706' : PPT_INK, fontFace:PPT_FONT, valign:'top' });
+    sS.addText('· 모든 보고서 마지막에 자동 · 삭제·이동 불가 · 대시보드 「오늘 이상」 과 같은 계산', { x:0.5, y:4.82, w:9.0, h:0.28, fontSize:9, color:PPT_SUB, fontFace:PPT_FONT }); }
 
   return pptx;
 }
@@ -26083,7 +26763,8 @@ function _reportPrint(data, reportDoc){
       line('이슈', data.companyKPI.issueCount + '건'),
     ])}
     <h3 style="font-size:13px;margin:14px 0 6px">② 부서별</h3>
-    ${secs.filter(id => id !== 'kpi').map(id => _pr[id] || '').join('')}
+    ${secs.filter(id => id !== 'kpi').map(id => { const bn = reportSectionBasisNote(id, data); return (_pr[id] || '') + (id === 'sales' && data.extras && data.extras.otd && _pr[id] ? `<div style="font-size:11.5px;margin:-4px 0 8px"><b>${_esc(reportOtdText(data.extras.otd))}</b></div>` : '') + (bn && _pr[id] ? `<div style="font-size:9.5px;color:#777;margin:-4px 0 10px">${_esc(bn)}</div>` : ''); }).join('')}
+    <div style="margin-top:12px;padding:8px 10px;border-left:3px solid #d97706;background:#fafafa;font-size:12px"><b>${_esc(data.extras && data.extras.safety ? reportSafetyText(data.extras.safety) : '안전 신호 — 이 스냅샷(v0.39.9 이전)에는 저장되지 않음')}</b></div>
     <div style="margin-top:20px;font-size:10px;color:#888;border-top:1px solid #ddd;padding-top:10px;display:flex;justify-content:space-between">
       <span>VELA SYSTEM · ${_esc(_REPORT_TITLES[data.scope]||'보고서')}</span><span>${fmtDate(Date.now())} ${fmtTime(Date.now())}</span>
     </div>
